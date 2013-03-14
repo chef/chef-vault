@@ -1,5 +1,5 @@
 
-= Knife Encrypt
+= Chef-Keepass
 
 = DESCRIPTION:
 
@@ -12,7 +12,7 @@ Be sure you are running the latest version Chef. Versions earlier than 0.10.0 do
 
 This plugin is distributed as a Ruby Gem. To install it, run:
 
-    gem install knife-encrypt
+    gem install chef-keepass
 
 Depending on your system's configuration, you may need to run this command with root privileges.
 
