@@ -17,7 +17,7 @@ class ChefKeepass
         throw "Password for #{username} is not encrypted for you!  Rebuild the password data bag"
       end
 
-      node_key = Base64.decode64(keys[node["fqdn"]])
+      node_key = Base64.decode64(keys[Chef::Config[:node_name]])
       shared_secret = private_key.private_decrypt(node_key)
       cred = Chef::EncryptedDataBagItem.load(@data_bag, @username, shared_secret)
 
