@@ -8,7 +8,8 @@ nodes.  This allows only those chef nodes to decrypt the password.
 
 = INSTALLATION:
 
-Be sure you are running the latest version Chef. Versions earlier than 0.10.0 don't support plugins:
+Be sure you are running the latest version Chef. Versions earlier than 0.10.0
+don't support plugins:
 
     gem install chef
 
@@ -16,15 +17,45 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 
     gem install chef-keepass
 
-Depending on your system's configuration, you may need to run this command with root privileges.
+Depending on your system's configuration, you may need to run this command with 
+root privileges.
 
 = CONFIGURATION:
 
-= SUBCOMMANDS:
+= KNIFE COMMANDS:
 
-This plugin provides the following Knife subcommands.  Specific command options can be found by invoking the subcommand with a <tt>--help</tt> flag
+This plugin provides the following Knife subcommands.  
+Specific command options can be found by invoking the subcommand with a 
+<tt>--help</tt> flag
 
 == knife encrypt password
+
+Use this knife command to encrypt the username and password that you want to
+protect.
+
+knife encrypt password --search SEARCH --username USERNAME --password PASSWORD --admins ADMINS
+
+== knife decrypt password
+
+Use this knife command to dencrypt the password that is protected
+
+knife dencrypt password --username USERNAME
+
+= USAGE IN RECIPES
+
+To use this gem in a recipe to decrypt data you must first install the gem
+via a chef_gem resource.  Once the gem is installed require the gem and then
+you can create a new instance of ChefKeepass.
+
+== Example Code
+
+  chef_gem "chef-keepass"
+
+  require 'chef-keepass'
+
+  keepass = ChefKeepass.new("passwords")
+  user = keepass.user("Administrator")
+  password = user.decrypt_password
 
 = LICENSE:
 

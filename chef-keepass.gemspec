@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.has_rdoc         = true
   s.authors          = ["Kevin Moser"]
   s.email            = ["kevin.moser@nordstrom.com"]
-  s.summary          = "Password encryption support for chef using data bags"
+  s.summary          = "Data encryption support for chef using data bags"
   s.description      = s.summary
   
   s.files            = `git ls-files`.split("\n")
