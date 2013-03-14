@@ -39,7 +39,7 @@ knife encrypt password --search SEARCH --username USERNAME --password PASSWORD -
 
 Use this knife command to dencrypt the password that is protected
 
-knife dencrypt password --username USERNAME
+knife decrypt password --username USERNAME
 
 = USAGE IN RECIPES
 
@@ -60,7 +60,7 @@ you can create a new instance of ChefKeepass.
 = LICENSE:
 
 Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
-Copyright:: Copyright (c) 2009-2011 Opscode, Inc.
+Copyright:: Copyright (c) 2013 Nordstrom, Inc.
 License:: Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");
