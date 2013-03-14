@@ -11,7 +11,7 @@ class ChefKeepass
       # use the private client_key file to create a decryptor
       private_key = open(Chef::Config[:client_key]).read
       private_key = OpenSSL::PKey::RSA.new(private_key)
-      keys = data_bag_item(@data_bag, "#{username}_keys")
+      keys = Chef::DataBagItem.load(@data_bag, "#{username}_keys")
 
       unless keys[Chef::Config[:node_name]]
         throw "Password for #{username} is not encrypted for you!  Rebuild the password data bag"

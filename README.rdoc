@@ -3,6 +3,8 @@
 
 = DESCRIPTION:
 
+Gem that allows you to encrypt passwords using the public key of a list of chef
+nodes.  This allows only those chef nodes to decrypt the password.
 
 = INSTALLATION:
 

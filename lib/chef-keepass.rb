@@ -16,9 +16,9 @@
 # limitations under the License.
 #
 
+require 'chef'
 require 'chef-keepass/user'
 require 'chef-keepass/version'
-require 'chef'
 
 class ChefKeepass
 
