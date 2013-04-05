@@ -18,6 +18,7 @@
 
 require 'chef'
 require 'chef-keepass/user'
+require 'chef-keepass/certificate'
 require 'chef-keepass/version'
 
 class ChefKeepass
@@ -34,5 +35,9 @@ class ChefKeepass
 
   def user(username)
     ChefKeepass::User.new(@data_bag, username)
+  end
+
+  def certificate(name)
+    ChefKeepass::Certificate.new(@data_bag, name)
   end
 end

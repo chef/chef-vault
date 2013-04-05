@@ -24,7 +24,7 @@ class DecryptCert < Chef::Knife
     data_bag = "certs"
     data_bag_path = "./data_bags/#{data_bag}"
 
-    name = config[:name]
+    name = config[:name].gsub(".", "_")
 
     user_private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
     key = JSON.parse(IO.read("#{data_bag_path}/#{name}_keys.json"))
