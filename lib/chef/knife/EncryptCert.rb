@@ -55,20 +55,20 @@ class EncryptCert < Chef::Knife
     admins = config[:admins]
     file_to_encrypt = config[:cert]
     contents = open(file_to_encrypt, "rb").read
-    dbi = config[:name] ? config[:name].gsub(".", "_") : File.basename(file_to_encrypt, ".*").gsub(".", "_")
+    name = config[:name] ? config[:name].gsub(".", "_") : File.basename(file_to_encrypt, ".*").gsub(".", "_")
     
     current_dbi = Hash.new
     current_dbi_keys = Hash.new
-    if File.exists?("#{data_bag_path}/#{dbi}_keys.json") && File.exists?("#{data_bag_path}/#{dbi}.json")
-      current_dbi_keys = JSON.parse(open("#{data_bag_path}/#{dbi}_keys.json").read())
-      current_dbi = JSON.parse(open("#{data_bag_path}/#{dbi}.json").read())
+    if File.exists?("#{data_bag_path}/#{name}_keys.json") && File.exists?("#{data_bag_path}/#{name}.json")
+      current_dbi_keys = JSON.parse(open("#{data_bag_path}/#{name}_keys.json").read())
+      current_dbi = JSON.parse(open("#{data_bag_path}/#{name}.json").read())
 
-      unless equal?(data_bag, dbi, "contents", content)
-        puts("FATAL: Content in #{data_bag_path}/#{dbi}.json does not match content in file supplied!")
+      unless equal?(data_bag, name, "contents", contents)
+        puts("FATAL: Content in #{data_bag_path}/#{name}.json does not match content in file supplied!")
         exit 1
       end
     else
-      puts("INFO: Existing data bag #{data_bag}/#{dbi} does not exist in #{data_bag_path}, continuing as fresh build...")
+      puts("INFO: Existing data bag #{data_bag}/#{name} does not exist in #{data_bag_path}, continuing as fresh build...")
     end
 
     # Get the public keys for all of the nodes to encrypt for.  Skipping the nodes that are already in
@@ -110,9 +110,9 @@ class EncryptCert < Chef::Knife
     end
 
     # Get the current secret, is nil if current secret does not exist yet
-    current_secret = get_shared_secret(data_bag, dbi)
+    current_secret = get_shared_secret(data_bag, name)
     data_bag_shared_key = current_secret ? current_secret : OpenSSL::PKey::RSA.new(245).to_pem.lines.to_a[1..-2].join
-    enc_db_key_dbi = current_dbi_keys.empty? ? Mash.new({id: "#{dbi}_keys"}) : current_dbi_keys
+    enc_db_key_dbi = current_dbi_keys.empty? ? Mash.new({id: "#{name}_keys"}) : current_dbi_keys
 
     # Encrypt for every new node not already in the data bag
     keyfob.each do |node,pkey|
@@ -121,23 +121,23 @@ class EncryptCert < Chef::Knife
     end unless keyfob.empty?
 
     # Delete existing keys data bag and rewrite the whole bag from memory
-    puts("INFO: Writing #{data_bag_path}/#{dbi}_keys.json...")
-    File.delete("#{data_bag_path}/#{dbi}_keys.json") if File.exists?("#{data_bag_path}/#{dbi}_keys.json")
-    File.open("#{data_bag_path}/#{dbi}_keys.json",'w').write(JSON.pretty_generate(enc_db_key_dbi))
+    puts("INFO: Writing #{data_bag_path}/#{name}_keys.json...")
+    File.delete("#{data_bag_path}/#{name}_keys.json") if File.exists?("#{data_bag_path}/#{name}_keys.json")
+    File.open("#{data_bag_path}/#{name}_keys.json",'w').write(JSON.pretty_generate(enc_db_key_dbi))
 
     # If the existing certificate bag does not exist, write it out with the correct certificate
     # Otherwise leave the existing bag alone
     if current_dbi.empty?
-      dbi_mash=Mash.new({id: dbi_name, contents: contents})
+      dbi_mash = Mash.new({id: name, contents: contents})
       dbi_mash.merge!({password: config[:password]}) if config[:password]
-      dbi=Chef::DataBagItem.from_hash(dbi_mash)
+      dbi = Chef::DataBagItem.from_hash(dbi_mash)
       edbi = Chef::EncryptedDataBagItem.encrypt_data_bag_item(dbi, data_bag_shared_key)
 
-      puts("INFO: Writing #{data_bag_path}/#{dbi}.json...")
-      open("#{data_bag_path}/#{dbi}.json",'w').write(JSON.pretty_generate(edbi))
+      puts("INFO: Writing #{data_bag_path}/#{name}.json...")
+      open("#{data_bag_path}/#{name}.json",'w').write(JSON.pretty_generate(edbi))
     end
 
-    puts("INFO: Successfully wrote #{data_bag_path}/#{dbi}.json & #{data_bag_path}/#{dbi}_keys.json!")
+    puts("INFO: Successfully wrote #{data_bag_path}/#{name}.json & #{data_bag_path}/#{name}_keys.json!")
   end
 
   def equal?(db, dbi, key, value)
