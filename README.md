@@ -68,9 +68,9 @@ chef_gem "chef-vault"
 
 require 'chef-vault'
 
-vault # ChefVault.new("passwords")
-user # vault.user("Administrator")
-password # user.decrypt_password
+vault    = ChefVault.new("passwords")
+user     = vault.user("Administrator")
+password = user.decrypt_password
 ```
 
 ### Example Code (certificate)
@@ -80,9 +80,9 @@ chef_gem "chef-vault"
 
 require 'chef-vault'
 
-vault # ChefVault.new("certs")
-cert # vault.certificate("domain.com")
-contents # cert.decrypt_contents
+vault    = ChefVault.new("certs")
+cert     = vault.certificate("domain.com")
+contents = cert.decrypt_contents
 ```
 
 ## LICENSE:
