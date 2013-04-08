@@ -1,13 +1,12 @@
+# Chef-Vault
 
-= Chef-Vault
-
-= DESCRIPTION:
+## DESCRIPTION:
 
 Gem that allows you to encrypt passwords & certificates using the public key of
 a list of chef nodes.  This allows only those chef nodes to decrypt the 
 password or certificate.
 
-= INSTALLATION:
+## INSTALLATION:
 
 Be sure you are running the latest version Chef. Versions earlier than 0.10.0
 don't support plugins:
@@ -21,67 +20,72 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 Depending on your system's configuration, you may need to run this command with 
 root privileges.
 
-= CONFIGURATION:
+## CONFIGURATION:
 
-= KNIFE COMMANDS:
+## KNIFE COMMANDS:
 
 This plugin provides the following Knife subcommands.  
 Specific command options can be found by invoking the subcommand with a 
 <tt>--help</tt> flag
 
-== knife encrypt password
+### knife encrypt password
 
 Use this knife command to encrypt the username and password that you want to
 protect.
 
-knife encrypt password --search SEARCH --username USERNAME --password PASSWORD --admins ADMINS
+    knife encrypt password --search SEARCH --username USERNAME --password PASSWORD --admins ADMINS
 
-== knife decrypt password
+
+### knife decrypt password
 
 Use this knife command to dencrypt the password that is protected
 
-knife decrypt password --username USERNAME
+    knife decrypt password --username USERNAME
 
-== knife encrypt cert
+### knife encrypt cert
 
 Use this knife command to encrypt the contents of a certificate that you want
 to protect.
 
-knife encrypt cert --search SEARCH --cert CERT --password PASSWORD --name NAME --admins ADMINS
+    knife encrypt cert --search SEARCH --cert CERT --password PASSWORD --name NAME --admins ADMINS
 
-== knife decrypt cert
+### knife decrypt cert
 
-Use this knife command to dencrypt the certificate that is protected
+Use this knife command to decrypt the certificate that is protected
 
-knife decrypt cert --name NAME
+    knife decrypt cert --name NAME
 
-= USAGE IN RECIPES
+## USAGE IN RECIPES
 
 To use this gem in a recipe to decrypt data you must first install the gem
 via a chef_gem resource.  Once the gem is installed require the gem and then
 you can create a new instance of ChefVault.
 
-== Example Code (password)
+### Example Code (password)
 
-  chef_gem "chef-vault"
+```ruby
+chef_gem "chef-vault"
 
-  require 'chef-vault'
+require 'chef-vault'
 
-  vault = ChefVault.new("passwords")
-  user = vault.user("Administrator")
-  password = user.decrypt_password
+vault # ChefVault.new("passwords")
+user # vault.user("Administrator")
+password # user.decrypt_password
+```
 
-== Example Code (certificate)
+### Example Code (certificate)
 
-  chef_gem "chef-vault"
+```ruby
+chef_gem "chef-vault"
 
-  require 'chef-vault'
+require 'chef-vault'
 
-  vault = ChefVault.new("certs")
-  cert = vault.certificate("domain.com")
-  contents = cert.decrypt_contents
+vault # ChefVault.new("certs")
+cert # vault.certificate("domain.com")
+contents # cert.decrypt_contents
+```
 
-= LICENSE:
+## LICENSE:
 
 Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
 Copyright:: Copyright (c) 2013 Nordstrom, Inc.
