@@ -1,4 +1,4 @@
 class ChefVault
-  VERSION = "0.2.1"
+  VERSION = "1.0.0"
   MAJOR, MINOR, TINY = VERSION.split('.')
 end
