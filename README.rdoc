@@ -59,7 +59,7 @@ knife decrypt cert --name NAME
 
 To use this gem in a recipe to decrypt data you must first install the gem
 via a chef_gem resource.  Once the gem is installed require the gem and then
-you can create a new instance of Chefvault.
+you can create a new instance of ChefVault.
 
 == Example Code (password)
 
@@ -67,7 +67,7 @@ you can create a new instance of Chefvault.
 
   require 'chef-vault'
 
-  vault = Chefvault.new("passwords")
+  vault = ChefVault.new("passwords")
   user = vault.user("Administrator")
   password = user.decrypt_password
 
@@ -77,7 +77,7 @@ you can create a new instance of Chefvault.
 
   require 'chef-vault'
 
-  vault = Chefvault.new("certs")
+  vault = ChefVault.new("certs")
   cert = vault.certificate("domain.com")
   contents = cert.decrypt_contents
 
