@@ -1,4 +1,4 @@
-class ChefKeepass
+class ChefVault
   class User
     attr_accessor :username
 

@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "chef-keepass/version"
+require "chef-vault/version"
 
 Gem::Specification.new do |s|
-  s.name             = "chef-keepass"
+  s.name             = "chef-vault"
   s.version          = ChefKeepass::VERSION
   s.has_rdoc         = true
   s.authors          = ["Kevin Moser"]

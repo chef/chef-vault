@@ -1,5 +1,5 @@
 
-= Chef-Keepass
+= Chef-Vault
 
 = DESCRIPTION:
 
@@ -16,7 +16,7 @@ don't support plugins:
 
 This plugin is distributed as a Ruby Gem. To install it, run:
 
-    gem install chef-keepass
+    gem install chef-vault
 
 Depending on your system's configuration, you may need to run this command with 
 root privileges.
@@ -59,26 +59,26 @@ knife decrypt cert --name NAME
 
 To use this gem in a recipe to decrypt data you must first install the gem
 via a chef_gem resource.  Once the gem is installed require the gem and then
-you can create a new instance of ChefKeepass.
+you can create a new instance of Chefvault.
 
 == Example Code (password)
 
-  chef_gem "chef-keepass"
+  chef_gem "chef-vault"
 
-  require 'chef-keepass'
+  require 'chef-vault'
 
-  keepass = ChefKeepass.new("passwords")
-  user = keepass.user("Administrator")
+  vault = Chefvault.new("passwords")
+  user = vault.user("Administrator")
   password = user.decrypt_password
 
 == Example Code (certificate)
 
-  chef_gem "chef-keepass"
+  chef_gem "chef-vault"
 
-  require 'chef-keepass'
+  require 'chef-vault'
 
-  keepass = ChefKeepass.new("certs")
-  cert = keepass.certificate("domain.com")
+  vault = Chefvault.new("certs")
+  cert = vault.certificate("domain.com")
   contents = cert.decrypt_contents
 
 = LICENSE:

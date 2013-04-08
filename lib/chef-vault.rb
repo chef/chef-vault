@@ -17,11 +17,11 @@
 #
 
 require 'chef'
-require 'chef-keepass/user'
-require 'chef-keepass/certificate'
-require 'chef-keepass/version'
+require 'chef-vault/user'
+require 'chef-vault/certificate'
+require 'chef-vault/version'
 
-class ChefKeepass
+class ChefVault
 
   attr_accessor :data_bag
 
@@ -34,10 +34,10 @@ class ChefKeepass
   end
 
   def user(username)
-    ChefKeepass::User.new(@data_bag, username)
+    ChefVault::User.new(@data_bag, username)
   end
 
   def certificate(name)
-    ChefKeepass::Certificate.new(@data_bag, name)
+    ChefVault::Certificate.new(@data_bag, name)
   end
 end

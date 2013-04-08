@@ -1,4 +1,4 @@
-class ChefKeepass
+class ChefVault
   class Certificate
     attr_accessor :name
 
