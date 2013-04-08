@@ -4,7 +4,7 @@ require "chef-vault/version"
 
 Gem::Specification.new do |s|
   s.name             = "chef-vault"
-  s.version          = ChefKeepass::VERSION
+  s.version          = ChefVault::VERSION
   s.has_rdoc         = true
   s.authors          = ["Kevin Moser"]
   s.email            = ["kevin.moser@nordstrom.com"]
