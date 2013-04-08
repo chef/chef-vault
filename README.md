@@ -6,8 +6,6 @@ Gem that allows you to encrypt passwords & certificates using the public key of
 a list of chef nodes.  This allows only those chef nodes to decrypt the 
 password or certificate.
 
-This is supported on both Chef 10 and Chef 11 API.
-
 ## INSTALLATION:
 
 Be sure you are running the latest version Chef. Versions earlier than 0.10.0
@@ -63,46 +61,29 @@ To use this gem in a recipe to decrypt data you must first install the gem
 via a chef_gem resource.  Once the gem is installed require the gem and then
 you can create a new instance of ChefVault.
 
-## Example Code (password)
+### Example Code (password)
 
-  chef_gem "chef-vault"
+```ruby
+chef_gem "chef-vault"
 
-  require 'chef-vault'
+require 'chef-vault'
 
-  vault = ChefVault.new("passwords")
-  user = vault.user("Administrator")
-  password = user.decrypt_password
+vault    = ChefVault.new("passwords")
+user     = vault.user("Administrator")
+password = user.decrypt_password
+```
 
-## Example Code (certificate)
+### Example Code (certificate)
 
-  chef_gem "chef-vault"
+```ruby
+chef_gem "chef-vault"
 
-  require 'chef-vault'
+require 'chef-vault'
 
-  vault = ChefVault.new("certs")
-  cert = vault.certificate("domain.com")
-  contents = cert.decrypt_contents
-
-# USAGE STAND ALONE
-
-chef-vault can be used a stand alone binary to decrypt values stored in chef.
-It requires that chef is installed on the system and that you have a valid
-knife.rb.  This is useful if you want to mix chef-vault into non-chef recipe
-code, for example some other script where you want to protect a password.
-
-It does still require that the data bag has been encrypted for the user's or
-client's pem and pushed to the chef server.  It mixes chef into the gem and 
-uses it to go grab the data bag.
-
-Do chef-vault --help for all available options
-
-## Example usage (password)
-
-  chef-vault -u Administrator -k /etc/chef/knife.rb
-
-## Example usage (certificate)
-
-  chef-vault -c wildcard_domain_com -k /etc/chef/knife.rb
+vault    = ChefVault.new("certs")
+cert     = vault.certificate("domain.com")
+contents = cert.decrypt_contents
+```
 
 ## LICENSE:
 
