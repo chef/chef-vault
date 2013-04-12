@@ -2,9 +2,14 @@ class ChefVault
   class Certificate
     attr_accessor :name
 
-    def initialize(data_bag, name)
+    def initialize(data_bag, name, chef_config_file)
       @name = name
       @data_bag = data_bag
+
+      if chef_config_file
+        chef = ChefVault::Chef.new(chef_config_file)
+        chef.connect
+      end
     end
 
     def decrypt_contents

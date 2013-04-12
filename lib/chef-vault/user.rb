@@ -2,9 +2,14 @@ class ChefVault
   class User
     attr_accessor :username
 
-    def initialize(data_bag, username)
+    def initialize(data_bag, username, chef_config_file)
       @username = username
       @data_bag = data_bag
+
+      if chef_config_file
+        chef = ChefVault::Chef.new(chef_config_file)
+        chef.connect
+      end
     end
 
     def decrypt_password
