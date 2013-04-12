@@ -3,8 +3,9 @@ require 'chef/knife'
 class EncryptCert < Chef::Knife
   deps do
     require 'chef/search/query'
-    require 'chef/shef/ext'
+    require File.expand_path('../compat', __FILE__)
   end
+  include ChefVault::Compat
 
   banner "knife encrypt cert --search SEARCH --cert CERT --password PASSWORD --name NAME --admins ADMINS"
 
@@ -46,7 +47,7 @@ class EncryptCert < Chef::Knife
       puts("You must supply either -A or --admins")
       exit 1
     end
-    Shef::Extensions.extend_context_object(self)
+    extend_context_object(self)
 
     data_bag = "certs"
     data_bag_path = "./data_bags/#{data_bag}"
