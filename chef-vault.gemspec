@@ -13,5 +13,8 @@ Gem::Specification.new do |s|
   
   s.files            = `git ls-files`.split("\n")
   s.add_dependency "chef", ">= 0.10.10"
-  s.require_paths = ["lib"]
+  s.require_paths    = ["lib"]
+  
+  s.bindir           = "bin"
+  s.executables      = %w( chef-vault )
 end

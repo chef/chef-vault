@@ -79,13 +79,13 @@ require 'rubygems'
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require 'chef-vault'
 
-if config[:user]
-  vault = ChefVault.new("passwords", config[:chef])
+if options[:user]
+  vault = ChefVault.new("passwords", options[:chef])
 
-  user = vault.user(config[:user])
+  user = vault.user(options[:user])
   puts user.decrypt_password
 else
-  vault = ChefVault.new("certs", config[:chef])
-  cert = vault.certificate(config[:cert])
+  vault = ChefVault.new("certs", options[:chef])
+  cert = vault.certificate(options[:cert])
   puts cert.decrypt_contents
 end
