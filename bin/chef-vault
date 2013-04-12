@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+#
+# ./chef-vault - Run chef-vault and decrypt based on parameters
+#
+# Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
+# Copyright:: Copyright (c) 2013 Nordstrom, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+require 'optparse'
+
+options_config = {
+  chef: {
+    short: "k",
+    long: "chef-config-file",
+    description: "Chef config file",
+    default: "/etc/chef/knife.rb",
+    optional: false
+  },
+  user: {
+    short: "u",
+    long: "username",
+    description: "Username to decrypt password for",
+    default: nil,
+    optional: true
+  },  
+  cert: {
+    short: "c",
+    long: "certificate",
+    description: "Certificate to decrypt contents of",
+    default: nil,
+    optional: true
+  }
+}
+
+banner = "Usage: chef-vault "
+options_config.each do |option, config|
+  if config[:optional]
+    banner << "[--#{config[:long]} #{config[:long].upcase}] "
+  else
+    banner << "--#{config[:long]} #{config[:long].upcase} "
+  end    
+end
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = banner
+
+  options_config.each do |option, config|
+    description = "#{config[:description]}"
+    description << " (#{config[:default]})" if config[:default]
+    description << " MANDATORY" unless config[:default]
+    opts.on("-#{config[:short]}", "--#{config[:long]} #{config[:long].upcase}", description) do |opt|
+      options[option] = opt
+    end
+  end
+end.parse!
+
+options_config.each do |option, config|
+  raise OptionParser::MissingArgument if (options[option].nil? && !config[:optional])
+end
+
+options_config.each do |option, config|
+  options[option] = options[option] ? options[option] : config[:default]
+end
+
+require 'rubygems'
+$:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
+require 'chef-vault'
+
+if config[:user]
+  vault = ChefVault.new("passwords", config[:chef])
+
+  user = vault.user(config[:user])
+  puts user.decrypt_password
+else
+  vault = ChefVault.new("certs", config[:chef])
+  cert = vault.certificate(config[:cert])
+  puts cert.decrypt_contents
+end
