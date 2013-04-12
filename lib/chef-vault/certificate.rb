@@ -7,7 +7,7 @@ class ChefVault
       @data_bag = data_bag
 
       if chef_config_file
-        chef = ChefVault::Chef.new(chef_config_file)
+        chef = ChefVault::ChefOffline.new(chef_config_file)
         chef.connect
       end
     end

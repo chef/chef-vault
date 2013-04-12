@@ -1,5 +1,5 @@
 class ChefVault
-  class Chef
+  class ChefOffline
     attr_accessor :config_file
 
     def initialize(config_file)
@@ -8,7 +8,7 @@ class ChefVault
 
     def connect
       require 'chef'
-      Chef::Config.from_file(@config_file)
+      ::Chef::Config.from_file(@config_file)
     end
   end
 end
