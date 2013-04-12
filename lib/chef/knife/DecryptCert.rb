@@ -3,9 +3,10 @@ require 'chef/knife'
 class DecryptCert < Chef::Knife
   deps do
     require 'chef/search/query'
-    require 'chef/shef/ext'
     require 'json'
+    require File.expand_path('../compat', __FILE__)
   end
+  include ChefVault::Compat
 
   banner "knife decrypt cert --name NAME"
 
@@ -19,7 +20,7 @@ class DecryptCert < Chef::Knife
       puts("You must supply a certificate to decrypt")
       exit 1
     end
-    Shef::Extensions.extend_context_object(self)
+    extend_context_object(self)
 
     data_bag = "certs"
     data_bag_path = "./data_bags/#{data_bag}"

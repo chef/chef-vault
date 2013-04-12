@@ -3,9 +3,10 @@ require 'chef/knife'
 class DecryptPassword < Chef::Knife
   deps do
     require 'chef/search/query'
-    require 'chef/shef/ext'
     require 'json'
+    require File.expand_path('../compat', __FILE__)
   end
+  include ChefVault::Compat
 
   banner "knife decrypt password --username USERNAME"
 
@@ -19,7 +20,7 @@ class DecryptPassword < Chef::Knife
       puts("You must supply a username to decrypt")
       exit 1
     end
-    Shef::Extensions.extend_context_object(self)
+    extend_context_object(self)
 
     data_bag_path = "./data_bags/passwords"
 
