@@ -19,15 +19,19 @@ module ChefVault
       # Check the response back from the api call to see if
       # we get 'certificate' which is Chef 10 or just 
       # 'public_key' which is Chef 11
-      if client['certificate']
-        cert = client['certificate']
-        cert = OpenSSL::X509::Certificate.new cert
-        public_key_der = cert.public_key
-      else
-        public_key_der = client['public_key']
+      unless client.is_a?(Chef::ApiClient)
+        name = client['name']
+        certificate = client['certificate']
+        client = Chef::ApiClient.new
+        client.name name
+        client.admin false
+
+        cert_der = OpenSSL::X509::Certificate.new certificate
+        
+        client.public_key cert_der.public_key.to_s
       end
       
-      public_key = OpenSSL::PKey::RSA.new public_key_der
+      public_key = OpenSSL::PKey::RSA.new client.public_key
       
       public_key
     end
