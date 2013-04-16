@@ -7,6 +7,8 @@ Gem that allows you to encrypt passwords & certificates using the public key of
 a list of chef nodes.  This allows only those chef nodes to decrypt the 
 password or certificate.
 
+This is supported on both Chef 10 and Chef 11 API.
+
 = INSTALLATION:
 
 Be sure you are running the latest version Chef. Versions earlier than 0.10.0
