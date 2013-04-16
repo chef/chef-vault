@@ -81,9 +81,7 @@ class EncryptCert < Chef::Knife
           puts("INFO: Skipping #{client} as it is already in the data bag...")
         else
           puts("INFO: Adding #{client} to public_key array...")
-          cert_der = api.get("clients/#{client}")['certificate']
-          cert = OpenSSL::X509::Certificate.new cert_der
-          keyfob[client]=OpenSSL::PKey::RSA.new cert.public_key
+          keyfob[client] = get_client_public_key(client)
         end
       rescue Exception => node_error
         puts("WARNING: Caught exception: #{node_error.message} while processing #{client}, so skipping...")
