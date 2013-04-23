@@ -2,8 +2,8 @@
 
 ## DESCRIPTION:
 
-Gem that allows you to encrypt passwords & certificates using the public key of
-a list of chef nodes.  This allows only those chef nodes to decrypt the 
+Gem that allows you to encrypt passwords and certificates using the public keys of
+a list of chef nodes. This allows only those chef nodes to decrypt the 
 password or certificate.
 
 ## INSTALLATION:
@@ -31,27 +31,61 @@ Specific command options can be found by invoking the subcommand with a
 ### knife encrypt password
 
 Use this knife command to encrypt the username and password that you want to
-protect.
+protect. Only Chef nodes returned by the `--search` at the time of encryption
+will be able to decrypt the password.
 
-    knife encrypt password --search SEARCH --username USERNAME --password PASSWORD --admins ADMINS
+```ruby
+$ knife encrypt password --search SEARCH --username USERNAME --password PASSWORD
+--admins ADMINS
+```
 
+In the example below, the `mysql_user`'s password will be encrypted using the
+public keys of the nodes in the `web_server` role. In addition to the servers in
+the `web_server` role, Chef users `alice`, `bob`, and `carol` will also be able
+to decrypt the password, an encrypted data bag item.
+
+```ruby
+$ knife encrypt password --search "role:web_server" --username mysql_user
+--password "P@ssw0rd" --admins "alice, bob, carol"
+```
 
 ### knife decrypt password
 
-Use this knife command to dencrypt the password that is protected
+Use this knife command to decrypt the password that is protected. This is
+currently hard-coded to look for an encrypted data bag named "passwords" on the
+Chef server.
 
     knife decrypt password --username USERNAME
 
 ### knife encrypt cert
 
-Use this knife command to encrypt the contents of a certificate that you want
-to protect.
+Use this knife command to encrypt the contents of a certificate that you want to
+protect. Only Chef nodes returned by the `--search` at the time of encryption
+will be able to decrypt the certificate.
 
-    knife encrypt cert --search SEARCH --cert CERT --password PASSWORD --name NAME --admins ADMINS
+Typically you will decrypt the contents as part of a recipe and write them out
+to a certificate on your Chef node.
+
+ ```ruby $  knife encrypt cert --search SEARCH --cert CERT --password PASSWORD
+--name NAME --admins ADMINS
+```
+ 
+In the example below, the `~/ssl/web_server_cert.pem` certificate will be
+encrypted using the public keys of the nodes in the `web_server` role. You can
+reference the name of the certificate (`web_public_key`) in a recipe when you
+need to decrypt it. In addition to the servers in the `web_server` role, Chef
+users `alice`, `bob`, and `carol` will also be able to decrypt the contents of
+the certificate, an encrypted data bag item.
+
+ ```ruby $ knife encrypt cert --search "role:web_server" --cert
+~/ssl/web_server_cert.pem --name web_public_key --admins 'alice, bob, carol'
+```
 
 ### knife decrypt cert
 
-Use this knife command to decrypt the certificate that is protected
+Use this knife command to decrypt the certificate that is protected. This is
+currently hard-coded to look for an encrypted data bag named `certs` on the Chef
+server.
 
     knife decrypt cert --name NAME
 
@@ -69,7 +103,7 @@ chef_gem "chef-vault"
 require 'chef-vault'
 
 vault    = ChefVault.new("passwords")
-user     = vault.user("Administrator")
+user     = vault.user("mysql_user")
 password = user.decrypt_password
 ```
 
@@ -81,11 +115,11 @@ chef_gem "chef-vault"
 require 'chef-vault'
 
 vault    = ChefVault.new("certs")
-cert     = vault.certificate("domain.com")
+cert     = vault.certificate("web_public_key")
 contents = cert.decrypt_contents
 ```
 
-## LICENSE:
+## License and Author:
 
 Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
 Copyright:: Copyright (c) 2013 Nordstrom, Inc.
