@@ -119,6 +119,27 @@ cert     = vault.certificate("web_public_key")
 contents = cert.decrypt_contents
 ```
 
+## USAGE STAND ALONE
+
+`chef-vault` can be used a stand alone binary to decrypt values stored in Chef.
+It requires that Chef is installed on the system and that you have a valid
+knife.rb.  This is useful if you want to mix `chef-vault` into non-Chef recipe
+code, for example some other script where you want to protect a password.
+
+It does still require that the data bag has been encrypted for the user's or
+client's pem and pushed to the Chef server. It mixes Chef into the gem and 
+uses it to go grab the data bag.
+
+Do chef-vault --help for all available options
+
+### Example usage (password)
+
+  chef-vault -u Administrator -k /etc/chef/knife.rb
+
+### Example usage (certificate)
+
+  chef-vault -c wildcard_domain_com -k /etc/chef/knife.rb
+
 ## License and Author:
 
 Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
