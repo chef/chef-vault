@@ -34,7 +34,7 @@ Use this knife command to encrypt the username and password that you want to
 protect. Only Chef nodes returned by the `--search` at the time of encryption
 will be able to decrypt the password.
 
-```ruby
+```bash
 $ knife encrypt password --search SEARCH --username USERNAME --password PASSWORD
 --admins ADMINS
 ```
@@ -44,7 +44,7 @@ public keys of the nodes in the `web_server` role. In addition to the servers in
 the `web_server` role, Chef users `alice`, `bob`, and `carol` will also be able
 to decrypt the password, an encrypted data bag item.
 
-```ruby
+```bash
 $ knife encrypt password --search "role:web_server" --username mysql_user
 --password "P@ssw0rd" --admins "alice, bob, carol"
 ```
@@ -66,7 +66,8 @@ will be able to decrypt the certificate.
 Typically you will decrypt the contents as part of a recipe and write them out
 to a certificate on your Chef node.
 
- ```ruby $  knife encrypt cert --search SEARCH --cert CERT --password PASSWORD
+```bash
+$ knife encrypt cert --search SEARCH --cert CERT --password PASSWORD
 --name NAME --admins ADMINS
 ```
  
@@ -77,7 +78,8 @@ need to decrypt it. In addition to the servers in the `web_server` role, Chef
 users `alice`, `bob`, and `carol` will also be able to decrypt the contents of
 the certificate, an encrypted data bag item.
 
- ```ruby $ knife encrypt cert --search "role:web_server" --cert
+```bash
+$ knife encrypt cert --search "role:web_server" --cert
 ~/ssl/web_server_cert.pem --name web_public_key --admins 'alice, bob, carol'
 ```
 
@@ -130,7 +132,7 @@ It does still require that the data bag has been encrypted for the user's or
 client's pem and pushed to the Chef server. It mixes Chef into the gem and 
 uses it to go grab the data bag.
 
-Do chef-vault --help for all available options
+Do `chef-vault --help` for all available options
 
 ### Example usage (password)
 
