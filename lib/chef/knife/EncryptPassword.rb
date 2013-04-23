@@ -87,7 +87,7 @@ class EncryptPassword < Chef::Knife
     end
     
     # Get the public keys for the admin users, skipping users already in the data bag
-    public_keys << admins.split(",").map do |user|
+    public_keys << admins.split(/[\s,]+/).map do |user|
       begin
         if current_dbi_keys[user]
           puts("INFO: Skipping #{user} as it is already in the data bag")
