@@ -46,7 +46,7 @@ to decrypt the password, an encrypted data bag item.
 
 ```bash
 $ knife encrypt password --search "role:web_server" --username mysql_user
---password "P@ssw0rd" --admins "alice, bob, carol"
+--password "P@ssw0rd" --admins "alice,bob,carol"
 ```
 
 ### knife decrypt password
@@ -80,7 +80,7 @@ the certificate, an encrypted data bag item.
 
 ```bash
 $ knife encrypt cert --search "role:web_server" --cert
-~/ssl/web_server_cert.pem --name web_public_key --admins 'alice, bob, carol'
+~/ssl/web_server_cert.pem --name web_public_key --admins 'alice,bob,carol'
 ```
 
 ### knife decrypt cert
