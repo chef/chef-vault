@@ -52,6 +52,13 @@ class EncryptCert < Chef::Knife
     data_bag = "certs"
     data_bag_path = "./data_bags/#{data_bag}"
 
+    unless ::File.exists?(data_bag_path)
+      require 'fileutils'
+
+      puts("INFO: #{data_bag_path} does not exist, creating...")
+      FileUtils.mkdir_p(data_bag_path)
+    end
+
     node_search = config[:search]
     admins = config[:admins]
     file_to_encrypt = config[:cert]
