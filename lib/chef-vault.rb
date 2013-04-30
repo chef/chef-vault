@@ -37,10 +37,10 @@ class ChefVault
   end
 
   def user(username)
-    ChefVault::User.new(@data_bag, username, @chef_config_file)
+    ChefVault::User.new(data_bag, username, chef_config_file)
   end
 
   def certificate(name)
-    ChefVault::Certificate.new(@data_bag, name, @chef_config_file)
+    ChefVault::Certificate.new(data_bag, name, chef_config_file)
   end
 end
