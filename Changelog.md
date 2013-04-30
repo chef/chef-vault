@@ -1,5 +1,8 @@
 ## Unreleased
 
+## v1.2.3 / 2012-04-30
+* Update to use attr_accessor in chef_vault
+* Add rspec tests
 
 ## v1.2.2 / 2012-04-23
 * Update to create data bag folder if it does not already exist
