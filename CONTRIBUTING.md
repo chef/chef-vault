@@ -111,6 +111,7 @@ to address, apply your changes in a separate commit and push that to your
 feature branch. Post a comment in the pull request afterwards; GitHub does
 not send out notifications when you add commits.
 
+### Thank You
 Thank you for reading this far. We look forward to your contribution.
 
 Kevin Moser, Doug Ireton
