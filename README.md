@@ -1,4 +1,6 @@
 # Chef-Vault
+[![Gem
+Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
 
 ## DESCRIPTION:
 
