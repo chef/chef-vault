@@ -1,5 +1,7 @@
 # Chef-Vault
 
+[![Build Status](https://travis-ci.org/moserke/chef-vault.png?branch=master)](https://travis-ci.org/moserke/chef-vault)
+
 ## DESCRIPTION:
 
 Gem that allows you to encrypt passwords and certificates using the public keys of
