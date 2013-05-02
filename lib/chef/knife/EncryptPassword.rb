@@ -18,8 +18,8 @@ require 'chef/knife'
 class EncryptPassword < Chef::Knife
   deps do
     require 'chef/search/query'
-    require File.expand_path('../compat', __FILE__)
   end
+  require File.expand_path('../compat', __FILE__)
   include ChefVault::Compat
 
   banner "knife encrypt password --search SEARCH --username USERNAME --password PASSWORD --admins ADMINS"
