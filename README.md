@@ -1,7 +1,7 @@
 # Chef-Vault
 [![Gem Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
 
-[![Build Status](https://travis-ci.org/moserke/chef-vault.png?branch=master)](https://travis-ci.org/moserke/chef-vault)
+[![Build Status](https://travis-ci.org/Nordstrom/chef-vault.png?branch=master)](https://travis-ci.org/moserke/chef-vault)
 
 ## DESCRIPTION:
 
