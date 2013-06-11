@@ -28,7 +28,11 @@ Gem::Specification.new do |s|
   s.license          = 'Apache License, v2.0'
 
   s.files            = `git ls-files`.split("\n")
-  s.add_dependency "chef", ">= 0.10.10"
+  s.add_dependency     "chef", ">= 0.10.10"
+
+  # tests
+  s.add_development_dependency 'rspec'
+
   s.require_paths    = ["lib"]
 
   s.bindir           = "bin"
