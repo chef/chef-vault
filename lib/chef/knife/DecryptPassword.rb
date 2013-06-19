@@ -20,15 +20,15 @@ class DecryptPassword < Chef::Knife
     require 'chef/search/query'
     require 'json'
     require File.expand_path('../compat', __FILE__)
+    include ChefVault::Compat
   end
-  include ChefVault::Compat
 
   banner "knife decrypt password --username USERNAME"
 
   option :username,
     :short => '-U USERNAME',
     :long => '--username USERNAME',
-    :description => 'username of account to encrypt' 
+    :description => 'username of account to encrypt'
 
   def run
     unless config[:username]

@@ -19,15 +19,15 @@ class EncryptCert < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../compat', __FILE__)
+    include ChefVault::Compat
   end
-  include ChefVault::Compat
 
   banner "knife encrypt cert --search SEARCH --cert CERT --password PASSWORD --name NAME --admins ADMINS"
 
   option :search,
     :short => '-S SEARCH',
     :long => '--search SEARCH',
-    :description => 'node search for nodes to encrypt to' 
+    :description => 'node search for nodes to encrypt to'
 
   option :cert,
     :short => '-C CERT',
@@ -42,12 +42,12 @@ class EncryptCert < Chef::Knife
   option :password,
     :short => '-P PASSWORD',
     :long => '--password PASSWORD',
-    :description => 'optional pfx password' 
+    :description => 'optional pfx password'
 
   option :name,
     :short => '-N NAME',
     :long => '--name NAME',
-    :description => 'optional data bag name' 
+    :description => 'optional data bag name'
 
   def run
     unless config[:search]
@@ -79,7 +79,7 @@ class EncryptCert < Chef::Knife
     file_to_encrypt = config[:cert]
     contents = open(file_to_encrypt, "rb").read
     name = config[:name] ? config[:name].gsub(".", "_") : File.basename(file_to_encrypt, ".*").gsub(".", "_")
-    
+
     current_dbi = Hash.new
     current_dbi_keys = Hash.new
     if File.exists?("#{data_bag_path}/#{name}_keys.json") && File.exists?("#{data_bag_path}/#{name}.json")
@@ -109,7 +109,7 @@ class EncryptCert < Chef::Knife
         puts("WARNING: Caught exception: #{node_error.message} while processing #{client}, so skipping...")
       end
     end
-    
+
     # Get the public keys for the admin users, skipping users already in the data bag
     public_keys << admins.split(/[\s,]+/).map do |user|
       begin
@@ -126,7 +126,7 @@ class EncryptCert < Chef::Knife
     end
 
     if public_keys.length == 0
-      puts "A node search for #{node_search} returned no results" 
+      puts "A node search for #{node_search} returned no results"
       exit 1
     end
 
@@ -176,8 +176,8 @@ class EncryptCert < Chef::Knife
 
     private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
     key = File.exists?("#{data_bag_path}/#{dbi}_keys.json") ? JSON.parse(open("#{data_bag_path}/#{dbi}_keys.json").read()) : nil
-    
-    begin      
+
+    begin
       private_key.private_decrypt(Base64.decode64(key[Chef::Config[:node_name]]))
     rescue
       nil
