@@ -19,20 +19,20 @@ class EncryptPassword < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../compat', __FILE__)
+    include ChefVault::Compat
   end
-  include ChefVault::Compat
 
   banner "knife encrypt password --search SEARCH --username USERNAME --password PASSWORD --admins ADMINS"
 
   option :search,
     :short => '-S SEARCH',
     :long => '--search SEARCH',
-    :description => 'node search for nodes to encrypt for' 
+    :description => 'node search for nodes to encrypt for'
 
   option :username,
     :short => '-U USERNAME',
     :long => '--username USERNAME',
-    :description => 'username of account to encrypt' 
+    :description => 'username of account to encrypt'
 
   option :password,
     :short => '-P PASSWORD',
@@ -61,7 +61,7 @@ class EncryptPassword < Chef::Knife
       puts("You must supply either -A or --admins")
       exit 1
     end
-  
+
     extend_context_object(self)
 
     data_bag = "passwords"
@@ -107,7 +107,7 @@ class EncryptPassword < Chef::Knife
         puts("WARNING: Caught exception: #{node_error.message} while processing #{client}, so skipping...")
       end
     end
-    
+
     # Get the public keys for the admin users, skipping users already in the data bag
     public_keys << admins.split(/[\s,]+/).map do |user|
       begin
@@ -124,7 +124,7 @@ class EncryptPassword < Chef::Knife
     end
 
     if public_keys.length == 0
-      puts "A node search for #{node_search} returned no results" 
+      puts "A node search for #{node_search} returned no results"
       exit 1
     end
 
@@ -173,8 +173,8 @@ class EncryptPassword < Chef::Knife
 
     private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
     key = File.exists?("#{data_bag_path}/#{dbi}_keys.json") ? JSON.parse(open("#{data_bag_path}/#{dbi}_keys.json").read()) : nil
-    
-    begin      
+
+    begin
       private_key.private_decrypt(Base64.decode64(key[Chef::Config[:node_name]]))
     rescue
       nil

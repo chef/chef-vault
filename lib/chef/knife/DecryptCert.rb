@@ -20,15 +20,15 @@ class DecryptCert < Chef::Knife
     require 'chef/search/query'
     require 'json'
     require File.expand_path('../compat', __FILE__)
+    include ChefVault::Compat
   end
-  include ChefVault::Compat
 
   banner "knife decrypt cert --name NAME"
 
   option :name,
     :short => '-N NAME',
     :long => '--name NAME',
-    :description => 'Certificate data bag name' 
+    :description => 'Certificate data bag name'
 
   def run
     unless config[:name]
