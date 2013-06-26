@@ -117,8 +117,7 @@ class EncryptCert < Chef::Knife
           puts("INFO: Skipping #{user} as it is already in the data bag")
         else
           puts("INFO: Adding #{user} to public_key array...")
-          public_key = api.get("users/#{user}")['public_key']
-          keyfob[user] = OpenSSL::PKey::RSA.new public_key
+          keyfob[user] = get_client_public_key(user)
         end
       rescue Exception => user_error
         puts("WARNING: Caught exception: #{user_error.message} while processing #{user}, so skipping...")
