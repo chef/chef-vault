@@ -83,8 +83,8 @@ class EncryptCert < Chef::Knife
     current_dbi = Hash.new
     current_dbi_keys = Hash.new
     if File.exists?("#{data_bag_path}/#{name}_keys.json") && File.exists?("#{data_bag_path}/#{name}.json")
-      current_dbi_keys = JSON.parse(open("#{data_bag_path}/#{name}_keys.json").read())
-      current_dbi = JSON.parse(open("#{data_bag_path}/#{name}.json").read())
+      current_dbi_keys = JSON.parse(File.open("#{data_bag_path}/#{name}_keys.json"){ |file| file.read() })
+      current_dbi = JSON.parse(File.open("#{data_bag_path}/#{name}_keys.json"){ |file| file.read() })
 
       unless equal?(data_bag, name, "contents", contents)
         puts("FATAL: Content in #{data_bag_path}/#{name}.json does not match content in file supplied!")
@@ -144,7 +144,7 @@ class EncryptCert < Chef::Knife
     # Delete existing keys data bag and rewrite the whole bag from memory
     puts("INFO: Writing #{data_bag_path}/#{name}_keys.json...")
     File.delete("#{data_bag_path}/#{name}_keys.json") if File.exists?("#{data_bag_path}/#{name}_keys.json")
-    File.open("#{data_bag_path}/#{name}_keys.json",'w').write(JSON.pretty_generate(enc_db_key_dbi))
+    File.open("#{data_bag_path}/#{name}_keys.json",'w'){ |file| file.write(JSON.pretty_generate(enc_db_key_dbi)) }
 
     # If the existing certificate bag does not exist, write it out with the correct certificate
     # Otherwise leave the existing bag alone
@@ -155,7 +155,7 @@ class EncryptCert < Chef::Knife
       edbi = Chef::EncryptedDataBagItem.encrypt_data_bag_item(dbi, data_bag_shared_key)
 
       puts("INFO: Writing #{data_bag_path}/#{name}.json...")
-      open("#{data_bag_path}/#{name}.json",'w').write(JSON.pretty_generate(edbi))
+      File.open("#{data_bag_path}/#{name}.json",'w'){ |file| file.write(JSON.pretty_generate(edbi)) }
     end
 
     puts("INFO: Successfully wrote #{data_bag_path}/#{name}.json & #{data_bag_path}/#{name}_keys.json!")
@@ -165,7 +165,7 @@ class EncryptCert < Chef::Knife
     data_bag_path = "./data_bags/#{db}"
 
     shared_secret = get_shared_secret(db, dbi)
-    dbi = JSON.parse(open("#{data_bag_path}/#{dbi}.json").read())
+    dbi = JSON.parse(File.open("#{data_bag_path}/#{dbi}.json") { |file| file.read() })
     dbi = Chef::EncryptedDataBagItem.new dbi, shared_secret
 
     dbi[key] == value
@@ -175,7 +175,7 @@ class EncryptCert < Chef::Knife
     data_bag_path = "./data_bags/#{db}"
 
     private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
-    key = File.exists?("#{data_bag_path}/#{dbi}_keys.json") ? JSON.parse(open("#{data_bag_path}/#{dbi}_keys.json").read()) : nil
+    key = File.exists?("#{data_bag_path}/#{dbi}_keys.json") ? JSON.parse(File.open("#{data_bag_path}/#{dbi}_keys.json"){ |file| file.read() }) : nil
     
     begin      
       private_key.private_decrypt(Base64.decode64(key[Chef::Config[:node_name]]))
