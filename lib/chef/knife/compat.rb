@@ -29,8 +29,20 @@ module ChefVault
     end
 
     def get_client_public_key(client)
-      client = api.get("clients/#{client}")
+      api.get("clients/#{client}")
+    end
 
+    def get_user_public_key(user)
+      begin
+        user = api.get("users/#{user}")
+      rescue Exception
+        puts("INFO: Could not locate user #{user}, searching for client key instead")
+        user = api.get("clients/#{user}")
+      end
+      user
+    end
+
+    def get_public_key(client)
       # Check the response back from the api call to see if
       # we get 'certificate' which is Chef 10 or just 
       # 'public_key' which is Chef 11
