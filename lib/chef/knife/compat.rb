@@ -29,7 +29,7 @@ module ChefVault
     end
 
     def get_client_public_key(client)
-      api.get("clients/#{client}")
+      get_public_key(api.get("clients/#{client}"))
     end
 
     def get_user_public_key(user)
@@ -39,7 +39,7 @@ module ChefVault
         puts("INFO: Could not locate user #{user}, searching for client key instead")
         user = api.get("clients/#{user}")
       end
-      user
+      get_public_key(user)
     end
 
     def get_public_key(client)
