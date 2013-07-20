@@ -49,13 +49,18 @@ module ChefVault
       unless client.is_a?(Chef::ApiClient)
         name = client['name']
         certificate = client['certificate']
+        public_key = client['public_key']
+
         client = Chef::ApiClient.new
         client.name name
         client.admin false
 
-        cert_der = OpenSSL::X509::Certificate.new certificate
-        
-        client.public_key cert_der.public_key.to_s
+        if certificate
+          cert_der = OpenSSL::X509::Certificate.new certificate
+          client.public_key cert_der.public_key.to_s
+        else
+          client.public_key public_key
+        end
       end
       
       public_key = OpenSSL::PKey::RSA.new client.public_key
