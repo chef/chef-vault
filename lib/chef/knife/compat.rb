@@ -15,7 +15,7 @@
 
 # Make a wraper to chef10/11 "shef/shell" changes 
 
-module ChefVault
+class ChefVault
   module Compat
     require 'chef/version'
     def extend_context_object(obj)
