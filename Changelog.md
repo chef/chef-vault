@@ -1,5 +1,9 @@
 ## Unreleased
 
+## v1.2.5 / 2013-07-22
+* Update compat to be class ChefVault not module ChefVault to remove knife errors
+* Allow nodes/clients to be used as Admins
+
 ## v1.2.4 / 2013-07-01
 * Move compat include into the lazy-load deps
 * Modify open file commands in knife commands to avoid file locking on windows
