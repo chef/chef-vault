@@ -27,45 +27,5 @@ class ChefVault
         Shef::Extensions.extend_context_object(obj)
       end
     end
-
-    def get_client_public_key(client)
-      get_public_key(api.get("clients/#{client}"))
-    end
-
-    def get_user_public_key(user)
-      begin
-        user = api.get("users/#{user}")
-      rescue Exception
-        puts("INFO: Could not locate user #{user}, searching for client key instead")
-        user = api.get("clients/#{user}")
-      end
-      get_public_key(user)
-    end
-
-    def get_public_key(client)
-      # Check the response back from the api call to see if
-      # we get 'certificate' which is Chef 10 or just 
-      # 'public_key' which is Chef 11
-      unless client.is_a?(Chef::ApiClient)
-        name = client['name']
-        certificate = client['certificate']
-        public_key = client['public_key']
-
-        client = Chef::ApiClient.new
-        client.name name
-        client.admin false
-
-        if certificate
-          cert_der = OpenSSL::X509::Certificate.new certificate
-          client.public_key cert_der.public_key.to_s
-        else
-          client.public_key public_key
-        end
-      end
-      
-      public_key = OpenSSL::PKey::RSA.new client.public_key
-      
-      public_key
-    end
   end
 end

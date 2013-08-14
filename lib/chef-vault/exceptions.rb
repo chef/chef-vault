@@ -1,5 +1,6 @@
-# Description: ChefVault::ChefOffline class
-# Copyright 2013, Nordstrom, Inc.
+# Author:: Kevin Moser <kevin.moser@nordstrom.com>
+# Copyright:: Copyright 2013, Nordstrom, Inc.
+# License:: Apache License, Version 2.0
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChefVault
-  class ChefOffline
-    attr_accessor :config_file
-
-    def initialize(config_file)
-      @config_file = config_file
-    end
-
-    def connect
-      require 'chef'
-      ::Chef::Config.from_file(@config_file)
-    end
-  end
+class ChefVault::Exceptions
+  class SecretDecryption < RuntimeError; end
 end

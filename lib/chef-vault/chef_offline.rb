@@ -1,4 +1,4 @@
-# Description: Chef-Vault DecryptPassword class
+# Description: ChefVault::ChefOffline class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,28 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+class ChefVault::ChefOffline
+  attr_accessor :config_file
 
-class Decrypt < Chef::Knife
-  deps do
-    require 'chef/search/query'
-    require 'json'
-    require File.expand_path('../compat', __FILE__)
-    include ChefVault::Compat
+  def initialize(config_file)
+    @config_file = config_file
   end
 
-  banner "knife decrypt [VAULT] [ITEM] [VALUE]"
-
-  def run
-    vault = @name_args[0]
-    item = @name_args[1]
-    value = @name_args[2]
-
-    if vault && item && vaule
-      vault_item = ChefVault::Item.load(vault, item)
-
-      puts("#{item}: #{vault_item[value]}")
-    end
+  def connect
+    require 'chef'
+    ::Chef::Config.from_file(@config_file)
   end
 end

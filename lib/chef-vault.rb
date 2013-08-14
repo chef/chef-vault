@@ -17,18 +17,24 @@
 #
 
 require 'chef'
+require 'chef/user'
+require 'chef-vault/version'
+require 'chef-vault/chef_offline'
+require 'chef-vault/chef_api_client'
+require 'chef-vault/chef_user'
+require 'chef-vault/exceptions'
+require 'chef-vault/item'
+require 'chef-vault/item_keys'
 require 'chef-vault/user'
 require 'chef-vault/certificate'
-require 'chef-vault/version'
-require 'chef-vault/chef/offline'
 
 class ChefVault
 
-  attr_accessor :data_bag
+  attr_accessor :vault
   attr_accessor :chef_config_file
 
-  def initialize(data_bag, chef_config_file=nil)
-    @data_bag = data_bag
+  def initialize(vault, chef_config_file=nil)
+    @vault = vault
     @chef_config_file = chef_config_file
   end
 
@@ -37,10 +43,10 @@ class ChefVault
   end
 
   def user(username)
-    ChefVault::User.new(data_bag, username, chef_config_file)
+    ChefVault::User.new(vault, username, chef_config_file)
   end
 
   def certificate(name)
-    ChefVault::Certificate.new(data_bag, name, chef_config_file)
+    ChefVault::Certificate.new(vault, name, chef_config_file)
   end
 end
