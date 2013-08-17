@@ -53,11 +53,6 @@ class ChefVault::ItemKeys < Chef::DataBagItem
     json.gsub(self.class.name, self.class.superclass.name)
   end
 
-  def self.json_create(o)
-    o["json_class"] = "Chef::DataBagItem"
-    super
-  end
-
   def self.from_data_bag_item(data_bag_item)
     item = new(data_bag_item.data_bag, data_bag_item.name)
     item.raw_data = data_bag_item.raw_data
