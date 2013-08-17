@@ -16,20 +16,25 @@
 
 class ChefVault::Item < Chef::DataBagItem
   attr_accessor :keys
-  attr_accessor :encrypted_data_bag_itemi
+  attr_accessor :encrypted_data_bag_item
 
-  def initialize(vault, name, secret=nil)
+  def initialize(vault, name)
     super() # Don't pass parameters
     @data_bag = vault
     @raw_data["id"] = name
     @keys = ChefVault::ItemKeys.new(vault, "#{name}_keys")
-    @secret = secret ? secret : generate_secret
+    @secret = generate_secret
     @encrypted = false
   end
 
   def encrypt!
     @raw_data = Chef::EncryptedDataBagItem.encrypt_data_bag_item(self, @secret)
     @encrypted = true
+  end
+
+  def load_keys(vault, keys)
+    @keys = ChefVault::ItemKeys.load(vault, keys)
+    @secret = secret
   end
 
   def clients(search)
@@ -113,7 +118,7 @@ class ChefVault::Item < Chef::DataBagItem
 
   def self.load(vault, name)
     item = new(vault, name)
-    item.keys = ChefVault::ItemKeys.load(vault, "#{name}_keys")
+    item.load_keys(vault, "#{name}_keys")
     item.raw_data = 
       Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
     item
