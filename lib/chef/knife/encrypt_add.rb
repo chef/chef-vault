@@ -1,4 +1,4 @@
-# Description: ChefVault::ChefOffline class
+# Description: Chef-Vault EncryptAdd class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChefVault::ChefOffline
-  attr_accessor :config_file
+require 'chef/knife'
+require 'chef-vault'
 
-  def initialize(config_file)
-    @config_file = config_file
+class EncryptAdd < Chef::Knife
+  deps do
+    require 'chef/search/query'
+    require File.expand_path('../compat', __FILE__)
+    include ChefVault::Compat
   end
 
-  def connect
-    require 'chef'
-    ::Chef::Config.from_file(@config_file)
+  banner "knife encrypt add [VAULT] [ITEM] [VALUES] --search SEARCH --admins ADMINS"
+
+  def run
   end
 end
+  

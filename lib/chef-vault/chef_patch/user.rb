@@ -14,23 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChefVault::ChefApiClient < Chef::ApiClient
-  # Fix an issue where core Chef::ApiClient does not load
-  # the private key for Chef 10
-  def self.load(name)
-    response = http_api.get("clients/#{name}")
-    if response.kind_of?(Chef::ApiClient)
-      response
-    else
-      client = Chef::ApiClient.new
-      client.name(response['clientname'])
-
-      if response['certificate']
-        der = OpenSSL::X509::Certificate.new response['certificate']
-        client.public_key der.public_key.to_s
+class ChefVault
+  module ChefPatch
+    class User < Chef::User
+      # def from_hash for our implementation because name is not being
+      # set correctly for Chef 10 server
+      def superclass.from_hash(user_hash)
+        user = Chef::User.new
+        user.name user_hash['username'] ? user_hash['username'] : user_hash['name']
+        user.private_key user_hash['private_key'] if user_hash.key?('private_key')
+        user.password user_hash['password'] if user_hash.key?('password')
+        user.public_key user_hash['public_key']
+        user.admin user_hash['admin']
+        user
       end
-
-      client
     end
   end
 end

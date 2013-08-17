@@ -14,6 +14,6 @@
 # limitations under the License.
 
 class ChefVault
-  VERSION = "2.0.0"
+  VERSION = "2.0.0.pre"
   MAJOR, MINOR, TINY = VERSION.split('.')
 end

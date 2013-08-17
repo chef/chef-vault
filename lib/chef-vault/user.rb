@@ -15,12 +15,7 @@
 
 class ChefVault
   class User
-    def initialize(vault, username, chef_config_file)
-      if chef_config_file
-        chef = ChefVault::ChefOffline.new(chef_config_file)
-        chef.connect
-      end
-
+    def initialize(vault, username)
       @item = ChefVault::Item.load(vault, username)
     end
 

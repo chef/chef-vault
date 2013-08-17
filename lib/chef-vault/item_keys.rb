@@ -31,6 +31,28 @@ class ChefVault::ItemKeys < Chef::DataBagItem
       Base64.encode64(public_key.public_encrypt(data_bag_shared_secret))
   end
 
+  def save(item_id=@raw_data['id'])
+    if Chef::Config[:solo]
+      data_bag_path = File.join(Chef::Config[:data_bag_path],
+                                data_bag)
+      data_bag_item_path = File.join(data_bag_path, item_id)
+
+      FileUtils.mkdir(data_bag_path) unless data_bag_path
+      File.open("#{data_bag_item_path}.json",'w') do |file| 
+        file.write(JSON.pretty_generate(self))
+      end
+
+      self
+    else
+      super
+    end
+  end
+
+  def self.json_create(o)
+    o["json_class"] = "Chef::DataBagItem"
+    super
+  end
+
   def self.from_data_bag_item(data_bag_item)
     item = new(data_bag_item.data_bag, data_bag_item.name)
     item.raw_data = data_bag_item.raw_data

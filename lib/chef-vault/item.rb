@@ -22,28 +22,26 @@ class ChefVault::Item < Chef::DataBagItem
     super() # Don't pass parameters
     @data_bag = vault
     @raw_data["id"] = name
-    @keys = ChefVault::ItemKeys.new(vault, name)
-    @secret = secret ? secret : 
-      OpenSSL::PKey::RSA.new(245).to_pem.lines.to_a[1..-2].join 
+    @keys = ChefVault::ItemKeys.new(vault, "#{name}_keys")
+    @secret = secret ? secret : generate_secret
+    @encrypted = false
   end
 
   def encrypt!
-    @encrypted_data_bag_item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(self, @secret)
-    id = @raw_data["id"]
-    @raw_data = {}
-    @raw_data["id"] = id
+    @raw_data = Chef::EncryptedDataBagItem.encrypt_data_bag_item(self, @secret)
+    @encrypted = true
   end
 
   def clients(search)
     q = Chef::Search::Query.new
     q.search(:node, search)[0].each do |node|
-      keys.add_key(ChefVault::ChefApiClient.load(node.name), @secret)
+      keys.add_key(ChefVault::ChefPatch::ApiClient.load(node.name), @secret)
     end
   end
 
   def admins(admins)
     admins.split(",").each do |admin|
-      keys.add_key(ChefVault::ChefUser.load(admin), @secret)
+      keys.add_key(ChefVault::ChefPatch::User.load(admin), @secret)
     end
   end
 
@@ -56,19 +54,68 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
-  def [](key)
-    @encrypted_data_bag_item[key]
+  def rotate_secret!
+    @secret = generate_secret
+    @keys.raw_data.each do |key, value|
+      unless key == "id"
+        # Try as admin first, if not found search for node
+        begin
+          admins(key)
+        rescue Net::HTTPServerException => http_exception
+          if http_exception.response.code == "404"
+            clients("name:#{key}")
+          else
+            raise http_exception
+          end
+        end
+      end
+    end
+
+    encrypt!
   end
 
-  def to_json
-    @encrypted_data_bag_item.to_json
+  def generate_secret
+    OpenSSL::PKey::RSA.new(245).to_pem.lines.to_a[1..-2].join
+  end
+
+  def save(item_id=@raw_data['id'])
+    # save the keys first, raising an error if no keys were defined
+    unless keys.raw_data.count > 1
+      raise ChefVault::Exceptions::NoKeysDefined, 
+            "No keys defined for #{item_id}"
+    end
+
+    keys.save
+
+    # Make sure the item is encrypted before saving
+    encrypt! unless @encrypted
+
+    # Now save the encrypted data
+    if Chef::Config[:solo]
+      data_bag_path = File.join(Chef::Config[:data_bag_path],
+                                data_bag)
+      data_bag_item_path = File.join(data_bag_path, item_id)
+
+      FileUtils.mkdir(data_bag_path) unless data_bag_path
+      File.open("#{data_bag_item_path}.json",'w') do |file| 
+        file.write(JSON.pretty_generate(self))
+      end
+      self
+    else
+      super
+    end
+  end
+
+  def self.json_create(o)
+    o["json_class"] = "Chef::DataBagItem"
+    super
   end
 
   def self.load(vault, name)
     item = new(vault, name)
     item.keys = ChefVault::ItemKeys.load(vault, "#{name}_keys")
-    item.encrypted_data_bag_item = 
-      Chef::EncryptedDataBagItem.load(vault, name, item.secret)
+    item.raw_data = 
+      Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
     item
   end
 end

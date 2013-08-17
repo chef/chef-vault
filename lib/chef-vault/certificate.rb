@@ -15,12 +15,7 @@
 
 class ChefVault
   class Certificate
-    def initialize(vault, name, chef_config_file)
-      if chef_config_file
-        chef = ChefVault::ChefOffline.new(chef_config_file)
-        chef.connect
-      end
-    
+    def initialize(vault, name)
       @item = ChefVault::Item.load(vault, name)
     end
 

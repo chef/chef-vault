@@ -1,6 +1,5 @@
-# Author:: Kevin Moser <kevin.moser@nordstrom.com>
-# Copyright:: Copyright 2013, Nordstrom, Inc.
-# License:: Apache License, Version 2.0
+# Description: Chef-Vault EncryptCreate class
+# Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChefVault::Exceptions
-  class SecretDecryption < RuntimeError; end
-  class NoKeysDefined < RuntimeError; end
-  class ItemNotEncrypted < RuntimeError; end
+require 'chef/knife'
+require 'chef-vault'
+
+class EncryptCreate < Chef::Knife
+  deps do
+    require 'chef/search/query'
+    require File.expand_path('../compat', __FILE__)
+    include ChefVault::Compat
+  end
+
+  banner "knife encrypt create [VAULT] [ITEM] [VALUES] --search SEARCH --admins ADMINS"
+
+  def run
+  end
 end
+  
