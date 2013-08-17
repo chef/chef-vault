@@ -48,6 +48,11 @@ class ChefVault::ItemKeys < Chef::DataBagItem
     end
   end
 
+  def to_json(*a)
+    json = super
+    json.gsub(self.class.name, self.class.superclass.name)
+  end
+
   def self.json_create(o)
     o["json_class"] = "Chef::DataBagItem"
     super

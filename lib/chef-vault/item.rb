@@ -16,7 +16,7 @@
 
 class ChefVault::Item < Chef::DataBagItem
   attr_accessor :keys
-  attr_accessor :encrypted_data_bag_item
+  attr_accessor :encrypted_data_bag_itemi
 
   def initialize(vault, name, secret=nil)
     super() # Don't pass parameters
@@ -104,6 +104,11 @@ class ChefVault::Item < Chef::DataBagItem
     else
       super
     end
+  end
+
+  def to_json(*a)
+    json = super
+    json.gsub(self.class.name, self.class.superclass.name)
   end
 
   def self.json_create(o)
