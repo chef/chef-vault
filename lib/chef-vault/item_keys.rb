@@ -15,20 +15,40 @@
 # limitations under the License.
 
 class ChefVault::ItemKeys < Chef::DataBagItem
+  attr_accessor :admins, :clients
+
   def initialize(vault, name)
     super() # parenthesis required to strip off parameters
     @data_bag = vault
     @raw_data["id"] = name
+    @raw_data[:admins] = []
+    @raw_data[:clients] = []
   end
 
   def include?(key)
     @raw_data.keys.include?(key)
   end
 
-  def add_key(chef_client, data_bag_shared_secret)
+  def add(chef_client, data_bag_shared_secret, type)
     public_key = OpenSSL::PKey::RSA.new chef_client.public_key
     self[chef_client.name] = 
       Base64.encode64(public_key.public_encrypt(data_bag_shared_secret))
+    
+    @raw_data[type] << chef_client.name unless @raw_data[type].include?(chef_client.name)
+    @raw_data[type]
+  end
+
+  def delete(chef_client, type)
+    raw_data.delete(chef_client)
+    raw_data[type].delete
+  end
+
+  def clients
+    @raw_data[:clients]
+  end
+
+  def admins
+    @raw_data[:admins]
   end
 
   def save(item_id=@raw_data['id'])

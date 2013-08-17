@@ -37,16 +37,40 @@ class ChefVault::Item < Chef::DataBagItem
     @secret = secret
   end
 
-  def clients(search)
-    q = Chef::Search::Query.new
-    q.search(:node, search)[0].each do |node|
-      keys.add_key(ChefVault::ChefPatch::ApiClient.load(node.name), @secret)
+  def clients(search=nil, action=:add)
+    if search
+      q = Chef::Search::Query.new
+      q.search(:node, search)[0].each do |node|
+        case action
+        when :add
+          keys.add(ChefVault::ChefPatch::ApiClient.load(node.name), @secret, :clients)
+        when :delete
+          keys.delete(node.name, :clients)
+        else
+          raise ChefVault::Exceptions::KeysActionNotValid,
+                "#{action} is not a valid action"
+        end
+      end
+    else
+      keys.clients
     end
   end
 
-  def admins(admins)
-    admins.split(",").each do |admin|
-      keys.add_key(ChefVault::ChefPatch::User.load(admin), @secret)
+  def admins(admins=nil, action=:add)
+    if admins
+      admins.split(",").each do |admin|
+        case action
+        when :add
+          keys.add(ChefVault::ChefPatch::User.load(admin), @secret, :admins)
+        when :delete
+          keys.delete(admin, :admins)
+        else
+          raise ChefVault::Exceptions::KeysActionNotValid,
+                "#{action} is not a valid action"
+        end
+      end
+    else
+      keys.admins
     end
   end
 

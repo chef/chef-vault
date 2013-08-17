@@ -18,4 +18,5 @@ class ChefVault::Exceptions
   class SecretDecryption < RuntimeError; end
   class NoKeysDefined < RuntimeError; end
   class ItemNotEncrypted < RuntimeError; end
+  class KeysActionNotValue < RuntimeError; end
 end
