@@ -23,7 +23,22 @@ class EncryptCreate < Chef::Knife
     include ChefVault::Compat
   end
 
-  banner "knife encrypt create [VAULT] [ITEM] [VALUES] --search SEARCH --admins ADMINS"
+  banner "knife encrypt create [VAULT] [ITEM] [VALUES] --search SEARCH --admins ADMINS --mode MODE"
+
+  option :search,
+    :short => '-S SEARCH',
+    :long => '--search SEARCH',
+    :description => 'Chef SOLR search for clients'
+
+  option :admins,
+    :short => '-A ADMINS',
+    :long => '--admins ADMINS',
+    :description => 'Chef users to be added as admins'
+
+  option :mode,
+    :short => '-M MODE',
+    :long => '--mode MODE',
+    :description => 'Chef mode to run in default - solo'
 
   def run
   end

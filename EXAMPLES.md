@@ -12,10 +12,6 @@ These are the commands that are used to take data in json format and encrypt tha
 Note: For backwards compatibility the chef-vault 1.x style commands of `knife encrypt cert` and `knife encrypt password` are supported.  They are depricated however and should be moved to the new chef-vault 2.x style commands.
 
 ### create
-Creat a vault called passwords and put an empty item called root in it
-
-    knife encrypt create passwords root 
-
 Creat a vault called passwords and put an item called root in it with the given values for username and password encrypted for no one, probably shouldn't do this one.
 
     knife encrypt create passwords root "{username: 'root', password: 'mypassword'}"

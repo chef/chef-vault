@@ -19,4 +19,8 @@ class ChefVault::Exceptions
   class NoKeysDefined < RuntimeError; end
   class ItemNotEncrypted < RuntimeError; end
   class KeysActionNotValue < RuntimeError; end
+  class AdminNotFound < RuntimeError; end
+  class ClientNotFound < RuntimeError; end
+  class KeysNotFound < RuntimeError; end
+  class ItemnotFound < RuntimeError; end
 end

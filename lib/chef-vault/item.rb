@@ -27,10 +27,7 @@ class ChefVault::Item < Chef::DataBagItem
     @encrypted = false
   end
 
-  def encrypt!
-    @raw_data = Chef::EncryptedDataBagItem.encrypt_data_bag_item(self, @secret)
-    @encrypted = true
-  end
+
 
   def load_keys(vault, keys)
     @keys = ChefVault::ItemKeys.load(vault, keys)
@@ -43,9 +40,18 @@ class ChefVault::Item < Chef::DataBagItem
       q.search(:node, search)[0].each do |node|
         case action
         when :add
-          keys.add(ChefVault::ChefPatch::ApiClient.load(node.name), @secret, :clients)
+          begin
+            keys.add(ChefVault::ChefPatch::ApiClient.load(node.name), @secret, "clients")
+          rescue Net::HTTPServerException => http_error
+            if http_error.response.code == "404"
+              raise ChefVault::Exceptions::ClientNotFound,
+                    "#{node.name} is not a valid chef client and/or node"
+            else
+              raise http_error
+            end
+          end
         when :delete
-          keys.delete(node.name, :clients)
+          keys.delete(node.name, "clients")
         else
           raise ChefVault::Exceptions::KeysActionNotValid,
                 "#{action} is not a valid action"
@@ -61,9 +67,18 @@ class ChefVault::Item < Chef::DataBagItem
       admins.split(",").each do |admin|
         case action
         when :add
-          keys.add(ChefVault::ChefPatch::User.load(admin), @secret, :admins)
+          begin
+            keys.add(ChefVault::ChefPatch::User.load(admin), @secret, "admins")
+          rescue Net::HTTPServerException => http_error
+            if http_error.response.code == "404"
+              raise ChefVault::Exceptions::AdminNotFound,
+                    "#{admin} is not a valid chef admin"
+            else
+              raise http_error
+            end
+          end
         when :delete
-          keys.delete(admin, :admins)
+          keys.delete(admin, "admins")
         else
           raise ChefVault::Exceptions::KeysActionNotValid,
                 "#{action} is not a valid action"
@@ -83,33 +98,42 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
-  def rotate_secret!
+  def rotate_keys!
     @secret = generate_secret
-    @keys.raw_data.each do |key, value|
-      unless key == "id"
-        # Try as admin first, if not found search for node
-        begin
-          admins(key)
-        rescue Net::HTTPServerException => http_exception
-          if http_exception.response.code == "404"
-            clients("name:#{key}")
-          else
-            raise http_exception
-          end
-        end
+
+    unless clients.empty?
+      clients.each do |client|
+        clients("name:#{client}")
       end
     end
 
-    encrypt!
+    unless admins.empty?
+      admins.each do |admin|
+        admins(admin)
+      end
+    end
+
+    save
+    reload_raw_data
   end
 
   def generate_secret
     OpenSSL::PKey::RSA.new(245).to_pem.lines.to_a[1..-2].join
   end
 
+  def []=(key, value)
+    reload_raw_data if @encrypted
+    super
+  end
+
+  def [](key)
+    reload_raw_data if @encrypted
+    super
+  end
+
   def save(item_id=@raw_data['id'])
     # save the keys first, raising an error if no keys were defined
-    unless keys.raw_data.count > 1
+    if keys.admins.empty? && keys.clients.empty?
       raise ChefVault::Exceptions::NoKeysDefined, 
             "No keys defined for #{item_id}"
     end
@@ -125,12 +149,23 @@ class ChefVault::Item < Chef::DataBagItem
                                 data_bag)
       data_bag_item_path = File.join(data_bag_path, item_id)
 
-      FileUtils.mkdir(data_bag_path) unless data_bag_path
+      FileUtils.mkdir(data_bag_path) unless File.exists?(data_bag_path)
       File.open("#{data_bag_item_path}.json",'w') do |file| 
         file.write(JSON.pretty_generate(self))
       end
+      
       self
     else
+      begin
+        chef_data_bag = Chef::DataBag.load(data_bag)
+      rescue Net::HTTPServerException => http_error
+        if http_error.response.code == "404"
+          chef_data_bag = Chef::DataBag.new
+          chef_data_bag.name data_bag
+          chef_data_bag.create
+        end
+      end
+
       super
     end
   end
@@ -143,8 +178,36 @@ class ChefVault::Item < Chef::DataBagItem
   def self.load(vault, name)
     item = new(vault, name)
     item.load_keys(vault, "#{name}_keys")
-    item.raw_data = 
-      Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
+  
+    begin
+      item.raw_data = 
+        Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
+    rescue Net::HTTPServerException => http_error
+      if http_error.response.code == "404"
+        raise ChefVault::Exceptions::ItemNotFound,
+              "#{vault}/#{name} could not be found"
+      else
+        raise http_error
+      end
+    rescue Chef::Exceptions::ValidationFailed
+      raise ChefVault::Exceptions::ItemNotFound,
+            "#{vault}/#{name} could not be found"
+    end
+
     item
+  end
+
+  private
+  def encrypt!
+    @raw_data = Chef::EncryptedDataBagItem.encrypt_data_bag_item(self, @secret)
+    @encrypted = true
+  end
+
+  def reload_raw_data
+    @raw_data = 
+      Chef::EncryptedDataBagItem.load(@data_bag, @raw_data["id"], secret).to_hash
+    @encrypted = false
+
+    @raw_data
   end
 end

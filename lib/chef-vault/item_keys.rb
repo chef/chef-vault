@@ -15,14 +15,12 @@
 # limitations under the License.
 
 class ChefVault::ItemKeys < Chef::DataBagItem
-  attr_accessor :admins, :clients
-
   def initialize(vault, name)
     super() # parenthesis required to strip off parameters
     @data_bag = vault
     @raw_data["id"] = name
-    @raw_data[:admins] = []
-    @raw_data[:clients] = []
+    @raw_data["admins"] = []
+    @raw_data["clients"] = []
   end
 
   def include?(key)
@@ -40,15 +38,15 @@ class ChefVault::ItemKeys < Chef::DataBagItem
 
   def delete(chef_client, type)
     raw_data.delete(chef_client)
-    raw_data[type].delete
+    raw_data[type].delete(chef_client)
   end
 
   def clients
-    @raw_data[:clients]
+    @raw_data["clients"]
   end
 
   def admins
-    @raw_data[:admins]
+    @raw_data["admins"]
   end
 
   def save(item_id=@raw_data['id'])
@@ -57,13 +55,23 @@ class ChefVault::ItemKeys < Chef::DataBagItem
                                 data_bag)
       data_bag_item_path = File.join(data_bag_path, item_id)
 
-      FileUtils.mkdir(data_bag_path) unless data_bag_path
+      FileUtils.mkdir(data_bag_path) unless File.exists?(data_bag_path)
       File.open("#{data_bag_item_path}.json",'w') do |file| 
         file.write(JSON.pretty_generate(self))
       end
 
       self
     else
+      begin
+        chef_data_bag = Chef::DataBag.load(data_bag)
+      rescue Net::HTTPServerException => http_error
+        if http_error.response.code == "404"
+          chef_data_bag = Chef::DataBag.new
+          chef_data_bag.name data_bag
+          chef_data_bag.create
+        end
+      end
+      
       super
     end
   end
@@ -80,7 +88,20 @@ class ChefVault::ItemKeys < Chef::DataBagItem
   end
 
   def self.load(vault, name)
-    data_bag_item = Chef::DataBagItem.load(vault, name)
+    begin
+      data_bag_item = Chef::DataBagItem.load(vault, name)
+    rescue Net::HTTPServerException => http_error
+      if http_error.response.code == "404"
+        raise ChefVault::Exceptions::KeysNotFound,
+              "#{vault}/#{name} could not be found"
+      else
+        raise http_error
+      end
+    rescue Chef::Exceptions::ValidationFailed
+      raise ChefVault::Exceptions::KeysNotFound,
+            "#{vault}/#{name} could not be found"
+    end
+
     from_data_bag_item(data_bag_item)
   end
 end

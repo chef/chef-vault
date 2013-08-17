@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptRotateSecret < Chef::Knife
+class EncryptRotateKeys < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../compat', __FILE__)
@@ -42,7 +42,7 @@ class EncryptRotateSecret < Chef::Knife
       end
 
       item = ChefVault::Item.load(vault, item)
-      item.rotate_secret!
+      item.rotate_keys!
     else
       show_usage
     end

@@ -30,7 +30,6 @@ require 'chef-vault/chef_patch/user'
 class ChefVault
 
   attr_accessor :vault
-  attr_accessor :chef_config_file
 
   def initialize(vault, chef_config_file=nil)
     @vault = vault
