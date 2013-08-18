@@ -24,6 +24,7 @@ class ChefVault
     end
 
     def decrypt_password
+      puts "WARNING: This method is depricated, please switch to item['value'] calls"
       @item["password"]
     end
   end
