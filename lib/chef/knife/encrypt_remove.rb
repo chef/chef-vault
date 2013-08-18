@@ -19,13 +19,72 @@ require 'chef-vault'
 class EncryptRemove < Chef::Knife
   deps do
     require 'chef/search/query'
-    require File.expand_path('../compat', __FILE__)
-    include ChefVault::Compat
+    require File.expand_path('../mixin/compat', __FILE__)
+    require File.expand_path('../mixin/helper', __FILE__)
+    include ChefVault::Mixin::KnifeCompat
+    include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt remove [VAULT] [ITEM] [VALUES] --search SEARCH --admins ADMINS"
+  banner "knife encrypt remove [VAULT] [ITEM] [VALUES] "\
+        "--mode MODE --search SEARCH --admins ADMINS --json FILE"
+
+  option :mode,
+    :short => '-M MODE',
+    :long => '--mode MODE',
+    :description => 'Chef mode to run in default - solo'
+
+  option :search,
+    :short => '-S SEARCH',
+    :long => '--search SEARCH',
+    :description => 'Chef SOLR search for clients'
+
+  option :admins,
+    :short => '-A ADMINS',
+    :long => '--admins ADMINS',
+    :description => 'Chef users to be added as admins'
+
+  option :json,
+    :short => '-J FILE',
+    :long => '--json FILE',
+    :description => 'File containing JSON data to encrypt'
 
   def run
+    vault = @name_args[0]
+    item = @name_args[1]
+    values = @name_args[2]
+    search = config[:search]
+    admins = config[:admins]
+    json_file = config[:json]
+
+    set_mode(config[:mode])
+
+    if vault && item && ((values || json_file) || (search || admins))
+      begin
+        vault_item = ChefVault::Item.load(vault, item)
+
+        merge_values(values, json_file).each do |key, value|
+          vault_item.remove(key)
+        end 
+
+        vault_item.clients(search, :delete) if search
+        vault_item.admins(admins, :delete) if admins
+
+        vault_item.save
+      rescue ChefVault::Exceptions::KeysNotFound,
+             ChefVault::Exceptions::ItemNotFound
+
+        raise ChefVault::Exceptions::ItemNotFound,
+              "#{vault}/#{item} does not exists, "\
+              "use 'knife encrypt create' to create."
+      end
+    else
+      show_usage
+    end
+  end
+
+  def show_usage
+    super
+    exit 1
   end
 end
   

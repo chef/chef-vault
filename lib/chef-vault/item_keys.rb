@@ -76,6 +76,20 @@ class ChefVault::ItemKeys < Chef::DataBagItem
     end
   end
 
+  def destroy
+    if Chef::Config[:solo]
+      data_bag_path = File.join(Chef::Config[:data_bag_path],
+                                data_bag)
+      data_bag_item_path = File.join(data_bag_path, @raw_data["id"])
+
+      FileUtils.rm("#{data_bag_item_path}.json")
+
+      nil
+    else
+      super
+    end
+  end  
+
   def to_json(*a)
     json = super
     json.gsub(self.class.name, self.class.superclass.name)

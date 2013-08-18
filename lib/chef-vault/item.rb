@@ -89,6 +89,10 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
+  def remove(key)
+    @raw_data.delete(key)
+  end
+
   def secret
     if @keys.include?(Chef::Config[:node_name])
       private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
@@ -174,6 +178,22 @@ class ChefVault::Item < Chef::DataBagItem
     json = super
     json.gsub(self.class.name, self.class.superclass.name)
   end
+
+  def destroy
+    keys.destroy
+
+    if Chef::Config[:solo]
+      data_bag_path = File.join(Chef::Config[:data_bag_path],
+                                data_bag)
+      data_bag_item_path = File.join(data_bag_path, @raw_data["id"])
+
+      FileUtils.rm("#{data_bag_item_path}.json")
+
+      nil
+    else
+      super
+    end
+  end    
 
   def self.load(vault, name)
     item = new(vault, name)

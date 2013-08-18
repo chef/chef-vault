@@ -22,5 +22,6 @@ class ChefVault::Exceptions
   class AdminNotFound < RuntimeError; end
   class ClientNotFound < RuntimeError; end
   class KeysNotFound < RuntimeError; end
-  class ItemnotFound < RuntimeError; end
+  class ItemNotFound < RuntimeError; end
+  class ItemAlreadyExists < RuntimeError; end
 end

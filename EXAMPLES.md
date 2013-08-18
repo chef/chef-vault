@@ -1,7 +1,7 @@
 # knife examples
 
 ## encrypt
-knife encrypt [create|update|remove] [VAULT] [ITEM] [VALUES]
+knife encrypt [create|update|remove|delete] [VAULT] [ITEM] [VALUES]
 
 These are the commands that are used to take data in json format and encrypt that data into chef-vault style encrypted data bags in chef.
 
@@ -83,6 +83,11 @@ Remove role:webserver from encrypted clients for the vault passwords and item ro
 Remove admin1 & admin2 from encrypted admins and role:webserver from encrypted clients for the vault passwords and item root.
 
     knife encrypt remove passwords root -S "role:webserver" -A "admin1,admin2"
+
+### delete
+Delete the item root from the vault passwords
+
+    knife encrypt delete passwords root
 
 ### rotate secret
 Rotate the shared secret for the vault passwords and item root.  The shared secret is that which is used for the chef encrypted data bag item

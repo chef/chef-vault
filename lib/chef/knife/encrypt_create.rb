@@ -61,9 +61,10 @@ class EncryptCreate < Chef::Knife
     if vault && item && (values || json_file) && (search || admins)
       begin
         vault_item = ChefVault::Item.load(vault, item)
-        puts "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
-             "use 'knife encrypt remove' and "\
-             "'knife encrypt update' to make changes."
+        raise ChefVault::Exceptions::ItemAlreadyExists,
+              "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
+              "use 'knife encrypt remove' and "\
+              "'knife encrypt update' to make changes."
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
         vault_item = ChefVault::Item.new(vault, item)

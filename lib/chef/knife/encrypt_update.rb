@@ -73,8 +73,9 @@ class EncryptUpdate < Chef::Knife
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
 
-        puts "#{vault_item.data_bag}/#{vault_item.id} does not exists, "\
-             "use 'knife encrypt create' to create."
+        raise ChefVault::Exceptions::ItemNotFound,
+              "#{vault}/#{item} does not exists, "\
+              "use 'knife encrypt create' to create."
       end
     else
       show_usage
