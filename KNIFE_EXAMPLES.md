@@ -89,8 +89,8 @@ Delete the item root from the vault passwords
 
     knife encrypt delete passwords root
 
-### rotate secret
-Rotate the shared secret for the vault passwords and item root.  The shared secret is that which is used for the chef encrypted data bag item
+### rotate keys
+Rotate the shared key for the vault passwords and item root.  The shared key is that which is used for the chef encrypted data bag item
 
     knife encrypt rotate secret passwords root
 

@@ -11,7 +11,11 @@
 * Add knife decrypt
 * Update chef-vault binary to take -v, -i, -a
 * Add ChefVault::Item class
-* Add ChefVault::ItemKeys class 
+* Add ChefVault::ItemKeys class
+* Modify ChefVault::User to use ChefVault::Item to maintain backwards compatability
+* Modify ChefVault::Certificate to use ChefVault::Item to maintain backwards compatability
+
+## Released 
 
 ## v1.2.5 / 2013-07-22
 * Update compat to be class ChefVault not module ChefVault to remove knife errors
