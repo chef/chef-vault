@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptCreate class
+# Description: Chef-Vault EncryptUpdate class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptCreate < Chef::Knife
+class EncryptUpdate < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptCreate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt create [VAULT] [ITEM] [VALUES] "\
+  banner "knife encrypt update [VAULT] [ITEM] [VALUES] "\
         "--mode MODE --search SEARCH --admins ADMINS --json FILE"
 
   option :mode,
@@ -58,16 +58,10 @@ class EncryptCreate < Chef::Knife
 
     set_mode(config[:mode])
 
-    if vault && item && (values || json_file) && (search || admins)
+    if vault && item && ((values || json_file) || (search || admins))
       begin
         vault_item = ChefVault::Item.load(vault, item)
-        puts "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
-             "use 'knife encrypt remove' and "\
-             "'knife encrypt update' to make changes."
-      rescue ChefVault::Exceptions::KeysNotFound,
-             ChefVault::Exceptions::ItemNotFound
-        vault_item = ChefVault::Item.new(vault, item)
-       
+
         merge_values(values, json_file).each do |key, value|
           vault_item[key] = value
         end 
@@ -76,6 +70,11 @@ class EncryptCreate < Chef::Knife
         vault_item.admins(admins) if admins
 
         vault_item.save
+      rescue ChefVault::Exceptions::KeysNotFound,
+             ChefVault::Exceptions::ItemNotFound
+
+        puts "#{vault_item.data_bag}/#{vault_item.id} does not exists, "\
+             "use 'knife encrypt create' to create."
       end
     else
       show_usage

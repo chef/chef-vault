@@ -19,11 +19,13 @@ require 'chef-vault'
 class EncryptRotateKeys < Chef::Knife
   deps do
     require 'chef/search/query'
-    require File.expand_path('../compat', __FILE__)
-    include ChefVault::Compat
+    require File.expand_path('../mixin/compat', __FILE__)
+    require File.expand_path('../mixin/helper', __FILE__)
+    include ChefVault::Mixin::KnifeCompat
+    include ChefVault::Mixin::Helper
   end
 
-  banner "knife rotate secret [VAULT] [ITEM]"
+  banner "knife rotate secret [VAULT] [ITEM] --mode MODE"
 
   option :mode,
     :short => '-M MODE',
@@ -35,11 +37,7 @@ class EncryptRotateKeys < Chef::Knife
     item = @name_args[1]
 
     if vault && item
-      if config[:mode] && config[:mode] == "client"
-        Chef::Config[:solo] = false
-      else
-        Chef::Config[:solo] = true
-      end
+      set_mode(config[:mode])
 
       item = ChefVault::Item.load(vault, item)
       item.rotate_keys!

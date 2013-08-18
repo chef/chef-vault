@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptAdd class
+# Description: ChefVault::Mixin::KnifeCompat module
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+# Make a wraper to chef10/11 "shef/shell" changes 
 
-class EncryptAdd < Chef::Knife
-  deps do
-    require 'chef/search/query'
-    require File.expand_path('../compat', __FILE__)
-    include ChefVault::Compat
-  end
-
-  banner "knife encrypt add [VAULT] [ITEM] [VALUES] --search SEARCH --admins ADMINS"
-
-  def run
+class ChefVault
+  module Mixin
+    module KnifeCompat
+      require 'chef/version'
+      def extend_context_object(obj)
+        if Chef::VERSION.to_i >= 11 
+          require "chef/shell/ext"
+          Shell::Extensions.extend_context_object(obj)
+        else 
+          require 'chef/shef/ext'
+          Shef::Extensions.extend_context_object(obj)
+        end
+      end
+    end
   end
 end
-  
