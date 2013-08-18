@@ -1,5 +1,18 @@
 ## Unreleased
 
+## v2.0.0 / 2013-08-20
+* Removal of knife encrypt certs
+* Removal of knife encrypt passwords
+* Add knife encrypt create
+* Add knife encrypt update
+* Add knife encrypt remove
+* Add knife encrypt delete
+* Add knife encrypt rotate keys
+* Add knife decrypt
+* Update chef-vault binary to take -v, -i, -a
+* Add ChefVault::Item class
+* Add ChefVault::ItemKeys class 
+
 ## v1.2.5 / 2013-07-22
 * Update compat to be class ChefVault not module ChefVault to remove knife errors
 * Allow nodes/clients to be used as Admins

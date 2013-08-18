@@ -33,7 +33,7 @@ class ChefVault
 
   def initialize(vault, chef_config_file=nil)
     @vault = vault
-    Chef::Config.from_file(chef_config_file) if chef_config_file
+    ChefVault.load_config(chef_config_file) if chef_config_file
   end
 
   def version
@@ -46,5 +46,9 @@ class ChefVault
 
   def certificate(name)
     ChefVault::Certificate.new(vault, name)
+  end
+
+  def self.load_config(chef_config_file)
+    Chef::Config.from_file(chef_config_file)
   end
 end
