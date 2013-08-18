@@ -27,8 +27,6 @@ class ChefVault::Item < Chef::DataBagItem
     @encrypted = false
   end
 
-
-
   def load_keys(vault, keys)
     @keys = ChefVault::ItemKeys.load(vault, keys)
     @secret = secret
