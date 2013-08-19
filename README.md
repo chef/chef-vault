@@ -22,6 +22,8 @@ Depending on your system's configuration, you may need to run this command with 
 ## KNIFE COMMANDS:
 See KNIFE_EXAMPLES.md for examples of commands
 
+NOTE: chef-vault 1.0 knife commands are not support!  Please use chef-vault 2.0 commands.
+
 ### Encrypt
 
     knife encrypt create [VAULT] [ITEM] [VALUES]
@@ -94,6 +96,8 @@ See KNIFE_EXAMPLES.md for examples of commands
 ## USAGE IN RECIPES
 
 To use this gem in a recipe to decrypt data you must first install the gem via a chef_gem resource.  Once the gem is installed require the gem and then you can create a new instance of ChefVault.
+
+NOTE: chef-vault 1.0 style decryption is supported, however it has been deprecated and chef-vault 2.0 decryption should be used instead
 
 ### Example Code
 

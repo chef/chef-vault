@@ -34,8 +34,12 @@ class ChefVault::Item < Chef::DataBagItem
 
   def clients(search=nil, action=:add)
     if search
-      q = Chef::Search::Query.new
-      q.search(:node, search)[0].each do |node|
+      results_returned = false
+
+      query = Chef::Search::Query.new
+      query.search(:node, search)[0].each do |node|
+        results_returned = true
+
         case action
         when :add
           begin
@@ -54,6 +58,11 @@ class ChefVault::Item < Chef::DataBagItem
           raise ChefVault::Exceptions::KeysActionNotValid,
                 "#{action} is not a valid action"
         end
+      end
+
+      unless results_returned
+        puts "WARNING: No clients were returned from search, you may not have "\
+             "got what you expected!!"
       end
     else
       keys.clients
