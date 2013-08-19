@@ -96,7 +96,9 @@ class ChefVault::Item < Chef::DataBagItem
       private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
       private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
     else
-      raise ChefVault::Exceptions::SecretDecryption.new("#{@raw_data["id"]} is not encrypted for you!")
+      raise ChefVault::Exceptions::SecretDecryption, 
+            "#{data_bag}/#{id} is not encrypted with your public key.  "\
+            "Contact an administrator of the vault item to encrypt for you!"
     end
   end
 
