@@ -63,6 +63,7 @@ class ChefVault::Item < Chef::DataBagItem
   def admins(admins=nil, action=:add)
     if admins
       admins.split(",").each do |admin|
+        admin.strip!
         case action
         when :add
           begin

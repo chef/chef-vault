@@ -26,7 +26,7 @@ class EncryptRemove < Chef::Knife
   end
 
   banner "knife encrypt remove [VAULT] [ITEM] [VALUES] "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE"
+        "--mode MODE --search SEARCH --admins ADMINS"
 
   option :mode,
     :short => '-M MODE',
@@ -43,11 +43,6 @@ class EncryptRemove < Chef::Knife
     :long => '--admins ADMINS',
     :description => 'Chef users to be added as admins'
 
-  option :json,
-    :short => '-J FILE',
-    :long => '--json FILE',
-    :description => 'File containing JSON data to encrypt'
-
   def run
     vault = @name_args[0]
     item = @name_args[1]
@@ -61,8 +56,21 @@ class EncryptRemove < Chef::Knife
     if vault && item && ((values || json_file) || (search || admins))
       begin
         vault_item = ChefVault::Item.load(vault, item)
+        remove_items = []
 
-        merge_values(values, json_file).each do |key, value|
+        begin
+          json = JSON.parse(values)
+          json.each do |key, value|
+            remove_items << key
+          end
+        rescue JSON::ParserError
+          remove_items = values.split(",")
+        rescue Exception => e
+          raise e
+        end
+
+        remove_items.each do |key|
+          key.strip!
           vault_item.remove(key)
         end 
 
