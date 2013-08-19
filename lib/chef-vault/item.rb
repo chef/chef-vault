@@ -189,7 +189,7 @@ class ChefVault::Item < Chef::DataBagItem
 
       nil
     else
-      super
+      super(data_bag, id)
     end
   end    
 

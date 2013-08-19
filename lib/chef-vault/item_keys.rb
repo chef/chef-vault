@@ -86,7 +86,7 @@ class ChefVault::ItemKeys < Chef::DataBagItem
 
       nil
     else
-      super
+      super(data_bag, id)
     end
   end  
 
