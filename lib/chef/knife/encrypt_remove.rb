@@ -58,22 +58,24 @@ class EncryptRemove < Chef::Knife
         vault_item = ChefVault::Item.load(vault, item)
         remove_items = []
 
-        begin
-          json = JSON.parse(values)
-          json.each do |key, value|
-            remove_items << key
+        if values || json_file
+          begin
+            json = JSON.parse(values)
+            json.each do |key, value|
+              remove_items << key
+            end
+          rescue JSON::ParserError
+            remove_items = values.split(",")
+          rescue Exception => e
+            raise e
           end
-        rescue JSON::ParserError
-          remove_items = values.split(",")
-        rescue Exception => e
-          raise e
+
+          remove_items.each do |key|
+            key.strip!
+            vault_item.remove(key)
+          end 
         end
-
-        remove_items.each do |key|
-          key.strip!
-          vault_item.remove(key)
-        end 
-
+        
         vault_item.clients(search, :delete) if search
         vault_item.admins(admins, :delete) if admins
 
