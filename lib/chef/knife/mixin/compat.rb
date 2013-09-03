@@ -1,4 +1,4 @@
-# Description: ChefVault::ChefOffline class
+# Description: ChefVault::Mixin::KnifeCompat module
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Make a wraper to chef10/11 "shef/shell" changes 
+
 class ChefVault
-  class ChefOffline
-    attr_accessor :config_file
-
-    def initialize(config_file)
-      @config_file = config_file
-    end
-
-    def connect
-      require 'chef'
-      ::Chef::Config.from_file(@config_file)
+  module Mixin
+    module KnifeCompat
+      require 'chef/version'
+      def extend_context_object(obj)
+        if Chef::VERSION.to_i >= 11 
+          require "chef/shell/ext"
+          Shell::Extensions.extend_context_object(obj)
+        else 
+          require 'chef/shef/ext'
+          Shef::Extensions.extend_context_object(obj)
+        end
+      end
     end
   end
 end

@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe ChefVault do
-
   describe '#new' do
-    context 'with only a data bag parameter specified' do
+    context 'with only a vault parameter specified' do
       before(:each) do
         @vault = ChefVault.new('foo')
       end
@@ -12,26 +11,27 @@ describe ChefVault do
         expect(@vault).to be_an_instance_of ChefVault
       end
 
-      it 'correctly assigns the data_bag instance var' do
-        expect(@vault.data_bag).to eq 'foo'
-      end
-
-      it 'defaults to nil for the chef_config_file' do
-        expect(@vault.chef_config_file).to be_nil
+      it 'sets vault to foo' do
+        expect(@vault.vault).to eq "foo"
       end
     end
 
-    context 'with data_bag and chef_config_file parameters specified' do
+    context 'with a vault and config file parameter specified' do
       before(:each) do
-        @vault = ChefVault.new('foo', '~/chef-repo/.chef/knife.rb')
+        IO.stub(:read).with('knife.rb').and_return("node_name 'bar'")
+        @vault = ChefVault.new('foo', 'knife.rb')
       end
 
-      it 'correctly assigns the data_bag instance var' do
-        expect(@vault.data_bag).to eq 'foo'
+      it 'is an instance of ChefVault' do
+        expect(@vault).to be_an_instance_of ChefVault
       end
 
-      it 'correctly assigns the chef_config_file var' do
-        expect(@vault.chef_config_file).to eq '~/chef-repo/.chef/knife.rb'
+      it 'sets vault to foo' do
+        expect(@vault.vault).to eq "foo"
+      end
+
+      it 'sets Chef::Config[:node_name] to bar' do
+        expect(Chef::Config[:node_name]).to eq "bar"
       end
     end
   end
@@ -43,25 +43,14 @@ describe ChefVault do
     end
   end
 
-  describe '#user' do
+  describe '#self.load_config' do
     before(:each) do
-      @vault = ChefVault.new('foo')
-      @user = @vault.user('mysql')
+      IO.stub(:read).with('knife.rb').and_return("node_name 'bar'")
+      ChefVault.load_config("knife.rb")
     end
 
-    it 'is an instance of ChefVault::User' do
-      expect(@user).to be_an_instance_of ChefVault::User
-    end
-  end
-
-  describe '#certificate' do
-    before(:each) do
-      @vault = ChefVault.new('certs')
-      @cert = @vault.certificate('my_ssl_cert')
-    end
-
-    it 'is an instance of ChefVault::Certificate' do
-      expect(@cert).to be_an_instance_of ChefVault::Certificate
+    it "sets Chef::Config[:node_name] to bar" do
+      expect(Chef::Config[:node_name]).to eq "bar"
     end
   end
 end

@@ -28,19 +28,26 @@ options_config = {
     default: "/etc/chef/knife.rb",
     optional: false
   },
-  user: {
-    short: "u",
-    long: "username",
-    description: "Username to decrypt password for",
+  vault: {
+    short: "v",
+    long: "vault",
+    description: "Vault to look in",
     default: nil,
-    optional: true
+    optional: false
   },  
-  cert: {
-    short: "c",
-    long: "certificate",
-    description: "Certificate to decrypt contents of",
+  item: {
+    short: "i",
+    long: "item",
+    description: "Item to decrypt in vault",
     default: nil,
-    optional: true
+    optional: false
+  },
+  values: {
+    short: "a",
+    long: "vaules",
+    description: "Values of item to decrypt in vault",
+    default: nil,
+    optional: false
   }
 }
 
@@ -68,7 +75,7 @@ OptionParser.new do |opts|
 end.parse!
 
 options_config.each do |option, config|
-  raise OptionParser::MissingArgument if (options[option].nil? && !config[:optional])
+  raise OptionParser::MissingArgument, option if (options[option].nil? && !config[:optional])
 end
 
 options_config.each do |option, config|
@@ -79,13 +86,12 @@ require 'rubygems'
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require 'chef-vault'
 
-if options[:user]
-  vault = ChefVault.new("passwords", options[:chef])
+ChefVault.load_config(options[:chef])
+item = ChefVault::Item.load(options[:vault], options[:item])
 
-  user = vault.user(options[:user])
-  puts user.decrypt_password
-else
-  vault = ChefVault.new("certs", options[:chef])
-  cert = vault.certificate(options[:cert])
-  puts cert.decrypt_contents
+puts "#{options[:vault]}/#{options[:item]}"
+
+options[:values].split(",").each do |value|
+  value.strip! # remove white space
+  puts("\t#{value}: #{item[value]}")
 end
