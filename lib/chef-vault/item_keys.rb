@@ -57,10 +57,10 @@ class ChefVault::ItemKeys < Chef::DataBagItem
 
       FileUtils.mkdir(data_bag_path) unless File.exists?(data_bag_path)
       File.open("#{data_bag_item_path}.json",'w') do |file| 
-        file.write(JSON.pretty_generate(self))
+        file.write(JSON.pretty_generate(self.raw_data))
       end
 
-      self
+      self.raw_data
     else
       begin
         chef_data_bag = Chef::DataBag.load(data_bag)

@@ -79,7 +79,7 @@ class EncryptRemove < Chef::Knife
         vault_item.clients(search, :delete) if search
         vault_item.admins(admins, :delete) if admins
 
-        vault_item.save
+        vault_item.rotate_keys!
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
 
