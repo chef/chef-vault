@@ -1,6 +1,13 @@
 ## Unreleased
 
-## v2.0.0 / 2013-08-20
+
+## Released 
+
+## v2.0.2 / 2013-09-10
+* Modify written data bag json files in solo mode to be valid for the knife data bag from file command
+* Modify knife encrypt remove to automatically rotate keys
+
+## v2.0.1 / 2013-09-03
 * Removal of knife encrypt certs
 * Removal of knife encrypt passwords
 * Add knife encrypt create
@@ -14,8 +21,6 @@
 * Add ChefVault::ItemKeys class
 * Modify ChefVault::User to use ChefVault::Item to maintain backwards compatability
 * Modify ChefVault::Certificate to use ChefVault::Item to maintain backwards compatability
-
-## Released 
 
 ## v1.2.5 / 2013-07-22
 * Update compat to be class ChefVault not module ChefVault to remove knife errors
