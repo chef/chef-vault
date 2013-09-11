@@ -44,7 +44,7 @@ options_config = {
   },
   values: {
     short: "a",
-    long: "vaules",
+    long: "values",
     description: "Values of item to decrypt in vault",
     default: nil,
     optional: false
