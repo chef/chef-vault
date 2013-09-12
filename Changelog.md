@@ -1,4 +1,8 @@
-## Unreleased
+## Planned (Unreleased)
+
+## v2.0.3
+* Update README to correct typos
+* Add a file-content parameter to allow reading in a file to encrypt to deal with \n conversion on the fly
 
 
 ## Released 
