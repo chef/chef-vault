@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptRotateSecret class
+# Description: Chef-Vault EncryptRotateKeys class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ class EncryptRotateKeys < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife rotate secret [VAULT] [ITEM] --mode MODE"
+  banner "knife encrypt rotate keys [VAULT] [ITEM] --mode MODE"
 
   option :mode,
     :short => '-M MODE',
