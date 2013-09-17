@@ -131,8 +131,8 @@ class ChefVault::Item < Chef::DataBagItem
     reload_raw_data
   end
 
-  def generate_secret
-    OpenSSL::PKey::RSA.new(245).to_pem.lines.to_a[1..-2].join
+  def generate_secret(key_size=2048)
+    OpenSSL::PKey::RSA.new(key_size).to_pem.lines.to_a[1..-2].join
   end
 
   def []=(key, value)
