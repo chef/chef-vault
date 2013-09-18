@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'securerandom'
+
 class ChefVault::Item < Chef::DataBagItem
   attr_accessor :keys
   attr_accessor :encrypted_data_bag_item
@@ -131,8 +133,10 @@ class ChefVault::Item < Chef::DataBagItem
     reload_raw_data
   end
 
-  def generate_secret
-    OpenSSL::PKey::RSA.new(245).to_pem.lines.to_a[1..-2].join
+  def generate_secret(key_size=32)
+    # Defaults to 32 bytes, as this is the size that a Chef
+    # Encrypted Data Bag Item will digest all secrets down to anyway
+    SecureRandom.random_bytes(key_size)
   end
 
   def []=(key, value)
