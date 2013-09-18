@@ -1,4 +1,4 @@
-# Description: Chef-Vault Decrypt class
+# Description: Chef-Vault EncryptRotateKeys class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class Decrypt < Chef::Knife
+class EncryptExposeKey < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class Decrypt < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife decrypt [VAULT] [ITEM] [VALUES] --mode MODE --secret-file FILE"
+  banner "knife encrypt expose key [VAULT] [ITEM] --mode MODE --secret-file FILE"
 
   option :mode,
     :short => '-M MODE',
@@ -35,21 +35,29 @@ class Decrypt < Chef::Knife
   option :file,
     :short => '-S FILE',
     :long => '--secret-file FILE',
-    :description => 'Read vault secret from file FILE'
+    :description => 'Write vault secret to file FILE'
 
   def run
     vault = @name_args[0]
     item = @name_args[1]
-    values = @name_args[2]
 
-    if config[:file] 
-      secret=open(config[:file]).read()
-    end
-
-    if vault && item && values
+    if vault && item
       set_mode(config[:mode])
 
-      print_values(vault, item, values, secret)
+      begin
+        item = ChefVault::Item.load(vault, item)
+        if config[:file] 
+          File.open(config[:file], 'w') { |f| f.write(item.secret) }
+        else
+          print item.secret, "\n"
+        end
+      rescue ChefVault::Exceptions::KeysNotFound,
+             ChefVault::Exceptions::ItemNotFound
+
+        raise ChefVault::Exceptions::ItemNotFound,
+              "#{vault}/#{item} does not exists, "\
+              "use 'knife encrypt create' to create."
+      end
     else
       show_usage
     end
@@ -59,15 +67,5 @@ class Decrypt < Chef::Knife
     super
     exit 1
   end
-
-  def print_values(vault, item, values, secret=nil)
-    vault_item = ChefVault::Item.load(vault, item, secret)
-
-    puts "#{vault}/#{item}"
-
-    values.split(",").each do |value|
-      value.strip! # remove white space
-      puts("\t#{value}: #{vault_item[value]}")
-    end
-  end    
 end
+  
