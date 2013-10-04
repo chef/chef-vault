@@ -70,9 +70,9 @@ NOTE: chef-vault 1.0 knife commands are not support!  Please use chef-vault 2.0 
     <td></td>
   </tr>
   <tr>
-    <td>-F FILE</td>
+    <td>nil</td>
     <td>--file FILE</td>
-    <td>File that chef-vault should encrypt.  It adds ```file-content``` & ```file-name``` keys to the vault item.  This is only valid in create & update</td>
+    <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item.  This is only valid in create & update</td>
     <td>nil</td>
     <td></td>
 </table>
