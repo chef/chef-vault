@@ -49,7 +49,6 @@ class EncryptUpdate < Chef::Knife
     :description => 'File containing JSON data to encrypt'
 
   option :file,
-    :short => '-F FILE',
     :long => '--file FILE',
     :description => 'File to be added to vault item as file-content'
 
@@ -60,10 +59,11 @@ class EncryptUpdate < Chef::Knife
     search = config[:search]
     admins = config[:admins]
     json_file = config[:json]
+    file = config[:file]
 
     set_mode(config[:mode])
 
-    if vault && item && ((values || json_file) || (search || admins))
+    if vault && item && ((values || json_file || file) || (search || admins))
       begin
         vault_item = ChefVault::Item.load(vault, item)
 
