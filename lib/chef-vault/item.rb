@@ -44,16 +44,7 @@ class ChefVault::Item < Chef::DataBagItem
 
         case action
         when :add
-          begin
-            keys.add(ChefVault::ChefPatch::ApiClient.load(node.name), @secret, "clients")
-          rescue Net::HTTPServerException => http_error
-            if http_error.response.code == "404"
-              raise ChefVault::Exceptions::ClientNotFound,
-                    "#{node.name} is not a valid chef client and/or node"
-            else
-              raise http_error
-            end
-          end
+          keys.add(load_client(node.name), @secret, "clients")
         when :delete
           keys.delete(node.name, "clients")
         else
@@ -77,16 +68,7 @@ class ChefVault::Item < Chef::DataBagItem
         admin.strip!
         case action
         when :add
-          begin
-            keys.add(ChefVault::ChefPatch::User.load(admin), @secret, "admins")
-          rescue Net::HTTPServerException => http_error
-            if http_error.response.code == "404"
-              raise ChefVault::Exceptions::AdminNotFound,
-                    "#{admin} is not a valid chef admin"
-            else
-              raise http_error
-            end
-          end
+          keys.add(load_admin(admin), @secret, "admins")
         when :delete
           keys.delete(admin, "admins")
         else
@@ -243,5 +225,40 @@ class ChefVault::Item < Chef::DataBagItem
     @encrypted = false
 
     @raw_data
+  end
+
+  def load_admin(admin)
+    begin
+      admin = ChefVault::ChefPatch::User.load(admin)
+    rescue Net::HTTPServerException => http_error
+      if http_error.response.code == "404"
+        begin
+          puts "WARNING: #{admin} not found in users, trying clients."
+          admin = load_client(admin)
+        rescue ChefVault::Exceptions::ClientNotFound
+          raise ChefVault::Exceptions::AdminNotFound,
+                "FATAL: Could not find #{admin} in users or clients!"
+        end
+      else
+        raise http_error
+      end
+    end
+
+    admin
+  end
+
+  def load_client(client)
+    begin
+      client = ChefVault::ChefPatch::ApiClient.load(client)
+    rescue Net::HTTPServerException => http_error
+      if http_error.response.code == "404"
+        raise ChefVault::Exceptions::ClientNotFound,
+              "#{client} is not a valid chef client and/or node"
+      else
+        raise http_error
+      end
+    end
+
+    client
   end
 end

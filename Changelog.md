@@ -1,8 +1,8 @@
 ## Planned (Unreleased)
 
-## v2.0.3
+## v2.1.0
 * Update README to correct typos
-* Add a file-content parameter to allow reading in a file to encrypt to deal with \n conversion on the fly
+* Modify admin loading to fall back to clients endpoint if not found in users endpoint
 
 
 ## Released 
