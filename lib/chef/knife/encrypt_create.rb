@@ -26,7 +26,7 @@ class EncryptCreate < Chef::Knife
   end
 
   banner "knife encrypt create [VAULT] [ITEM] [VALUES] "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE"
+        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
 
   option :mode,
     :short => '-M MODE',
@@ -48,13 +48,19 @@ class EncryptCreate < Chef::Knife
     :long => '--json FILE',
     :description => 'File containing JSON data to encrypt'
 
-  def run
+  option :file,
+    :short => '-F FILE',
+    :long => '--file FILE',
+    :description => 'File to be added to vault item as file-content'
+
+    def run
     vault = @name_args[0]
     item = @name_args[1]
     values = @name_args[2]
     search = config[:search]
     admins = config[:admins]
     json_file = config[:json]
+    file = config[:file]
 
     set_mode(config[:mode])
 
@@ -71,7 +77,12 @@ class EncryptCreate < Chef::Knife
        
         merge_values(values, json_file).each do |key, value|
           vault_item[key] = value
-        end 
+        end
+
+        if file
+          vault_item["file-name"] = File.basename(file)
+          vault_item["file-content"] = File.open(file){ |file| file.read() }
+        end
 
         vault_item.clients(search) if search
         vault_item.admins(admins) if admins
