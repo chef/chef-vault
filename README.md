@@ -31,6 +31,7 @@ NOTE: chef-vault 1.0 knife commands are not support!  Please use chef-vault 2.0 
     knife encrypt remove [VAULT] [ITEM] [VALUES]
     knife encrypt delete [VAULT] [ITEM]
     knife encrypt rotate keys [VAULT] [ITEM]
+    knife encrypt expose key [VAULT] [ITEM] --secret-file [FILE]
 
 <i>Global Options:</i>
 <table>
@@ -115,6 +116,66 @@ require 'chef-vault'
 item = ChefVault::Item.load("passwords", "root")
 item["password"]
 ```
+
+## Using Shared Secret
+
+When instantiating new nodes, you may need to access the vault
+with the symmetric key in the same way would with a standard
+encrypted data bag, as in the following workflow:
+
+* Save the current vault secret to a file with 'knife encrypt expose key'
+* Encode the secret so it's available to node at launch, e.g. userdata.txt for EC2.
+* Launch node for initial provisioning, then wipe the secrets file from disk
+* Rekey the vault with 'knife encrypt rotate keys'
+* Update the vault ('knife encrypt update') so the new node has keys encrypted with its private key.
+
+#### Example Code
+
+Recipe:
+
+```ruby
+passwords = ChefVault::Item.load("password", "root", "/etc/chef/vault_secret")
+```
+
+And for key management:
+
+```shell
+knife encrypt expose key password root --mode client --secret-file vault_secret
+# provision node with 'vault_secret'
+knife encrypt rotate keys password root --mode client
+knife encrypt update password root --search 'role:base' --mode client
+```
+
+### How this works
+
+Vault extends Chef Encrypted Data Bags from this structure (ignore fields with iv and cipher):
+
+* 'Bag'
+  * datum1 = value1 * secret_key
+  * datum2 = value2 * secret_key
+  * ...
+
+to include ancillary databag, 'Bag_keys', as follows:
+
+* Bag
+  * datum1 = value1 * secret_key
+  * datum2 = value2 * secret_key
+  * ..
+* Bag_keys
+  * admins: bofh, admin_joe
+  * clients: nodeX, nodeY
+  * admin_joe: secret_key * admin_joe.public_key
+  * bofh: secret_key * bofh.public_key
+  * nodeX: secret_key * nodeX.public_key
+  * nodeY: secret_key * nodeY.public_key
+
+so you can access the data in 'Bag' with the `knife data bag` command as follows:
+
+```
+knife encrypt expose key vault item --mode client --file secret_key
+knife data bag show vault item --secret-file secret_key
+```
+
 
 ## USAGE STAND ALONE
 

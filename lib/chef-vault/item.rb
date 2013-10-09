@@ -191,13 +191,18 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end    
 
-  def self.load(vault, name)
+  def self.load(vault, name, secret=nil)
     item = new(vault, name)
-    item.load_keys(vault, "#{name}_keys")
+    if secret and File.exists?(secret) then
+      vault_secret=open(secret).read()
+    else
+      item.load_keys(vault, "#{name}_keys")
+      vault_secret=item.secret
+    end
   
     begin
       item.raw_data = 
-        Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
+        Chef::EncryptedDataBagItem.load(vault, name, vault_secret).to_hash
     rescue Net::HTTPServerException => http_error
       if http_error.response.code == "404"
         raise ChefVault::Exceptions::ItemNotFound,
