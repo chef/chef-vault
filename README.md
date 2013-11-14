@@ -22,7 +22,7 @@ Depending on your system's configuration, you may need to run this command with 
 ## KNIFE COMMANDS:
 See KNIFE_EXAMPLES.md for examples of commands
 
-NOTE: chef-vault 1.0 knife commands are not support!  Please use chef-vault 2.0 commands.
+NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.0 commands.
 
 ### Encrypt
 
