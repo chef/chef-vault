@@ -4,6 +4,7 @@
 * Update README to correct typos
 * Modify admin loading to fall back to clients endpoint if not found in users endpoint
 * Add --file to "knife encrypt update" & "knife encrypt create" to do file encryption in chef-vault.  It will create a key called "file-content" & "file-name"
+* When VALUES is not supplied print the whole vault item
 
 
 ## Released 
