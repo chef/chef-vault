@@ -30,14 +30,14 @@ class Decrypt < Chef::Knife
   option :mode,
     :short => '-M MODE',
     :long => '--mode MODE',
-    :description => 'Chef mode to run in default - solo'  
+    :description => 'Chef mode to run in default - solo'
 
   def run
     vault = @name_args[0]
     item = @name_args[1]
     values = @name_args[2]
 
-    if vault && item && values
+    if vault && item
       set_mode(config[:mode])
 
       print_values(vault, item, values)
@@ -54,11 +54,15 @@ class Decrypt < Chef::Knife
   def print_values(vault, item, values)
     vault_item = ChefVault::Item.load(vault, item)
 
-    puts "#{vault}/#{item}"
+    if values
+      puts "#{vault}/#{item}"
 
-    values.split(",").each do |value|
-      value.strip! # remove white space
-      puts("\t#{value}: #{vault_item[value]}")
+      values.split(",").each do |value|
+        value.strip! # remove white space
+        puts("\t#{value}: #{vault_item[value]}")
+      end
+    else
+      output(vault_item.raw_data)
     end
-  end    
+  end
 end
