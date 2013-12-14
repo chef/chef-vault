@@ -25,7 +25,7 @@ class EncryptDelete < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt delete [VAULT] [ITEM] --mode MODE"
+  banner "knife encrypt delete VAULT ITEM --mode MODE"
 
   option :mode,
     :short => '-M MODE',
@@ -45,8 +45,8 @@ class EncryptDelete < Chef::Knife
         rescue ChefVault::Exceptions::KeysNotFound,
                ChefVault::Exceptions::ItemNotFound
 
-               raise ChefVault::Exceptions::ItemNotFound,
-                     "#{vault}/#{item} not found."
+          raise ChefVault::Exceptions::ItemNotFound,
+                "#{vault}/#{item} not found."
         end
       end
     else
@@ -59,4 +59,4 @@ class EncryptDelete < Chef::Knife
     exit 1
   end
 end
-  
+

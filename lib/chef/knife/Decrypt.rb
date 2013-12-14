@@ -25,7 +25,7 @@ class Decrypt < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife decrypt [VAULT] [ITEM] [VALUES] --mode MODE"
+  banner "knife decrypt VAULT ITEM [VALUES] --mode MODE"
 
   option :mode,
     :short => '-M MODE',

@@ -26,11 +26,11 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 
 ### Encrypt
 
-    knife encrypt create [VAULT] [ITEM] [VALUES]
-    knife encrypt update [VAULT] [ITEM] [VALUES]
-    knife encrypt remove [VAULT] [ITEM] [VALUES]
-    knife encrypt delete [VAULT] [ITEM]
-    knife encrypt rotate keys [VAULT] [ITEM]
+    knife encrypt create VAULT ITEM VALUES
+    knife encrypt update VAULT ITEM VALUES
+    knife encrypt remove VAULT ITEM VALUES
+    knife encrypt delete VAULT ITEM
+    knife encrypt rotate keys VAULT ITEM
 
 <i>Global Options:</i>
 <table>
@@ -79,7 +79,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 
 ### Decrypt
 
-    knife decrypt [VAULT] [ITEM] [VALUES]
+    knife decrypt VAULT ITEM [VALUES]
 
 <i>Global Options:</i>
 <table>
@@ -96,6 +96,13 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef mode to run in</td>
     <td>solo</td>
     <td>"solo", "client"</td>
+  </tr>
+  <tr>
+    <td>-F FORMAT</td>
+    <td>--format FORMAT</td>
+    <td>Format for output</td>
+    <td>summary</td>
+    <td>"summary", "json", "yaml", "pp"</td>
   </tr>
 </table>
 
@@ -130,9 +137,9 @@ Do `chef-vault --help` for all available options
 
 ## License and Author:
 
-Author:: Kevin Moser (<kevin.moser@nordstrom.com>)  
-Copyright:: Copyright (c) 2013 Nordstrom, Inc.  
-License:: Apache License, Version 2.0  
+Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
+Copyright:: Copyright (c) 2013 Nordstrom, Inc.
+License:: Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -25,7 +25,7 @@ class EncryptRemove < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt remove [VAULT] [ITEM] [VALUES] "\
+  banner "knife encrypt remove VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS"
 
   option :mode,
@@ -73,9 +73,9 @@ class EncryptRemove < Chef::Knife
           remove_items.each do |key|
             key.strip!
             vault_item.remove(key)
-          end 
+          end
         end
-        
+
         vault_item.clients(search, :delete) if search
         vault_item.admins(admins, :delete) if admins
 
@@ -97,4 +97,4 @@ class EncryptRemove < Chef::Knife
     exit 1
   end
 end
-  
+
