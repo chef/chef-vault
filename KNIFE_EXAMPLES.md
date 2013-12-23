@@ -1,7 +1,7 @@
 # knife examples
 
 ## encrypt
-knife encrypt [create|update|remove|delete] [VAULT] [ITEM] [VALUES]
+knife encrypt [create|update|remove|delete] VAULT ITEM VALUES
 
 These are the commands that are used to take data in json format and encrypt that data into chef-vault style encrypted data bags in chef.
 
@@ -20,7 +20,7 @@ Creat a vault called passwords and put an item called root in it with the given 
 
 Creat a vault called passwords and put an item called root in it with the given values for username and password encrypted for admins admin1 & admin2
 
-    knife encrypt create passwords root "{username: 'root', password: 'mypassword'}" -A "admin1,admin2"    
+    knife encrypt create passwords root "{username: 'root', password: 'mypassword'}" -A "admin1,admin2"
 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
@@ -134,13 +134,18 @@ Rotate the shared key for the vault passwords and item root.  The shared key is 
 </table>
 
 ## decrypt
-knife decrypt [VAULT] [ITEM] [VALUES]
+knife decrypt VAULT ITEM [VALUES]
 
 These are the commands that are used to take a chef-vault encrypted item and decrypt the requested values.
 
 * Vault - This is the name of the vault in which to store the encrypted item.  This is analogous to a chef data bag name
 * Item - The name of the item going in to the vault.  This is analogous to a chef data bag item id
 * Values - This is a comma list of values to decrypt from the vault item.  This is analogous to a list of hash keys.
+
+Decrypt the entire root item in the passwords vault and print in json
+format.
+
+    knife decrypt passwords root -Fjson
 
 Decrypt the username and password for the item root in the vault passwords.
 
@@ -165,5 +170,12 @@ Decrypt the contents for the item user_pem in the vault certs.
     <td>Chef mode to run in</td>
     <td>solo</td>
     <td>"solo", "client"</td>
+  </tr>
+  <tr>
+    <td>-F FORMAT</td>
+    <td>--format FORMAT</td>
+    <td>Format for output</td>
+    <td>summary</td>
+    <td>"summary", "json", "yaml", "pp"</td>
   </tr>
 </table>

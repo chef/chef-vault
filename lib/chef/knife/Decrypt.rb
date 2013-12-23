@@ -25,7 +25,7 @@ class Decrypt < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife decrypt [VAULT] [ITEM] [VALUES] --mode MODE"
+  banner "knife decrypt VAULT ITEM [VALUES] --mode MODE"
 
   option :mode,
     :short => '-M MODE',
@@ -52,17 +52,20 @@ class Decrypt < Chef::Knife
   end
 
   def print_values(vault, item, values)
-    vault_item = ChefVault::Item.load(vault, item)
+    vault_item = ChefVault::Item.load(vault, item).raw_data
 
     if values
-      puts "#{vault}/#{item}"
+      included_values = %W( id )
 
       values.split(",").each do |value|
         value.strip! # remove white space
-        puts("\t#{value}: #{vault_item[value]}")
+        included_values << value
       end
+
+      output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
     else
-      output(vault_item.raw_data)
+      output(vault_item)
     end
   end
 end
+

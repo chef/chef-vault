@@ -25,7 +25,7 @@ class EncryptUpdate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt update [VAULT] [ITEM] [VALUES] "\
+  banner "knife encrypt update VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
 
   option :mode,
@@ -69,7 +69,7 @@ class EncryptUpdate < Chef::Knife
 
         merge_values(values, json_file).each do |key, value|
           vault_item[key] = value
-        end 
+        end
 
         if file
           vault_item["file-name"] = File.basename(file)
@@ -97,4 +97,4 @@ class EncryptUpdate < Chef::Knife
     exit 1
   end
 end
-  
+

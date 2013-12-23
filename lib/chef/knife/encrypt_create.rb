@@ -25,7 +25,7 @@ class EncryptCreate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt create [VAULT] [ITEM] [VALUES] "\
+  banner "knife encrypt create VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
 
   option :mode,
@@ -52,7 +52,7 @@ class EncryptCreate < Chef::Knife
     :long => '--file FILE',
     :description => 'File to be added to vault item as file-content'
 
-    def run
+  def run
     vault = @name_args[0]
     item = @name_args[1]
     values = @name_args[2]
@@ -73,7 +73,7 @@ class EncryptCreate < Chef::Knife
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
         vault_item = ChefVault::Item.new(vault, item)
-       
+
         merge_values(values, json_file).each do |key, value|
           vault_item[key] = value
         end
@@ -98,4 +98,4 @@ class EncryptCreate < Chef::Knife
     exit 1
   end
 end
-  
+

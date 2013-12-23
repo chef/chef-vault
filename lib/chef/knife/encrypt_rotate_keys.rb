@@ -25,7 +25,7 @@ class EncryptRotateKeys < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt rotate keys [VAULT] [ITEM] --mode MODE"
+  banner "knife encrypt rotate keys VAULT ITEM --mode MODE"
 
   option :mode,
     :short => '-M MODE',
@@ -59,4 +59,4 @@ class EncryptRotateKeys < Chef::Knife
     exit 1
   end
 end
-  
+
