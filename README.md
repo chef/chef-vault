@@ -137,8 +137,10 @@ Do `chef-vault --help` for all available options
 
 ## License and Author:
 
-Author:: Kevin Moser (<kevin.moser@nordstrom.com>)
-Copyright:: Copyright (c) 2013 Nordstrom, Inc.
+Author:: Kevin Moser - @moserke<br>
+Author:: Eli Klein - @eliklein<br>
+Author:: Joshua Timberman - @jtimberman<br>
+Copyright:: Copyright (c) 2013 Nordstrom, Inc.<br>
 License:: Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");

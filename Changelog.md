@@ -1,13 +1,12 @@
 ## Planned (Unreleased)
 
-## v2.1.0
+## Released 
+
+## v2.1.0 / 2013-12-23
 * Update README to correct typos
 * Modify admin loading to fall back to clients endpoint if not found in users endpoint
 * Add --file to "knife encrypt update" & "knife encrypt create" to do file encryption in chef-vault.  It will create a key called "file-content" & "file-name"
 * When VALUES is not supplied print the whole vault item
-
-
-## Released 
 
 ## v2.0.2 / 2013-09-10
 * Modify written data bag json files in solo mode to be valid for the knife data bag from file command
