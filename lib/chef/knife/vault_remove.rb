@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptRotateKeys class
+# Description: Chef-Vault VaultRemove class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptRotateKeys < Chef::Knife
+class VaultRemove < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,29 +25,67 @@ class EncryptRotateKeys < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt rotate keys VAULT ITEM --mode MODE"
+  banner "knife vault remove VAULT ITEM VALUES "\
+        "--mode MODE --search SEARCH --admins ADMINS"
 
   option :mode,
     :short => '-M MODE',
     :long => '--mode MODE',
     :description => 'Chef mode to run in default - solo'
 
+  option :search,
+    :short => '-S SEARCH',
+    :long => '--search SEARCH',
+    :description => 'Chef SOLR search for clients'
+
+  option :admins,
+    :short => '-A ADMINS',
+    :long => '--admins ADMINS',
+    :description => 'Chef users to be added as admins'
+
   def run
     vault = @name_args[0]
     item = @name_args[1]
+    values = @name_args[2]
+    search = config[:search]
+    admins = config[:admins]
+    json_file = config[:json]
 
-    if vault && item
-      set_mode(config[:mode])
+    set_mode(config[:mode])
 
+    if vault && item && ((values || json_file) || (search || admins))
       begin
-        item = ChefVault::Item.load(vault, item)
-        item.rotate_keys!
+        vault_item = ChefVault::Item.load(vault, item)
+        remove_items = []
+
+        if values || json_file
+          begin
+            json = JSON.parse(values)
+            json.each do |key, value|
+              remove_items << key
+            end
+          rescue JSON::ParserError
+            remove_items = values.split(",")
+          rescue Exception => e
+            raise e
+          end
+
+          remove_items.each do |key|
+            key.strip!
+            vault_item.remove(key)
+          end
+        end
+
+        vault_item.clients(search, :delete) if search
+        vault_item.admins(admins, :delete) if admins
+
+        vault_item.rotate_keys!
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
 
         raise ChefVault::Exceptions::ItemNotFound,
               "#{vault}/#{item} does not exists, "\
-              "use 'knife encrypt create' to create."
+              "use 'knife vault create' to create."
       end
     else
       show_usage

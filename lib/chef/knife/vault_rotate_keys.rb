@@ -1,4 +1,4 @@
-# Description: Chef-Vault Decrypt class
+# Description: Chef-Vault VaultRotateKeys class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class Decrypt < Chef::Knife
+class VaultRotateKeys < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class Decrypt < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife decrypt VAULT ITEM [VALUES] --mode MODE"
+  banner "knife vault rotate keys VAULT ITEM --mode MODE"
 
   option :mode,
     :short => '-M MODE',
@@ -35,12 +35,20 @@ class Decrypt < Chef::Knife
   def run
     vault = @name_args[0]
     item = @name_args[1]
-    values = @name_args[2]
 
     if vault && item
       set_mode(config[:mode])
 
-      print_values(vault, item, values)
+      begin
+        item = ChefVault::Item.load(vault, item)
+        item.rotate_keys!
+      rescue ChefVault::Exceptions::KeysNotFound,
+             ChefVault::Exceptions::ItemNotFound
+
+        raise ChefVault::Exceptions::ItemNotFound,
+              "#{vault}/#{item} does not exists, "\
+              "use 'knife vault create' to create."
+      end
     else
       show_usage
     end
@@ -49,23 +57,6 @@ class Decrypt < Chef::Knife
   def show_usage
     super
     exit 1
-  end
-
-  def print_values(vault, item, values)
-    vault_item = ChefVault::Item.load(vault, item).raw_data
-
-    if values
-      included_values = %W( id )
-
-      values.split(",").each do |value|
-        value.strip! # remove white space
-        included_values << value
-      end
-
-      output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
-    else
-      output(vault_item)
-    end
   end
 end
 

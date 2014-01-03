@@ -26,11 +26,11 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 
 ### Encrypt
 
-    knife encrypt create VAULT ITEM VALUES
-    knife encrypt update VAULT ITEM VALUES
-    knife encrypt remove VAULT ITEM VALUES
-    knife encrypt delete VAULT ITEM
-    knife encrypt rotate keys VAULT ITEM
+    knife vault create VAULT ITEM VALUES
+    knife vault update VAULT ITEM VALUES
+    knife vault remove VAULT ITEM VALUES
+    knife vault delete VAULT ITEM
+    knife vault rotate keys VAULT ITEM
 
 <i>Global Options:</i>
 <table>
