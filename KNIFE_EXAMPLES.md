@@ -10,15 +10,15 @@ These are the commands that are used to take data in json format and encrypt tha
 * Values - This is the json clear text data to be stored in the vault encrypted.  This is analogous to a chef data bag item data
 
 ### create
-Creat a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver and admins admin1 & admin2
+Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver and admins admin1 & admin2
 
     knife encrypt create passwords root "{username: 'root', password: 'mypassword'}" -S "role:webserver" -A "admin1,admin2"
 
-Creat a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver
+Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver
 
     knife encrypt create passwords root "{username: 'root', password: 'mypassword'}" -S "role:webserver"
 
-Creat a vault called passwords and put an item called root in it with the given values for username and password encrypted for admins admin1 & admin2
+Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for admins admin1 & admin2
 
     knife encrypt create passwords root "{username: 'root', password: 'mypassword'}" -A "admin1,admin2"
 
