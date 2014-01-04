@@ -25,7 +25,7 @@ class VaultRemove < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife vault encrypt remove VAULT ITEM VALUES "\
+  banner "knife vault remove VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS"
 
   option :mode,
