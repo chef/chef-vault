@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptDelete class
+# Description: Chef-Vault VaultRotateKeys class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptDelete < Chef::Knife
+class VaultRotateKeys < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptDelete < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt delete VAULT ITEM --mode MODE"
+  banner "knife vault rotate keys VAULT ITEM (options)"
 
   option :mode,
     :short => '-M MODE',
@@ -36,18 +36,18 @@ class EncryptDelete < Chef::Knife
     vault = @name_args[0]
     item = @name_args[1]
 
-    set_mode(config[:mode])
-
     if vault && item
-      delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
-        begin
-          ChefVault::Item.load(vault, item).destroy
-        rescue ChefVault::Exceptions::KeysNotFound,
-               ChefVault::Exceptions::ItemNotFound
+      set_mode(config[:mode])
 
-          raise ChefVault::Exceptions::ItemNotFound,
-                "#{vault}/#{item} not found."
-        end
+      begin
+        item = ChefVault::Item.load(vault, item)
+        item.rotate_keys!
+      rescue ChefVault::Exceptions::KeysNotFound,
+             ChefVault::Exceptions::ItemNotFound
+
+        raise ChefVault::Exceptions::ItemNotFound,
+              "#{vault}/#{item} does not exist, "\
+              "use 'knife vault create' to create."
       end
     else
       show_usage

@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptRemove class
+# Description: Chef-Vault VaultRemove class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptRemove < Chef::Knife
+class VaultRemove < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,8 +25,7 @@ class EncryptRemove < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt remove VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS"
+  banner "knife vault remove VAULT ITEM VALUES (options)"
 
   option :mode,
     :short => '-M MODE',
@@ -84,8 +83,8 @@ class EncryptRemove < Chef::Knife
              ChefVault::Exceptions::ItemNotFound
 
         raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} does not exists, "\
-              "use 'knife encrypt create' to create."
+              "#{vault}/#{item} does not exist, "\
+              "use 'knife vault create' to create."
       end
     else
       show_usage

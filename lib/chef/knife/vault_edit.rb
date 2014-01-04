@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptRotateKeys class
+# Description: Chef-Vault VaultEdit class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptRotateKeys < Chef::Knife
+class VaultEdit < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptRotateKeys < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt rotate keys VAULT ITEM --mode MODE"
+  banner "knife vault edit VAULT ITEM (options)"
 
   option :mode,
     :short => '-M MODE',
@@ -36,18 +36,32 @@ class EncryptRotateKeys < Chef::Knife
     vault = @name_args[0]
     item = @name_args[1]
 
-    if vault && item
-      set_mode(config[:mode])
+    set_mode(config[:mode])
 
+    if vault && item
       begin
-        item = ChefVault::Item.load(vault, item)
-        item.rotate_keys!
+        vault_item = ChefVault::Item.load(vault, item)
+
+        filtered_vault_data = vault_item.raw_data.select{|x| x != 'id'}
+
+        updated_vault_json = edit_data(filtered_vault_data)
+
+        # Clean out contents of existing vault_item
+        vault_item.raw_data.each do |key, value|
+          vault_item.remove(key) unless key == 'id'
+        end
+
+        updated_vault_json.each do |key, value|
+          vault_item[key] = value
+        end
+
+        vault_item.save
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
 
         raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} does not exists, "\
-              "use 'knife encrypt create' to create."
+              "#{vault}/#{item} does not exist, "\
+              "use 'knife vault create' to create."
       end
     else
       show_usage

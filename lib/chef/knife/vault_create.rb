@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptUpdate class
+# Description: Chef-Vault VaultCreate class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptUpdate < Chef::Knife
+class VaultCreate < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,8 +25,7 @@ class EncryptUpdate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt update VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
+  banner "knife vault create VAULT ITEM VALUES (options)"
 
   option :mode,
     :short => '-M MODE',
@@ -63,29 +62,37 @@ class EncryptUpdate < Chef::Knife
 
     set_mode(config[:mode])
 
-    if vault && item && ((values || json_file || file) || (search || admins))
+    if vault && item  && (search || admins)
       begin
         vault_item = ChefVault::Item.load(vault, item)
+        raise ChefVault::Exceptions::ItemAlreadyExists,
+              "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
+              "use 'knife vault remove' 'knife vault update' "\
+              "or 'knife vault edit' to make changes."
+      rescue ChefVault::Exceptions::KeysNotFound,
+             ChefVault::Exceptions::ItemNotFound
+        vault_item = ChefVault::Item.new(vault, item)
 
-        merge_values(values, json_file).each do |key, value|
-          vault_item[key] = value
-        end
+        if values || json_file || file
+          merge_values(values, json_file).each do |key, value|
+            vault_item[key] = value
+          end
 
-        if file
-          vault_item["file-name"] = File.basename(file)
-          vault_item["file-content"] = File.open(file){ |file| file.read() }
+          if file
+            vault_item["file-name"] = File.basename(file)
+            vault_item["file-content"] = File.open(file){ |file| file.read() }
+          end
+        else
+          vault_json = edit_data(Hash.new)
+          vault_json.each do |key, value|
+            vault_item[key] = value
+          end
         end
 
         vault_item.clients(search) if search
         vault_item.admins(admins) if admins
 
         vault_item.save
-      rescue ChefVault::Exceptions::KeysNotFound,
-             ChefVault::Exceptions::ItemNotFound
-
-        raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} does not exists, "\
-              "use 'knife encrypt create' to create."
       end
     else
       show_usage
