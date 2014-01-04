@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptRemove class
+# Description: Chef-Vault VaultRemove class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,8 +84,8 @@ class VaultRemove < Chef::Knife
              ChefVault::Exceptions::ItemNotFound
 
         raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} does not exists, "\
-              "use 'knife encrypt create' to create."
+              "#{vault}/#{item} does not exist, "\
+              "use 'knife vault create' to create."
       end
     else
       show_usage

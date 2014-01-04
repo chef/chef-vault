@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptDelete class
+# Description: Chef-Vault VaultDelete class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");

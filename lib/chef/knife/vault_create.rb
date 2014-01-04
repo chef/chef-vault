@@ -68,8 +68,8 @@ class VaultCreate < Chef::Knife
         vault_item = ChefVault::Item.load(vault, item)
         raise ChefVault::Exceptions::ItemAlreadyExists,
               "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
-              "use 'knife vault remove' and "\
-              "'knife vault update' to make changes."
+              "use 'knife vault remove' 'knife vault update' "\
+              "or 'knife vault edit' to make changes."
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
         vault_item = ChefVault::Item.new(vault, item)
