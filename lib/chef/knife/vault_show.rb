@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptDelete class
+# Description: Chef-Vault Decrypt class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptDelete < Chef::Knife
+class VaultShow < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptDelete < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt delete VAULT ITEM --mode MODE"
+  banner "knife vault show VAULT ITEM [VALUES] --mode MODE"
 
   option :mode,
     :short => '-M MODE',
@@ -35,20 +35,12 @@ class EncryptDelete < Chef::Knife
   def run
     vault = @name_args[0]
     item = @name_args[1]
-
-    set_mode(config[:mode])
+    values = @name_args[2]
 
     if vault && item
-      delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
-        begin
-          ChefVault::Item.load(vault, item).destroy
-        rescue ChefVault::Exceptions::KeysNotFound,
-               ChefVault::Exceptions::ItemNotFound
+      set_mode(config[:mode])
 
-          raise ChefVault::Exceptions::ItemNotFound,
-                "#{vault}/#{item} not found."
-        end
-      end
+      print_values(vault, item, values)
     else
       show_usage
     end
@@ -57,6 +49,23 @@ class EncryptDelete < Chef::Knife
   def show_usage
     super
     exit 1
+  end
+
+  def print_values(vault, item, values)
+    vault_item = ChefVault::Item.load(vault, item).raw_data
+
+    if values
+      included_values = %W( id )
+
+      values.split(",").each do |value|
+        value.strip! # remove white space
+        included_values << value
+      end
+
+      output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
+    else
+      output(vault_item)
+    end
   end
 end
 

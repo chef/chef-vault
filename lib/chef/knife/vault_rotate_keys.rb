@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptUpdate class
+# Description: Chef-Vault EncryptRotateKeys class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptUpdate < Chef::Knife
+class VaultRotateKeys < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,61 +25,23 @@ class EncryptUpdate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt update VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
+  banner "knife vault rotate keys VAULT ITEM --mode MODE"
 
   option :mode,
     :short => '-M MODE',
     :long => '--mode MODE',
     :description => 'Chef mode to run in default - solo'
 
-  option :search,
-    :short => '-S SEARCH',
-    :long => '--search SEARCH',
-    :description => 'Chef SOLR search for clients'
-
-  option :admins,
-    :short => '-A ADMINS',
-    :long => '--admins ADMINS',
-    :description => 'Chef users to be added as admins'
-
-  option :json,
-    :short => '-J FILE',
-    :long => '--json FILE',
-    :description => 'File containing JSON data to encrypt'
-
-  option :file,
-    :long => '--file FILE',
-    :description => 'File to be added to vault item as file-content'
-
   def run
     vault = @name_args[0]
     item = @name_args[1]
-    values = @name_args[2]
-    search = config[:search]
-    admins = config[:admins]
-    json_file = config[:json]
-    file = config[:file]
 
-    set_mode(config[:mode])
+    if vault && item
+      set_mode(config[:mode])
 
-    if vault && item && ((values || json_file || file) || (search || admins))
       begin
-        vault_item = ChefVault::Item.load(vault, item)
-
-        merge_values(values, json_file).each do |key, value|
-          vault_item[key] = value
-        end
-
-        if file
-          vault_item["file-name"] = File.basename(file)
-          vault_item["file-content"] = File.open(file){ |file| file.read() }
-        end
-
-        vault_item.clients(search) if search
-        vault_item.admins(admins) if admins
-
-        vault_item.save
+        item = ChefVault::Item.load(vault, item)
+        item.rotate_keys!
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
 

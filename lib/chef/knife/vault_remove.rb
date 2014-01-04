@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptRemove < Chef::Knife
+class VaultRemove < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptRemove < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt remove VAULT ITEM VALUES "\
+  banner "knife vault encrypt remove VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS"
 
   option :mode,
