@@ -24,13 +24,13 @@ See KNIFE_EXAMPLES.md for examples of commands
 
 NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.0 commands.
 
-### Encrypt
+### create, update, remove, delete, rotate keys
 
-    knife encrypt create VAULT ITEM VALUES
-    knife encrypt update VAULT ITEM VALUES
-    knife encrypt remove VAULT ITEM VALUES
-    knife encrypt delete VAULT ITEM
-    knife encrypt rotate keys VAULT ITEM
+    knife vault create VAULT ITEM VALUES
+    knife vault update VAULT ITEM VALUES
+    knife vault remove VAULT ITEM VALUES
+    knife vault delete VAULT ITEM
+    knife vault rotate keys VAULT ITEM
 
 <i>Global Options:</i>
 <table>
@@ -77,9 +77,9 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td></td>
 </table>
 
-### Decrypt
+### show
 
-    knife decrypt VAULT ITEM [VALUES]
+    knife vault show VAULT ITEM [VALUES]
 
 <i>Global Options:</i>
 <table>
@@ -103,6 +103,28 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Format for output</td>
     <td>summary</td>
     <td>"summary", "json", "yaml", "pp"</td>
+  </tr>
+</table>
+
+### edit
+
+    knife vault edit VAULT ITEM
+
+<i>Global Options:</i>
+<table>
+  <tr>
+    <th>Short</th>
+    <th>Long</th>
+    <th>Description</th>
+    <th>Default</th>
+    <th>Valid Values</th>
+  </tr>
+  <tr>
+    <td>-M MODE</td>
+    <td>--mode MODE</td>
+    <td>Chef mode to run in</td>
+    <td>solo</td>
+    <td>"solo", "client"</td>
   </tr>
 </table>
 
