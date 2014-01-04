@@ -25,7 +25,7 @@ class VaultEdit < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife vault edit VAULT ITEM --mode MODE"
+  banner "knife vault edit VAULT ITEM (options)"
 
   option :mode,
     :short => '-M MODE',

@@ -25,8 +25,7 @@ class VaultRemove < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife vault remove VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS"
+  banner "knife vault remove VAULT ITEM VALUES (options)"
 
   option :mode,
     :short => '-M MODE',

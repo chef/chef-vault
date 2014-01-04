@@ -25,7 +25,7 @@ class VaultRotateKeys < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife vault rotate keys VAULT ITEM --mode MODE"
+  banner "knife vault rotate keys VAULT ITEM (options)"
 
   option :mode,
     :short => '-M MODE',

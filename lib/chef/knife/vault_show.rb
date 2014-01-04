@@ -25,7 +25,7 @@ class VaultShow < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife vault show VAULT ITEM [VALUES] --mode MODE"
+  banner "knife vault show VAULT ITEM [VALUES] (options)"
 
   option :mode,
     :short => '-M MODE',

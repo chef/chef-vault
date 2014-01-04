@@ -25,8 +25,7 @@ class VaultCreate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife vault create VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
+  banner "knife vault create VAULT ITEM VALUES (options)"
 
   option :mode,
     :short => '-M MODE',
