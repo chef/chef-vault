@@ -24,7 +24,7 @@ See KNIFE_EXAMPLES.md for examples of commands
 
 ### knife.rb
 To set 'client' as the default mode, add the following line to the knife.rb file.
-knife[:mode] = 'client'
+knife[:vault_mode] = 'client'
 
 NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.0 commands.
 
