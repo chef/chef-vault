@@ -24,7 +24,7 @@ class Chef
       banner "knife vault rotate all keys"
 
       def run
-        set_mode(config[:mode])
+        set_mode(config[:vault_mode])
         rotate_all_keys
       end
 

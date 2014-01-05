@@ -28,7 +28,7 @@ class Chef
         item = @name_args[1]
 
         if vault && item
-          set_mode(config[:mode])
+          set_mode(config[:vault_mode])
 
           begin
             item = ChefVault::Item.load(vault, item)

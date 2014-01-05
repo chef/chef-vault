@@ -29,7 +29,7 @@ class Chef
         values = @name_args[2]
 
         if vault && item
-          set_mode(config[:mode])
+          set_mode(config[:vault_mode])
 
           print_values(vault, item, values)
         else

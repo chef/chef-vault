@@ -27,7 +27,7 @@ class Chef
         vault = @name_args[0]
         item = @name_args[1]
 
-        set_mode(config[:mode])
+        set_mode(config[:vault_mode])
 
         if vault && item
           delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
