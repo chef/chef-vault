@@ -32,7 +32,8 @@ class Chef
           option :mode,
             :short => '-M MODE',
             :long => '--mode MODE',
-            :description => 'Chef mode to run in default - solo'
+            :description => 'Chef mode to run in default - solo',
+            :proc => Proc.new { |i| Chef::Config[:knife][:mode] = i }
         end
       end
 
