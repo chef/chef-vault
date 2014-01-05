@@ -22,15 +22,21 @@ Depending on your system's configuration, you may need to run this command with 
 ## KNIFE COMMANDS:
 See KNIFE_EXAMPLES.md for examples of commands
 
+### knife.rb
+To set 'client' as the default mode, add the following line to the knife.rb file.
+knife[:vault_mode] = 'client'
+
 NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.0 commands.
 
-### Encrypt
+### Vault
 
-    knife encrypt create VAULT ITEM VALUES
-    knife encrypt update VAULT ITEM VALUES
-    knife encrypt remove VAULT ITEM VALUES
-    knife encrypt delete VAULT ITEM
-    knife encrypt rotate keys VAULT ITEM
+    knife vault create VAULT ITEM VALUES
+    knife vault update VAULT ITEM VALUES
+    knife vault remove VAULT ITEM VALUES
+    knife vault delete VAULT ITEM
+    knife vault rotate keys VAULT ITEM
+    knife vault rotate all keys
+    knife vault decrypt VAULT ITEM [VALUES]
 
 <i>Global Options:</i>
 <table>
@@ -40,6 +46,15 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <th>Description</th>
     <th>Default</th>
     <th>Valid Values</th>
+    <th>Sub-Commands</th>
+  </tr>
+  <tr>
+    <td>-M MODE</td>
+    <td>--mode MODE</td>
+    <td>Chef mode to run in. Can be set in knife.rb</td>
+    <td>solo</td>
+    <td>"solo", "client"</td>
+    <td>all</td>
   </tr>
   <tr>
     <td>-S SEARCH</td>
@@ -47,6 +62,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef Server SOLR Search Of Nodes</td>
     <td>nil</td>
     <td></td>
+    <td>create, remove, update</td>
   </tr>
   <tr>
     <td>-A ADMINS</td>
@@ -54,55 +70,31 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef clients or users to be vault admins, can be comma list</td>
     <td>nil</td>
     <td></td>
-  </tr>
-  <tr>
-    <td>-M MODE</td>
-    <td>--mode MODE</td>
-    <td>Chef mode to run in</td>
-    <td>solo</td>
-    <td>"solo", "client"</td>
+    <td>create, remove, update</td>
   </tr>
   <tr>
     <td>-J FILE</td>
     <td>--json FILE</td>
-    <td>json file to be used for values, will be merged with VALUES if VALUES is passed</td>
+    <td>JSON file to be used for values, will be merged with VALUES if VALUES is passed</td>
     <td>nil</td>
     <td></td>
+    <td>create, update</td>
   </tr>
   <tr>
     <td>nil</td>
     <td>--file FILE</td>
-    <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item.  This is only valid in create & update</td>
+    <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item</td>
     <td>nil</td>
     <td></td>
-</table>
-
-### Decrypt
-
-    knife decrypt VAULT ITEM [VALUES]
-
-<i>Global Options:</i>
-<table>
-  <tr>
-    <th>Short</th>
-    <th>Long</th>
-    <th>Description</th>
-    <th>Default</th>
-    <th>Valid Values</th>
-  </tr>
-  <tr>
-    <td>-M MODE</td>
-    <td>--mode MODE</td>
-    <td>Chef mode to run in</td>
-    <td>solo</td>
-    <td>"solo", "client"</td>
+    <td>create, update</td>
   </tr>
   <tr>
     <td>-F FORMAT</td>
     <td>--format FORMAT</td>
-    <td>Format for output</td>
+    <td>Format for decrypted output</td>
     <td>summary</td>
     <td>"summary", "json", "yaml", "pp"</td>
+    <td>decrypt</td>
   </tr>
 </table>
 

@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptRotateKeys class
+# Description: Chef-Vault Decrypt class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,18 @@
 # limitations under the License.
 
 require 'chef/knife/vault_base'
-require 'chef/knife/vault_rotate_keys'
+require 'chef/knife/vault_decrypt'
 
 class Chef
   class Knife
-    class EncryptRotateKeys < VaultRotateKeys
+    class Decrypt < VaultDecrypt
 
       include Knife::VaultBase
 
-      banner "knife encrypt rotate keys VAULT ITEM --mode MODE"
+      banner "knife decrypt VAULT ITEM [VALUES] --mode MODE"
 
       def run
-        puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
+        puts "DEPRECATION WARNING: knife decrypt is deprecated. Please use knife vault decrypt instead."
         super
       end
     end

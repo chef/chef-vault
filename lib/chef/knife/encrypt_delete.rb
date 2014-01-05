@@ -13,50 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+require 'chef/knife/vault_base'
+require 'chef/knife/vault_delete'
 
-class EncryptDelete < Chef::Knife
-  deps do
-    require 'chef/search/query'
-    require File.expand_path('../mixin/compat', __FILE__)
-    require File.expand_path('../mixin/helper', __FILE__)
-    include ChefVault::Mixin::KnifeCompat
-    include ChefVault::Mixin::Helper
-  end
+class Chef
+  class Knife
+    class EncryptDelete < VaultDelete
 
-  banner "knife encrypt delete VAULT ITEM --mode MODE"
+      include Knife::VaultBase
 
-  option :mode,
-    :short => '-M MODE',
-    :long => '--mode MODE',
-    :description => 'Chef mode to run in default - solo'
+      banner "knife encrypt delete VAULT ITEM --mode MODE"
 
-  def run
-    vault = @name_args[0]
-    item = @name_args[1]
-
-    set_mode(config[:mode])
-
-    if vault && item
-      delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
-        begin
-          ChefVault::Item.load(vault, item).destroy
-        rescue ChefVault::Exceptions::KeysNotFound,
-               ChefVault::Exceptions::ItemNotFound
-
-          raise ChefVault::Exceptions::ItemNotFound,
-                "#{vault}/#{item} not found."
-        end
+      def run
+        puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
+        super
       end
-    else
-      show_usage
     end
   end
-
-  def show_usage
-    super
-    exit 1
-  end
 end
-
