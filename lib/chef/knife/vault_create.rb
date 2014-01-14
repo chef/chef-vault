@@ -52,7 +52,7 @@ class Chef
         json_file = config[:json]
         file = config[:file]
 
-        set_mode(config[:mode])
+        set_mode(config[:vault_mode])
 
         if vault && item && (values || json_file || file) && (search || admins)
           begin

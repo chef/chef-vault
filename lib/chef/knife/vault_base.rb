@@ -29,7 +29,7 @@ class Chef
             include ChefVault::Mixin::Helper
           end
 
-          option :mode,
+          option :vault_mode,
             :short => '-M MODE',
             :long => '--mode MODE',
             :description => 'Chef mode to run in default - solo',
