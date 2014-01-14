@@ -74,7 +74,7 @@ class Chef
             ChefVault::Exceptions::ItemNotFound
 
             raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} does not exists, "\
+              "#{vault}/#{item} does not exist, "\
               "use 'knife vault create' to create."
           end
         else
