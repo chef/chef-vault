@@ -92,7 +92,7 @@ Bug fixes and features should come with RSpec tests. Add your tests in the
 `spec` directory. Look at other tests to see how they should be
 structured (license boilerplate, common includes, etc.).
 
-Run `bundle && rake` to run the test suite.
+Run `bundle install && bundle exec rake` to run the test suite.
 
 Make sure all tests pass.
 

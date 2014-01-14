@@ -1,4 +1,4 @@
-# Description: Chef-Vault VaultRotateKeys class
+# Description: Chef-Vault VaultEdit class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,22 +17,42 @@ require 'chef/knife/vault_base'
 
 class Chef
   class Knife
-    class VaultRotateKeys < Knife
+    class VaultEdit < Knife
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault rotate keys VAULT ITEM (options)"
+      banner "knife vault edit VAULT ITEM (options)"
+
+      option :mode,
+        :short => '-M MODE',
+        :long => '--mode MODE',
+        :description => 'Chef mode to run in default - solo'
 
       def run
         vault = @name_args[0]
         item = @name_args[1]
 
-        if vault && item
-          set_mode(config[:vault_mode])
+        set_mode(config[:vault_mode])
 
+        if vault && item
           begin
-            item = ChefVault::Item.load(vault, item)
-            item.rotate_keys!
+            vault_item = ChefVault::Item.load(vault, item)
+
+            filtered_vault_data = vault_item.raw_data.select{|x| x != 'id'}
+
+            updated_vault_json = edit_data(filtered_vault_data)
+
+            # Clean out contents of existing local vault_item
+            vault_item.raw_data.each do |key, value|
+              vault_item.remove(key) unless key == 'id'
+            end
+
+            # write new vault_item key/value pairs
+            updated_vault_json.each do |key, value|
+              vault_item[key] = value
+            end
+
+            vault_item.save
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
 
@@ -47,3 +67,4 @@ class Chef
     end
   end
 end
+

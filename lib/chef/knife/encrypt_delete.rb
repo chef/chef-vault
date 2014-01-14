@@ -22,7 +22,7 @@ class Chef
 
       include Knife::VaultBase
 
-      banner "knife encrypt delete VAULT ITEM --mode MODE"
+      banner "knife encrypt delete VAULT ITEM (options)"
 
       def run
         puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."

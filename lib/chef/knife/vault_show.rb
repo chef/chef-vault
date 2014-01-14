@@ -1,4 +1,4 @@
-# Description: Chef-Vault VaultDelete class
+# Description: Chef-Vault VaultShow class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,31 +17,45 @@ require 'chef/knife/vault_base'
 
 class Chef
   class Knife
-    class VaultDelete < Knife
+    class VaultShow < Knife
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault delete VAULT ITEM (options)"
+      banner "knife vault show VAULT ITEM [VALUES] (options)"
+
+      option :mode,
+        :short => '-M MODE',
+        :long => '--mode MODE',
+        :description => 'Chef mode to run in default - solo'
 
       def run
         vault = @name_args[0]
         item = @name_args[1]
-
-        set_mode(config[:vault_mode])
+        values = @name_args[2]
 
         if vault && item
-          delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
-            begin
-              ChefVault::Item.load(vault, item).destroy
-            rescue ChefVault::Exceptions::KeysNotFound,
-              ChefVault::Exceptions::ItemNotFound
+          set_mode(config[:vault_mode])
 
-              raise ChefVault::Exceptions::ItemNotFound,
-                "#{vault}/#{item} not found."
-            end
-          end
+          print_values(vault, item, values)
         else
           show_usage
+        end
+      end
+
+      def print_values(vault, item, values)
+        vault_item = ChefVault::Item.load(vault, item).raw_data
+
+        if values
+          included_values = %W( id )
+
+          values.split(",").each do |value|
+            value.strip! # remove white space
+            included_values << value
+          end
+
+          output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
+        else
+          output(vault_item)
         end
       end
     end

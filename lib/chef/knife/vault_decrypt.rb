@@ -21,9 +21,10 @@ class Chef
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault decrypt VAULT ITEM [VALUES] --mode MODE"
+      banner "knife vault decrypt VAULT ITEM [VALUES] (options)"
 
       def run
+        puts "DEPRECATION WARNING: knife vault decrypt is deprecated. Please use knife vault show instead."
         vault = @name_args[0]
         item = @name_args[1]
         values = @name_args[2]

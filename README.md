@@ -31,12 +31,13 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 ### Vault
 
     knife vault create VAULT ITEM VALUES
+    knife vault edit VAULT ITEM
     knife vault update VAULT ITEM VALUES
     knife vault remove VAULT ITEM VALUES
     knife vault delete VAULT ITEM
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
-    knife vault decrypt VAULT ITEM [VALUES]
+    knife vault show VAULT ITEM [VALUES]
 
 <i>Global Options:</i>
 <table>

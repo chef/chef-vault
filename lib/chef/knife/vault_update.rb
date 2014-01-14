@@ -21,8 +21,7 @@ class Chef
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault update VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
+      banner "knife vault update VAULT ITEM VALUES (options)"
 
       option :search,
         :short => '-S SEARCH',
@@ -75,7 +74,7 @@ class Chef
             ChefVault::Exceptions::ItemNotFound
 
             raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} does not exists, "\
+              "#{vault}/#{item} does not exist, "\
               "use 'knife vault create' to create."
           end
         else
