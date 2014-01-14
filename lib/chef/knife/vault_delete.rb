@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptDelete class
+# Description: Chef-Vault VaultDelete class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptDelete < Chef::Knife
+class VaultDelete < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptDelete < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt delete VAULT ITEM --mode MODE"
+  banner "knife vault delete VAULT ITEM --mode MODE"
 
   option :mode,
     :short => '-M MODE',

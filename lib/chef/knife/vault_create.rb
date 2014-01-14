@@ -1,4 +1,4 @@
-# Description: Chef-Vault EncryptCreate class
+# Description: Chef-Vault VaultCreate class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 require 'chef/knife'
 require 'chef-vault'
 
-class EncryptCreate < Chef::Knife
+class VaultCreate < Chef::Knife
   deps do
     require 'chef/search/query'
     require File.expand_path('../mixin/compat', __FILE__)
@@ -25,7 +25,7 @@ class EncryptCreate < Chef::Knife
     include ChefVault::Mixin::Helper
   end
 
-  banner "knife encrypt create VAULT ITEM VALUES "\
+  banner "knife vault create VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
 
   option :mode,
@@ -68,8 +68,8 @@ class EncryptCreate < Chef::Knife
         vault_item = ChefVault::Item.load(vault, item)
         raise ChefVault::Exceptions::ItemAlreadyExists,
               "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
-              "use 'knife encrypt remove' and "\
-              "'knife encrypt update' to make changes."
+              "use 'knife vault remove' and "\
+              "'knife vault update' to make changes."
       rescue ChefVault::Exceptions::KeysNotFound,
              ChefVault::Exceptions::ItemNotFound
         vault_item = ChefVault::Item.new(vault, item)
@@ -98,4 +98,3 @@ class EncryptCreate < Chef::Knife
     exit 1
   end
 end
-
