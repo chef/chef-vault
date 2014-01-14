@@ -41,8 +41,7 @@ class Chef
         :long => '--file FILE',
         :description => 'File to be added to vault item as file-content'
 
-      banner "knife encrypt update VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
+      banner "knife encrypt update VAULT ITEM VALUES (options)"
 
       def run
         puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."

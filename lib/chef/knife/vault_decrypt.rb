@@ -21,7 +21,7 @@ class Chef
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault decrypt VAULT ITEM [VALUES] --mode MODE"
+      banner "knife vault decrypt VAULT ITEM [VALUES] (options)"
 
       def run
         vault = @name_args[0]

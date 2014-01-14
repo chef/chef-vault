@@ -22,8 +22,7 @@ class Chef
 
       include Knife::VaultBase
 
-      banner "knife encrypt create VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS --json FILE --file FILE"
+      banner "knife encrypt create VAULT ITEM VALUES (options)"
 
       option :search,
         :short => '-S SEARCH',

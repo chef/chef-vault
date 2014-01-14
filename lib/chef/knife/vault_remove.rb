@@ -21,8 +21,7 @@ class Chef
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault remove VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS"
+      banner "knife vault remove VAULT ITEM VALUES (options)"
 
       option :search,
         :short => '-S SEARCH',

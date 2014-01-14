@@ -21,7 +21,7 @@ class Chef
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault delete VAULT ITEM --mode MODE"
+      banner "knife vault delete VAULT ITEM (options)"
 
       def run
         vault = @name_args[0]

@@ -22,8 +22,7 @@ class Chef
 
       include Knife::VaultBase
 
-      banner "knife encrypt remove VAULT ITEM VALUES "\
-        "--mode MODE --search SEARCH --admins ADMINS"
+      banner "knife encrypt remove VAULT ITEM VALUES (options)"
 
       option :search,
         :short => '-S SEARCH',
