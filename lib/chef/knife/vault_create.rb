@@ -53,24 +53,31 @@ class Chef
 
         set_mode(config[:vault_mode])
 
-        if vault && item && (values || json_file || file) && (search || admins)
+        if vault && item && (search || admins)
           begin
             vault_item = ChefVault::Item.load(vault, item)
             raise ChefVault::Exceptions::ItemAlreadyExists,
               "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
-              "use 'knife vault remove' and "\
-              "'knife vault update' to make changes."
+              "use 'knife vault remove' 'knife vault update'"\
+              "or 'knife vault edit' to make changes."
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
             vault_item = ChefVault::Item.new(vault, item)
 
-            merge_values(values, json_file).each do |key, value|
-              vault_item[key] = value
-            end
+            if values || json_file || file
+              merge_values(values, json_file).each do |key, value|
+                vault_item[key] = value
+              end
 
-            if file
-              vault_item["file-name"] = File.basename(file)
-              vault_item["file-content"] = File.open(file){ |file| file.read() }
+              if file
+                vault_item["file-name"] = File.basename(file)
+                vault_item["file-content"] = File.open(file){ |file| file.read() }
+              end
+            else
+              vault_json = edit_data(Hash.new)
+              vault_json.each do |key, value|
+                vault_item[key] = value
+              end
             end
 
             vault_item.clients(search) if search
