@@ -13,59 +13,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+require 'chef/knife/vault_base'
 
-class VaultDecrypt < Chef::Knife
-  deps do
-    require 'chef/search/query'
-    require File.expand_path('../mixin/compat', __FILE__)
-    require File.expand_path('../mixin/helper', __FILE__)
-    include ChefVault::Mixin::KnifeCompat
-    include ChefVault::Mixin::Helper
-  end
+class Chef
+  class Knife
+    class VaultDecrypt < Knife
 
-  banner "knife vault decrypt VAULT ITEM [VALUES] --mode MODE"
+      include Chef::Knife::VaultBase
 
-  option :mode,
-    :short => '-M MODE',
-    :long => '--mode MODE',
-    :description => 'Chef mode to run in default - solo'
+      banner "knife vault decrypt VAULT ITEM [VALUES] --mode MODE"
 
-  def run
-    vault = @name_args[0]
-    item = @name_args[1]
-    values = @name_args[2]
+      def run
+        vault = @name_args[0]
+        item = @name_args[1]
+        values = @name_args[2]
 
-    if vault && item
-      set_mode(config[:mode])
+        if vault && item
+          set_mode(config[:mode])
 
-      print_values(vault, item, values)
-    else
-      show_usage
-    end
-  end
-
-  def show_usage
-    super
-    exit 1
-  end
-
-  def print_values(vault, item, values)
-    vault_item = ChefVault::Item.load(vault, item).raw_data
-
-    if values
-      included_values = %W( id )
-
-      values.split(",").each do |value|
-        value.strip! # remove white space
-        included_values << value
+          print_values(vault, item, values)
+        else
+          show_usage
+        end
       end
 
-      output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
-    else
-      output(vault_item)
+      def print_values(vault, item, values)
+        vault_item = ChefVault::Item.load(vault, item).raw_data
+
+        if values
+          included_values = %W( id )
+
+          values.split(",").each do |value|
+            value.strip! # remove white space
+            included_values << value
+          end
+
+          output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
+        else
+          output(vault_item)
+        end
+      end
     end
   end
 end
-

@@ -13,88 +13,75 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+require 'chef/knife/vault_base'
 
-class VaultRemove < Chef::Knife
-  deps do
-    require 'chef/search/query'
-    require File.expand_path('../mixin/compat', __FILE__)
-    require File.expand_path('../mixin/helper', __FILE__)
-    include ChefVault::Mixin::KnifeCompat
-    include ChefVault::Mixin::Helper
-  end
+class Chef
+  class Knife
+    class VaultRemove < Knife
 
-  banner "knife vault remove VAULT ITEM VALUES "\
+      include Chef::Knife::VaultBase
+
+      banner "knife vault remove VAULT ITEM VALUES "\
         "--mode MODE --search SEARCH --admins ADMINS"
 
-  option :mode,
-    :short => '-M MODE',
-    :long => '--mode MODE',
-    :description => 'Chef mode to run in default - solo'
+      option :search,
+        :short => '-S SEARCH',
+        :long => '--search SEARCH',
+        :description => 'Chef SOLR search for clients'
 
-  option :search,
-    :short => '-S SEARCH',
-    :long => '--search SEARCH',
-    :description => 'Chef SOLR search for clients'
+      option :admins,
+        :short => '-A ADMINS',
+        :long => '--admins ADMINS',
+        :description => 'Chef users to be added as admins'
 
-  option :admins,
-    :short => '-A ADMINS',
-    :long => '--admins ADMINS',
-    :description => 'Chef users to be added as admins'
+      def run
+        vault = @name_args[0]
+        item = @name_args[1]
+        values = @name_args[2]
+        search = config[:search]
+        admins = config[:admins]
+        json_file = config[:json]
 
-  def run
-    vault = @name_args[0]
-    item = @name_args[1]
-    values = @name_args[2]
-    search = config[:search]
-    admins = config[:admins]
-    json_file = config[:json]
+        set_mode(config[:mode])
 
-    set_mode(config[:mode])
-
-    if vault && item && ((values || json_file) || (search || admins))
-      begin
-        vault_item = ChefVault::Item.load(vault, item)
-        remove_items = []
-
-        if values || json_file
+        if vault && item && ((values || json_file) || (search || admins))
           begin
-            json = JSON.parse(values)
-            json.each do |key, value|
-              remove_items << key
+            vault_item = ChefVault::Item.load(vault, item)
+            remove_items = []
+
+            if values || json_file
+              begin
+                json = JSON.parse(values)
+                json.each do |key, value|
+                  remove_items << key
+                end
+              rescue JSON::ParserError
+                remove_items = values.split(",")
+              rescue Exception => e
+                raise e
+              end
+
+              remove_items.each do |key|
+                key.strip!
+                vault_item.remove(key)
+              end
             end
-          rescue JSON::ParserError
-            remove_items = values.split(",")
-          rescue Exception => e
-            raise e
-          end
 
-          remove_items.each do |key|
-            key.strip!
-            vault_item.remove(key)
-          end
-        end
+            vault_item.clients(search, :delete) if search
+            vault_item.admins(admins, :delete) if admins
 
-        vault_item.clients(search, :delete) if search
-        vault_item.admins(admins, :delete) if admins
+            vault_item.rotate_keys!
+          rescue ChefVault::Exceptions::KeysNotFound,
+            ChefVault::Exceptions::ItemNotFound
 
-        vault_item.rotate_keys!
-      rescue ChefVault::Exceptions::KeysNotFound,
-             ChefVault::Exceptions::ItemNotFound
-
-        raise ChefVault::Exceptions::ItemNotFound,
+            raise ChefVault::Exceptions::ItemNotFound,
               "#{vault}/#{item} does not exists, "\
               "use 'knife vault create' to create."
+          end
+        else
+          show_usage
+        end
       end
-    else
-      show_usage
     end
   end
-
-  def show_usage
-    super
-    exit 1
-  end
 end
-
