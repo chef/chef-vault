@@ -95,7 +95,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Format for decrypted output</td>
     <td>summary</td>
     <td>"summary", "json", "yaml", "pp"</td>
-    <td>decrypt</td>
+    <td>show</td>
   </tr>
 </table>
 
