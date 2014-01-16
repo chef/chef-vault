@@ -66,6 +66,7 @@ class Chef
               vault_item["file-content"] = File.open(file){ |file| file.read() }
             end
 
+            vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
 

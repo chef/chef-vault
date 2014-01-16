@@ -90,6 +90,14 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>create, update</td>
   </tr>
   <tr>
+    <td>-p DATA</td>
+    <td>--print DATA</td>
+    <td>Print extra vault data</td>
+    <td>nil</td>
+    <td>"search", "clients", "admins", "all"</td>
+    <td>show</td>
+  </tr>
+  <tr>
     <td>-F FORMAT</td>
     <td>--format FORMAT</td>
     <td>Format for decrypted output</td>

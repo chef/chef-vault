@@ -58,7 +58,7 @@ class Chef
             vault_item = ChefVault::Item.load(vault, item)
             raise ChefVault::Exceptions::ItemAlreadyExists,
               "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
-              "use 'knife vault remove' 'knife vault update'"\
+              "use 'knife vault remove' 'knife vault update' "\
               "or 'knife vault edit' to make changes."
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
@@ -80,6 +80,7 @@ class Chef
               end
             end
 
+            vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
 
