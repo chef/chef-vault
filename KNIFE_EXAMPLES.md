@@ -108,6 +108,10 @@ Show the entire root item in the passwords vault and print in JSON format.
 
     knife vault show passwords root -Fjson
 
+Show the entire root item in the passwords vault and print in JSON format, including the search query, clients, and admins.
+
+    knife vault show passwords root -Fjson -p all
+
 Show the username and password for the item root in the vault passwords.
 
     knife vault show passwords root "username, password"
@@ -187,6 +191,14 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
     <td>nil</td>
     <td></td>
     <td>create, update</td>
+  </tr>
+  <tr>
+    <td>-p DATA</td>
+    <td>--print DATA</td>
+    <td>Print extra vault data</td>
+    <td>nil</td>
+    <td>"search", "clients", "admins", "all"</td>
+    <td>show</td>
   </tr>
   <tr>
     <td>-F FORMAT</td>
