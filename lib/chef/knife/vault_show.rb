@@ -28,6 +28,11 @@ class Chef
         :long => '--mode MODE',
         :description => 'Chef mode to run in default - solo'
 
+      option :print,
+        :short => '-p TYPE',
+        :long => '--print TYPE',
+        :description => 'Print extra vault data, can be search, admins, clients or all'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
@@ -35,7 +40,6 @@ class Chef
 
         if vault && item
           set_mode(config[:vault_mode])
-
           print_values(vault, item, values)
         else
           show_usage
@@ -43,7 +47,24 @@ class Chef
       end
 
       def print_values(vault, item, values)
-        vault_item = ChefVault::Item.load(vault, item).raw_data
+        vault_item = ChefVault::Item.load(vault, item)
+
+        extra_data = {}
+
+        if config[:print]
+          case config[:print]
+          when 'search'
+            extra_data["search_query"] = vault_item.search
+          when 'admins'
+            extra_data["admins"] = vault_item.admins
+          when 'clients'
+            extra_data["clients"] = vault_item.clients
+          when 'all'
+            extra_data["search_query"] = vault_item.search
+            extra_data["admins"] = vault_item.admins
+            extra_data["clients"] = vault_item.clients
+          end
+        end
 
         if values
           included_values = %W( id )
@@ -53,10 +74,15 @@ class Chef
             included_values << value
           end
 
-          output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
+          filtered_data = Hash[vault_item.raw_data.find_all{|k,v| included_values.include?(k)}]
+
+          output_data = filtered_data.merge(extra_data)
         else
-          output(vault_item)
+          all_data = vault_item.raw_data
+
+          output_data = all_data.merge(extra_data)
         end
+          output(output_data)
       end
     end
   end

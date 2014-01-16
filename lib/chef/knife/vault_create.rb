@@ -80,6 +80,7 @@ class Chef
               end
             end
 
+            vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
 

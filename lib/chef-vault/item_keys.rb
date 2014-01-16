@@ -45,7 +45,6 @@ class ChefVault::ItemKeys < Chef::DataBagItem
   def search_query(search_query=nil)
     if search_query
       @raw_data["search_query"] = search_query
-      save
     else
       @raw_data["search_query"]
     end

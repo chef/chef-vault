@@ -62,7 +62,7 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
-  def search_query(search_query=nil)
+  def search(search_query=nil)
     if search_query
       keys.search_query(search_query)
     else
