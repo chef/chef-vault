@@ -62,6 +62,14 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
+  def search_query(search_query=nil)
+    if search_query
+      keys.search_query(search_query)
+    else
+      keys.search_query
+    end
+  end
+
   def admins(admins=nil, action=:add)
     if admins
       admins.split(",").each do |admin|
@@ -90,7 +98,7 @@ class ChefVault::Item < Chef::DataBagItem
       private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
       private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
     else
-      raise ChefVault::Exceptions::SecretDecryption, 
+      raise ChefVault::Exceptions::SecretDecryption,
             "#{data_bag}/#{id} is not encrypted with your public key.  "\
             "Contact an administrator of the vault item to encrypt for you!"
     end
@@ -134,7 +142,7 @@ class ChefVault::Item < Chef::DataBagItem
   def save(item_id=@raw_data['id'])
     # save the keys first, raising an error if no keys were defined
     if keys.admins.empty? && keys.clients.empty?
-      raise ChefVault::Exceptions::NoKeysDefined, 
+      raise ChefVault::Exceptions::NoKeysDefined,
             "No keys defined for #{item_id}"
     end
 
@@ -150,10 +158,10 @@ class ChefVault::Item < Chef::DataBagItem
       data_bag_item_path = File.join(data_bag_path, item_id)
 
       FileUtils.mkdir(data_bag_path) unless File.exists?(data_bag_path)
-      File.open("#{data_bag_item_path}.json",'w') do |file| 
+      File.open("#{data_bag_item_path}.json",'w') do |file|
         file.write(JSON.pretty_generate(self.raw_data))
       end
-      
+
       self.raw_data
     else
       begin
@@ -189,14 +197,14 @@ class ChefVault::Item < Chef::DataBagItem
     else
       super(data_bag, id)
     end
-  end    
+  end
 
   def self.load(vault, name)
     item = new(vault, name)
     item.load_keys(vault, "#{name}_keys")
-  
+
     begin
-      item.raw_data = 
+      item.raw_data =
         Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
     rescue Net::HTTPServerException => http_error
       if http_error.response.code == "404"
@@ -220,7 +228,7 @@ class ChefVault::Item < Chef::DataBagItem
   end
 
   def reload_raw_data
-    @raw_data = 
+    @raw_data =
       Chef::EncryptedDataBagItem.load(@data_bag, @raw_data["id"], secret).to_hash
     @encrypted = false
 

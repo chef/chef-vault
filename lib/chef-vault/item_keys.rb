@@ -21,6 +21,7 @@ class ChefVault::ItemKeys < Chef::DataBagItem
     @raw_data["id"] = name
     @raw_data["admins"] = []
     @raw_data["clients"] = []
+    @raw_data["search_query"] = []
   end
 
   def include?(key)
@@ -29,9 +30,9 @@ class ChefVault::ItemKeys < Chef::DataBagItem
 
   def add(chef_client, data_bag_shared_secret, type)
     public_key = OpenSSL::PKey::RSA.new chef_client.public_key
-    self[chef_client.name] = 
+    self[chef_client.name] =
       Base64.encode64(public_key.public_encrypt(data_bag_shared_secret))
-    
+
     @raw_data[type] << chef_client.name unless @raw_data[type].include?(chef_client.name)
     @raw_data[type]
   end
@@ -39,6 +40,15 @@ class ChefVault::ItemKeys < Chef::DataBagItem
   def delete(chef_client, type)
     raw_data.delete(chef_client)
     raw_data[type].delete(chef_client)
+  end
+
+  def search_query(search_query=nil)
+    if search_query
+      @raw_data["search_query"] = search_query
+      save
+    else
+      @raw_data["search_query"]
+    end
   end
 
   def clients
@@ -56,7 +66,7 @@ class ChefVault::ItemKeys < Chef::DataBagItem
       data_bag_item_path = File.join(data_bag_path, item_id)
 
       FileUtils.mkdir(data_bag_path) unless File.exists?(data_bag_path)
-      File.open("#{data_bag_item_path}.json",'w') do |file| 
+      File.open("#{data_bag_item_path}.json",'w') do |file|
         file.write(JSON.pretty_generate(self.raw_data))
       end
 
@@ -71,7 +81,7 @@ class ChefVault::ItemKeys < Chef::DataBagItem
           chef_data_bag.create
         end
       end
-      
+
       super
     end
   end
@@ -88,7 +98,7 @@ class ChefVault::ItemKeys < Chef::DataBagItem
     else
       super(data_bag, id)
     end
-  end  
+  end
 
   def to_json(*a)
     json = super
