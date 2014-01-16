@@ -26,6 +26,9 @@ See KNIFE_EXAMPLES.md for examples of commands
 To set 'client' as the default mode, add the following line to the knife.rb file.
 knife[:vault_mode] = 'client'
 
+To set a default 'vm' name, add the following line to the knife.rb file.
+knife[:vm_server_name] = 'default-node-name'
+
 NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.0 commands.
 
 ### Vault
@@ -38,6 +41,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
     knife vault show VAULT ITEM [VALUES]
+    knife vault mock VAULT ITEM [VALUES]
 
 <i>Global Options:</i>
 <table>
@@ -79,7 +83,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>JSON file to be used for values, will be merged with VALUES if VALUES is passed</td>
     <td>nil</td>
     <td></td>
-    <td>create, update</td>
+    <td>create, update, mock</td>
   </tr>
   <tr>
     <td>nil</td>
@@ -87,7 +91,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item</td>
     <td>nil</td>
     <td></td>
-    <td>create, update</td>
+    <td>create, update, mock</td>
   </tr>
   <tr>
     <td>-p DATA</td>
@@ -104,6 +108,14 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>summary</td>
     <td>"summary", "json", "yaml", "pp"</td>
     <td>show</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>--vm NODE_NAME</td>
+    <td>Name of the Vagrant node</td>
+    <td></td>
+    <td></td>
+    <td>mock</td>
   </tr>
 </table>
 
