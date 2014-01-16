@@ -95,8 +95,12 @@ class ChefVault::Item < Chef::DataBagItem
 
   def secret
     if @keys.include?(Chef::Config[:node_name])
-      private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
-      private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
+      if @keys.include?("secret")
+        @keys["secret"]
+      else
+        private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
+        private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
+      end
     else
       raise ChefVault::Exceptions::SecretDecryption,
             "#{data_bag}/#{id} is not encrypted with your public key.  "\
