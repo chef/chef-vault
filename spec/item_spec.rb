@@ -1,33 +1,28 @@
 require 'spec_helper'
 
 describe ChefVault::Item do
+  subject(:item) { ChefVault::Item.new("foo", "bar") }
+
   describe '#new' do
-    before(:each) do
-      @item = ChefVault::Item.new("foo", "bar")
-    end
 
-    it 'is an instance of ChefVault::Item' do
-      expect(@item).to be_an_instance_of ChefVault::Item
-    end
+    it { should be_an_instance_of ChefVault::Item }
 
-    it 'sets data_bag to foo' do
-      expect(@item.data_bag).to eq "foo"
-    end
+    its(:keys) { should be_an_instance_of ChefVault::ItemKeys }
 
-    it 'sets item["id"] to bar' do
-      expect(@item["id"]).to eq "bar"
-    end
+    its(:data_bag) { should eq "foo" }
 
-    it 'sets item.keys to ChefVault::ItemKeys' do
-      expect(@item.keys).to be_an_instance_of ChefVault::ItemKeys
-    end
+    specify { item["id"].should eq "bar" }
 
-    it 'sets item.keys.data_bag to foo' do
-      expect(@item.keys.data_bag).to eq "foo"
-    end
+    specify { item.keys["id"].should eq "bar_keys" }
 
-    it 'sets item.keys["id"] to bar_keys' do
-      expect(@item.keys["id"]).to eq "bar_keys"
+    specify { item.keys.data_bag.should eq "foo" }
+  end
+
+  describe '#save' do
+    context 'when item["id"] is bar.bar' do
+      let(:item) { ChefVault::Item.new("foo", "bar.bar") }
+
+      specify { expect { item.save }.to raise_error }
     end
   end
 end
