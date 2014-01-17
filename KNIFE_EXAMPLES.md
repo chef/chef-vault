@@ -41,6 +41,13 @@ Create a mock vault called passwords and put an item called root in it encrypted
 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
+To use the created mock vault files, you will need to move the newly created vault directory into your data bags location; For test-kitchen this is cookbook_name/test/integration/default/data_bags
+Example:
+
+    knife vault mock passwords root --vm "default-node-name"
+    # this creates a directory named passwords containing the files root.json and root_keys.json
+    mv passwords/ cookbook_name/test/integration/default/data_bags
+
 ### update
 Update the values in username and password in the vault passwords and item root.  Will overwrite existing values if values already exist!
 
