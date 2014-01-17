@@ -31,9 +31,13 @@ Create a vault called passwords and put an item called root in it encrypted for 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
 ### mock
-Create a mock vault called passwords and put an item called root in it with the given values for username and password encrypted for clients named "default-node-name"
+Create a mock vault called passwords and put an item called root in it with the given values for username and password encrypted for a client named "default-node-name"
 
     knife vault mock passwords root '{"username": "root", "password": "mypassword"}' --vm "default-node-name"
+
+Create a mock vault called passwords and put an item called root in it encrypted for a client named "default-node-name" *Leaving the data off the command-line will pop an editor to fill out the data*
+
+    knife vault mock passwords root --vm "default-node-name"
 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
