@@ -30,6 +30,24 @@ Create a vault called passwords and put an item called root in it encrypted for 
 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
+### mock
+Create a mock vault called passwords and put an item called root in it with the given values for username and password encrypted for a client named "default-node-name"
+
+    knife vault mock passwords root '{"username": "root", "password": "mypassword"}' --vm "default-node-name"
+
+Create a mock vault called passwords and put an item called root in it encrypted for a client named "default-node-name" *Leaving the data off the command-line will pop an editor to fill out the data*
+
+    knife vault mock passwords root --vm "default-node-name"
+
+Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
+
+To use the created mock vault files, you will need to move the newly created vault directory into your data bags location; For test-kitchen this is cookbook_name/test/integration/default/data_bags
+Example:
+
+    knife vault mock passwords root --vm "default-node-name"
+    # this creates a directory named passwords containing the files root.json and root_keys.json
+    mv passwords/ cookbook_name/test/integration/default/data_bags
+
 ### update
 Update the values in username and password in the vault passwords and item root.  Will overwrite existing values if values already exist!
 
@@ -155,7 +173,7 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
   <tr>
     <td>-M MODE</td>
     <td>--mode MODE</td>
-    <td>Chef mode to run in</td>
+    <td>Chef mode to run in. Can be set in knife.rb</td>
     <td>solo</td>
     <td>"solo", "client"</td>
     <td>all</td>
@@ -182,7 +200,7 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
     <td>JSON file to be used for values, will be merged with VALUES if VALUES is passed</td>
     <td>nil</td>
     <td></td>
-    <td>create, update</td>
+    <td>create, update, mock</td>
   </tr>
   <tr>
     <td>nil</td>
@@ -190,7 +208,7 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
     <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item</td>
     <td>nil</td>
     <td></td>
-    <td>create, update</td>
+    <td>create, update, mock</td>
   </tr>
   <tr>
     <td>-p DATA</td>
@@ -207,5 +225,13 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
     <td>summary</td>
     <td>"summary", "json", "yaml", "pp"</td>
     <td>show</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>--vm NODE_NAME</td>
+    <td>Name of the Vagrant node</td>
+    <td></td>
+    <td></td>
+    <td>mock</td>
   </tr>
 </table>

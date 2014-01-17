@@ -28,12 +28,11 @@ class ChefVault
         values = {}
         values.merge!(values_from_file(file)) if file
         values.merge!(values_from_json(json)) if json
-        
         values
       end
 
       def values_from_file(file)
-        json = File.open(file){ |file| file.read() }
+        json = File.open(file){ |f| f.read() }
 
         values_from_json(json)
       end
@@ -44,6 +43,28 @@ class ChefVault
         rescue JSON::ParserError
           raise JSON::ParserError, "#{json} is not valid JSON!"
         end
+      end
+
+      def new_vault_item(vault, item, values, json_file, file)
+        vault_item = ChefVault::Item.new(vault, item)
+
+        if values || json_file || file
+          merge_values(values, json_file).each do |key, value|
+            vault_item[key] = value
+          end
+
+          if file
+            vault_item["file-name"] = File.basename(file)
+            vault_item["file-content"] = File.open(file){ |file| file.read() }
+          end
+        else
+          vault_json = edit_data(Hash.new)
+          vault_json.each do |key, value|
+            vault_item[key] = value
+          end
+        end
+
+        vault_item
       end
     end
   end

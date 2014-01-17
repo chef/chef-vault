@@ -62,23 +62,7 @@ class Chef
               "or 'knife vault edit' to make changes."
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
-            vault_item = ChefVault::Item.new(vault, item)
-
-            if values || json_file || file
-              merge_values(values, json_file).each do |key, value|
-                vault_item[key] = value
-              end
-
-              if file
-                vault_item["file-name"] = File.basename(file)
-                vault_item["file-content"] = File.open(file){ |file| file.read() }
-              end
-            else
-              vault_json = edit_data(Hash.new)
-              vault_json.each do |key, value|
-                vault_item[key] = value
-              end
-            end
+            vault_item  = new_vault_item(vault, item, values, json_file, file)
 
             vault_item.search(search) if search
             vault_item.clients(search) if search
