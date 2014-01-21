@@ -1,6 +1,16 @@
 ## Planned (Unreleased)
 
-## Released 
+## Released
+## v2.2.0 / 2013-01-21
+* Validate data bag ID before saving
+* Add search_query to vault metadata
+* Refactor knife commands to be knife vault verb
+* Deprecate old knife commands
+* Add knife vault show to deprecate knife decrypt
+* Print admins, clients and search_query in show with -p
+* Add knife vault edit to edit vault items
+* Add mode option for knife.rb
+* Fix more README typos
 
 ## v2.1.0 / 2013-12-23
 * Update README to correct typos

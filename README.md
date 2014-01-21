@@ -140,6 +140,7 @@ Do `chef-vault --help` for all available options
 
 Author:: Kevin Moser - @moserke<br>
 Author:: Eli Klein - @eliklein<br>
+Author:: Joey Geiger - @jgeiger<br>
 Author:: Joshua Timberman - @jtimberman<br>
 Copyright:: Copyright (c) 2013 Nordstrom, Inc.<br>
 License:: Apache License, Version 2.0
