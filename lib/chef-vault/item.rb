@@ -49,13 +49,13 @@ class ChefVault::Item < Chef::DataBagItem
           keys.delete(node.name, "clients")
         else
           raise ChefVault::Exceptions::KeysActionNotValid,
-                "#{action} is not a valid action"
+            "#{action} is not a valid action"
         end
       end
 
       unless results_returned
         puts "WARNING: No clients were returned from search, you may not have "\
-             "got what you expected!!"
+          "got what you expected!!"
       end
     else
       keys.clients
@@ -81,7 +81,7 @@ class ChefVault::Item < Chef::DataBagItem
           keys.delete(admin, "admins")
         else
           raise ChefVault::Exceptions::KeysActionNotValid,
-                "#{action} is not a valid action"
+            "#{action} is not a valid action"
         end
       end
     else
@@ -99,8 +99,8 @@ class ChefVault::Item < Chef::DataBagItem
       private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
     else
       raise ChefVault::Exceptions::SecretDecryption,
-            "#{data_bag}/#{id} is not encrypted with your public key.  "\
-            "Contact an administrator of the vault item to encrypt for you!"
+        "#{data_bag}/#{id} is not encrypted with your public key.  "\
+        "Contact an administrator of the vault item to encrypt for you!"
     end
   end
 
@@ -140,10 +140,14 @@ class ChefVault::Item < Chef::DataBagItem
   end
 
   def save(item_id=@raw_data['id'])
+
+    # validate the format of the id before attempting to save
+    validate_id!(item_id)
+
     # save the keys first, raising an error if no keys were defined
     if keys.admins.empty? && keys.clients.empty?
       raise ChefVault::Exceptions::NoKeysDefined,
-            "No keys defined for #{item_id}"
+        "No keys defined for #{item_id}"
     end
 
     keys.save
@@ -209,13 +213,13 @@ class ChefVault::Item < Chef::DataBagItem
     rescue Net::HTTPServerException => http_error
       if http_error.response.code == "404"
         raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{name} could not be found"
+          "#{vault}/#{name} could not be found"
       else
         raise http_error
       end
     rescue Chef::Exceptions::ValidationFailed
       raise ChefVault::Exceptions::ItemNotFound,
-            "#{vault}/#{name} could not be found"
+        "#{vault}/#{name} could not be found"
     end
 
     item
@@ -245,7 +249,7 @@ class ChefVault::Item < Chef::DataBagItem
           admin = load_client(admin)
         rescue ChefVault::Exceptions::ClientNotFound
           raise ChefVault::Exceptions::AdminNotFound,
-                "FATAL: Could not find #{admin} in users or clients!"
+            "FATAL: Could not find #{admin} in users or clients!"
         end
       else
         raise http_error
@@ -261,7 +265,7 @@ class ChefVault::Item < Chef::DataBagItem
     rescue Net::HTTPServerException => http_error
       if http_error.response.code == "404"
         raise ChefVault::Exceptions::ClientNotFound,
-              "#{client} is not a valid chef client and/or node"
+          "#{client} is not a valid chef client and/or node"
       else
         raise http_error
       end
