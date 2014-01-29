@@ -1,7 +1,7 @@
 ## Planned (Unreleased)
 
 ## Released
-## v2.2.0 / 2013-01-21
+## v2.2.0 / 2014-01-21
 * Validate data bag ID before saving
 * Add search_query to vault metadata
 * Refactor knife commands to be knife vault verb
