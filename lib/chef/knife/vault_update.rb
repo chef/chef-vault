@@ -47,7 +47,7 @@ class Chef
         item = @name_args[1]
         values = @name_args[2]
         search = config[:search]
-        admins = config[:admins]
+        admins = config[:admins] || Chef::Config[:knife][:vault_admins].join(',')
         json_file = config[:json]
         file = config[:file]
 
