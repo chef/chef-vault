@@ -40,6 +40,8 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault edit VAULT ITEM
     knife vault update VAULT ITEM VALUES
     knife vault remove VAULT ITEM VALUES
+    knife vault deauthorize admin VAULT ITEM
+    knife vault deauthorize client VAULT ITEM
     knife vault delete VAULT ITEM
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
@@ -69,7 +71,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef Server SOLR Search Of Nodes</td>
     <td>nil</td>
     <td></td>
-    <td>create, remove, update</td>
+    <td>create, remove, update, deauthorize client</td>
   </tr>
   <tr>
     <td>-A ADMINS</td>
@@ -77,7 +79,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef clients or users to be vault admins, can be comma list</td>
     <td>nil</td>
     <td></td>
-    <td>create, remove, update</td>
+    <td>create, remove, update, deauthorize admin</td>
   </tr>
   <tr>
     <td>-J FILE</td>
