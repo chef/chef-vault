@@ -12,9 +12,9 @@
     export role=myrole                       #Change this to the role you need to pass the secret to
     
     knife vault create magicshow hat \       #Create a hat object in a data bag called magicshow
-       --mode client                         #Talk to the server rather than local 
-       --file tophat                         #Use the hat (file) we put the bunny in
-       --search "role:${role}"               #Encrypted for all *current* servers with my role
+       --mode client                 \       #Talk to the server rather than local 
+       --file tophat                 \       #Use the hat (file) we put the bunny in
+       --search "role:${role}"       \       #Encrypted for all *current* servers with my role
        --admins "${me}"                      #Encrypted for me
 
 ###Check the magic show is on the server
