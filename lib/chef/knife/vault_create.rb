@@ -72,7 +72,7 @@ class Chef
 
               if file
                 vault_item["file-name"] = File.basename(file)
-                vault_item["file-content"] = File.open(file){ |file| file.read() }
+                vault_item["file-content"] = File.open(file) { |f| f.read() }
               end
             else
               vault_json = edit_data(Hash.new)
