@@ -62,7 +62,7 @@ Add admin1 & admin2 to encrypted admins and role:webserver to encrypted clients 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
 ### remove
-Remove the values in username and password from the vault passwords and item root.
+Remove the keys username and password from the vault passwords and item root.
 
     knife vault remove passwords root '{"username": "root", "password": "mypassword"}'
 
