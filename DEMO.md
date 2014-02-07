@@ -8,16 +8,16 @@
 
 ###Put the hat in the magic show
 
-    export me=aug24                          #Change this to your chef id 
-    export role=myrole                       #Change this to the role you need to pass the secret to
+    export assistant=aug24                   #Change this to your chef id 
+    export role=magician                     #Change this to the role you need to pass the secret to
     
     knife vault create magicshow hat \       #Create a hat object in a data bag called magicshow
-       --mode client                 \       #Talk to the server rather than local 
+       --mode client                 \       #Talk to the chef server rather than local 
        --file tophat                 \       #Use the hat (file) we put the bunny in
-       --search "role:${role}"       \       #Encrypted for all *current* servers with my role
-       --admins "${me}"                      #Encrypted for me
+       --search "role:${role}"       \       #Encrypted for all *current* nodes with the magician role
+       --admins "${assistant}"               #Encrypted for the assistant
 
-###Check the magic show is on the server
+###Check the magic show is on the chef server
 
     knife data bag list
 
@@ -27,7 +27,7 @@
 ###Check you can see what's in it
     knife vault show magicshow hat file-content --mode client
 
-##'Hop' on to a server with the right role ('myrole', above)
+##'Hop' on to a node with a role of 'magician'
 
 ###Install required software
     sudo apt-get install ruby-dev --yes
@@ -38,6 +38,9 @@
     require 'chef-vault'
     puts ChefVault::Item.load('magicshow', 'hat')['file-content']
     EOF
+
+If you are on a node which is not a magician, an exception will be thrown, 
+and the node cannot see what is in the hat.
 
 #Finally, do a disappearing act.
 
