@@ -1,6 +1,9 @@
 ## Planned (Unreleased)
 
 ## Released
+## v2.2.1 / 2014-02-26
+* Add vault_admins to knife.rb for a default set of vault admins
+
 ## v2.2.0 / 2014-01-21
 * Validate data bag ID before saving
 * Add search_query to vault metadata
