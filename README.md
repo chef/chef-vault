@@ -26,7 +26,9 @@ See KNIFE_EXAMPLES.md for examples of commands
 To set 'client' as the default mode, add the following line to the knife.rb file.
 knife[:vault_mode] = 'client'
 
-To set the default list of admins for creating and updating vaults, add the following line to the knife.rb file.
+By default, the node_name attribute will be used as the default admin when creating and updating vaults.
+
+To set additional admins for creating and updating vaults, add the following line to the knife.rb file.
 knife[:vault_admins] = ["example-alice", "example-bob", "example-carol"]
 (These values can be overridden on the command line by using -A)
 
@@ -38,6 +40,8 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault edit VAULT ITEM
     knife vault update VAULT ITEM VALUES
     knife vault remove VAULT ITEM VALUES
+    knife vault deauthorize admin VAULT ITEM
+    knife vault deauthorize client VAULT ITEM
     knife vault delete VAULT ITEM
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
@@ -67,7 +71,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef Server SOLR Search Of Nodes</td>
     <td>nil</td>
     <td></td>
-    <td>create, remove, update</td>
+    <td>create, remove, update, deauthorize client</td>
   </tr>
   <tr>
     <td>-A ADMINS</td>
@@ -75,7 +79,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Chef clients or users to be vault admins, can be comma list</td>
     <td>nil</td>
     <td></td>
-    <td>create, remove, update</td>
+    <td>create, remove, update, deauthorize admin</td>
   </tr>
   <tr>
     <td>-J FILE</td>

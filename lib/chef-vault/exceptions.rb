@@ -15,13 +15,14 @@
 # limitations under the License.
 
 class ChefVault::Exceptions
-  class SecretDecryption < RuntimeError; end
-  class NoKeysDefined < RuntimeError; end
-  class ItemNotEncrypted < RuntimeError; end
-  class KeysActionNotValue < RuntimeError; end
+  class AdminDeauthorization < RuntimeError; end
   class AdminNotFound < RuntimeError; end
   class ClientNotFound < RuntimeError; end
-  class KeysNotFound < RuntimeError; end
-  class ItemNotFound < RuntimeError; end
   class ItemAlreadyExists < RuntimeError; end
+  class ItemNotEncrypted < RuntimeError; end
+  class ItemNotFound < RuntimeError; end
+  class KeysActionNotValue < RuntimeError; end
+  class KeysNotFound < RuntimeError; end
+  class NoKeysDefined < RuntimeError; end
+  class SecretDecryption < RuntimeError; end
 end

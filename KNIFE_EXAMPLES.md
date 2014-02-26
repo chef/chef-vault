@@ -62,33 +62,23 @@ Add admin1 & admin2 to encrypted admins and role:webserver to encrypted clients 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
 ### remove
-Remove the values in username and password from the vault passwords and item root.
+Remove the keys username and password from the vault passwords and item root.
 
     knife vault remove passwords root '{"username": "root", "password": "mypassword"}'
 
-Remove the values in username and password from the vault passwords and item root and remove admin1 & admin2 from the encrypted admins.
+### deauthorize admin
+knife vault deauthorize admin VAULT ITEM (options)
 
-    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -A "admin1,admin2"
+Deauthorize admin1 & admin2 from the encrypted admins for the vault passwords and item root.
 
-Remove the values in username and password from the vault passwords and item root and remove role:webserver from the encrypted clients.
+    knife vault deauthorize admin passwords root -A "admin1,admin2"
 
-    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver"
+### deauthorize client
+knife vault deauthorize client VAULT ITEM (options)
 
-Remove the values in username and password from the vault passwords and item root and remove role:webserver from the encrypted clients and admin1 & admin2 from the encrypted admins.
+Deauthorize the clients found by search role:webserver from the encrypted clients for vault passwords and item root.
 
-    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -A "admin1,admin2"
-
-Remove admin1 & admin2 from encrypted admins for the vault passwords and item root.
-
-    knife vault remove passwords root -A "admin1,admin2"
-
-Remove role:webserver from encrypted clients for the vault passwords and item root.
-
-    knife vault remove passwords root -S "role:webserver"
-
-Remove admin1 & admin2 from encrypted admins and role:webserver from encrypted clients for the vault passwords and item root.
-
-    knife vault remove passwords root -S "role:webserver" -A "admin1,admin2"
+    knife vault deauthorize client passwords root -S "role:webserver"
 
 ### delete
 Delete the item root from the vault passwords
@@ -166,7 +156,7 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
     <td>Chef Server SOLR Search Of Nodes</td>
     <td>nil</td>
     <td></td>
-    <td>create, remove, update</td>
+    <td>create, remove, update, deauthorize client</td>
   </tr>
   <tr>
     <td>-A ADMINS</td>
@@ -174,7 +164,7 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
     <td>Chef clients or users to be vault admins, can be comma list</td>
     <td>nil</td>
     <td></td>
-    <td>create, remove, update</td>
+    <td>create, remove, update, deauthorize admin</td>
   </tr>
   <tr>
     <td>-J FILE</td>

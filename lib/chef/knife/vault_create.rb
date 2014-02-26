@@ -1,5 +1,5 @@
 # Description: Chef-Vault VaultCreate class
-# Copyright 2013, Nordstrom, Inc.
+# Copyright 2014, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
 # limitations under the License.
 
 require 'chef/knife/vault_base'
+require 'chef/knife/vault_admins'
 
 class Chef
   class Knife
     class VaultCreate < Knife
 
       include Chef::Knife::VaultBase
+      include Chef::Knife::VaultAdmins
 
       banner "knife vault create VAULT ITEM VALUES (options)"
 
@@ -47,7 +49,6 @@ class Chef
         item = @name_args[1]
         values = @name_args[2]
         search = config[:search]
-        admins = config[:admins] || Chef::Config[:knife][:vault_admins].join(',')
         json_file = config[:json]
         file = config[:file]
 
@@ -71,7 +72,7 @@ class Chef
 
               if file
                 vault_item["file-name"] = File.basename(file)
-                vault_item["file-content"] = File.open(file){ |file| file.read() }
+                vault_item["file-content"] = File.open(file) { |f| f.read() }
               end
             else
               vault_json = edit_data(Hash.new)
