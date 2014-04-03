@@ -39,6 +39,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 
     knife vault create VAULT ITEM VALUES
     knife vault edit VAULT ITEM
+    knife vault refresh VAULT ITEM
     knife vault update VAULT ITEM VALUES
     knife vault remove VAULT ITEM VALUES
     knife vault delete VAULT ITEM
