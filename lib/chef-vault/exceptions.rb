@@ -24,4 +24,5 @@ class ChefVault::Exceptions
   class KeysNotFound < RuntimeError; end
   class ItemNotFound < RuntimeError; end
   class ItemAlreadyExists < RuntimeError; end
+  class SearchNotFound < RuntimeError; end
 end

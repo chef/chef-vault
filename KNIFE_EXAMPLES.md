@@ -142,6 +142,11 @@ Rotate the shared key for all vaults and items. The shared key is that which is 
 
     knife vault rotate all keys
 
+### refresh
+This command reads the search_query in the vault item, performs the search, and reapplies the results.
+
+    knife vault refresh VAULT ITEM
+
 ### global options
 <table>
   <tr>
