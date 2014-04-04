@@ -1,4 +1,4 @@
-# Description: ChefVault::User class
+# Description: Chef-Vault VaultShow class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChefVault
-  class User
-    def initialize(vault, username)
-      @item = ChefVault::Item.load(vault, username)
-    end
+require 'chef/knife/vault_base'
 
-    def [](key)
-      @item[key]
-    end
+class Chef
+  class Knife
+    class VaultList < Knife
 
-    def decrypt_password
-      puts "WARNING: This method is deprecated, please switch to item['value'] calls"
-      @item["password"]
+      include Chef::Knife::VaultBase
+
+      banner "knife vault list (options)"
+
+      option :mode,
+        :short => '-M MODE',
+        :long => '--mode MODE',
+        :description => 'Chef mode to run in default - solo'
+
+      def run
+        set_mode(config[:vault_mode])
+
+        output(format_list_for_display(ChefVault::Vault.list))
+      end
     end
   end
 end

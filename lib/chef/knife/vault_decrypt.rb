@@ -39,7 +39,7 @@ class Chef
       end
 
       def print_values(vault, item, values)
-        vault_item = ChefVault::Item.load(vault, item).raw_data
+        vault_item = ChefVault::VaultItem.load(vault, item).raw_data
 
         if values
           included_values = %W( id )

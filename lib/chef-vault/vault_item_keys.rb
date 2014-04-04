@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class ChefVault::ItemKeys < Chef::DataBagItem
+class ChefVault::VaultItemKeys < Chef::DataBagItem
   def initialize(vault, name)
     super() # parenthesis required to strip off parameters
     @data_bag = vault

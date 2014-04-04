@@ -31,7 +31,7 @@ class Chef
           set_mode(config[:vault_mode])
 
           begin
-            item = ChefVault::Item.load(vault, item)
+            item = ChefVault::VaultItem.load(vault, item)
             item.rotate_keys!
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound

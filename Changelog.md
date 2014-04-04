@@ -1,4 +1,11 @@
 ## Planned (Unreleased)
+## v3.0.0
+* Remove depricated knife encrypt & knife decrypt commands
+* Remove depricated user and certificate classes
+* Rename Item & ItemKeys to VaultItem and VaultItemKeys
+* Add Vault class
+* Add knife vault list command
+* Modify knife vault show to list items in a vault if only a vault is given
 
 ## Released
 ## v2.2.1 / 2014-02-26

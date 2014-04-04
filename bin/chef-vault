@@ -87,7 +87,7 @@ $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require 'chef-vault'
 
 ChefVault.load_config(options[:chef])
-item = ChefVault::Item.load(options[:vault], options[:item])
+item = ChefVault::VaultItem.load(options[:vault], options[:item])
 
 puts "#{options[:vault]}/#{options[:item]}"
 

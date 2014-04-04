@@ -20,32 +20,15 @@ require 'chef'
 require 'chef/user'
 require 'chef-vault/version'
 require 'chef-vault/exceptions'
-require 'chef-vault/item'
-require 'chef-vault/item_keys'
-require 'chef-vault/user'
-require 'chef-vault/certificate'
+require 'chef-vault/vault'
+require 'chef-vault/vault_item'
+require 'chef-vault/vault_item_keys'
 require 'chef-vault/chef_patch/api_client'
 require 'chef-vault/chef_patch/user'
 
 class ChefVault
-
-  attr_accessor :vault
-
-  def initialize(vault, chef_config_file=nil)
-    @vault = vault
-    ChefVault.load_config(chef_config_file) if chef_config_file
-  end
-
-  def version
+  def self.version
     VERSION
-  end
-
-  def user(username)
-    ChefVault::User.new(vault, username)
-  end
-
-  def certificate(name)
-    ChefVault::Certificate.new(vault, name)
   end
 
   def self.load_config(chef_config_file)

@@ -56,14 +56,14 @@ class Chef
 
         if vault && item && (search || admins)
           begin
-            vault_item = ChefVault::Item.load(vault, item)
+            vault_item = ChefVault::VaultItem.load(vault, item)
             raise ChefVault::Exceptions::ItemAlreadyExists,
               "#{vault_item.data_bag}/#{vault_item.id} already exists, "\
               "use 'knife vault remove' 'knife vault update' "\
               "or 'knife vault edit' to make changes."
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
-            vault_item = ChefVault::Item.new(vault, item)
+            vault_item = ChefVault::VaultItem.new(vault, item)
 
             if values || json_file || file
               merge_values(values, json_file).each do |key, value|

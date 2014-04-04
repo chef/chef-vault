@@ -21,7 +21,7 @@ class Chef
 
       include Chef::Knife::VaultBase
 
-      banner "knife vault show VAULT ITEM [VALUES] (options)"
+      banner "knife vault show VAULT [ITEM] [VALUES] (options)"
 
       option :mode,
         :short => '-M MODE',
@@ -38,16 +38,24 @@ class Chef
         item = @name_args[1]
         values = @name_args[2]
 
+        set_mode(config[:vault_mode])
+
         if vault && item
-          set_mode(config[:vault_mode])
           print_values(vault, item, values)
+        elsif vault
+          print_items(vault)
         else
           show_usage
         end
       end
 
+      def print_items(vault)
+        display = format_list_for_display(ChefVault::Vault.load(vault))
+        output(display)
+      end
+
       def print_values(vault, item, values)
-        vault_item = ChefVault::Item.load(vault, item)
+        vault_item = ChefVault::VaultItem.load(vault, item)
 
         extra_data = {}
 

@@ -14,28 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$:.push File.expand_path("../lib", __FILE__)
-require "chef-vault/version"
+$:.push File.expand_path('../lib', __FILE__)
+require 'chef-vault/version'
 
 Gem::Specification.new do |s|
-  s.name             = "chef-vault"
+  s.name             = 'chef-vault'
   s.version          = ChefVault::VERSION
   s.has_rdoc         = true
-  s.authors          = ["Kevin Moser"]
-  s.email            = ["kevin.moser@nordstrom.com"]
-  s.summary          = "Data encryption support for chef using data bags"
+  s.authors          = ['Kevin Moser']
+  s.email            = ['kevin.moser@nordstrom.com']
+  s.summary          = 'Data encryption support for chef using data bags'
   s.description      = s.summary
   s.license          = 'Apache License, v2.0'
 
   s.files            = `git ls-files`.split("\n")
-  s.add_dependency     "chef", ">= 0.10.10"
 
   # tests
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
 
-  s.require_paths    = ["lib"]
+  s.require_paths    = ['lib']
 
-  s.bindir           = "bin"
+  s.bindir           = 'bin'
   s.executables      = %w( chef-vault )
 end

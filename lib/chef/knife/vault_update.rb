@@ -56,7 +56,7 @@ class Chef
 
         if vault && item && ((values || json_file || file) || (search || admins))
           begin
-            vault_item = ChefVault::Item.load(vault, item)
+            vault_item = ChefVault::VaultItem.load(vault, item)
 
             merge_values(values, json_file).each do |key, value|
               vault_item[key] = value

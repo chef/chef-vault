@@ -45,7 +45,7 @@ class Chef
 
         if vault && item && ((values || json_file) || (search || admins))
           begin
-            vault_item = ChefVault::Item.load(vault, item)
+            vault_item = ChefVault::VaultItem.load(vault, item)
             remove_items = []
 
             if values || json_file

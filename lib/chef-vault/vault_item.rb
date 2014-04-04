@@ -16,7 +16,7 @@
 
 require 'securerandom'
 
-class ChefVault::Item < Chef::DataBagItem
+class ChefVault::VaultItem < Chef::DataBagItem
   attr_accessor :keys
   attr_accessor :encrypted_data_bag_item
 
@@ -24,13 +24,13 @@ class ChefVault::Item < Chef::DataBagItem
     super() # Don't pass parameters
     @data_bag = vault
     @raw_data["id"] = name
-    @keys = ChefVault::ItemKeys.new(vault, "#{name}_keys")
+    @keys = ChefVault::VaultItemKeys.new(vault, "#{name}_keys")
     @secret = generate_secret
     @encrypted = false
   end
 
   def load_keys(vault, keys)
-    @keys = ChefVault::ItemKeys.load(vault, keys)
+    @keys = ChefVault::VaultItemKeys.load(vault, keys)
     @secret = secret
   end
 

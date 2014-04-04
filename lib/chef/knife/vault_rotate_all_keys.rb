@@ -50,7 +50,7 @@ class Chef
 
       def rotate_vault_item_keys(vault, item)
         puts "Rotating keys for: #{vault} #{item}"
-        ChefVault::Item.load(vault, item).rotate_keys!
+        ChefVault::VaultItem.load(vault, item).rotate_keys!
       end
     end
   end

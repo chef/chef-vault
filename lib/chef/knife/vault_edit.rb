@@ -36,7 +36,7 @@ class Chef
 
         if vault && item
           begin
-            vault_item = ChefVault::Item.load(vault, item)
+            vault_item = ChefVault::VaultItem.load(vault, item)
 
             filtered_vault_data = vault_item.raw_data.select{|x| x != 'id'}
 

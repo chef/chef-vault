@@ -44,7 +44,8 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault delete VAULT ITEM
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
-    knife vault show VAULT ITEM [VALUES]
+    knife vault show VAULT [ITEM] [VALUES]
+    knife vault list
 
 <i>Global Options:</i>
 <table>
@@ -118,8 +119,6 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 
 To use this gem in a recipe to decrypt data you must first install the gem via a chef_gem resource.  Once the gem is installed require the gem and then you can create a new instance of ChefVault.
 
-NOTE: chef-vault 1.0 style decryption is supported, however it has been deprecated and chef-vault 2.0 decryption should be used instead
-
 ### Example Code
 
 ```ruby
@@ -127,7 +126,7 @@ chef_gem "chef-vault"
 
 require 'chef-vault'
 
-item = ChefVault::Item.load("passwords", "root")
+item = ChefVault::VaultItem.load("passwords", "root")
 item["password"]
 ```
 

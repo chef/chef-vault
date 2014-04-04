@@ -95,8 +95,13 @@ Delete the item root from the vault passwords
 
     knife vault delete passwords root
 
+### list
+List all vaults in a given org
+
+    knife vault list
+
 ### show
-knife vault show VAULT ITEM [VALUES]
+knife vault show VAULT [ITEM] [VALUES]
 
 These are the commands that are used to decrypt a chef-vault encrypted item and show the requested values.
 
@@ -119,6 +124,10 @@ Show the username and password for the item root in the vault passwords.
 Show the contents for the item user_pem in the vault certs.
 
     knife vault show certs user_pem "contents"
+
+Show all vault items in a given vault
+
+    knife vault show passwords
 
 ### edit
 knife vault edit VAULT ITEM
