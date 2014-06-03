@@ -1,6 +1,11 @@
 ## Planned (Unreleased)
 
 ## Released
+## v2.2.2 / 2014-06-03
+* Add knife vault refresh command
+* Use node_name as a default admin
+* Add DEMO for users
+
 ## v2.2.1 / 2014-02-26
 * Add vault_admins to knife.rb for a default set of vault admins
 
