@@ -127,4 +127,54 @@ describe ChefVault::VaultItem do
       item.admins.include?('admin').should be_true
     end 
   end
+
+  describe '#refresh!' do
+    subject(:item) { ChefVault::VaultItem.new("foo", "bar") }
+    subject(:test_nodes) { Array.new }
+    subject(:admin) { Chef::User.new }
+    subject(:keyfile) { Object.new }
+
+    before do
+
+      Chef::Config[:node_name] = 'admin'
+      Chef::Config[:client_key] = '/fake/path'
+
+      %w( name1 name2 name3 ).each do |name|
+        node = stub_node(name, { roles: %w( nodes ), name: name })
+        key = OpenSSL::PKey::RSA.generate(2048).public_key.to_pem
+        test_nodes << node
+        ChefSpec::Server.create_client(name,
+                                       { public_key: key, node_name: name })
+      end
+
+      test_key = OpenSSL::PKey::RSA.generate(2048)
+      admin.name 'admin'
+      admin.admin true
+      admin.public_key test_key.public_key.to_pem
+      admin.private_key test_key.to_pem
+      ChefVault::ChefPatch::User.stub(:load).and_return(admin)
+
+      Chef::Search::Query.any_instance.stub(:search).and_return(
+                                                     [ test_nodes, 1, 3 ] )
+
+      Object.any_instance.stub_chain(:open, :read).and_return(admin.private_key)
+      ::IO.stub(:read).with(anything).and_call_original
+      ::IO.stub(:read).with('/fake/path').and_return(admin.private_key)
+    end
+
+    it 'should add new client key to encrypted data bag' do
+      item.clients('bogus:search')
+      item.admins('admin')
+      item['my_key'] = 'my_value'
+      item.save
+
+      item.clients.length.should == 3
+      test_nodes.delete_at(0)
+      Chef::Search::Query.any_instance.unstub(:search)
+      Chef::Search::Query.any_instance.stub(:search).and_return(
+                                                     [ test_nodes, 1, 2 ] )
+      item.refresh!
+      item.clients.length.should == 2 
+    end 
+  end
 end
