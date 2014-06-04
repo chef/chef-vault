@@ -38,12 +38,18 @@ class ChefVault::VaultItem < Chef::DataBagItem
     if search
       results_returned = false
 
+      if action == :refresh
+        keys.clear_clients
+      end
+
       query = Chef::Search::Query.new
       query.search(:node, search)[0].each do |node|
         results_returned = true
 
         case action
         when :add
+          keys.add(load_client(node.name), @secret, "clients")
+        when :refresh
           keys.add(load_client(node.name), @secret, "clients")
         when :delete
           keys.delete(node.name, "clients")
@@ -201,6 +207,40 @@ class ChefVault::VaultItem < Chef::DataBagItem
     else
       super(data_bag, id)
     end
+  end
+
+  def refresh!
+    @secret = generate_secret
+
+    clients(keys.search_query, :refresh)
+
+    save
+    reload_raw_data
+  end
+
+  def add_server(search)
+    query = Chef::Search::Query.new
+    q = search.split(':')
+    query.search(:node, search)[0].each do |node|
+      if !node.attribute?(q[0])
+        q[0] += 's'
+      end
+      if node[q[0]].kind_of?(String) && node[q[0]] == q[1]
+        keys.add(load_client(node.name), @secret, 'clients')
+      elsif node[q[0]].kind_of?(Array) && node[q[0]].include?(q[1])
+        keys.add(load_client(node.name), @secret, 'clients')
+      elsif node[q[0]].kind_of?(Hash) && node[q[0]].key?(q[1])
+        keys.add(load_client(node.name), @secret, 'clients')
+      elsif node[q[0]].kind_of?(Numeric) && node[q[0]] == q[1]
+        keys.add(load_client(node.name), @secret, 'clients')
+      else
+        Chef::Log.warn("No matching top-level attribute #{q[0]} for #{node.name}!")
+      end
+    end
+  end
+
+  def add_admin_user(admin='admin')
+    keys.add(load_admin(admin), @secret, 'admins')
   end
 
   def self.load(vault, name)
