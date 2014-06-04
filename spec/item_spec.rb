@@ -60,7 +60,6 @@ describe ChefVault::VaultItem do
 
   describe '#add_server' do
     subject(:item) { ChefVault::VaultItem.new("foo", "bar") }
-    let(:chef_run) { ChefSpec::Runner.new }
 
     before do
       ChefSpec::Server.create_client('test', { admin: true })
@@ -104,5 +103,28 @@ describe ChefVault::VaultItem do
       item.clients.include?('chef-server').should be_true
       item.clients.include?('faux-server').should be_false
     end
+  end
+
+  describe '#add_admin_user' do
+    subject(:item) { ChefVault::VaultItem.new("foo", "bar") }
+
+    before do
+      ChefSpec::Server.create_client('test', { admin: true })
+      Chef::Config[:node_name] = 'test'
+      Chef::Config[:client_key] = nil
+     
+      admin = Chef::User.new
+      admin.name 'admin'
+      admin.admin true
+      admin.public_key OpenSSL::PKey::RSA.generate(2048).public_key.to_pem
+      ChefVault::ChefPatch::User.stub(:load).and_return(admin)
+    end
+
+    it 'should add admin to the admins list' do
+      item.admins.length.should == 0
+      item.add_admin_user
+      item.admins.length.should == 1
+      item.admins.include?('admin').should be_true
+    end 
   end
 end
