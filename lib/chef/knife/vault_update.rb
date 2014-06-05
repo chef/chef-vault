@@ -55,6 +55,7 @@ class Chef
         search = config[:search]
         json_file = config[:json]
         file = config[:file]
+        add_server_key = config[:add_server_key]
 
         set_mode(config[:vault_mode])
 

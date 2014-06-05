@@ -19,7 +19,7 @@ class Chef
         if vault && item
           begin
             vault_item = ChefVault::VaultItem.load(vault, item)
-            vault_item.refresh
+            vault_item.refresh!
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
 
