@@ -104,6 +104,13 @@ class ChefVault::VaultItemKeys < Chef::DataBagItem
     json.gsub(self.class.name, self.class.superclass.name)
   end
 
+  def clear_clients
+    @raw_data['clients'].each do |client|
+      raw_data.delete(client)
+    end
+    raw_data['clients'] = []
+  end
+
   def self.from_data_bag_item(data_bag_item)
     item = new(data_bag_item.data_bag, data_bag_item.name)
     item.raw_data = data_bag_item.raw_data

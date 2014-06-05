@@ -44,6 +44,10 @@ class Chef
         :long => '--file FILE',
         :description => 'File to be added to vault item as file-content'
 
+      option :add_server_key,
+        :long => '--add-server-key SEARCH',
+        :description => 'Add chef-server client key via SOLR search term'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
@@ -51,10 +55,11 @@ class Chef
         search = config[:search]
         json_file = config[:json]
         file = config[:file]
+        add_server_key = config[:add_server_key]
 
         set_mode(config[:vault_mode])
 
-        if vault && item && ((values || json_file || file) || (search || admins))
+        if vault && item && ((values || json_file || file) || (search || admins || add_server_key))
           begin
             vault_item = ChefVault::VaultItem.load(vault, item)
 
@@ -70,6 +75,7 @@ class Chef
             vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
+            vault_item.add_server(add_server_key) if add_server_key
 
             vault_item.save
           rescue ChefVault::Exceptions::KeysNotFound,

@@ -31,7 +31,9 @@ Gem::Specification.new do |s|
 
   # tests
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec', '>= 3.0'
+  s.add_development_dependency 'chefspec', '>= 4.0'
+  s.add_development_dependency 'chef-zero', '>= 2.1'
 
   s.require_paths    = ['lib']
 
