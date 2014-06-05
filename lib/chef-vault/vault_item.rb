@@ -210,8 +210,6 @@ class ChefVault::VaultItem < Chef::DataBagItem
   end
 
   def refresh!
-    @secret = generate_secret
-
     clients(keys.search_query, :refresh)
 
     save
