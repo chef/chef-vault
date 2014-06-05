@@ -4,15 +4,18 @@ describe ChefVault::VaultItemKeys do
   describe '#new' do
     subject(:keys) { ChefVault::VaultItemKeys.new("foo", "bar") }
 
-    it { should be_an_instance_of ChefVault::VaultItemKeys }
+    it { is_expected.to be_an_instance_of ChefVault::VaultItemKeys }
 
-    its(:data_bag) { should eq "foo" }
+    describe '#data_bag' do
+      subject { super().data_bag }
+      it { is_expected.to eq "foo" }
+    end
 
-    specify { keys["id"].should eq "bar" }
+    specify { expect(keys["id"]).to eq "bar" }
 
-    specify { keys["admins"].should eq [] }
+    specify { expect(keys["admins"]).to eq [] }
 
-    specify { keys["clients"].should eq [] }
+    specify { expect(keys["clients"]).to eq [] }
   end
 
   describe '#clear_clients' do
@@ -26,8 +29,8 @@ describe ChefVault::VaultItemKeys do
         keys.add(client, 'secret', 'clients')
       end
       keys.clear_clients
-      keys.clients.length.should == 0
-      keys['clients'].length.should == 0
+      expect(keys.clients.length).to eq(0)
+      expect(keys['clients'].length).to eq(0)
     end
   end
 end

@@ -7,17 +7,23 @@ describe ChefVault::VaultItem do
 
   describe '#new' do
 
-    it { should be_an_instance_of ChefVault::VaultItem }
+    it { is_expected.to be_an_instance_of ChefVault::VaultItem }
 
-    its(:keys) { should be_an_instance_of ChefVault::VaultItemKeys }
+    describe '#keys' do
+      subject { super().keys }
+      it { is_expected.to be_an_instance_of ChefVault::VaultItemKeys }
+    end
 
-    its(:data_bag) { should eq "foo" }
+    describe '#data_bag' do
+      subject { super().data_bag }
+      it { is_expected.to eq "foo" }
+    end
 
-    specify { item["id"].should eq "bar" }
+    specify { expect(item["id"]).to eq "bar" }
 
-    specify { item.keys["id"].should eq "bar_keys" }
+    specify { expect(item.keys["id"]).to eq "bar_keys" }
 
-    specify { item.keys.data_bag.should eq "foo" }
+    specify { expect(item.keys.data_bag).to eq "foo" }
   end
 
   describe '#save' do
@@ -45,16 +51,16 @@ describe ChefVault::VaultItem do
                                        { public_key: key, node_name: name })
       end
 
-      Chef::Search::Query.any_instance.stub(:search).and_return(
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_return(
                                                      [ test_nodes, 1, 3 ] )
     end
 
     it 'should have same number of clients on refresh' do
       item.clients('role:nodes')
-      item.clients.length.should == 3
+      expect(item.clients.length).to eq(3)
 
       item.clients('role:nodes', :refresh)
-      item.clients.length.should == 3
+      expect(item.clients.length).to eq(3)
     end
   end
 
@@ -75,15 +81,15 @@ describe ChefVault::VaultItem do
                                        { public_key: key, node_name: name })
       end
 
-      Chef::Search::Query.any_instance.stub(:search).and_return(
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_return(
                                                      [ test_nodes, 1, 3 ] )
     end
 
     it 'should add chef-server to clients' do
       item.clients('role:clients')
-      item.clients.length.should == 3
+      expect(item.clients.length).to eq(3)
 
-      Chef::Search::Query.any_instance.unstub(:search)
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_call_original
       faux_server = Chef::Node.build('faux-server')
       faux_server.normal_attrs = ({ :roles => %w( faux-server ) })
       faux_server.set['bogus']['path']['roles'] = %w( chef-server )
@@ -95,13 +101,13 @@ describe ChefVault::VaultItem do
       ChefSpec::Server.create_client('chef-server',
           { public_key: OpenSSL::PKey::RSA.generate(2048).public_key.to_pem,
             node_name: 'chef-server' })
-      Chef::Search::Query.any_instance.stub(:search).with(:node,
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).with(:node,
           'role:chef-server').and_return([ [faux_server, chef_server], 1, 2 ])
  
       item.add_server('role:chef-server')
-      item.clients.length.should == 4
-      item.clients.include?('chef-server').should be_true
-      item.clients.include?('faux-server').should be_false
+      expect(item.clients.length).to eq(4)
+      expect(item.clients.include?('chef-server')).to be_truthy
+      expect(item.clients.include?('faux-server')).to be_falsey
     end
   end
 
@@ -117,14 +123,14 @@ describe ChefVault::VaultItem do
       admin.name 'admin'
       admin.admin true
       admin.public_key OpenSSL::PKey::RSA.generate(2048).public_key.to_pem
-      ChefVault::ChefPatch::User.stub(:load).and_return(admin)
+      allow(ChefVault::ChefPatch::User).to receive(:load).and_return(admin)
     end
 
     it 'should add admin to the admins list' do
-      item.admins.length.should == 0
+      expect(item.admins.length).to eq(0)
       item.add_admin_user
-      item.admins.length.should == 1
-      item.admins.include?('admin').should be_true
+      expect(item.admins.length).to eq(1)
+      expect(item.admins.include?('admin')).to be_truthy
     end 
   end
 
@@ -152,14 +158,14 @@ describe ChefVault::VaultItem do
       admin.admin true
       admin.public_key test_key.public_key.to_pem
       admin.private_key test_key.to_pem
-      ChefVault::ChefPatch::User.stub(:load).and_return(admin)
+      allow(ChefVault::ChefPatch::User).to receive(:load).and_return(admin)
 
-      Chef::Search::Query.any_instance.stub(:search).and_return(
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_return(
                                                      [ test_nodes, 1, 3 ] )
 
-      Object.any_instance.stub_chain(:open, :read).and_return(admin.private_key)
-      ::IO.stub(:read).with(anything).and_call_original
-      ::IO.stub(:read).with('/fake/path').and_return(admin.private_key)
+      allow_any_instance_of(Object).to receive_message_chain(:open, :read).and_return(admin.private_key)
+      allow(::IO).to receive(:read).with(anything).and_call_original
+      allow(::IO).to receive(:read).with('/fake/path').and_return(admin.private_key)
     end
 
     it 'should add new client key to encrypted data bag' do
@@ -168,13 +174,13 @@ describe ChefVault::VaultItem do
       item['my_key'] = 'my_value'
       item.save
 
-      item.clients.length.should == 3
+      expect(item.clients.length).to eq(3)
       test_nodes.delete_at(0)
-      Chef::Search::Query.any_instance.unstub(:search)
-      Chef::Search::Query.any_instance.stub(:search).and_return(
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_call_original
+      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_return(
                                                      [ test_nodes, 1, 2 ] )
       item.refresh!
-      item.clients.length.should == 2 
+      expect(item.clients.length).to eq(2) 
     end 
   end
 end
