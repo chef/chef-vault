@@ -35,33 +35,35 @@ class ChefVault::VaultItem < Chef::DataBagItem
   end
 
   def clients(search=nil, action=:add)
-    if search
-      results_returned = false
-
+    if search.is_a?(String)
       if action == :refresh
         keys.clear_clients
       end
 
-      query = Chef::Search::Query.new
-      query.search(:node, search)[0].each do |node|
-        results_returned = true
+      search.split(',').each do |s|
+        results_returned = false
 
-        case action
-        when :add
-          keys.add(load_client(node.name), @secret, "clients")
-        when :refresh
-          keys.add(load_client(node.name), @secret, "clients")
-        when :delete
-          keys.delete(node.name, "clients")
-        else
-          raise ChefVault::Exceptions::KeysActionNotValid,
-            "#{action} is not a valid action"
+        query = Chef::Search::Query.new
+        query.search(:node, s)[0].each do |node|
+          results_returned = true
+
+          case action
+          when :add
+            keys.add(load_client(node.name), @secret, "clients")
+          when :refresh
+            keys.add(load_client(node.name), @secret, "clients")
+          when :delete
+            keys.delete(node.name, "clients")
+          else
+            raise ChefVault::Exceptions::KeysActionNotValid,
+              "#{action} is not a valid action"
+          end
         end
-      end
 
-      unless results_returned
-        puts "WARNING: No clients were returned from search, you may not have "\
-          "got what you expected!!"
+        unless results_returned
+          puts "WARNING: No clients were returned from search, you may not have "\
+            "got what you expected!!"
+        end
       end
     else
       keys.clients
@@ -73,6 +75,14 @@ class ChefVault::VaultItem < Chef::DataBagItem
       keys.search_query(search_query)
     else
       keys.search_query
+    end
+  end
+
+  def server_search(server_query=nil)
+    if server_query
+      keys.server_query(server_query)
+    else
+      keys.server_query
     end
   end
 
@@ -211,6 +221,7 @@ class ChefVault::VaultItem < Chef::DataBagItem
 
   def refresh!
     clients(keys.search_query, :refresh)
+    clients(keys.server_query, :add)
 
     save
     reload_raw_data
@@ -218,22 +229,30 @@ class ChefVault::VaultItem < Chef::DataBagItem
 
   def add_server(search)
     query = Chef::Search::Query.new
-    q = search.split(':')
     query.search(:node, search)[0].each do |node|
-      if !node.attribute?(q[0])
-        q[0] += 's'
-      end
-      if node[q[0]].kind_of?(String) && node[q[0]] == q[1]
-        keys.add(load_client(node.name), @secret, 'clients')
-      elsif node[q[0]].kind_of?(Array) && node[q[0]].include?(q[1])
-        keys.add(load_client(node.name), @secret, 'clients')
-      elsif node[q[0]].kind_of?(Hash) && node[q[0]].key?(q[1])
-        keys.add(load_client(node.name), @secret, 'clients')
-      elsif node[q[0]].kind_of?(Numeric) && node[q[0]] == q[1]
+      if check_top_level_attr(search, node)
         keys.add(load_client(node.name), @secret, 'clients')
       else
-        Chef::Log.warn("No matching top-level attribute #{q[0]} for #{node.name}!")
+        Chef::Log.warn("Search #{search} does not match top-level attribute for #{node.name}!")
       end
+    end
+  end
+
+  def check_top_level_attr(search, node)
+    q = search.split(':')
+    if !node.attribute?(q[0])
+      q[0] += 's'
+    end
+    if node[q[0]].kind_of?(String) && node[q[0]] == q[1]
+      return true
+    elsif node[q[0]].kind_of?(Array) && node[q[0]].include?(q[1])
+      return true
+    elsif node[q[0]].kind_of?(Hash) && node[q[0]].key?(q[1])
+      return true
+    elsif node[q[0]].kind_of?(Numeric) && node[q[0]] == q[1]
+      return true
+    else
+      return false
     end
   end
 
