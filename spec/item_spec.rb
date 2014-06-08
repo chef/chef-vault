@@ -169,16 +169,15 @@ describe ChefVault::VaultItem do
     end
 
     it 'should add new client key to encrypted data bag' do
+      item.search('bogus:search')
       item.clients('bogus:search')
       item.admins('admin')
       item['my_key'] = 'my_value'
       item.save
 
       expect(item.clients.length).to eq(3)
-      test_nodes.delete_at(0)
-      allow_any_instance_of(Chef::Search::Query).to receive(:search).and_call_original
       allow_any_instance_of(Chef::Search::Query).to receive(:search).and_return(
-                                                     [ test_nodes, 1, 2 ] )
+                                                    [ test_nodes[0..1], 1, 2 ] )
       item.refresh!
       expect(item.clients.length).to eq(2) 
     end 
