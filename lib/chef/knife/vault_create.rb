@@ -89,6 +89,7 @@ class Chef
             vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
+            vault_item.server_search(add_server_key) if add_server_key
             vault_item.add_server(add_server_key) if add_server_key
 
             vault_item.save
