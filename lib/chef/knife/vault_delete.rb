@@ -30,9 +30,9 @@ class Chef
         set_mode(config[:vault_mode])
 
         if vault && item
-          delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
+          delete_object(ChefVault::VaultItem, "#{vault}/#{item}", "chef_vault_item") do
             begin
-              ChefVault::Item.load(vault, item).destroy
+              ChefVault::VaultItem.load(vault, item).destroy
             rescue ChefVault::Exceptions::KeysNotFound,
               ChefVault::Exceptions::ItemNotFound
 

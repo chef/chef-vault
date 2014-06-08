@@ -22,6 +22,7 @@ class ChefVault::VaultItemKeys < Chef::DataBagItem
     @raw_data["admins"] = []
     @raw_data["clients"] = []
     @raw_data["search_query"] = []
+    @raw_data["server_query"] = []
   end
 
   def include?(key)
@@ -47,6 +48,14 @@ class ChefVault::VaultItemKeys < Chef::DataBagItem
       @raw_data["search_query"] = search_query
     else
       @raw_data["search_query"]
+    end
+  end
+
+  def server_query(server_query=nil)
+    if server_query
+      @raw_data["server_query"] = server_query
+    else
+      @raw_data["server_query"]
     end
   end
 
@@ -102,6 +111,13 @@ class ChefVault::VaultItemKeys < Chef::DataBagItem
   def to_json(*a)
     json = super
     json.gsub(self.class.name, self.class.superclass.name)
+  end
+
+  def clear_clients
+    @raw_data['clients'].each do |client|
+      raw_data.delete(client)
+    end
+    raw_data['clients'] = []
   end
 
   def self.from_data_bag_item(data_bag_item)
