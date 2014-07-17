@@ -32,6 +32,11 @@ class ChefVault
             client.public_key der.public_key.to_s
           end
 
+          if response['public_key']
+            der = OpenSSL::PKey::RSA.new response['public_key']
+            client.public_key der.public_key.to_s
+          end
+
           client
         end
       end
