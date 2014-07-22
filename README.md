@@ -46,6 +46,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
     knife vault show VAULT ITEM [VALUES]
+    knife vault download VAULT ITEM PATH
 
 <i>Global Options:</i>
 <table>

@@ -132,6 +132,11 @@ Decrypt the entire root item in the passwords vault and open it in json format i
 
     knife vault edit passwords root
 
+### download
+Decrypt and download an encrypted file to the specified path.
+
+    knife vault download certs user_pem ~/downloaded_user_pem
+
 ### rotate keys
 Rotate the shared key for the vault passwords and item root. The shared key is that which is used for the chef encrypted data bag item.
 
