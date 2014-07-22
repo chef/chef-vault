@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.email            = ['kevin.moser@nordstrom.com']
   s.summary          = 'Data encryption support for Chef using data bags'
   s.description      = s.summary
-  s.homepage      = 'https://github.com/Nordstrom/chef-vault'
+  s.homepage         = 'https://github.com/Nordstrom/chef-vault'
 
   s.license          = 'Apache License, v2.0'
 
@@ -37,6 +37,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler', '~> 1.3'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 2.14'
-  # needed for rspec
-  s.add_development_dependency 'chef', '~> 11.12'
+  s.add_development_dependency 'chef', '>= 0.10.10'
 end
