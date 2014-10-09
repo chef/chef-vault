@@ -44,6 +44,10 @@ class Chef
         :long => '--file FILE',
         :description => 'File to be added to vault item as file-content'
 
+      option :clean,
+        :long => '--clean',
+        :description => 'Clean clients before performing search'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
@@ -51,6 +55,7 @@ class Chef
         search = config[:search]
         json_file = config[:json]
         file = config[:file]
+        clean = config[:clean]
 
         set_mode(config[:vault_mode])
 
@@ -67,6 +72,13 @@ class Chef
               vault_item["file-content"] = File.open(file) { |f| f.read() }
             end
 
+            if clean
+                clients = vault_item.clients().clone().sort()
+                clients.each do |client|
+                    print "Deleting #{client}\n"
+                    vault_item.keys.delete(client, "clients")
+                end
+            end
             vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
