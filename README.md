@@ -40,7 +40,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault create VAULT ITEM VALUES
     knife vault edit VAULT ITEM
     knife vault refresh VAULT ITEM
-    knife vault update VAULT ITEM VALUES
+    knife vault update VAULT ITEM VALUES [--clean]
     knife vault remove VAULT ITEM VALUES
     knife vault delete VAULT ITEM
     knife vault rotate keys VAULT ITEM
@@ -114,6 +114,14 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>"summary", "json", "yaml", "pp"</td>
     <td>show</td>
   </tr>
+  <tr>
+    <td>nil</td>
+    <td>--clean</td>
+    <td>Remove all client keys before re-encrypting with saved or specified search</td>
+    <td>nil</td>
+    <td>nil</td>
+    <td>update</td>
+  </tr>
 </table>
 
 ## USAGE IN RECIPES
@@ -151,7 +159,7 @@ Author:: Kevin Moser - @moserke<br>
 Author:: Eli Klein - @eliklein<br>
 Author:: Joey Geiger - @jgeiger<br>
 Author:: Joshua Timberman - @jtimberman<br>
-Copyright:: Copyright (c) 2013 Nordstrom, Inc.<br>
+Copyright:: Copyright (c) 2013-14 Nordstrom, Inc.<br>
 License:: Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");

@@ -1,6 +1,11 @@
 ## Planned (Unreleased)
 
 ## Released
+## v2.3.0 / 2014-10-22
+* add --clean switch to knife update (thanks to Matt Brimstone)
+* added aruba CLI testing framework (just for --clean option for now)
+* add Ruby 2.0.x and 2.1.x to Travis platforms
+
 ## v2.2.2 / 2014-06-03
 * Add knife vault refresh command
 * Use node_name as a default admin
