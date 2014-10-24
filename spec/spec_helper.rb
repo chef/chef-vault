@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require_relative '../lib/chef-vault'
 
 require 'rspec/its'

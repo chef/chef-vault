@@ -35,9 +35,10 @@ Gem::Specification.new do |s|
   s.executables      = %w( chef-vault )
 
   s.add_development_dependency 'bundler', '~> 1.3'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rake', '~> 10.3'
   s.add_development_dependency 'rspec', '~> 2.14'
   s.add_development_dependency 'rspec-its', '~> 1.0'
   s.add_development_dependency 'aruba', '~> 0.6'
   s.add_development_dependency 'chef', '>= 0.10.10'
+  s.add_development_dependency 'simplecov', '~> 0.9'
 end

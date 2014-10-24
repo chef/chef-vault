@@ -1,5 +1,7 @@
 ## Planned (Unreleased)
 
+* add simplecov test coverage tool
+
 ## Released
 ## v2.3.0 / 2014-10-22
 * add --clean switch to knife update (thanks to Matt Brimstone)
