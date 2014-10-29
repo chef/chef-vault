@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe ChefVault::Item do
+RSpec.describe ChefVault::Item do
   subject(:item) { ChefVault::Item.new("foo", "bar") }
 
   describe '#new' do

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe ChefVault::User do
+RSpec.describe ChefVault::User do
   let(:item) { double(ChefVault::Item) }
   let(:user) { ChefVault::User.new("foo", "bar") }
 

@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe ChefVault::Certificate do
+RSpec.describe ChefVault::Certificate do
   let(:item) { double(ChefVault::Item) }
   let(:cert) { ChefVault::Certificate.new("foo", "bar") }
 
