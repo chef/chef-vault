@@ -34,9 +34,9 @@ Gem::Specification.new do |s|
   s.bindir           = 'bin'
   s.executables      = %w( chef-vault )
 
-  s.add_development_dependency 'bundler', '~> 1.3'
+  s.add_development_dependency 'bundler', '~> 1.6'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec', '~> 2.14'
+  s.add_development_dependency 'rspec', '~> 3.1'
   s.add_development_dependency 'rspec-its', '~> 1.0'
   s.add_development_dependency 'aruba', '~> 0.6'
   s.add_development_dependency 'chef', '>= 0.10.10'

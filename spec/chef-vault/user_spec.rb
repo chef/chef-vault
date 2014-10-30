@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe ChefVault::User do
+RSpec.describe ChefVault::User do
   let(:item) { double(ChefVault::Item) }
   let(:user) { ChefVault::User.new("foo", "bar") }
 
@@ -19,21 +17,19 @@ describe ChefVault::User do
   end
 
   describe '#[]' do
-    specify { user["id"].should eq "bar" }
+    specify { expect(user['id']).to eq 'bar' }
   end
 
   describe 'decrypt_password' do
 
     it 'echoes warning' do
-      STDOUT.should_receive(:puts).with("WARNING: This method is deprecated, please switch to item['value'] calls")
-
+      expect(STDOUT).to receive(:puts).with("WARNING: This method is deprecated, please switch to item['value'] calls")
       user.decrypt_password
     end
 
     it 'returns items password' do
       expect(item).to receive(:[]).with("password")
-
-      user.decrypt_password.should eq "baz"
+      expect(user.decrypt_password).to eq "baz"
     end
   end
 
