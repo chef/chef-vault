@@ -10,7 +10,7 @@ RSpec.describe ChefVault do
 
     context 'with a vault and config file parameter specified' do
       before do
-        IO.stub(:read).with('knife.rb').and_return("node_name 'bar'")
+        allow(IO).to receive(:read).with('knife.rb').and_return("node_name 'bar'")
       end
 
       let(:vault) { ChefVault.new('foo', 'knife.rb') }

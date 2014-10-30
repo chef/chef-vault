@@ -9,11 +9,11 @@ RSpec.describe ChefVault::Item do
 
     its(:data_bag) { should eq "foo" }
 
-    specify { item["id"].should eq "bar" }
+    specify { expect(item['id']).to eq 'bar' }
 
-    specify { item.keys["id"].should eq "bar_keys" }
+    specify { expect(item.keys['id']).to eq 'bar_keys' }
 
-    specify { item.keys.data_bag.should eq "foo" }
+    specify { expect(item.keys.data_bag).to eq 'foo' }
   end
 
   describe '#save' do

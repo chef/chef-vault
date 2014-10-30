@@ -6,10 +6,10 @@ RSpec.describe ChefVault::ItemKeys do
 
     its(:data_bag) { should eq "foo" }
 
-    specify { keys["id"].should eq "bar" }
+    specify { expect(keys["id"]).to eq 'bar' }
 
-    specify { keys["admins"].should eq [] }
+    specify { expect(keys["admins"]).to eq [] }
 
-    specify { keys["clients"].should eq [] }
+    specify { expect(keys["clients"]).to eq [] }
   end
 end

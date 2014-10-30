@@ -17,21 +17,20 @@ RSpec.describe ChefVault::Certificate do
   end
 
   describe '#[]' do
-    specify { cert["id"].should eq "bar" }
+    specify { expect(cert['id']).to eq 'bar' }
   end
 
   describe 'decrypt_contents' do
 
     it 'echoes warning' do
-      STDOUT.should_receive(:puts).with("WARNING: This method is deprecated, please switch to item['value'] calls")
-
+      expect(STDOUT).to receive(:puts).with("WARNING: This method is deprecated, please switch to item['value'] calls")
       cert.decrypt_contents
     end
 
     it 'returns items contents' do
       expect(item).to receive(:[]).with("contents")
 
-      cert.decrypt_contents.should eq "baz"
+      expect(cert.decrypt_contents).to eq 'baz'
     end
   end
 
