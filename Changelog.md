@@ -1,6 +1,9 @@
 ## Planned (Unreleased)
 
 ## Released
+## v2.3.1 / 2014-11-26
+* add --prune-clients switch to knife remove (thanks to Reto Hermann and Thomas Gschwind)
+
 ## v2.3.0 / 2014-10-22
 * add --clean switch to knife update (thanks to Matt Brimstone)
 * added aruba CLI testing framework (just for --clean option for now)
