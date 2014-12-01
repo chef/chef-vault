@@ -24,3 +24,10 @@ EOF
     run_simple "knife node create #{node} -z -d -c knife.rb"
   end
 end
+
+When /^I delete clients? '(.+)' from the Chef server$/ do |nodelist|
+  nodelist.split(/,/).each do |node|
+    run_simple "knife client delete #{node} -z -d -y -c knife.rb"
+  end
+end
+

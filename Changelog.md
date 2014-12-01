@@ -2,7 +2,7 @@
 
 ## Released
 ## v2.4.0 / 2014-11-26
-* add --prune-clients switch to knife remove/rotate (thanks to Thomas Gschwind and Reto Hermann)
+* add --prune-clients switch to knife remove/rotate including aruba CLI tests (thanks to Thomas Gschwind and Reto Hermann)
 
 ## v2.3.0 / 2014-10-22
 * add --clean switch to knife update (thanks to Matt Brimstone)
