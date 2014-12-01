@@ -23,16 +23,22 @@ class Chef
 
       banner "knife vault rotate keys VAULT ITEM (options)"
 
+      option :prune_clients,
+        :short => '-P',
+        :long => '--prune-clients',
+        :description => 'Prune clients that cannot be found'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
+        prune = config[:prune_clients]
 
         if vault && item
           set_mode(config[:vault_mode])
 
           begin
             item = ChefVault::Item.load(vault, item)
-            item.rotate_keys!
+            item.rotate_keys!(prune)
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
 
