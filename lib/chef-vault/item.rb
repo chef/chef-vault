@@ -104,12 +104,27 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
-  def rotate_keys!
+  def rotate_keys!(prune=false)
     @secret = generate_secret
 
     unless clients.empty?
-      clients.each do |client|
-        clients("name:#{client}")
+      if prune
+        clients_to_prune=[]
+        clients.each do |client|
+          begin
+            clients("name:#{client}")
+          rescue ChefVault::Exceptions::ClientNotFound
+            clients_to_prune.push(client)
+          end
+        end
+        clients_to_prune.each do |client|
+          puts "Pruning #{client} from clients"
+          clients("name:#{client}", :delete)
+        end
+      else
+        clients.each do |client|
+          clients("name:#{client}")
+        end
       end
     end
 
