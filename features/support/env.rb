@@ -1,3 +1,7 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+end
+
 require 'aruba/cucumber'
 
 # Travis runs tests in a limited environment which takes a long time to invoke

@@ -12,4 +12,5 @@ task default: [:spec, :features]
 task :coverage do
   ENV['COVERAGE'] = '1'
   Rake::Task[:spec].invoke
+  Rake::Task[:features].invoke
 end
