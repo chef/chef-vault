@@ -33,12 +33,17 @@ class Chef
         :long => '--admins ADMINS',
         :description => 'Chef users to be added as admins'
 
+      option :clean_unknown_clients,
+        :long => '--clean-unknown-clients',
+        :description => 'Remove unknown clients during key rotation'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
         values = @name_args[2]
         search = config[:search]
         admins = config[:admins]
+        clean_unknown_clients = config[:clean_unknown_clients]
         json_file = config[:json]
 
         set_mode(config[:vault_mode])
@@ -69,7 +74,7 @@ class Chef
             vault_item.clients(search, :delete) if search
             vault_item.admins(admins, :delete) if admins
 
-            vault_item.rotate_keys!
+            vault_item.rotate_keys!(clean_unknown_clients)
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
 

@@ -23,16 +23,21 @@ class Chef
 
       banner "knife vault rotate keys VAULT ITEM (options)"
 
+      option :clean_unknown_clients,
+        :long => '--clean-unknown-clients',
+        :description => 'Remove unknown clients during key rotation'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
+        clean_unknown_clients = config[:clean_unknown_clients]
 
         if vault && item
           set_mode(config[:vault_mode])
 
           begin
             item = ChefVault::Item.load(vault, item)
-            item.rotate_keys!
+            item.rotate_keys!(clean_unknown_clients)
           rescue ChefVault::Exceptions::KeysNotFound,
             ChefVault::Exceptions::ItemNotFound
 

@@ -1,3 +1,7 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+end
+
 require_relative '../lib/chef-vault'
 
 require 'rspec/its'

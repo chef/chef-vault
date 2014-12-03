@@ -23,21 +23,26 @@ class Chef
 
       banner "knife vault rotate all keys"
 
+      option :clean_unknown_clients,
+        :long => '--clean-unknown-clients',
+        :description => 'Remove unknown clients during key rotation'
+
       def run
+        clean_unknown_clients = config[:clean_unknown_clients]
         set_mode(config[:vault_mode])
-        rotate_all_keys
+        rotate_all_keys(clean_unknown_clients)
       end
 
       private
 
-      def rotate_all_keys
+      def rotate_all_keys(clean_unknown_clients=false)
         vaults = Chef::DataBag.list.keys
-        vaults.each { |vault| rotate_vault_keys(vault) }
+        vaults.each { |vault| rotate_vault_keys(vault, clean_unknown_clients) }
       end
 
-      def rotate_vault_keys(vault)
+      def rotate_vault_keys(vault, clean_unknown_clients)
         vault_items(vault).each do |item|
-          rotate_vault_item_keys(vault, item)
+          rotate_vault_item_keys(vault, item, clean_unknown_clients)
         end
       end
 
@@ -48,9 +53,9 @@ class Chef
         end
       end
 
-      def rotate_vault_item_keys(vault, item)
+      def rotate_vault_item_keys(vault, item, clean_unknown_clients)
         puts "Rotating keys for: #{vault} #{item}"
-        ChefVault::Item.load(vault, item).rotate_keys!
+        ChefVault::Item.load(vault, item).rotate_keys!(clean_unknown_clients)
       end
     end
   end

@@ -142,10 +142,18 @@ Rotate the shared key for the vault passwords and item root. The shared key is t
 
     knife vault rotate keys passwords root
 
+To remove clients which have been deleted from Chef but not from the vault, add the --clean-unknown-clients switch:
+
+    knife vault rotate keys passwords root --clean-unknown-clients
+
 ### rotate all keys
 Rotate the shared key for all vaults and items. The shared key is that which is used for the chef encrypted data bag item.
 
     knife vault rotate all keys
+
+To remove clients which have been deleted from Chef but not from the vault, add the --clean-unknown-clients switch:
+
+    knife vault rotate keys passwords root --clean-unknown-clients
 
 ### refresh
 This command reads the search_query in the vault item, performs the search, and reapplies the results.
