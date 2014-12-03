@@ -1,5 +1,7 @@
 ## Planned (Unreleased)
 
+* add simplecov test coverage tool
+
 ## Released
 ## v2.4.0 / 2014-12-03
 * add simplecov test coverage configuration (Doug Ireton)
