@@ -1,5 +1,5 @@
 # Description: ChefVault VERSION file
-# Copyright 2013, Nordstrom, Inc.
+# Copyright 2013-15, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
 # limitations under the License.
 
 class ChefVault
-  VERSION = "2.4.0"
+  VERSION = "2.4.1"
   MAJOR, MINOR, TINY = VERSION.split('.')
 end
