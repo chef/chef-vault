@@ -28,7 +28,7 @@ Given(/^I rotate all keys with the '(.+)' options?$/) do |optionlist|
 end
 
 Given(/^I try to decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |vault, item, node|
-  run_simple "knife vault show #{vault} #{item} -z -c knife.rb -u #{node} -k #{node}.pem"
+  run_simple "knife vault show #{vault} #{item} -z -c knife.rb -u #{node} -k #{node}.pem", false
 end
 
 Then(/^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'$/) do |vault, item, neg, nodelist|

@@ -167,6 +167,7 @@ Author:: Kevin Moser - @moserke<br>
 Author:: Eli Klein - @eliklein<br>
 Author:: Joey Geiger - @jgeiger<br>
 Author:: Joshua Timberman - @jtimberman<br>
+Author:: James FitzGibbon - @jf647<br>
 
 ## Contributors
 
