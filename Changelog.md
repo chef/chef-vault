@@ -1,4 +1,6 @@
 ## Planned (Unreleased)
+## v2.4.1 / 2015-02-05
+* when attempting to add a client key to a vault item, warn and skip if the node doesn't have a public key (reported by Nik Ormseth)
 
 ## Released
 ## v2.4.0 / 2014-12-03

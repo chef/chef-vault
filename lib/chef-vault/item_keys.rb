@@ -1,5 +1,5 @@
 # Author:: Kevin Moser <kevin.moser@nordstrom.com>
-# Copyright:: Copyright 2013, Nordstrom, Inc.
+# Copyright:: Copyright 2013-15, Nordstrom, Inc.
 # License:: Apache License, Version 2.0
 
 # Licensed under the Apache License, Version 2.0 (the "License");
