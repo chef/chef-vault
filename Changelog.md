@@ -1,4 +1,6 @@
 ## Planned (Unreleased)
+## v2.4.1 / 2015-02-05
+* when decrypting, if the vault is encrypted for the node but decryption fails, emit a more friendly error message than 'OpenSSL::PKey::RSAError: padding check failed'
 
 ## Released
 ## v2.4.0 / 2014-12-03

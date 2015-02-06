@@ -96,7 +96,13 @@ class ChefVault::Item < Chef::DataBagItem
   def secret
     if @keys.include?(Chef::Config[:node_name])
       private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
-      private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
+      begin
+        private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
+      rescue OpenSSL::PKey::RSAError => e
+        raise ChefVault::Exceptions::SecretDecryption,
+          "#{data_bag}/#{id} is encrypted for you, but your private key failed to decrypt the contents.  "\
+          "(if you regenerated your client key, have an administrator of the vault run 'knife vault refresh')"
+      end
     else
       raise ChefVault::Exceptions::SecretDecryption,
         "#{data_bag}/#{id} is not encrypted with your public key.  "\
