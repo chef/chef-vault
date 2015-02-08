@@ -1,4 +1,6 @@
 ## Planned (Unreleased)
+## v2.5.0 / 2015-02-05
+* Add more detailed explanation of how chef-vault works in THEORY.md (Issue #109)
 
 ## Released
 ## v2.4.0 / 2014-12-03
