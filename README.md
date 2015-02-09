@@ -3,6 +3,8 @@
 
 [![Build Status](https://travis-ci.org/Nordstrom/chef-vault.png?branch=master)](https://travis-ci.org/Nordstrom/chef-vault)
 
+[![Code Climate](https://codeclimate.com/github/Nordstrom/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/Nordstrom/chef-vault)
+
 ## DESCRIPTION:
 
 Gem that allows you to encrypt a Chef Data Bag Item using the public keys of a list of chef nodes. This allows only those chef nodes to decrypt the encrypted values.
@@ -173,9 +175,9 @@ Author:: James FitzGibbon - @jf647<br>
 
 ## Contributors
 
-Contributor:: Matt Brimstone (https://github.com/brimstone)
-Contributor:: Thomas Gschwind (https://github.com/thg65)
-Contributor:: Reto Hermann
+Contributor:: Matt Brimstone - @brimstone<br>
+Contributor:: Thomas Gschwind - @thg65<br>
+Contributor:: Reto Hermann<br>
 
 ## License
 

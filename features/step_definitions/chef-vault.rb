@@ -1,9 +1,10 @@
 require 'json'
 
-Given(/^I create a vault item '(.+)\/(.+)' containing the JSON '(.+)' encrypted for '(.+)'$/) do |vault, item, json, nodelist|
+Given(/^I create a vault item '(.+)\/(.+)' containing the JSON '(.+)' encrypted for '(.+)'(?: with '(.+)' as admins?)?$/) do |vault, item, json, nodelist, admins|
   write_file 'item.json', json
   query = nodelist.split(/,/).map{|e| "name:#{e}"}.join(' OR ')
-  run_simple "knife vault create #{vault} #{item} -z -c knife.rb -A admin -S '#{query}' -J item.json"
+  adminarg = admins.nil? ? '-A admin' : "-A #{admins}"
+  run_simple "knife vault create #{vault} #{item} -z -c knife.rb #{adminarg} -S '#{query}' -J item.json", false
 end
 
 Given(/^I update the vault item '(.+)\/(.+)' to be encrypted for '(.+)'( with the clean option)?$/) do |vault, item, nodelist, cleanopt|
@@ -78,4 +79,13 @@ end
 
 Given(/^I list the vaults$/) do
   run_simple('knife vault list')
+end
+
+Given(/^I can('t)? decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |neg, vault, item, client|
+  run_simple "knife vault show #{vault} #{item} -c knife.rb -z -u #{client} -k #{client}.pem", false
+  if neg
+    assert_not_exit_status(0)
+  else
+    assert_exit_status(0)
+  end
 end
