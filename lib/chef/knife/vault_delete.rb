@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultDelete < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault delete VAULT ITEM (options)"
@@ -34,8 +33,7 @@ class Chef
             begin
               ChefVault::Item.load(vault, item).destroy
             rescue ChefVault::Exceptions::KeysNotFound,
-              ChefVault::Exceptions::ItemNotFound
-
+                   ChefVault::Exceptions::ItemNotFound
               raise ChefVault::Exceptions::ItemNotFound,
                 "#{vault}/#{item} not found."
             end

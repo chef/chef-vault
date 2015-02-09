@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultRotateAllKeys < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault rotate all keys"
@@ -47,9 +46,8 @@ class Chef
       end
 
       def vault_items(vault)
-        Chef::DataBag.load(vault).keys.inject([]) do |array, key|
+        Chef::DataBag.load(vault).keys.each_with_object([]) do |key, array|
           array << key.sub('_keys', '') if key.match(/.+_keys$/)
-          array
         end
       end
 

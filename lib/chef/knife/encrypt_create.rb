@@ -19,7 +19,6 @@ require 'chef/knife/vault_create'
 class Chef
   class Knife
     class EncryptCreate < VaultCreate
-
       include Knife::VaultBase
 
       banner "knife encrypt create VAULT ITEM VALUES (options)"

@@ -21,7 +21,7 @@ class ChefVault
       # the private key for Chef 10
       def self.load(name)
         response = http_api.get("clients/#{name}")
-        if response.kind_of?(Chef::ApiClient)
+        if response.is_a?(Chef::ApiClient)
           response
         else
           client = Chef::ApiClient.new

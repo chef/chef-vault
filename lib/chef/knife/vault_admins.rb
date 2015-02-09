@@ -19,7 +19,6 @@ require 'chef-vault'
 class Chef
   class Knife
     module VaultAdmins
-
       private
 
       def admins

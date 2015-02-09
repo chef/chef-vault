@@ -13,17 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Make a wraper to chef10/11 "shef/shell" changes 
+# Make a wraper to chef10/11 "shef/shell" changes
 
 class ChefVault
   module Mixin
     module KnifeCompat
       require 'chef/version'
       def extend_context_object(obj)
-        if Chef::VERSION.to_i >= 11 
+        if Chef::VERSION.to_i >= 11
           require "chef/shell/ext"
           Shell::Extensions.extend_context_object(obj)
-        else 
+        else
           require 'chef/shef/ext'
           Shef::Extensions.extend_context_object(obj)
         end

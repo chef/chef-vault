@@ -19,7 +19,7 @@ RSpec.describe ChefVault do
 
       its(:vault) { should eq "foo" }
 
-      specify { expect { Chef::Config[:node_name ].should eq "bar" } }
+      specify { expect { Chef::Config[:node_name].should eq "bar" } }
     end
 
     describe '#version' do

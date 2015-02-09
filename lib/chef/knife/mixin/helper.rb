@@ -28,22 +28,20 @@ class ChefVault
         values = {}
         values.merge!(values_from_file(file)) if file
         values.merge!(values_from_json(json)) if json
-        
+
         values
       end
 
       def values_from_file(file)
-        json = File.open(file){ |file| file.read() }
+        json = File.open(file){ |fh| fh.read() }
 
         values_from_json(json)
       end
 
       def values_from_json(json)
-        begin
-          JSON.parse(json)
-        rescue JSON::ParserError
-          raise JSON::ParserError, "#{json} is not valid JSON!"
-        end
+        JSON.parse(json)
+      rescue JSON::ParserError
+        raise JSON::ParserError, "#{json} is not valid JSON!"
       end
     end
   end

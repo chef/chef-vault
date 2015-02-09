@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultDownload < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault download VAULT ITEM PATH (options)"

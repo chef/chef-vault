@@ -1,12 +1,40 @@
 ## Planned (Unreleased)
+## v2.6.0
+
+This release will focus on adding any new features covered by open issues
+
+## v2.7.0
+
+This release will focus on reducing tech debt:
+
+* improve the coverage of the RSpec suite
+* ensure there are Aruba tests for all the subcommands and scenarios that match DEMO.md
+* clean up any leftover Rubocop issues
+
+## v2.99.0
+
+This will be the last release in the 2.x branch, and is for anyone who
+is constraining to '~> 2.4' (for example).  Anything that we decide to
+deprecate for v3.0.0 will produce warnings in this release.
+
+## v3.0.0
+
+This will be a major refactor.  The primary goal is to solve the bootstrap
+problem where a vault can't be encrypted for a node until the node has been
+created.  Exactly how we will do that is open to discussion (watch the
+chef-vault issues on github for news).
+
+This release will also remove the chef-vault 1.x commands (encrypt/decrypt)
+
+## Released
 ## v2.5.0 / 2015-02-09
 * when decrypting, if the vault is encrypted for the node but decryption fails, emit a more friendly error message than 'OpenSSL::PKey::RSAError: padding check failed'
 * when attempting to add a client key to a vault item, warn and skip if the node doesn't have a public key (reported by Nik Ormseth)
 * add a new 'knife vault list' command that lists the data bags that are vaults
 * Add more detailed explanation of how chef-vault works in THEORY.md (Issue #109)
 * fix a problem with the --clean-unknown-clients switch to `rotate keys` that made it impossible to delete a client that could not be searched for (i.e. the node object is deleted)
+* add rubocop tasks to Rakefile and take a first pass at the low-hanging fruit
 
-## Released
 ## v2.4.0 / 2014-12-03
 * add simplecov test coverage configuration (Doug Ireton)
 * add --clean-unknown-clients switch to knife remove/rotate (Thomas Gschwind and Reto Hermann)

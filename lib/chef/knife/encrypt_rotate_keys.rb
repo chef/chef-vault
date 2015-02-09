@@ -19,7 +19,6 @@ require 'chef/knife/vault_rotate_keys'
 class Chef
   class Knife
     class EncryptRotateKeys < VaultRotateKeys
-
       include Knife::VaultBase
 
       banner "knife encrypt rotate keys VAULT ITEM (options)"

@@ -19,7 +19,6 @@ require 'chef/knife/vault_admins'
 class Chef
   class Knife
     class VaultCreate < Knife
-
       include Chef::Knife::VaultBase
       include Chef::Knife::VaultAdmins
 
@@ -62,7 +61,7 @@ class Chef
               "use 'knife vault remove' 'knife vault update' "\
               "or 'knife vault edit' to make changes."
           rescue ChefVault::Exceptions::KeysNotFound,
-            ChefVault::Exceptions::ItemNotFound
+                 ChefVault::Exceptions::ItemNotFound
             vault_item = ChefVault::Item.new(vault, item)
 
             if values || json_file || file
@@ -75,7 +74,7 @@ class Chef
                 vault_item["file-content"] = File.open(file) { |f| f.read() }
               end
             else
-              vault_json = edit_data(Hash.new)
+              vault_json = edit_data({})
               vault_json.each do |key, value|
                 vault_item[key] = value
               end

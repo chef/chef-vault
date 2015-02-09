@@ -24,22 +24,23 @@ server.
 
 chef-vault creates an encrypted data bag which is symmetrically
 encrypted using a random secret (a 32-byte string generated
-using [SecureRandom.random_bytes](http://ruby-doc.org/stdlib-2.1.2/libdoc/securerandom/rdoc/SecureRandom.html#method-c-random_bytes))
+using [SecureRandom.random_bytes](http://ruby-doc.org/stdlib-2.1.2/libdoc/securerandom/rdoc/SecureRandom.html#method-c-random_bytes)).  We'll refer to this secret as the 'shared secret' through
+the rest of this document.
 
 A vault has a list of administrative users and a list of
-clients.  The symmetric secret is asymmetrically encrypted
+clients.  The shared secret is asymmetrically encrypted
 for each of the administrators and clients using their public
 key (a separate copy for each).
 
 The administrators of a vault are API users named explicitly
 when the vault is created.  The clients can be provided
 explicitly, but are more often determined by running a SOLR
-query against the Chef server.  The query can be stored as
-part of the data bag so that the clients can be updated by
+query against the Chef server.  The query is stored as part
+of the \_keys data bag so that the clients can be updated by
 re-executing the search.
 
 The asymmmetrically encrypted keys are stored in a second
-data bag item whose name is appended with `_keys`.
+data bag item whose name is appended with \_keys
 
 ## Data Bag Structure
 
@@ -55,21 +56,21 @@ Given a file named `item.json` containin the following:
 
 Running
 
-    > knife vault create vault test -A alice,bob -S '*:*' -J item.json
+    > knife vault create foo bar -A alice,bob -S '*:*' -J item.json
 
-will create a data bag named 'vault' and two items within
-named 'test' and 'test_keys':
+will create a data bag named 'foo' and two data bag items
+within named 'bar' and 'bar_keys':
 
-    > knife data bag show vault
-    test
-    test_keys
+    > knife data bag show foo
+    bar
+    bar_keys
 
-The 'test' item contains the symmetrically encrypted version
+The 'bar' item contains the symmetrically encrypted version
 of the JSON data:
 
-    > knife data bag show -F json vault test
+    > knife data bag show -F json foo bar
     {
-      "id": "test",
+      "id": "bar",
       "foo": {
         "encrypted_data": "k9On2aJxnLDRwOeCr60l0C41XjIJ2+5Xu0AYFbmSvFw=\n",
         "iv": "oKeiEkIlaspvhKghee30GA==\n",
@@ -80,12 +81,12 @@ of the JSON data:
 
 (this is a standard Chef encrypted data bag)
 
-The 'test_keys' item contains four copies of the asymetrically
+The 'bar_keys' item contains four copies of the asymetrically
 encrypted shared secret:
 
-    > knife data bag show -F json vault test_keys
+    > knife data bag show -F json foo bar_keys
     {
-      "id": "test_keys",
+      "id": "bar_keys",
       "admins": [
         "alice",
         "bob"
@@ -105,31 +106,36 @@ It also contains the list of administrators and clients for
 which the key is encrypted and the query used to choose which
 clients can decrypt the vault.
 
-In practice, the search query would not be '*:*'.  Selecting
-which nodes can decrypt the vault based on which recipes are
-in the runlist, which chef environment the node is in, Chef
-tags, or even attributes collected by Ohai (such as AWS tags).
+In practice, the search query would not be `*:*`.  More common
+practice is to select which nodes can decrypt the vault based
+on characteristics like:
+
+* which recipes are in the node's runlist
+* which chef environment the node belongs to
+* what OS or platform the node runs
+* attributes collected by Ohai Plugins (such as AWS tags).
 
 While there are four copies of the shared secret, any single
 user or node will only be able to decrypt one of the copies,
 because no user or node (should) have more than one private key.
 
 Likewise, a node or user for whom the vault was not encrypted
-will be able to see the contents of the 'test_keys' data bag,
-they will not have a private key that lets them decrypt the
-shared secret.
+is able to see the contents of the 'bar_keys' data bag,
+but since they lack a private key that can decrypt any of the
+copies of the shared secret, they cannot access the 'bar' encrypted
+data bag item.
 
 As alice or bob, I can show the contents of the vault:
 
-    > knife vault show -F json vault test
+    > knife vault show -F json foo bar
     {
-      "id": "test",
+      "id": "bar",
       "foo": "bar"
     }
 
 Or in a recipe that runs on node one or two:
 
-    vaultitem = ChefVault::Item.load('vault', 'test')
+    vaultitem = ChefVault::Item.load('foo', 'bar')
     Chef::Log.debug "the vault value foo is #{vaultitem['foo']}"
 
 ## Use Cases
@@ -164,14 +170,14 @@ The actor in this case is alice.  When she runs
 After editing the empty JSON document and saving it, chef-vault
 generates a random 32 byte string for the shared secret.
 
-A new data bag named foo/bar_keys is created.  chef-vault then
+A new data bag named 'foo/bar_keys' is created.  chef-vault then
 executes the search 'os:linux' against the node index.
 
 For each of the nodes returned from the search (one and two), the
 public keys are fetched for the like-named client and the shared
 secret is encrypted using it.  The client name is added to the
 'clients' array in the bar_keys data bag item.  The node-specific
-encrypted copy of the shared secret is stored in the test_keys
+encrypted copy of the shared secret is stored in the bar_keys
 data bag item, keyed by node name.
 
 The search query is also stored in the keys data bag, for use
@@ -179,7 +185,7 @@ during future update or refresh operations.
 
 In a similar fashion, the public keys for alice and bob are
 retrieved from the Chef server and the shared secret is
-asymetrically encrypted for each.  The names of the admins are
+asymmetrically encrypted for each.  The names of the admins are
 stored in the 'admins' array in the bar_keys data bag item.
 
 At this point, the bar_keys data bag item is only present in
@@ -199,15 +205,16 @@ The actor in this case is alice.  When she runs
 
 chef-vault fetches the data bag item foo/bar_keys.  It
 then looks for a key in the data bag named 'alice'.  The value
-of this key is the asymetrically encrypted copy of the shared
+of this key is the asymmetrically encrypted copy of the shared
 secret specific to alice.
 
 chef-vault then uses alice's private key (typically `~/.chef/alice.pem`) to decrypt the shared secret.
 
-If a key named alice is not found, chef-vault would have
-emitted an error to the effect that the vault was not encrypted
-for her and that someone else who does have access to the bag
-needs to add her as an administrator before she can view it.
+If the \_keys data bag did not have a key 'alice', chef-vault
+would have emitted an error to the effect that the vault was not
+encrypted for her and that someone else who does have access to
+the bag needs to add her as an administrator before she can view
+it.
 
 Using the decrypted shared secret, chef-vault loads the Chef
 encrypted data bag foo/bar.  The plaintext contents of this bag
@@ -233,19 +240,26 @@ then looks for a key in the data bag named 'one'.  The value
 of this key is the asymetrically encrypted copy of the shared
 secret specific to the node 'one'.
 
-chef-vault then uses node one's private key (typically
+chef-vault then uses the private key of node one (typically
 `/etc/chef/client.pem`) to decrypt the shared secret.
 
-If a key named one is not found, chef-vault would have
-thrown an exception indicating that the vault was not
-encrypted for the node and that an administrator needs to
+If the \_keys data bag did not have a key 'one', chef-vault
+would have thrown an exception indicating that the vault was
+not encrypted for the node and that an administrator needs to
 refresh the vault (possibly after updating the search query)
 before the recipe can use the vault.
+
+Uncaught, this would cause chef-client to abort in the compile
+phase.  Robust recipes can be written that catch the exception
+and do other things, such as only converging resources that do
+not need the secrets, or sending an alert so that a human can
+update the vault, or even sending a request to a work queue
+to automatically update the vault.
 
 Using the decrypted shared secret, chef-vault loads the Chef
 encrypted data bag foo/bar.  The plaintext contents of this bag
 are now available to the recipe in the local variable named
-vaultitem.  At this point the data looks and feels like a
+'vaultitem'.  At this point the data looks and feels like a
 normal data bag (i.e. it behaves in a hash-like way)
 
 ### Adding a new Administrator
@@ -267,11 +281,11 @@ The shared secret is then asymmetrically encrypted for all
 of the admins (alice, bob and charlie) as described in
 'Creating a Vault'.
 
-The data bag item foo/bar_keys is then saved, followed by the
-data bag item foo/bar.
+The data bag item 'foo/bar_keys' is then saved, followed by the
+data bag item 'foo/bar'.
 
-charlie can now view the contents of the vault using 'knife
-vault show' because there is a now a copy of the shared
+charlie can now view the contents of the vault using `knife
+vault show` because there is a now a copy of the shared
 secret that he can access.
 
 ### Adding a new Node
@@ -291,8 +305,8 @@ time: one, two and three.  The shared secret is then
 asymmetrically encrypted for each as described in 'Creating
 a Vault'.
 
-The data bag item foo/bar_keys is then saved, followed by the
-data bag item foo/bar.
+The data bag item 'foo/bar_keys' is then saved, followed by the
+data bag item 'foo/bar'.
 
 Node three can now use the vault in a recipe because
 there is a now a copy of the shared secret that he it access.
@@ -301,8 +315,8 @@ there is a now a copy of the shared secret that he it access.
 
 Rotating keys chooses a new shared secret for the bag and
 encrypts it for all of the administrators and clients
-who currently have access.  Unlike the `update` subcommand,
-the search query is not re-run to pick up new clients.
+who currently have access.  Unlike the `knife vault update`
+command, the search query is not re-run to pick up new clients.
 
 The actor in this case is Alice, who wants to rotate the keys
 (perhaps to conform to an internal security policy).  When
@@ -316,16 +330,16 @@ in 'Decrypting a Vault using knife'.
 chef-vault generates a new 32-byte random string.  It then
 creates an asymmetrically encrypted version of the new
 shared secret for each of the clients and administrators
-listed in the data bag item foo/bar_keys.
+listed in the data bag item 'foo/bar_keys'.
 
-The data bag item foo/bar_keys is then saved, followed by the
-data bag item foo/bar.
+The data bag item 'foo/bar_keys' is then saved, followed by the
+data bag item 'foo/bar'.
 
 ## Failure Scenarios
 
 Because the secret data is just a normal Chef encrypted
 data bag item, the keys are stored separately in a data bag
-suffixed with `_keys`.  When the vault is saved, the data bag
+suffixed with \_keys.  When the vault is saved, the data bag
 item containing the keys is saved before the encrypted data
 bag is.
 

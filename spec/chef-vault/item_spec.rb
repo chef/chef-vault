@@ -54,7 +54,6 @@ RSpec.describe ChefVault::Item do
   subject(:item) { ChefVault::Item.new("foo", "bar") }
 
   describe '#new' do
-
     it { should be_an_instance_of ChefVault::Item }
 
     its(:keys) { should be_an_instance_of ChefVault::ItemKeys }
@@ -82,16 +81,13 @@ RSpec.describe ChefVault::Item do
     it 'should not blow up when search returns a node without a public key' do
       # try to set clients when we know a node is missing a public key
       # this should not die as of v2.4.1
-      expect {
-        @vaultitem.clients('*:*')
-      }.not_to raise_error
+      expect { @vaultitem.clients('*:*') }.not_to raise_error
     end
 
     it 'should emit a warning if search returns a node without a public key' do
       # it should however emit a warning that you have a borked node
-      expect {
-        @vaultitem.clients('*:*')
-      }.to output(/node 'bar' has no private key; skipping/).to_stderr
+      expect { @vaultitem.clients('*:*') }
+        .to output(/node 'bar' has no private key; skipping/).to_stderr
     end
   end
 
@@ -99,9 +95,8 @@ RSpec.describe ChefVault::Item do
     include BorkedNodeWithoutPublicKey
 
     it 'should blow up if you try to use a node without a public key as an admin' do
-      expect {
-        @vaultitem.admins('foo,bar')
-      }.to raise_error(ChefVault::Exceptions::AdminNotFound)
+      expect { @vaultitem.admins('foo,bar') }
+        .to raise_error(ChefVault::Exceptions::AdminNotFound)
     end
   end
 end

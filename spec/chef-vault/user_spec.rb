@@ -21,7 +21,6 @@ RSpec.describe ChefVault::User do
   end
 
   describe 'decrypt_password' do
-
     it 'echoes warning' do
       expect(STDOUT).to receive(:puts).with("WARNING: This method is deprecated, please switch to item['value'] calls")
       user.decrypt_password
@@ -32,5 +31,4 @@ RSpec.describe ChefVault::User do
       expect(user.decrypt_password).to eq "baz"
     end
   end
-
 end

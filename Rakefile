@@ -1,16 +1,53 @@
 require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
-require 'cucumber'
-require 'cucumber/rake/task'
 
-RSpec::Core::RakeTask.new(:spec)
+# Style Tests
+begin
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new do |t|
+    t.formatters = ['progress']
+    t.options = ['-D']
+    t.patterns = %w(
+      lib/**/*.rb
+      spec/**/*.rb
+      ./Rakefile
+    )
+  end
 
-Cucumber::Rake::Task.new(:features)
-
-task default: [:spec, :features]
-
-task :coverage do
-  ENV['COVERAGE'] = '1'
-  Rake::Task[:spec].invoke
-  Rake::Task[:features].invoke
+  # style is an alias for rubocop
+  task style: :rubocop
+rescue LoadError
+  puts 'Rubocop not available; disabling rubocop tasks'
 end
+
+# Unit Tests
+begin
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new
+
+  # Coverage
+  desc 'Generate unit test coverage report'
+  task :coverage do
+    ENV['COVERAGE'] = 'true'
+    Rake::Task[:spec].invoke
+  end
+rescue LoadError
+  puts 'RSpec not available; disabling rspec tasks'
+  # create a no-op spec task for :default
+  task :spec
+end
+
+# Feature Tests
+begin
+  require 'cucumber'
+  require 'cucumber/rake/task'
+  Cucumber::Rake::Task.new(:features)
+rescue LoadError
+  puts 'Cucumber/Aruba not available; disabling feature tasks'
+  # create a no-op spec task for :default
+  task :features
+end
+
+# test or the default task runs spec and features
+desc 'run all tests'
+task default: [:spec, :features]
+task test: :default

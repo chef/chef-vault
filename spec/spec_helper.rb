@@ -1,6 +1,4 @@
-if ENV['COVERAGE']
-  require 'simplecov'
-end
+require 'simplecov' if ENV['COVERAGE']
 
 require_relative '../lib/chef-vault'
 

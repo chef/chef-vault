@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultShow < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault show VAULT ITEM [VALUES] (options)"
@@ -67,14 +66,14 @@ class Chef
         end
 
         if values
-          included_values = %W( id )
+          included_values = %w(id)
 
           values.split(",").each do |value|
             value.strip! # remove white space
             included_values << value
           end
 
-          filtered_data = Hash[vault_item.raw_data.find_all{|k,v| included_values.include?(k)}]
+          filtered_data = Hash[vault_item.raw_data.find_all{|k, _| included_values.include?(k)}]
 
           output_data = filtered_data.merge(extra_data)
         else
@@ -82,7 +81,7 @@ class Chef
 
           output_data = all_data.merge(extra_data)
         end
-          output(output_data)
+        output(output_data)
       end
     end
   end

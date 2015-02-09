@@ -43,8 +43,8 @@ Given(/^I regenerate the client key for the node '(.+)'$/) do |node|
 end
 
 Given(/^I delete nodes? '(.+)' from the Chef server$/) do |nodelist|
-  nodelist.split(/,/).each do |node|
-    run_simple "knife node delete #{node} -z -d -y -c knife.rb"
+  in_current_dir do
+    nodelist.split(/,/).each { |node| delete_node(node) }
   end
 end
 
@@ -57,9 +57,13 @@ def create_admin
 end
 
 def create_client(name, args = nil)
-  system "knife client create #{name} -z -d -c knife.rb #{args} > #{name}.pem"
+  system "knife client create #{name} -z -d -c knife.rb #{args} >#{name}.pem"
 end
 
 def delete_client(name)
-  system "knife client delete #{name} -y -z"
+  system "knife client delete #{name} -y -z -c knife.rb"
+end
+
+def delete_node(name)
+  system "knife node delete #{name} -y -z -c knife.rb"
 end

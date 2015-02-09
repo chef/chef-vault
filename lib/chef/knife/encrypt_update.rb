@@ -19,7 +19,6 @@ require 'chef/knife/vault_update'
 class Chef
   class Knife
     class EncryptUpdate < VaultUpdate
-
       include Knife::VaultBase
 
       option :search,

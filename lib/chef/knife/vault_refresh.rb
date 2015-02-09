@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultRefresh < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault refresh VAULT ITEM"

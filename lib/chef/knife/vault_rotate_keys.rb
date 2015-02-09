@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultRotateKeys < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault rotate keys VAULT ITEM (options)"
@@ -39,8 +38,7 @@ class Chef
             item = ChefVault::Item.load(vault, item)
             item.rotate_keys!(clean_unknown_clients)
           rescue ChefVault::Exceptions::KeysNotFound,
-            ChefVault::Exceptions::ItemNotFound
-
+                 ChefVault::Exceptions::ItemNotFound
             raise ChefVault::Exceptions::ItemNotFound,
               "#{vault}/#{item} does not exist, "\
               "use 'knife vault create' to create."

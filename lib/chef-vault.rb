@@ -28,7 +28,6 @@ require 'chef-vault/chef_patch/api_client'
 require 'chef-vault/chef_patch/user'
 
 class ChefVault
-
   attr_accessor :vault
 
   def initialize(vault, chef_config_file=nil)

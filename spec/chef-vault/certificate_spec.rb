@@ -21,7 +21,6 @@ RSpec.describe ChefVault::Certificate do
   end
 
   describe 'decrypt_contents' do
-
     it 'echoes warning' do
       expect(STDOUT).to receive(:puts).with("WARNING: This method is deprecated, please switch to item['value'] calls")
       cert.decrypt_contents
@@ -33,5 +32,4 @@ RSpec.describe ChefVault::Certificate do
       expect(cert.decrypt_contents).to eq 'baz'
     end
   end
-
 end

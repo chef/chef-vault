@@ -18,7 +18,6 @@ require 'chef/knife/vault_base'
 class Chef
   class Knife
     class VaultDecrypt < Knife
-
       include Chef::Knife::VaultBase
 
       banner "knife vault decrypt VAULT ITEM [VALUES] (options)"
@@ -42,14 +41,14 @@ class Chef
         vault_item = ChefVault::Item.load(vault, item).raw_data
 
         if values
-          included_values = %W( id )
+          included_values = %w(id)
 
           values.split(",").each do |value|
             value.strip! # remove white space
             included_values << value
           end
 
-          output(Hash[vault_item.find_all{|k,v| included_values.include?(k)}])
+          output(Hash[vault_item.find_all{|k, _| included_values.include?(k)}])
         else
           output(vault_item)
         end

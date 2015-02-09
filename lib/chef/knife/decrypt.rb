@@ -19,7 +19,6 @@ require 'chef/knife/vault_decrypt'
 class Chef
   class Knife
     class Decrypt < VaultDecrypt
-
       include Knife::VaultBase
 
       banner "knife decrypt VAULT ITEM [VALUES] (options)"

@@ -19,7 +19,6 @@ require 'chef/knife/vault_admins'
 class Chef
   class Knife
     class VaultUpdate < Knife
-
       include Chef::Knife::VaultBase
       include Chef::Knife::VaultAdmins
 
@@ -73,11 +72,11 @@ class Chef
             end
 
             if clean
-                clients = vault_item.clients().clone().sort()
-                clients.each do |client|
-                    print "Deleting #{client}\n"
-                    vault_item.keys.delete(client, "clients")
-                end
+              clients = vault_item.clients().clone().sort()
+              clients.each do |client|
+                puts "Deleting #{client}"
+                vault_item.keys.delete(client, "clients")
+              end
             end
             vault_item.search(search) if search
             vault_item.clients(search) if search
@@ -85,8 +84,7 @@ class Chef
 
             vault_item.save
           rescue ChefVault::Exceptions::KeysNotFound,
-            ChefVault::Exceptions::ItemNotFound
-
+                 ChefVault::Exceptions::ItemNotFound
             raise ChefVault::Exceptions::ItemNotFound,
               "#{vault}/#{item} does not exist, "\
               "use 'knife vault create' to create."

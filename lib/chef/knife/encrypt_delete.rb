@@ -19,7 +19,6 @@ require 'chef/knife/vault_delete'
 class Chef
   class Knife
     class EncryptDelete < VaultDelete
-
       include Knife::VaultBase
 
       banner "knife encrypt delete VAULT ITEM (options)"
