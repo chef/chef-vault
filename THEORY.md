@@ -265,9 +265,11 @@ normal data bag (i.e. it behaves in a hash-like way)
 ### Adding a new Administrator
 
 The actor in this case is Alice, who wants to make charlie
-an administrator of the vault.  When she runs
+an administrator of the vault.  We assume she is working with
+the vault created in the section 'Creating a Vault'.  When she
+runs
 
-    knife vault update -A alice,bob,charlie foo bar
+    knife vault update -A charlie foo bar
 
 This vault is decrypted in the same fashion as described
 in 'Decrypting a Vault using knife'.  This results in the
@@ -278,8 +280,8 @@ The shared secret is then asymmetrically encrypted for each
 as described in 'Creating a Vault'.
 
 The shared secret is then asymmetrically encrypted for all
-of the admins (alice, bob and charlie) as described in
-'Creating a Vault'.
+of the admins (alice, bob and the newly-added charlie) as
+described in 'Creating a Vault'.
 
 The data bag item 'foo/bar_keys' is then saved, followed by the
 data bag item 'foo/bar'.

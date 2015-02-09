@@ -89,3 +89,7 @@ Given(/^I can('t)? decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |neg, vau
     assert_exit_status(0)
   end
 end
+
+Given(/^I add '(.+)' as an admin for the vault item '(.+)\/(.+)'$/) do |newadmin, vault, item|
+  run_simple "knife vault update #{vault} #{item} -c knife.rb -z -A #{newadmin}"
+end
