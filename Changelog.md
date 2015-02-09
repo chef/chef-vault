@@ -4,6 +4,7 @@
 * when attempting to add a client key to a vault item, warn and skip if the node doesn't have a public key (reported by Nik Ormseth)
 * add a new 'knife vault list' command that lists the data bags that are vaults
 * Add more detailed explanation of how chef-vault works in THEORY.md (Issue #109)
+* fix a problem with the --clean-unknown-clients switch to `rotate keys` that made it impossible to delete a client that could not be searched for (i.e. the node object is deleted)
 
 ## Released
 ## v2.4.0 / 2014-12-03

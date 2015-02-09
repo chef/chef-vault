@@ -42,6 +42,12 @@ Given(/^I regenerate the client key for the node '(.+)'$/) do |node|
   end
 end
 
+Given(/^I delete nodes? '(.+)' from the Chef server$/) do |nodelist|
+  nodelist.split(/,/).each do |node|
+    run_simple "knife node delete #{node} -z -d -y -c knife.rb"
+  end
+end
+
 def create_node(name)
   system "knife node create #{name} -z -d -c knife.rb"
 end
