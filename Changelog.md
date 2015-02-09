@@ -3,6 +3,7 @@
 * when decrypting, if the vault is encrypted for the node but decryption fails, emit a more friendly error message than 'OpenSSL::PKey::RSAError: padding check failed'
 * when attempting to add a client key to a vault item, warn and skip if the node doesn't have a public key (reported by Nik Ormseth)
 * add a new 'knife vault list' command that lists the data bags that are vaults
+* Add more detailed explanation of how chef-vault works in THEORY.md (Issue #109)
 
 ## Released
 ## v2.4.0 / 2014-12-03

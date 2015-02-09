@@ -7,6 +7,8 @@
 
 Gem that allows you to encrypt a Chef Data Bag Item using the public keys of a list of chef nodes. This allows only those chef nodes to decrypt the encrypted values.
 
+For a more detailed explanation of how chef-vault works, please refer to the file THEORY.md
+
 ## INSTALLATION:
 
 Be sure you are running the latest version Chef. Versions earlier than 0.10.0 don't support plugins:
