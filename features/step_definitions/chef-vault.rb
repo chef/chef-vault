@@ -43,3 +43,7 @@ Then(/^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'$/) do |
     end
   end
 end
+
+Given(/^I list the vaults$/) do
+  run_simple('knife vault list')
+end
