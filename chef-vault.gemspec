@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Chef-Vault Gemspec file
-# Copyright 2013, Nordstrom, Inc.
+# Copyright 2013-15, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,15 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.1'
   s.add_development_dependency 'rspec-its', '~> 1.1'
   s.add_development_dependency 'aruba', '~> 0.6'
-  s.add_development_dependency 'chef', '>= 0.10.10'
   s.add_development_dependency 'simplecov', '~> 0.9'
   s.add_development_dependency 'simplecov-console', '~> 0.2'
+  # Chef 12 and higher pull in Ohai 8, which needs Ruby v2
+  # so only in the case of a CI build on ruby v1, we constrain
+  # chef to 11 or lower so that we can maintain CI test coverage
+  # of older versions
+  if ENV.key?('TRAVIS_BUILD') && RUBY_VERSION =~ /^1/
+    s.add_development_dependency 'chef', '~> 11.18'
+  else
+    s.add_development_dependency 'chef', '>= 0.10.10'
+  end
 end

@@ -1,6 +1,7 @@
 ## Planned (Unreleased)
-## v2.4.1 / 2015-02-05
+## v2.5.0 / 2015-02-09
 * when decrypting, if the vault is encrypted for the node but decryption fails, emit a more friendly error message than 'OpenSSL::PKey::RSAError: padding check failed'
+* when attempting to add a client key to a vault item, warn and skip if the node doesn't have a public key (reported by Nik Ormseth)
 
 ## Released
 ## v2.4.0 / 2014-12-03

@@ -177,7 +177,7 @@ Contributor:: Reto Hermann
 
 ## License
 
-Copyright:: Copyright (c) 2013-14 Nordstrom, Inc.<br>
+Copyright:: Copyright (c) 2013-15 Nordstrom, Inc.<br>
 License:: Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");

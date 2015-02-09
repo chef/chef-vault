@@ -1,5 +1,5 @@
 # Author:: Kevin Moser <kevin.moser@nordstrom.com>
-# Copyright:: Copyright 2013, Nordstrom, Inc.
+# Copyright:: Copyright 2013-15, Nordstrom, Inc.
 # License:: Apache License, Version 2.0
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,11 @@ class ChefVault::Item < Chef::DataBagItem
 
         case action
         when :add
-          keys.add(load_client(node.name), @secret, "clients")
+          begin
+            keys.add(load_client(node.name), @secret, "clients")
+          rescue ChefVault::Exceptions::ClientNotFound => e
+            $stderr.puts "node '#{node.name}' has no private key; skipping"
+          end
         when :delete
           keys.delete(node.name, "clients")
         else
