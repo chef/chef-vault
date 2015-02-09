@@ -31,3 +31,8 @@ When /^I delete clients? '(.+)' from the Chef server$/ do |nodelist|
   end
 end
 
+Given(/^I delete nodes? '(.+)' from the Chef server$/) do |nodelist|
+  nodelist.split(/,/).each do |node|
+    run_simple "knife node delete #{node} -z -d -y -c knife.rb"
+  end
+end

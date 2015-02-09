@@ -29,13 +29,45 @@ end
 
 Then /^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'$/ do |vault, item, neg, nodelist|
   nodes = nodelist.split(/,/)
-  run_simple("knife vault show #{vault} #{item} -z -c knife.rb -p clients -F json")
-  output = output_from("knife vault show #{vault} #{item} -z -c knife.rb -p clients -F json")
+  command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
+  run_simple(command)
+  output = stdout_from(command)
+  data = JSON.parse(output)
   nodes.each do |node|
     if neg
-      assert_no_partial_output(node, output)
+      expect(data).not_to include(node)
     else
-      assert_partial_output(node, output)
+      expect(data).to include(node)
+    end
+  end
+end
+
+Given(/^'(.+)' should( not)? be a client for the vault item '(.+)\/(.+)'$/) do |nodelist, neg, vault, item|
+  nodes = nodelist.split(/,/)
+  command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
+  run_simple(command)
+  output = stdout_from(command)
+  data = JSON.parse(output)
+  nodes.each do |node|
+    if neg
+      expect(data['clients']).not_to include(node)
+    else
+      expect(data['clients']).to include(node)
+    end
+  end
+end
+
+Given(/^'(.+)' should( not)? be an admin for the vault item '(.+)\/(.+)'$/) do |nodelist, neg, vault, item|
+  nodes = nodelist.split(/,/)
+  command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
+  run_simple(command)
+  output = stdout_from(command)
+  data = JSON.parse(output)
+  nodes.each do |node|
+    if neg
+      expect(data['admins']).not_to include(node)
+    else
+      expect(data['admins']).to include(node)
     end
   end
 end
