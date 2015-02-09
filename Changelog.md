@@ -1,4 +1,6 @@
 ## Planned (Unreleased)
+## v2.5.0 / 2015-02-05
+* fix a problem with the --clean-unknown-clients switch to `rotate keys` that made it impossible to delete a client that could not be searched for (i.e. the node object is deleted)
 
 ## Released
 ## v2.4.0 / 2014-12-03

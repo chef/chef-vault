@@ -104,31 +104,21 @@ class ChefVault::Item < Chef::DataBagItem
     end
   end
 
-  def rotate_keys!(clean_unknown_clients=false)
+  def rotate_keys!(clean_unknown_clients = false)
     @secret = generate_secret
 
     unless clients.empty?
-      if clean_unknown_clients
-        clients_to_remove=[]
-        clients.each do |client|
-          begin
-            clients("name:#{client}")
-          rescue ChefVault::Exceptions::ClientNotFound
-            clients_to_remove.push(client)
-          end
-        end
-        clients_to_remove.each do |client|
-          puts "Removing unknown client '#{client}'"
-          clients("name:#{client}", :delete)
-        end
-      else
-        clients.each do |client|
-          clients("name:#{client}")
-        end
+      # a bit of a misnomer; this doesn't remove unknown
+      # admins, just clients which are nodes
+      remove_unknown_nodes if clean_unknown_clients
+      # re-encrypt the new shared secret for all remaining clients
+      clients.each do |client|
+        clients("name:#{client}")
       end
     end
 
     unless admins.empty?
+      # re-encrypt the new shared secret for all admins
       admins.each do |admin|
         admins(admin)
       end
@@ -287,5 +277,58 @@ class ChefVault::Item < Chef::DataBagItem
     end
 
     client
+  end
+
+  # removes unknown nodes by performing a node search
+  # for each of the existing nodclientses.  If the search
+  # returns nothing or the client cannot be loaded, then
+  # we remove that client from the vault
+  # @return [void]
+  def remove_unknown_nodes
+    # build a list of clients to remove so we don't
+    # mutate the clients while iterating over search results
+    clients_to_remove = []
+    clients.each do |nodename|
+      unless node_exists?(nodename)
+        clients_to_remove.push(nodename)
+      end
+    end
+    # now delete any flagged clients from the keys data bag
+    clients_to_remove.each do |client|
+      puts "Removing unknown client '#{client}'"
+      keys.delete(client, "clients")
+    end
+  end
+
+  # checks if a node exists on the Chef server by performing
+  # a search against the node index.  If the search returns no
+  # results, the node does not exist.  If it does return results,
+  # check if there is a matching client
+  # @param nodename [String] the name of the node
+  # @return [Boolean] whether the node exists or not
+  def node_exists?(nodename)
+    # the node does not exist if a search for the node with that
+    # name returns no results
+    query = Chef::Search::Query.new
+    numresults = query.search(:node, "name:#{nodename}")[2]
+    return false unless numresults > 0
+    # if the node search does return results, predicate node
+    # existence on the existence of a like-named client
+    client_exists?(nodename)
+  end
+
+  # checks if a client exists on the Chef server.  If we get back
+  # a 404, the client does not exist.  Any other HTTP errors are
+  # re-raised.  Otherwise, the client exists
+  # @param clientname [String] the name of the client
+  # @return [Boolean] whether the client exists or not
+  def client_exists?(clientname)
+    begin
+      ChefVault::ChefPatch::ApiClient.load(clientname)
+    rescue Net::HTTPServerException => http_error
+      return false if http_error.response.code == "404"
+      raise http_error
+    end
+    true
   end
 end
