@@ -2,6 +2,7 @@
 ## v2.6.0
 
 This release will focus on adding any new features covered by open issues
+* ChefVault::Item#clients can now accept a Chef::ApiClient object instead of a search string.  Requested by @lamont-granquist to make implementing chef-vault into `knife bootstrap` easier
 
 ## v2.7.0
 

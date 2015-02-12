@@ -35,23 +35,24 @@ class ChefVault
       @secret = secret
     end
 
-    def clients(search=nil, action=:add)
-      if search
+    def clients(search_or_client=nil, action=:add)
+      if search_or_client.is_a?(Chef::ApiClient)
+        handle_client_action(search_or_client, action)
+      elsif search_or_client
         results_returned = false
-
         query = Chef::Search::Query.new
-        query.search(:node, search)[0].each do |node|
+        query.search(:node, search_or_client)[0].each do |node|
           results_returned = true
-
           case action
           when :add
             begin
-              keys.add(load_client(node.name), @secret, "clients")
+              client = load_client(node.name)
+              add_client(client)
             rescue ChefVault::Exceptions::ClientNotFound
               $stderr.puts "node '#{node.name}' has no private key; skipping"
             end
           when :delete
-            keys.delete(node.name, "clients")
+            delete_client_or_node(node)
           else
             raise ChefVault::Exceptions::KeysActionNotValid,
               "#{action} is not a valid action"
@@ -339,6 +340,33 @@ class ChefVault
         raise http_error
       end
       true
+    end
+
+    # adds or deletes an API client from the vault item keys
+    # @param client [Chef::ApiClient] the API client to operate on
+    # @param action [Symbol] :add or :delete
+    # @return [void]
+    def handle_client_action(client, action)
+      case action
+      when :add
+        add_client(client)
+      when :delete
+        delete_client_or_node(client)
+      end
+    end
+
+    # adds a client to the vault item keys
+    # @param client [Chef::ApiClient] the API client to add
+    # @return [void]
+    def add_client(client)
+      keys.add(client, @secret, 'clients')
+    end
+
+    # removes a client to the vault item keys
+    # @param client [Chef::ApiClient,Chef::Node] the API client or node to remove
+    # @return [void]
+    def delete_client_or_node(client_or_node)
+      keys.delete(client_or_node.name, 'clients')
     end
   end
 end
