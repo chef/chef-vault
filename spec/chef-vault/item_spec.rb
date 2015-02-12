@@ -89,6 +89,18 @@ RSpec.describe ChefVault::Item do
       expect { @vaultitem.clients('*:*') }
         .to output(/node 'bar' has no private key; skipping/).to_stderr
     end
+
+    it 'should accept a client object and not perform a search' do
+      client = Chef::ApiClient.new
+      client.name 'foo'
+      privkey = OpenSSL::PKey::RSA.new(1024)
+      pubkey = privkey.public_key
+      client.public_key(pubkey.to_pem)
+      expect(Chef::Search::Query).not_to receive(:new)
+      expect(ChefVault::ChefPatch::User).not_to receive(:load)
+      @vaultitem.clients(client)
+      expect(@vaultitem.clients).to include('foo')
+    end
   end
 
   describe '#admins' do

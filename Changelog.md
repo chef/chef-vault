@@ -2,6 +2,7 @@
 ## v2.6.0
 
 This release will focus on adding any new features covered by open issues
+* ChefVault::Item#clients can now accept a Chef::ApiClient object instead of a search string.  Requested by @lamont-granquist to make implementing chef-vault into `knife bootstrap` easier
 
 * add --clean-unknown-clients switch to `knife vault refresh`
 * as a side effect, `ChefVault::Item` now has a `#refresh` method which can be used to programatically perform the same operation as `knife vault refresh`
