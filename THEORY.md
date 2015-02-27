@@ -195,7 +195,7 @@ the vault create throws an error.
 The data bag 'foo' is then fetched (or created if it does
 not already exist).  An encrypted data bag item named 'bar'
 is created, encrypted with the shared secret.  The data bag
-item is save to the Chef server.
+item is saved to the Chef server.
 
 ### Decrypting a Vault using knife
 
