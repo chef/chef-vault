@@ -231,7 +231,9 @@ the server 'one'.
 
 Assuming that the recipe contains code such as this:
 
-    chef_gem 'chef-vault'
+    chef_gem 'chef-vault' do
+      compile_time true if respond_to?(:compile_time)
+    end
     require 'chef-vault'
     vaultitem = ChefVault::Item.load('foo', 'bar')
 
