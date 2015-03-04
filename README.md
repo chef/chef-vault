@@ -145,13 +145,21 @@ NOTE: chef-vault 1.0 style decryption is supported, however it has been deprecat
 ### Example Code
 
 ```ruby
-chef_gem "chef-vault"
+chef_gem 'chef-vault' do
+  compile_time true if respond_to?(:compile_time)
+end
 
 require 'chef-vault'
 
 item = ChefVault::Item.load("passwords", "root")
 item["password"]
 ```
+
+Note that in this case, the gem needs to be installed at compile time
+because the require statement is at the top-level of the recipe.  If
+you move the require of chef-vault and the call to `::load` to
+library or provider code, you can install the gem in the converge phase
+instead.
 
 ## USAGE STAND ALONE
 
