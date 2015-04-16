@@ -3,6 +3,10 @@
 
 This release will focus on adding any new features covered by open issues
 
+* remove Ruby 1.9.3 from version matrix on Travis\
+ * failures were causing the overall build state badge to fail
+ * Ruby 1.9.3 is no longer supported (https://www.ruby-lang.org/en/news/2015/02/23/support-for-ruby-1-9-3-has-ended/)
+
 ## v2.7.0
 
 This release will focus on reducing tech debt:
