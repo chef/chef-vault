@@ -7,9 +7,8 @@ This release will focus on adding any new features covered by open issues
 * add --clean-unknown-clients switch to `knife vault refresh`
 * as a side effect, `ChefVault::Item` now has a `#refresh` method which can be used to programatically perform the same operation as `knife vault refresh`
 
-* remove Ruby 1.9.3 from version matrix on Travis\
- * failures were causing the overall build state badge to fail
- * Ruby 1.9.3 is no longer supported (https://www.ruby-lang.org/en/news/2015/02/23/support-for-ruby-1-9-3-has-ended/)
+* allow Ruby 1.9.3 failures to not cause the overall build to fail on Travis
+* switch to latest 2.0.x, 2.1.x, and 2.2.x releases of Ruby
 
 ## v2.7.0
 
