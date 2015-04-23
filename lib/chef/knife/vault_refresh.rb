@@ -22,23 +22,36 @@ class Chef
 
       banner "knife vault refresh VAULT ITEM"
 
+      option :clean,
+        :long => '--clean',
+        :description => 'Clean clients before performing search'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
+        clean = config[:clean]
 
         set_mode(config[:vault_mode])
 
         if vault && item
           begin
             vault_item = ChefVault::Item.load(vault, item)
-            search = vault_item.search
 
+            search = vault_item.search
             unless search
               raise ChefVault::Exceptions::SearchNotFound,
                     "#{vault}/#{item} does not have a stored search_query, "\
                     "probably because it was created with an older version "\
                     "of chef-vault. Use 'knife vault update' to update the "\
                     "databag with the search query."
+            end
+
+            if clean
+              clients = vault_item.clients.clone.sort
+              clients.each do |client|
+                puts "Deleting #{client}"
+                vault_item.keys.delete(client, 'clients')
+              end
             end
 
             vault_item.clients(search)
