@@ -9,6 +9,7 @@ This release will focus on adding any new features covered by open issues
 * allow Ruby 1.9.3 failures to not cause the overall build to fail on Travis
 * switch to latest 2.0.x, 2.1.x, and 2.2.x releases of Ruby
 * enhance 'knife vault show VAULTNAME' (without an item name) to list the names of the items in the vault for parity with 'knife data bag show'
+* add #raw_keys to ChefVault::Item that calls #keys on the underlying data bag item.  We can't make ChefVault::Item work like a true hash without breaking the public API, but this at least makes it easier to get a list of keys
 
 ## v2.7.0
 
