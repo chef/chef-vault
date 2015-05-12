@@ -20,7 +20,7 @@ class Chef
     class VaultShow < Knife
       include Chef::Knife::VaultBase
 
-      banner "knife vault show VAULT ITEM [VALUES] (options)"
+      banner "knife vault show VAULT [ITEM] [VALUES] (options)"
 
       option :mode,
         :short => '-M MODE',
@@ -40,6 +40,9 @@ class Chef
         if vault && item
           set_mode(config[:vault_mode])
           print_values(vault, item, values)
+        elsif vault
+          set_mode(config[:vault_mode])
+          print_keys(vault)
         else
           show_usage
         end
@@ -82,6 +85,17 @@ class Chef
           output_data = all_data.merge(extra_data)
         end
         output(output_data)
+      end
+
+      def print_keys(vault)
+        if bag_is_vault?(vault)
+          bag = Chef::DataBag.load(vault)
+          split_vault_keys(bag)[1].each do |item|
+            output item
+          end
+        else
+          output "data bag #{vault} is not a chef-vault"
+        end
       end
     end
   end

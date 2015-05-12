@@ -24,16 +24,18 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 Depending on your system's configuration, you may need to run this command with root privileges.
 
 ## KNIFE COMMANDS:
+
 See KNIFE_EXAMPLES.md for examples of commands
 
 ### knife.rb
+
 To set 'client' as the default mode, add the following line to the knife.rb file.
 
-```knife[:vault_mode] = 'client'```
+    knife[:vault_mode] = 'client'
 
 To set the default list of admins for creating and updating vaults, add the following line to the knife.rb file.
 
-```knife[:vault_admins] = [ 'example-alice', 'example-bob', 'example-carol' ]```
+    knife[:vault_admins] = [ 'example-alice', 'example-bob', 'example-carol' ]
 
 (These values can be overridden on the command line by using -A)
 
@@ -49,7 +51,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     knife vault delete VAULT ITEM
     knife vault rotate keys VAULT ITEM
     knife vault rotate all keys
-    knife vault show VAULT ITEM [VALUES]
+    knife vault show VAULT [ITEM] [VALUES]
     knife vault download VAULT ITEM PATH
 
 <i>Global Options:</i>
