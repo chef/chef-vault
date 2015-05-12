@@ -3,6 +3,9 @@
 
 This release will focus on adding any new features covered by open issues
 
+* add --clean-unknown-clients switch to `knife vault refresh`
+* as a side effect, `ChefVault::Item` now has a `#refresh` method which can be used to programatically perform the same operation as `knife vault refresh`
+
 ## v2.7.0
 
 This release will focus on reducing tech debt:

@@ -22,40 +22,21 @@ class Chef
 
       banner "knife vault refresh VAULT ITEM"
 
-      option :clean,
-        :long => '--clean',
-        :description => 'Clean clients before performing search'
+      option :clean_unknown_clients,
+        :long => '--clean-unknown-clients',
+        :description => 'Remove unknown clients during refresh'
 
       def run
         vault = @name_args[0]
         item = @name_args[1]
-        clean = config[:clean]
+        clean = config[:clean_unknown_clients]
 
         set_mode(config[:vault_mode])
 
         if vault && item
           begin
             vault_item = ChefVault::Item.load(vault, item)
-
-            search = vault_item.search
-            unless search
-              raise ChefVault::Exceptions::SearchNotFound,
-                    "#{vault}/#{item} does not have a stored search_query, "\
-                    "probably because it was created with an older version "\
-                    "of chef-vault. Use 'knife vault update' to update the "\
-                    "databag with the search query."
-            end
-
-            if clean
-              clients = vault_item.clients.clone.sort
-              clients.each do |client|
-                puts "Deleting #{client}"
-                vault_item.keys.delete(client, 'clients')
-              end
-            end
-
-            vault_item.clients(search)
-            vault_item.save
+            vault_item.refresh(clean)
           rescue ChefVault::Exceptions::KeysNotFound,
                  ChefVault::Exceptions::ItemNotFound
 

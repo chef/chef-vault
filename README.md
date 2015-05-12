@@ -132,7 +132,7 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
     <td>Remove unknown clients during key rotation</td>
     <td>nil</td>
     <td>nil</td>
-    <td>remove, rotate</td>
+    <td>refresh, remove, rotate</td>
   </tr>
 </table>
 

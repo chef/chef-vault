@@ -240,6 +240,31 @@ class ChefVault
       item
     end
 
+    # refreshes a vault by re-processing the search query and
+    # adding a secret for any nodes found (including new ones)
+    # @param clean_unknown_clients [Boolean] remove clients that can
+    #   no longer be found
+    # @return [void]
+    def refresh(clean_unknown_clients = false)
+      unless search
+        raise ChefVault::Exceptions::SearchNotFound,
+              "#{vault}/#{item} does not have a stored search_query, "\
+              'probably because it was created with an older version '\
+              "of chef-vault. Use 'knife vault update' to update the "\
+              'databag with the search query.'
+      end
+
+      # a bit of a misnomer; this doesn't remove unknown
+      # admins, just clients which are nodes
+      remove_unknown_nodes if clean_unknown_clients
+
+      # re-process the search query to add new clients
+      clients(search)
+
+      # save the updated vault
+      save
+    end
+
     private
 
     def encrypt!
@@ -291,7 +316,7 @@ class ChefVault
     end
 
     # removes unknown nodes by performing a node search
-    # for each of the existing nodclientses.  If the search
+    # for each of the existing clients.  If the search
     # returns nothing or the client cannot be loaded, then
     # we remove that client from the vault
     # @return [void]
