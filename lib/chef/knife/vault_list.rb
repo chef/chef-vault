@@ -31,23 +31,6 @@ class Chef
         end
         output vaultbags.join("\n")
       end
-
-      private
-
-      def bag_is_vault?(bagname)
-        bag = Chef::DataBag.load(bagname)
-        # vaults have at even number of keys >= 2
-        return false unless bag.keys.size >= 2 && 0 == bag.keys.size % 2
-        # partition into those that end in _keys
-        keylike, notkeylike = bag.keys.partition { |k| k =~ /_keys$/ }
-        # there must be an equal number of keyline and not-keylike items
-        return false unless keylike.size == notkeylike.size
-        # strip the _keys suffix and check if the sets match
-        keylike.map! { |k| k.gsub(/_keys$/, '') }
-        return false unless keylike.sort == notkeylike.sort
-        # it's (probably) a vault
-        true
-      end
     end
   end
 end

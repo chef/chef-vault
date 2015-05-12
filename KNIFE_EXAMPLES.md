@@ -96,13 +96,18 @@ Delete the item root from the vault passwords
     knife vault delete passwords root
 
 ### show
-knife vault show VAULT ITEM [VALUES]
+
+knife vault show VAULT [ITEM] [VALUES]
 
 These are the commands that are used to decrypt a chef-vault encrypted item and show the requested values.
 
-* Vault - This is the name of the vault in which to store the encrypted item.  This is analogous to a chef data bag name
-* Item - The name of the item going in to the vault.  This is analogous to a chef data bag item id
-* Values - This is a comma list of values to decrypt from the vault item.  This is analogous to a list of hash keys.
+* vault - This is the name of the vault in which to store the encrypted item.  This is analogous to a chef data bag name
+* item - The name of the item going in to the vault.  This is analogous to a chef data bag item id
+* values - This is a comma list of values to decrypt from the vault item.  This is analogous to a list of hash keys.
+
+Show the items in a vault
+
+    knife vault show passwords
 
 Show the entire root item in the passwords vault and print in JSON format.
 

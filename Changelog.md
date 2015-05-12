@@ -8,6 +8,7 @@ This release will focus on adding any new features covered by open issues
 * ChefVault::Item#clients can now accept a Chef::ApiClient object instead of a search string.  Requested by @lamont-granquist to make implementing chef-vault into `knife bootstrap` easier
 * allow Ruby 1.9.3 failures to not cause the overall build to fail on Travis
 * switch to latest 2.0.x, 2.1.x, and 2.2.x releases of Ruby
+* enhance 'knife vault show VAULTNAME' (without an item name) to list the names of the items in the vault for parity with 'knife data bag show'
 
 ## v2.7.0
 

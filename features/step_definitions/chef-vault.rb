@@ -102,3 +102,7 @@ end
 Given(/^I add '(.+)' as an admin for the vault item '(.+)\/(.+)'$/) do |newadmin, vault, item|
   run_simple "knife vault update #{vault} #{item} -c knife.rb -z -A #{newadmin}"
 end
+
+Given(/^I show the keys of the vault '(.+)'$/) do |vault|
+  run_simple "knife vault show #{vault} -c knife.rb -z"
+end
