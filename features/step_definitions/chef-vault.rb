@@ -28,6 +28,15 @@ Given(/^I rotate all keys with the '(.+)' options?$/) do |optionlist|
   run_simple "knife vault rotate all keys -z -c knife.rb #{options}"
 end
 
+Given(/^I refresh the vault item '(.+)\/(.+)'$/) do |vault, item|
+  run_simple "knife vault refresh #{vault} #{item} -c knife.rb -z"
+end
+
+Given(/^I refresh the vault item '(.+)\/(.+)' with the '(.+)' options?$/) do |vault, item, optionlist|
+  options = optionlist.split(/,/).map{|o| "--#{o}"}.join(' ')
+  run_simple "knife vault refresh #{vault} #{item} -c knife.rb -z #{options}"
+end
+
 Given(/^I try to decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |vault, item, node|
   run_simple "knife vault show #{vault} #{item} -z -c knife.rb -u #{node} -k #{node}.pem", false
 end
