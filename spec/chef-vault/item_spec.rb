@@ -117,4 +117,12 @@ RSpec.describe ChefVault::Item do
         .to raise_error(ChefVault::Exceptions::AdminNotFound)
     end
   end
+
+  describe '#raw_keys' do
+    it 'should return the keys of the underlying data bag item' do
+      item = ChefVault::Item.new('foo', 'bar')
+      item['foo'] = 'bar'
+      expect(item.raw_keys).to eq(%w(id foo))
+    end
+  end
 end

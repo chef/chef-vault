@@ -21,6 +21,13 @@ class ChefVault
     attr_accessor :keys
     attr_accessor :encrypted_data_bag_item
 
+    # returns the raw keys of the underlying Chef::DataBagItem.  chef-vault v2
+    # defined #keys as a public accessor that returns the ChefVault::ItemKeys
+    # object for the vault.  Ideally, #keys would provide Hash-like behaviour
+    # as it does for Chef::DataBagItem, but this would break the API.  We will
+    # revisit this as part of the 3.x rewrite
+    def_delegator :@raw_data, :keys, :raw_keys
+
     def initialize(vault, name)
       super() # Don't pass parameters
       @data_bag = vault
