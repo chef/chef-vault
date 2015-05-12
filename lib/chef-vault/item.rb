@@ -167,7 +167,7 @@ class ChefVault
       puts "keys_id is #{keys_id}"
       if keys_id != item_id
         raise ChefVault::Exceptions::IdMismatch,
-          "id mismatch - vault has id '#{item_id} but keys has id '#{keys_id}'"
+          "id mismatch - vault has id '#{item_id}' but keys has id '#{keys_id}'"
       end
 
       # save the keys first, raising an error if no keys were defined
