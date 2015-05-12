@@ -70,8 +70,14 @@ RSpec.describe ChefVault::Item do
   describe '#save' do
     context 'when item["id"] is bar.bar' do
       let(:item) { ChefVault::Item.new("foo", "bar.bar") }
-
       specify { expect { item.save }.to raise_error }
+    end
+
+    it 'should validate that the id of the vault matches the id of the keys data bag' do
+      item = ChefVault::Item.new('foo', 'bar')
+      item['id'] = 'baz'
+      item.keys['clients'] = %w(admin)
+      expect { item.save }.to raise_error(ChefVault::Exceptions::IdMismatch)
     end
   end
 

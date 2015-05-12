@@ -45,5 +45,8 @@ class ChefVault
 
     class SearchNotFound < Exceptions
     end
+
+    class IdMismatch < Exceptions
+    end
   end
 end
