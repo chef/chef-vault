@@ -160,6 +160,10 @@ This command reads the search_query in the vault item, performs the search, and 
 
     knife vault refresh VAULT ITEM
 
+To remove clients which have been deleted from Chef but not from the vault, add the --clean-unknown-clients switch:
+
+    knife vault refresh passwords root --clean-unknown-clients
+
 ### global options
 <table>
   <tr>
