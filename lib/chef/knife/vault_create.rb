@@ -63,7 +63,6 @@ class Chef
           rescue ChefVault::Exceptions::KeysNotFound,
                  ChefVault::Exceptions::ItemNotFound
             vault_item = ChefVault::Item.new(vault, item)
-
             if values || json_file || file
               merge_values(values, json_file).each do |key, value|
                 vault_item[key] = value

@@ -160,6 +160,16 @@ class ChefVault
       # validate the format of the id before attempting to save
       validate_id!(item_id)
 
+      # ensure that the ID of the vault hasn't changed since the keys
+      # data bag item was created
+      keys_id = keys['id'].match(/^(.+)_keys/)[1]
+      puts "item_id is #{item_id}"
+      puts "keys_id is #{keys_id}"
+      if keys_id != item_id
+        raise ChefVault::Exceptions::IdMismatch,
+          "id mismatch - vault has id '#{item_id} but keys has id '#{keys_id}'"
+      end
+
       # save the keys first, raising an error if no keys were defined
       if keys.admins.empty? && keys.clients.empty?
         raise ChefVault::Exceptions::NoKeysDefined,
