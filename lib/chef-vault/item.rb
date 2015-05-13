@@ -201,7 +201,7 @@ class ChefVault
       keys_id = keys['id'].match(/^(.+)_keys/)[1]
       if keys_id != item_id
         raise ChefVault::Exceptions::IdMismatch,
-          "id mismatch - vault has id '#{item_id}' but keys has id '#{keys_id}'"
+          "id mismatch - input JSON has id '#{item_id}' but vault item has id '#{keys_id}'"
       end
 
       # save the keys first, raising an error if no keys were defined

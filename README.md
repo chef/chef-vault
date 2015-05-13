@@ -193,6 +193,40 @@ gem.
 To fall back to unencrypted JSON files in Test Kitchen, use the
 `chef_vault_item` helper in the aforementioned chef-vault cookbook.
 
+## THE FUTURE OF chef-vault
+
+It has become clear that supporting alternate keying mechanisms like GPG and
+Amazon KMS is something that chef-vault users want, but the implementation
+of chef-vault v2 makes this difficult, as much of the code is tied to the
+"side-along data bag item" implementation.
+
+chef-vault v3.x.x will be a major rewrite. While the core vault item will
+remain a Chef encrypted data bag item, the way in which you get the secret
+to decrypt that data bag item will be delegated to plugins. At release,
+there will be at least a plugin that emulates the 2.x.x implementation, and
+hopefully one for KMS. Anyone who wants to support an alternate keying
+implementation will be able to write one and distribute it as a gem for
+others to use.
+
+With that in mind, the 2.6.0 release is the last one that will receive new
+features. If you refer to the
+[milestones](https://github.com/Nordstrom/chef-vault/milestones) on Github,
+the plan is for two releases prior to 3.x:
+
+* v2.7.x will focus on reducing tech debt - getting the test coverage up to 100%
+in both RSpec and Aruba, and getting the internal API docs completed.
+* v2.99.x will be a transitional release. This release will add deprecation
+warnings for any API or CLI option that will be changing in v3.x. Any user
+who wants to stay with the 2.x series can use a '~> 2.x' constraint (where x
+is any minor release of chef-vault) and be certain that they won't
+accidentally get the new release.
+
+If you are interested helping with the robustness fixes in v2.7.x, please
+feel free to fork the repo and add more RSpec and Aruba tests. Frequent
+small pull requests are preferred to large omnibus patches, as the
+robustness pass is a multi-person effort and we don't want to create merge
+conflicts unnecessarily.
+
 ## Authors
 
 Author:: Kevin Moser - @moserke<br>

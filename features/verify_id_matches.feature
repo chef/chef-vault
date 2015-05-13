@@ -8,4 +8,4 @@ Feature: knife vault create with mismatched ID
   Scenario: create vault from JSON file with mismatched ID
     Given a local mode chef repo with nodes 'one,two,three'
     And I create a vault item 'test/item' containing the JSON '{"id": "eyetem"}' encrypted for 'one,two,three'
-    Then the output should match /id mismatch - vault has id 'eyetem' but keys has id 'item'/
+    Then the output should match /id mismatch - input JSON has id 'eyetem' but vault item has id 'item'/
