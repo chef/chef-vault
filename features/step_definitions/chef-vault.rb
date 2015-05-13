@@ -106,3 +106,11 @@ end
 Given(/^I show the keys of the vault '(.+)'$/) do |vault|
   run_simple "knife vault show #{vault} -c knife.rb -z"
 end
+
+Given(/^I check if the data bag item '(.+)\/(.+)' is a vault$/) do |vault, item|
+  run_simple "knife vault isvault #{vault} #{item} -c knife.rb -z", false
+end
+
+Given(/^I check the type of the data bag item '(.+)\/(.+)'$/) do |vault, item|
+  run_simple "knife vault itemtype #{vault} #{item} -c knife.rb -z"
+end

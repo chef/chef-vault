@@ -62,6 +62,72 @@ RSpec.describe ChefVault::Item do
 
   subject(:item) { ChefVault::Item.new("foo", "bar") }
 
+  describe 'vault probe predicates' do
+    before do
+      # a normal data bag item
+      @db = { 'foo' => '...' }
+      @dbi = Chef::DataBagItem.new
+      @dbi.data_bag('normal')
+      @dbi.raw_data = { 'id' => 'foo', 'foo' => 'bar' }
+      allow(@db).to receive(:load).with('foo').and_return(@dbi)
+      allow(Chef::DataBag).to receive(:load).with('normal').and_return(@db)
+      allow(Chef::DataBagItem).to receive(:load).with('normal', 'foo').and_return(@dbi)
+
+      # an encrypted data bag item (non-vault)
+      @encdb = { 'foo' => '...' }
+      @encdbi = Chef::DataBagItem.new
+      @encdbi.data_bag('encrypted')
+      @encdbi.raw_data = {
+        'id' => 'foo',
+        'foo' => { 'encrypted_data' => '...' }
+      }
+      allow(@encdb).to receive(:load).with('foo').and_return(@encdbi)
+      allow(Chef::DataBag).to receive(:load).with('encrypted').and_return(@encdb)
+      allow(Chef::DataBagItem).to receive(:load).with('encrypted', 'foo').and_return(@encdbi)
+
+      # two items that make up a vault
+      @vaultdb = { 'foo' => '...', 'foo_keys' => '...' }
+      @vaultdbi = Chef::DataBagItem.new
+      @vaultdbi.data_bag('vault')
+      @vaultdbi.raw_data = {
+        'id' => 'foo',
+        'foo' => { 'encrypted_data' => '...' }
+      }
+      allow(@vaultdb).to receive(:load).with('foo').and_return(@vaultdbi)
+      @vaultdbki = Chef::DataBagItem.new
+      @vaultdbki.data_bag('vault')
+      @vaultdbki.raw_data = { 'id' => 'foo_keys' }
+      allow(@vaultdb).to receive(:load).with('foo_keys').and_return(@vaultdbki)
+      allow(Chef::DataBag).to receive(:load).with('vault').and_return(@vaultdb)
+      allow(Chef::DataBagItem).to receive(:load).with('vault', 'foo').and_return(@vaultdbi)
+    end
+
+    describe '::vault?' do
+      it 'should detect a vault item' do
+        expect(ChefVault::Item.vault?('vault', 'foo')).to be_truthy
+      end
+
+      it 'should detect non-vault items' do
+        expect(ChefVault::Item.vault?('normal', 'foo')).not_to be_truthy
+        expect(ChefVault::Item.vault?('encrypted', 'foo')).not_to be_truthy
+      end
+    end
+
+    describe '::data_bag_item_type' do
+      it 'should detect a vault item' do
+        expect(ChefVault::Item.data_bag_item_type('vault', 'foo')).to eq(:vault)
+      end
+
+      it 'should detect an encrypted data bag item' do
+        expect(ChefVault::Item.data_bag_item_type('encrypted', 'foo')).to eq(:encrypted)
+      end
+
+      it 'should detect a normal data bag item' do
+        expect(ChefVault::Item.data_bag_item_type('normal', 'foo')).to eq(:normal)
+      end
+    end
+  end
+
   describe '::new' do
     it { should be_an_instance_of ChefVault::Item }
 
