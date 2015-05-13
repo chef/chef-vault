@@ -1,4 +1,4 @@
-# Description: Chef-Vault VaultList class
+# Description: Chef-Vault VaultIsvault class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,10 @@ require 'chef/knife/vault_base'
 
 class Chef
   class Knife
-    class VaultList < Knife
+    class VaultIsvault < Knife
       include Chef::Knife::VaultBase
 
-      banner "knife vault list (options)"
+      banner "knife vault isvault VAULT ITEM (options)"
 
       option :mode,
         :short => '-M MODE',
@@ -28,14 +28,15 @@ class Chef
         :description => 'Chef mode to run in default - solo'
 
       def run
-        set_mode(config[:vault_mode])
-        vaultbags = []
-        # iterate over all the data bags
-        bags = Chef::DataBag.list
-        bags.each_key do |bagname|
-          vaultbags.push(bagname) if bag_is_vault?(bagname)
+        vault = @name_args[0]
+        item = @name_args[1]
+
+        if vault && item
+          set_mode(config[:vault_mode])
+          exit ChefVault::Item.vault?(vault, item) ? 0 : 1
+        else
+          show_usage
         end
-        output vaultbags.join("\n")
       end
     end
   end

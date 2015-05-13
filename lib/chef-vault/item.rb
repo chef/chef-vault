@@ -288,6 +288,49 @@ class ChefVault
       item
     end
 
+    # determines if a data bag item looks like a vault
+    # @param vault [String] the name of the data bag
+    # @param name [String] the name of the item in the data bag
+    # @return [Boolean] true if the data bag item looks like a vault
+    def self.vault?(vault, name)
+      :vault == data_bag_item_type(vault, name)
+    end
+
+    # determines whether a data bag item is a vault, an encrypted
+    # data bag item, or a normal data bag item. An item is a vault
+    # if:
+    #
+    # a) the data bag item contains at least one key whose value is
+    #   an hash with the key 'encrypted data'
+    # b) the data bag that contains the item contains a second item
+    #   suffixed with _keys
+    #
+    # if a) is false, the item is a normal data bag
+    # if a) and b) are true, the item is a vault
+    # if a) is true but b) is false, the item is an encrypted data
+    #   bag item
+    # @param vault [String] the name of the data bag
+    # @param name [String] the name of the item in the data bag
+    # @return [Symbol] one of :vault, :encrypted or :normal
+    def self.data_bag_item_type(vault, name)
+      # adapted from https://github.com/opscode-cookbooks/chef-vault/blob/v1.3.0/libraries/chef_vault_item.rb
+      # and https://github.com/sensu/sensu-chef/blob/2.9.0/libraries/sensu_helpers.rb
+      dbi = Chef::DataBagItem.load(vault, name)
+      encrypted = dbi.detect do |_, v|
+        v.is_a?(Hash) && v.key?('encrypted_data')
+      end
+
+      # return a symbol describing the type of item we detected
+      case
+      when encrypted && Chef::DataBag.load(vault).key?("#{name}_keys")
+        :vault
+      when encrypted
+        :encrypted
+      else
+        :normal
+      end
+    end
+
     # refreshes a vault by re-processing the search query and
     # adding a secret for any nodes found (including new ones)
     # @param clean_unknown_clients [Boolean] remove clients that can

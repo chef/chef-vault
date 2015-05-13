@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/Nordstrom/chef-vault.png?branch=master)](https://travis-ci.org/Nordstrom/chef-vault)
 
+[![Inline docs](http://inch-ci.org/github/nordstrom/chef-vault.svg?branch=master)](http://inch-ci.org/github/nordstrom/chef-vault)
+
 [![Code Climate](https://codeclimate.com/github/Nordstrom/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/Nordstrom/chef-vault)
 
 ## DESCRIPTION:
@@ -61,90 +63,21 @@ NOTE: chef-vault 1.0 knife commands are not supported! Please use chef-vault
     knife vault rotate all keys
     knife vault show VAULT [ITEM] [VALUES]
     knife vault download VAULT ITEM PATH
+    knife vault isvault VAULT ITEM
+    knife vault itemtype VAULT ITEM
 
-<i>Global Options:</i>
-<table>
-  <tr>
-    <th>Short</th>
-    <th>Long</th>
-    <th>Description</th>
-    <th>Default</th>
-    <th>Valid Values</th>
-    <th>Sub-Commands</th>
-  </tr>
-  <tr>
-    <td>-M MODE</td>
-    <td>--mode MODE</td>
-    <td>Chef mode to run in. Can be set in knife.rb</td>
-    <td>solo</td>
-    <td>"solo", "client"</td>
-    <td>all</td>
-  </tr>
-  <tr>
-    <td>-S SEARCH</td>
-    <td>--search SEARCH</td>
-    <td>Chef Server SOLR Search Of Nodes</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, remove, update</td>
-  </tr>
-  <tr>
-    <td>-A ADMINS</td>
-    <td>--admins ADMINS</td>
-    <td>Chef clients or users to be vault admins, can be comma list</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, remove, update</td>
-  </tr>
-  <tr>
-    <td>-J FILE</td>
-    <td>--json FILE</td>
-    <td>JSON file to be used for values, will be merged with VALUES if VALUES is passed</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, update</td>
-  </tr>
-  <tr>
-    <td>nil</td>
-    <td>--file FILE</td>
-    <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, update</td>
-  </tr>
-  <tr>
-    <td>-p DATA</td>
-    <td>--print DATA</td>
-    <td>Print extra vault data</td>
-    <td>nil</td>
-    <td>"search", "clients", "admins", "all"</td>
-    <td>show</td>
-  </tr>
-  <tr>
-    <td>-F FORMAT</td>
-    <td>--format FORMAT</td>
-    <td>Format for decrypted output</td>
-    <td>summary</td>
-    <td>"summary", "json", "yaml", "pp"</td>
-    <td>show</td>
-  </tr>
-  <tr>
-    <td>nil</td>
-    <td>--clean</td>
-    <td>Remove all client keys before re-encrypting with saved or specified search</td>
-    <td>nil</td>
-    <td>nil</td>
-    <td>update</td>
-  </tr>
-  <tr>
-    <td>nil</td>
-    <td>--clean-unknown-clients</td>
-    <td>Remove unknown clients during key rotation</td>
-    <td>nil</td>
-    <td>nil</td>
-    <td>refresh, remove, rotate</td>
-  </tr>
-</table>
+#### Global Options
+
+Short | Long | Description | Default | Valid Values | Sub-Commands
+------|------|-------------|--------------|-------------
+-M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
+-S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
+-A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update
+-J FILE | --json FILE | JSON file to be used for values, will be merged with VALUES if VALUES is passed | | | create, update
+| --file FILE | File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item | | | create, update
+-p DATA | --print DATA | Print extra vault data | | search, clients, admins, all | show
+-F FORMAT | --format FORMAT | Format for decrypted output | summary | summary, json, yaml, pp | show
+| --clean-unknown-clients | Remove unknown clients during key rotation | | | refresh, remove, rotate
 
 ## USAGE IN RECIPES
 
@@ -206,6 +139,36 @@ The [chef-vault cookbook](https://supermarket.chef.io/cookbooks/chef-vault)
 contains a recipe to install the chef-vault gem and a helper method
 `chef_vault_helper` which makes it easier to test cookbooks that use
 chef-vault using Test Kitchen.
+
+## DETERMINING IF AN ITEM IS A VAULT
+
+ChefVault provides a helper method to determine if a data bag item is a vault,
+which can be helpful if you produce a recipe for community consumption and want
+to support both normal data bags and vaults:
+
+  if ChefVault::Item.vault?('passwords', 'root')
+    item = ChefVault::Item.load('passwords', 'root')
+  else
+    item = Chef::DataBag.load('passwords', 'root')
+  end
+
+This functionality is also available from the command line as 'knife vault isvault'.
+
+## DETERMINING THE TYPE OF A DATA BAG ITEM
+
+ChefVault provides a helper method to determine the type of a data bag item.
+It returns one of the symbols :normal, :encrypted or :vault
+
+  case ChefVault::Item.data_bag_item_type('passwords', 'root')
+  when :normal
+    ...
+  when :encrypted
+    ...
+  when :vault
+    ...
+  end
+
+This functionality is also available from the command line as 'knife vault itemtype'.
 
 ## USAGE STAND ALONE
 

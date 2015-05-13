@@ -1,6 +1,7 @@
 # knife examples
 
 ## vault
+
 knife vault *\<command\>* VAULT ITEM VALUES
 
 These are the commands that are used to take data in JSON format and encrypt that data into chef-vault style encrypted data bags in chef.
@@ -31,6 +32,7 @@ Create a vault called passwords and put an item called root in it encrypted for 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
 ### update
+
 Update the values in username and password in the vault passwords and item root.  Will overwrite existing values if values already exist!
 
     knife vault update passwords root '{"username": "root", "password": "mypassword"}'
@@ -62,6 +64,7 @@ Add admin1 & admin2 to encrypted admins and role:webserver to encrypted clients 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
 ### remove
+
 Remove the values in username and password from the vault passwords and item root.
 
     knife vault remove passwords root '{"username": "root", "password": "mypassword"}'
@@ -91,6 +94,7 @@ Remove admin1 & admin2 from encrypted admins and role:webserver from encrypted c
     knife vault remove passwords root -S "role:webserver" -A "admin1,admin2"
 
 ### delete
+
 Delete the item root from the vault passwords
 
     knife vault delete passwords root
@@ -126,6 +130,7 @@ Show the contents for the item user_pem in the vault certs.
     knife vault show certs user_pem "contents"
 
 ### edit
+
 knife vault edit VAULT ITEM
 
 These are the commands that are used to edit a chef-vault encrypted item.
@@ -138,11 +143,13 @@ Decrypt the entire root item in the passwords vault and open it in json format i
     knife vault edit passwords root
 
 ### download
+
 Decrypt and download an encrypted file to the specified path.
 
     knife vault download certs user_pem ~/downloaded_user_pem
 
 ### rotate keys
+
 Rotate the shared key for the vault passwords and item root. The shared key is that which is used for the chef encrypted data bag item.
 
     knife vault rotate keys passwords root
@@ -152,6 +159,7 @@ To remove clients which have been deleted from Chef but not from the vault, add 
     knife vault rotate keys passwords root --clean-unknown-clients
 
 ### rotate all keys
+
 Rotate the shared key for all vaults and items. The shared key is that which is used for the chef encrypted data bag item.
 
     knife vault rotate all keys
@@ -161,6 +169,7 @@ To remove clients which have been deleted from Chef but not from the vault, add 
     knife vault rotate keys passwords root --clean-unknown-clients
 
 ### refresh
+
 This command reads the search_query in the vault item, performs the search, and reapplies the results.
 
     knife vault refresh VAULT ITEM
@@ -169,70 +178,27 @@ To remove clients which have been deleted from Chef but not from the vault, add 
 
     knife vault refresh passwords root --clean-unknown-clients
 
+### isvault
+
+This command checks if the given item is a vault or not, and exit with a status of 0 if it is and 1 if it is not.
+
+    knife vault isvault VAULT ITEM
+
+### itemtype
+
+This command outputs the type of the data bag item: normal, encrypted or vault
+
+    knife vault itemtype VAULT ITEM
+
 ### global options
-<table>
-  <tr>
-    <th>Short</th>
-    <th>Long</th>
-    <th>Description</th>
-    <th>Default</th>
-    <th>Valid Values</th>
-    <th>Sub-Commands</th>
-  </tr>
-  <tr>
-    <td>-M MODE</td>
-    <td>--mode MODE</td>
-    <td>Chef mode to run in</td>
-    <td>solo</td>
-    <td>"solo", "client"</td>
-    <td>all</td>
-  </tr>
-  <tr>
-    <td>-S SEARCH</td>
-    <td>--search SEARCH</td>
-    <td>Chef Server SOLR Search Of Nodes</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, remove, update</td>
-  </tr>
-  <tr>
-    <td>-A ADMINS</td>
-    <td>--admins ADMINS</td>
-    <td>Chef clients or users to be vault admins, can be comma list</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, remove, update</td>
-  </tr>
-  <tr>
-    <td>-J FILE</td>
-    <td>--json FILE</td>
-    <td>JSON file to be used for values, will be merged with VALUES if VALUES is passed</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, update</td>
-  </tr>
-  <tr>
-    <td>nil</td>
-    <td>--file FILE</td>
-    <td>File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item</td>
-    <td>nil</td>
-    <td></td>
-    <td>create, update</td>
-  </tr>
-  <tr>
-    <td>-p DATA</td>
-    <td>--print DATA</td>
-    <td>Print extra vault data</td>
-    <td>nil</td>
-    <td>"search", "clients", "admins", "all"</td>
-    <td>show</td>
-  </tr>
-  <tr>
-    <td>-F FORMAT</td>
-    <td>--format FORMAT</td>
-    <td>Format for decrypted output</td>
-    <td>summary</td>
-    <td>"summary", "json", "yaml", "pp"</td>
-    <td>show</td>
-  </tr>
-</table>
+
+Short | Long | Description | Default | Valid Values | Sub-Commands
+------|------|-------------|--------------|-------------
+-M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
+-S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
+-A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update
+-J FILE | --json FILE | JSON file to be used for values, will be merged with VALUES if VALUES is passed | | | create, update
+| --file FILE | File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item | | | create, update
+-p DATA | --print DATA | Print extra vault data | | search, clients, admins, all | show
+-F FORMAT | --format FORMAT | Format for decrypted output | summary | summary, json, yaml, pp | show
+| --clean-unknown-clients | Remove unknown clients during key rotation | | | refresh, remove, rotate

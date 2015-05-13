@@ -5,6 +5,10 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
+AllCops:
+  Exclude:
+    - 'features/step_definitions/*.rb'
+
 # Offense count: 12
 Metrics/AbcSize:
   Max: 43
@@ -16,7 +20,7 @@ Metrics/BlockNesting:
 # Offense count: 1
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 289
+  Max: 306
 
 # Offense count: 5
 Metrics/CyclomaticComplexity:
