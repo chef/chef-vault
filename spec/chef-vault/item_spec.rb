@@ -51,9 +51,18 @@ module BorkedNodeWithoutPublicKey
 end
 
 RSpec.describe ChefVault::Item do
+  before do
+    @orig_stdout = $stdout
+    $stdout = File.open(File::NULL, 'w')
+  end
+
+  after do
+    $stdout = @orig_stdout
+  end
+
   subject(:item) { ChefVault::Item.new("foo", "bar") }
 
-  describe '#new' do
+  describe '::new' do
     it { should be_an_instance_of ChefVault::Item }
 
     its(:keys) { should be_an_instance_of ChefVault::ItemKeys }
@@ -65,6 +74,66 @@ RSpec.describe ChefVault::Item do
     specify { expect(item.keys['id']).to eq 'bar_keys' }
 
     specify { expect(item.keys.data_bag).to eq 'foo' }
+
+    it 'defaults the node name' do
+      item = ChefVault::Item.new('foo', 'bar')
+      expect(item.node_name).to eq(Chef::Config[:node_name])
+    end
+
+    it 'defaults the client key path' do
+      item = ChefVault::Item.new('foo', 'bar')
+      expect(item.client_key_path).to eq(Chef::Config[:client_key])
+    end
+
+    it 'allows for a node name override' do
+      item = ChefVault::Item.new('foo', 'bar', node_name: 'baz')
+      expect(item.node_name).to eq('baz')
+    end
+
+    it 'allows for a client key path override' do
+      item = ChefVault::Item.new('foo', 'bar', client_key_path: '/foo/client.pem')
+      expect(item.client_key_path).to eq('/foo/client.pem')
+    end
+
+    it 'allows for both node name and client key overrides' do
+      item = ChefVault::Item.new(
+        'foo', 'bar',
+        node_name: 'baz',
+        client_key_path: '/foo/client.pem'
+      )
+      expect(item.node_name).to eq('baz')
+      expect(item.client_key_path).to eq('/foo/client.pem')
+    end
+  end
+
+  describe '::load' do
+    it 'allows for both node name and client key overrides' do
+      keys_db = Chef::DataBagItem.new
+      keys_db.raw_data = {
+        'id' => 'bar_keys',
+        'baz' => '...'
+      }
+      allow(ChefVault::ItemKeys)
+        .to receive(:load)
+        .and_return(keys_db)
+      fh = double 'private key handle'
+      allow(fh).to receive(:read).and_return('...')
+      allow(File).to receive(:open).and_return(fh)
+      privkey = double 'private key contents'
+      allow(privkey).to receive(:private_decrypt).and_return('sekrit')
+      allow(OpenSSL::PKey::RSA).to receive(:new).and_return(privkey)
+      allow(Chef::EncryptedDataBagItem).to receive(:load).and_return(
+        'id' => 'bar',
+        'password' => '12345'
+      )
+      item = ChefVault::Item.load(
+        'foo', 'bar',
+        node_name: 'baz',
+        client_key_path: '/foo/client.pem'
+      )
+      expect(item.node_name).to eq('baz')
+      expect(item.client_key_path).to eq('/foo/client.pem')
+    end
   end
 
   describe '#save' do
@@ -93,7 +162,7 @@ RSpec.describe ChefVault::Item do
     it 'should emit a warning if search returns a node without a public key' do
       # it should however emit a warning that you have a borked node
       expect { @vaultitem.clients('*:*') }
-        .to output(/node 'bar' has no private key; skipping/).to_stderr
+        .to output(/node 'bar' has no private key; skipping/).to_stdout
     end
 
     it 'should accept a client object and not perform a search' do

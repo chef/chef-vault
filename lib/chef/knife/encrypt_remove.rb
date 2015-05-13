@@ -34,7 +34,7 @@ class Chef
         :description => 'Chef users to be added as admins'
 
       def run
-        puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
+        $stdout.puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
         super
       end
     end

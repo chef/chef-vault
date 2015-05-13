@@ -43,7 +43,7 @@ class Chef
         :description => 'File to be added to vault item as file-content'
 
       def run
-        puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
+        $stdout.puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
         super
       end
     end
