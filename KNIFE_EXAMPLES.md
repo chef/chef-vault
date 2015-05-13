@@ -2,13 +2,13 @@
 
 ## vault
 
-knife vault *\<command\>* VAULT ITEM VALUES
+    knife vault SUBCOMMAND VAULT ITEM VALUES
 
 These are the commands that are used to take data in JSON format and encrypt that data into chef-vault style encrypted data bags in chef.
 
-* Vault - This is the name of the vault in which to store the encrypted item.  This is analogous to a chef data bag name
-* Item - The name of the item going in to the vault.  This is analogous to a chef data bag item id
-* Values - This is the JSON clear text data to be stored in the vault encrypted.  This is analogous to a chef data bag item data
+* vault - This is the name of the vault in which to store the encrypted item.  This is analogous to a chef data bag name
+* item - The name of the item going in to the vault.  This is analogous to a chef data bag item id
+* values - This is the JSON clear text data to be stored in the vault encrypted.  This is analogous to a chef data bag item data
 
 ## vault commands
 
@@ -193,7 +193,7 @@ This command outputs the type of the data bag item: normal, encrypted or vault
 ### global options
 
 Short | Long | Description | Default | Valid Values | Sub-Commands
-------|------|-------------|--------------|-------------
+------|------|-------------|---------|--------------|-------------
 -M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
 -S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
 -A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update

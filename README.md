@@ -69,7 +69,7 @@ NOTE: chef-vault 1.0 knife commands are not supported! Please use chef-vault
 #### Global Options
 
 Short | Long | Description | Default | Valid Values | Sub-Commands
-------|------|-------------|--------------|-------------
+------|------|-------------|---------|--------------|-------------
 -M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
 -S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
 -A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update
@@ -90,16 +90,14 @@ deprecated and chef-vault 2.0 decryption should be used instead
 
 ### Example Code
 
-```ruby
-chef_gem 'chef-vault' do
-  compile_time true if respond_to?(:compile_time)
-end
+    chef_gem 'chef-vault' do
+      compile_time true if respond_to?(:compile_time)
+    end
 
-require 'chef-vault'
+    require 'chef-vault'
 
-item = ChefVault::Item.load("passwords", "root")
-item["password"]
-```
+    item = ChefVault::Item.load("passwords", "root")
+    item["password"]
 
 Note that in this case, the gem needs to be installed at compile time
 because the require statement is at the top-level of the recipe.  If
@@ -117,14 +115,12 @@ this secret.
 These can be overridden by passing a hash with the keys `:node_name` or
 `:client_key_path` to `ChefVault::Item.load`:
 
-```ruby
-item = ChefVault::Item.load(
-  'passwords', 'root',
-  node_name: 'service_foo',
-  client_key_path: '/secure/place/service_foo.pem'
-)
-item['password']
-```
+    item = ChefVault::Item.load(
+      'passwords', 'root',
+      node_name: 'service_foo',
+      client_key_path: '/secure/place/service_foo.pem'
+    )
+    item['password']
 
 The above example assumes that you have transferred
 `/secure/place/service_foo.pem` to your system via a secure channel.
@@ -146,29 +142,29 @@ ChefVault provides a helper method to determine if a data bag item is a vault,
 which can be helpful if you produce a recipe for community consumption and want
 to support both normal data bags and vaults:
 
-  if ChefVault::Item.vault?('passwords', 'root')
-    item = ChefVault::Item.load('passwords', 'root')
-  else
-    item = Chef::DataBag.load('passwords', 'root')
-  end
+    if ChefVault::Item.vault?('passwords', 'root')
+      item = ChefVault::Item.load('passwords', 'root')
+    else
+      item = Chef::DataBagItem.load('passwords', 'root')
+    end
 
-This functionality is also available from the command line as 'knife vault isvault'.
+This functionality is also available from the command line as `knife vault isvault VAULT ITEM`.
 
 ## DETERMINING THE TYPE OF A DATA BAG ITEM
 
 ChefVault provides a helper method to determine the type of a data bag item.
 It returns one of the symbols :normal, :encrypted or :vault
 
-  case ChefVault::Item.data_bag_item_type('passwords', 'root')
-  when :normal
-    ...
-  when :encrypted
-    ...
-  when :vault
-    ...
-  end
+    case ChefVault::Item.data_bag_item_type('passwords', 'root')
+    when :normal
+      ...
+    when :encrypted
+      ...
+    when :vault
+      ...
+    end
 
-This functionality is also available from the command line as 'knife vault itemtype'.
+This functionality is also available from the command line as `knife vault itemtype VAULT ITEM`.
 
 ## USAGE STAND ALONE
 
