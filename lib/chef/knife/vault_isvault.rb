@@ -1,5 +1,5 @@
-# Description: Chef-Vault VaultReapply class
-# Copyright 2013-15, Nordstrom, Inc.
+# Description: Chef-Vault VaultIsvault class
+# Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,33 +17,23 @@ require 'chef/knife/vault_base'
 
 class Chef
   class Knife
-    class VaultRefresh < Knife
+    class VaultIsvault < Knife
       include Chef::Knife::VaultBase
 
-      banner "knife vault refresh VAULT ITEM"
+      banner "knife vault isvault VAULT ITEM (options)"
 
-      option :clean_unknown_clients,
-        :long => '--clean-unknown-clients',
-        :description => 'Remove unknown clients during refresh'
+      option :mode,
+        :short => '-M MODE',
+        :long => '--mode MODE',
+        :description => 'Chef mode to run in default - solo'
 
       def run
         vault = @name_args[0]
         item = @name_args[1]
-        clean = config[:clean_unknown_clients]
-
-        set_mode(config[:vault_mode])
 
         if vault && item
-          begin
-            vault_item = ChefVault::Item.load(vault, item)
-            vault_item.refresh(clean)
-          rescue ChefVault::Exceptions::KeysNotFound,
-                 ChefVault::Exceptions::ItemNotFound
-
-            raise ChefVault::Exceptions::ItemNotFound,
-                  "#{vault}/#{item} does not exist, "\
-                  "use 'knife vault create' to create."
-          end
+          set_mode(config[:vault_mode])
+          exit ChefVault::Item.vault?(vault, item) ? 0 : 1
         else
           show_usage
         end

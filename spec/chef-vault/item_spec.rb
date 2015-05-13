@@ -51,9 +51,84 @@ module BorkedNodeWithoutPublicKey
 end
 
 RSpec.describe ChefVault::Item do
+  before do
+    @orig_stdout = $stdout
+    $stdout = File.open(File::NULL, 'w')
+  end
+
+  after do
+    $stdout = @orig_stdout
+  end
+
   subject(:item) { ChefVault::Item.new("foo", "bar") }
 
-  describe '#new' do
+  describe 'vault probe predicates' do
+    before do
+      # a normal data bag item
+      @db = { 'foo' => '...' }
+      @dbi = Chef::DataBagItem.new
+      @dbi.data_bag('normal')
+      @dbi.raw_data = { 'id' => 'foo', 'foo' => 'bar' }
+      allow(@db).to receive(:load).with('foo').and_return(@dbi)
+      allow(Chef::DataBag).to receive(:load).with('normal').and_return(@db)
+      allow(Chef::DataBagItem).to receive(:load).with('normal', 'foo').and_return(@dbi)
+
+      # an encrypted data bag item (non-vault)
+      @encdb = { 'foo' => '...' }
+      @encdbi = Chef::DataBagItem.new
+      @encdbi.data_bag('encrypted')
+      @encdbi.raw_data = {
+        'id' => 'foo',
+        'foo' => { 'encrypted_data' => '...' }
+      }
+      allow(@encdb).to receive(:load).with('foo').and_return(@encdbi)
+      allow(Chef::DataBag).to receive(:load).with('encrypted').and_return(@encdb)
+      allow(Chef::DataBagItem).to receive(:load).with('encrypted', 'foo').and_return(@encdbi)
+
+      # two items that make up a vault
+      @vaultdb = { 'foo' => '...', 'foo_keys' => '...' }
+      @vaultdbi = Chef::DataBagItem.new
+      @vaultdbi.data_bag('vault')
+      @vaultdbi.raw_data = {
+        'id' => 'foo',
+        'foo' => { 'encrypted_data' => '...' }
+      }
+      allow(@vaultdb).to receive(:load).with('foo').and_return(@vaultdbi)
+      @vaultdbki = Chef::DataBagItem.new
+      @vaultdbki.data_bag('vault')
+      @vaultdbki.raw_data = { 'id' => 'foo_keys' }
+      allow(@vaultdb).to receive(:load).with('foo_keys').and_return(@vaultdbki)
+      allow(Chef::DataBag).to receive(:load).with('vault').and_return(@vaultdb)
+      allow(Chef::DataBagItem).to receive(:load).with('vault', 'foo').and_return(@vaultdbi)
+    end
+
+    describe '::vault?' do
+      it 'should detect a vault item' do
+        expect(ChefVault::Item.vault?('vault', 'foo')).to be_truthy
+      end
+
+      it 'should detect non-vault items' do
+        expect(ChefVault::Item.vault?('normal', 'foo')).not_to be_truthy
+        expect(ChefVault::Item.vault?('encrypted', 'foo')).not_to be_truthy
+      end
+    end
+
+    describe '::data_bag_item_type' do
+      it 'should detect a vault item' do
+        expect(ChefVault::Item.data_bag_item_type('vault', 'foo')).to eq(:vault)
+      end
+
+      it 'should detect an encrypted data bag item' do
+        expect(ChefVault::Item.data_bag_item_type('encrypted', 'foo')).to eq(:encrypted)
+      end
+
+      it 'should detect a normal data bag item' do
+        expect(ChefVault::Item.data_bag_item_type('normal', 'foo')).to eq(:normal)
+      end
+    end
+  end
+
+  describe '::new' do
     it { should be_an_instance_of ChefVault::Item }
 
     its(:keys) { should be_an_instance_of ChefVault::ItemKeys }
@@ -65,13 +140,79 @@ RSpec.describe ChefVault::Item do
     specify { expect(item.keys['id']).to eq 'bar_keys' }
 
     specify { expect(item.keys.data_bag).to eq 'foo' }
+
+    it 'defaults the node name' do
+      item = ChefVault::Item.new('foo', 'bar')
+      expect(item.node_name).to eq(Chef::Config[:node_name])
+    end
+
+    it 'defaults the client key path' do
+      item = ChefVault::Item.new('foo', 'bar')
+      expect(item.client_key_path).to eq(Chef::Config[:client_key])
+    end
+
+    it 'allows for a node name override' do
+      item = ChefVault::Item.new('foo', 'bar', node_name: 'baz')
+      expect(item.node_name).to eq('baz')
+    end
+
+    it 'allows for a client key path override' do
+      item = ChefVault::Item.new('foo', 'bar', client_key_path: '/foo/client.pem')
+      expect(item.client_key_path).to eq('/foo/client.pem')
+    end
+
+    it 'allows for both node name and client key overrides' do
+      item = ChefVault::Item.new(
+        'foo', 'bar',
+        node_name: 'baz',
+        client_key_path: '/foo/client.pem'
+      )
+      expect(item.node_name).to eq('baz')
+      expect(item.client_key_path).to eq('/foo/client.pem')
+    end
+  end
+
+  describe '::load' do
+    it 'allows for both node name and client key overrides' do
+      keys_db = Chef::DataBagItem.new
+      keys_db.raw_data = {
+        'id' => 'bar_keys',
+        'baz' => '...'
+      }
+      allow(ChefVault::ItemKeys)
+        .to receive(:load)
+        .and_return(keys_db)
+      fh = double 'private key handle'
+      allow(fh).to receive(:read).and_return('...')
+      allow(File).to receive(:open).and_return(fh)
+      privkey = double 'private key contents'
+      allow(privkey).to receive(:private_decrypt).and_return('sekrit')
+      allow(OpenSSL::PKey::RSA).to receive(:new).and_return(privkey)
+      allow(Chef::EncryptedDataBagItem).to receive(:load).and_return(
+        'id' => 'bar',
+        'password' => '12345'
+      )
+      item = ChefVault::Item.load(
+        'foo', 'bar',
+        node_name: 'baz',
+        client_key_path: '/foo/client.pem'
+      )
+      expect(item.node_name).to eq('baz')
+      expect(item.client_key_path).to eq('/foo/client.pem')
+    end
   end
 
   describe '#save' do
     context 'when item["id"] is bar.bar' do
       let(:item) { ChefVault::Item.new("foo", "bar.bar") }
-
       specify { expect { item.save }.to raise_error }
+    end
+
+    it 'should validate that the id of the vault matches the id of the keys data bag' do
+      item = ChefVault::Item.new('foo', 'bar')
+      item['id'] = 'baz'
+      item.keys['clients'] = %w(admin)
+      expect { item.save }.to raise_error(ChefVault::Exceptions::IdMismatch)
     end
   end
 
@@ -87,7 +228,7 @@ RSpec.describe ChefVault::Item do
     it 'should emit a warning if search returns a node without a public key' do
       # it should however emit a warning that you have a borked node
       expect { @vaultitem.clients('*:*') }
-        .to output(/node 'bar' has no private key; skipping/).to_stderr
+        .to output(/node 'bar' has no private key; skipping/).to_stdout
     end
 
     it 'should accept a client object and not perform a search' do
@@ -109,6 +250,14 @@ RSpec.describe ChefVault::Item do
     it 'should blow up if you try to use a node without a public key as an admin' do
       expect { @vaultitem.admins('foo,bar') }
         .to raise_error(ChefVault::Exceptions::AdminNotFound)
+    end
+  end
+
+  describe '#raw_keys' do
+    it 'should return the keys of the underlying data bag item' do
+      item = ChefVault::Item.new('foo', 'bar')
+      item['foo'] = 'bar'
+      expect(item.raw_keys).to eq(%w(id foo))
     end
   end
 end

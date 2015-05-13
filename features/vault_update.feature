@@ -1,4 +1,4 @@
-Feature: knife vault create
+Feature: knife vault update
 
   'knife vault update' is used to add clients, or administrators
   and to re-run the search query

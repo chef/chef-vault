@@ -1,4 +1,4 @@
-# Description: Chef-Vault VaultShow class
+# Description: Chef-Vault VaultList class
 # Copyright 2013, Nordstrom, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,13 @@ class Chef
 
       banner "knife vault list (options)"
 
+      option :mode,
+        :short => '-M MODE',
+        :long => '--mode MODE',
+        :description => 'Chef mode to run in default - solo'
+
       def run
+        set_mode(config[:vault_mode])
         vaultbags = []
         # iterate over all the data bags
         bags = Chef::DataBag.list
@@ -30,23 +36,6 @@ class Chef
           vaultbags.push(bagname) if bag_is_vault?(bagname)
         end
         output vaultbags.join("\n")
-      end
-
-      private
-
-      def bag_is_vault?(bagname)
-        bag = Chef::DataBag.load(bagname)
-        # vaults have at even number of keys >= 2
-        return false unless bag.keys.size >= 2 && 0 == bag.keys.size % 2
-        # partition into those that end in _keys
-        keylike, notkeylike = bag.keys.partition { |k| k =~ /_keys$/ }
-        # there must be an equal number of keyline and not-keylike items
-        return false unless keylike.size == notkeylike.size
-        # strip the _keys suffix and check if the sets match
-        keylike.map! { |k| k.gsub(/_keys$/, '') }
-        return false unless keylike.sort == notkeylike.sort
-        # it's (probably) a vault
-        true
       end
     end
   end
