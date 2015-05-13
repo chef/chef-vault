@@ -1,4 +1,5 @@
 # Chef-Vault
+
 [![Gem Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
 
 [![Build Status](https://travis-ci.org/Nordstrom/chef-vault.png?branch=master)](https://travis-ci.org/Nordstrom/chef-vault)
@@ -7,13 +8,17 @@
 
 ## DESCRIPTION:
 
-Gem that allows you to encrypt a Chef Data Bag Item using the public keys of a list of chef nodes. This allows only those chef nodes to decrypt the encrypted values.
+Gem that allows you to encrypt a Chef Data Bag Item using the public keys of
+a list of chef nodes. This allows only those chef nodes to decrypt the
+encrypted values.
 
-For a more detailed explanation of how chef-vault works, please refer to the file THEORY.md
+For a more detailed explanation of how chef-vault works, please refer to the
+file THEORY.md.
 
 ## INSTALLATION:
 
-Be sure you are running the latest version Chef. Versions earlier than 0.10.0 don't support plugins:
+Be sure you are running the latest version Chef. Versions earlier than
+0.10.0 don't support plugins:
 
     gem install chef
 
@@ -21,7 +26,8 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 
     gem install chef-vault
 
-Depending on your system's configuration, you may need to run this command with root privileges.
+Depending on your system's configuration, you may need to run this command
+with root privileges.
 
 ## KNIFE COMMANDS:
 
@@ -33,13 +39,15 @@ To set 'client' as the default mode, add the following line to the knife.rb file
 
     knife[:vault_mode] = 'client'
 
-To set the default list of admins for creating and updating vaults, add the following line to the knife.rb file.
+To set the default list of admins for creating and updating vaults, add the
+following line to the knife.rb file.
 
     knife[:vault_admins] = [ 'example-alice', 'example-bob', 'example-carol' ]
 
 (These values can be overridden on the command line by using -A)
 
-NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.0 commands.
+NOTE: chef-vault 1.0 knife commands are not supported! Please use chef-vault
+2.0 commands.
 
 ### Vault
 
@@ -140,9 +148,12 @@ NOTE: chef-vault 1.0 knife commands are not supported!  Please use chef-vault 2.
 
 ## USAGE IN RECIPES
 
-To use this gem in a recipe to decrypt data you must first install the gem via a chef_gem resource.  Once the gem is installed require the gem and then you can create a new instance of ChefVault.
+To use this gem in a recipe to decrypt data you must first install the gem
+via a chef_gem resource. Once the gem is installed require the gem and then
+you can create a new instance of ChefVault.
 
-NOTE: chef-vault 1.0 style decryption is supported, however it has been deprecated and chef-vault 2.0 decryption should be used instead
+NOTE: chef-vault 1.0 style decryption is supported, however it has been
+deprecated and chef-vault 2.0 decryption should be used instead
 
 ### Example Code
 
@@ -163,17 +174,65 @@ you move the require of chef-vault and the call to `::load` to
 library or provider code, you can install the gem in the converge phase
 instead.
 
+### Specifying an alternate node name or client key path
+
+Normally, the value of `Chef::Config[:node_name]` is used to find the
+per-node encrypted secret in the keys data bag item, and the value of
+`Chef::Config[:client_key]` is used to locate the private key to decrypt
+this secret.
+
+These can be overridden by passing a hash with the keys `:node_name` or
+`:client_key_path` to `ChefVault::Item.load`:
+
+```ruby
+item = ChefVault::Item.load(
+  'passwords', 'root',
+  node_name: 'service_foo',
+  client_key_path: '/secure/place/service_foo.pem'
+)
+item['password']
+```
+
+The above example assumes that you have transferred
+`/secure/place/service_foo.pem` to your system via a secure channel.
+
+This usage allows you to decrypt a vault using a key shared among several
+nodes, which can be helpful when working in cloud environments or other
+configurations where nodes are created dynamically.
+
+### chef_vault_item helper
+
+The [chef-vault cookbook](https://supermarket.chef.io/cookbooks/chef-vault)
+contains a recipe to install the chef-vault gem and a helper method
+`chef_vault_helper` which makes it easier to test cookbooks that use
+chef-vault using Test Kitchen.
+
 ## USAGE STAND ALONE
 
-`chef-vault` can be used as a stand alone binary to decrypt values stored in Chef.  It requires that Chef is installed on the system and that you have a valid knife.rb.  This is useful if you want to mix `chef-vault` into non-Chef recipe code, for example some other script where you want to protect a password.
+`chef-vault` can be used as a stand alone binary to decrypt values stored in
+Chef. It requires that Chef is installed on the system and that you have a
+valid knife.rb. This is useful if you want to mix `chef-vault` into non-Chef
+recipe code, for example some other script where you want to protect a
+password.
 
-It does still require that the data bag has been encrypted for the user's or client's pem and pushed to the Chef server. It mixes Chef into the gem and uses it to go grab the data bag.
+It does still require that the data bag has been encrypted for the user's or
+client's pem and pushed to the Chef server. It mixes Chef into the gem and
+uses it to go grab the data bag.
 
-Do `chef-vault --help` for all available options
+Use `chef-vault --help` to see all all available options
 
 ### Example usage (password)
 
     chef-vault -v passwords -i root -a password -k /etc/chef/knife.rb
+
+## TESTING
+
+To stub vault items in ChefSpec, use the
+[chef-vault-testfixtures](https://rubygems.org/gems/chef-vault-testfixtures)
+gem.
+
+To fall back to unencrypted JSON files in Test Kitchen, use the
+`chef_vault_item` helper in the aforementioned chef-vault cookbook.
 
 ## Authors
 

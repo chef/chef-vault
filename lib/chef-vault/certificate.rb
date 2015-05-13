@@ -24,7 +24,7 @@ class ChefVault
     end
 
     def decrypt_contents
-      puts "WARNING: This method is deprecated, please switch to item['value'] calls"
+      $stdout.puts "WARNING: This method is deprecated, please switch to item['value'] calls"
       @item["contents"]
     end
   end

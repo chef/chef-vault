@@ -18,8 +18,23 @@ require 'securerandom'
 
 class ChefVault
   class Item < Chef::DataBagItem
+    # @!attribute [rw] keys
+    #   @return [ChefVault::ItemKeys] the keys associated with this vault
     attr_accessor :keys
+
+    # @!attribute [rw] encrypted_data_bag_item
+    #   @return [nil] this attribute is not currently used
     attr_accessor :encrypted_data_bag_item
+
+    # @!attribute [rw] node_name
+    #   @return [String] the node name that is used to decrypt secrets.
+    #     Defaults to the value of Chef::Config[:node_name]
+    attr_accessor :node_name
+
+    # @!attribute [rw] client_key_path
+    #   @return [String] the path to the private key that is used to
+    #     decrypt secrets.  Defaults to the value of Chef::Config[:client_key]
+    attr_accessor :client_key_path
 
     # returns the raw keys of the underlying Chef::DataBagItem.  chef-vault v2
     # defined #keys as a public accessor that returns the ChefVault::ItemKeys
@@ -28,13 +43,27 @@ class ChefVault
     # revisit this as part of the 3.x rewrite
     def_delegator :@raw_data, :keys, :raw_keys
 
-    def initialize(vault, name)
+    # constructs a new ChefVault::Item
+    # @param vault [String] the name of the data bag that contains the vault
+    # @param name [String] the name of the item in the vault
+    # @param opts [Hash]
+    # @option opts [String] :node_name  the name of the node to decrypt secrets
+    #   as. Defaults to the :node_name value of Chef::Config
+    # @option opts [String] :client_key_path the name of the node to decrypt
+    #   secrets as.  Defaults to the :client_key value of Chef::Config
+    def initialize(vault, name, opts = {})
       super() # Don't pass parameters
       @data_bag = vault
       @raw_data["id"] = name
       @keys = ChefVault::ItemKeys.new(vault, "#{name}_keys")
       @secret = generate_secret
       @encrypted = false
+      opts = {
+        :node_name => Chef::Config[:node_name],
+        :client_key_path => Chef::Config[:client_key]
+      }.merge(opts)
+      @node_name = opts[:node_name]
+      @client_key_path = opts[:client_key_path]
     end
 
     def load_keys(vault, keys)
@@ -56,7 +85,7 @@ class ChefVault
               client = load_client(node.name)
               add_client(client)
             rescue ChefVault::Exceptions::ClientNotFound
-              $stderr.puts "node '#{node.name}' has no private key; skipping"
+              $stdout.puts "node '#{node.name}' has no private key; skipping"
             end
           when :delete
             delete_client_or_node(node)
@@ -67,7 +96,7 @@ class ChefVault
         end
 
         unless results_returned
-          puts "WARNING: No clients were returned from search, you may not have "\
+          $stdout.puts "WARNING: No clients were returned from search, you may not have "\
             "got what you expected!!"
         end
       else
@@ -107,10 +136,10 @@ class ChefVault
     end
 
     def secret
-      if @keys.include?(Chef::Config[:node_name])
-        private_key = OpenSSL::PKey::RSA.new(open(Chef::Config[:client_key]).read())
+      if @keys.include?(@node_name)
+        private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read())
         begin
-          private_key.private_decrypt(Base64.decode64(@keys[Chef::Config[:node_name]]))
+          private_key.private_decrypt(Base64.decode64(@keys[@node_name]))
         rescue OpenSSL::PKey::RSAError
           raise ChefVault::Exceptions::SecretDecryption,
             "#{data_bag}/#{id} is encrypted for you, but your private key failed to decrypt the contents.  "\
@@ -170,8 +199,6 @@ class ChefVault
       # ensure that the ID of the vault hasn't changed since the keys
       # data bag item was created
       keys_id = keys['id'].match(/^(.+)_keys/)[1]
-      puts "item_id is #{item_id}"
-      puts "keys_id is #{keys_id}"
       if keys_id != item_id
         raise ChefVault::Exceptions::IdMismatch,
           "id mismatch - vault has id '#{item_id}' but keys has id '#{keys_id}'"
@@ -236,8 +263,11 @@ class ChefVault
       end
     end
 
-    def self.load(vault, name)
-      item = new(vault, name)
+    # loads an existing vault item
+    # @param (see #initialize)
+    # @option (see #initialize)
+    def self.load(vault, name, opts = {})
+      item = new(vault, name, opts)
       item.load_keys(vault, "#{name}_keys")
 
       begin
@@ -304,7 +334,7 @@ class ChefVault
       rescue Net::HTTPServerException => http_error
         if http_error.response.code == "404"
           begin
-            puts "WARNING: #{admin} not found in users, trying clients."
+            $stdout.puts "WARNING: #{admin} not found in users, trying clients."
             admin = load_client(admin)
           rescue ChefVault::Exceptions::ClientNotFound
             raise ChefVault::Exceptions::AdminNotFound,
@@ -347,7 +377,7 @@ class ChefVault
       end
       # now delete any flagged clients from the keys data bag
       clients_to_remove.each do |client|
-        puts "Removing unknown client '#{client}'"
+        $stdout.puts "Removing unknown client '#{client}'"
         keys.delete(client, "clients")
       end
     end
@@ -405,7 +435,7 @@ class ChefVault
     end
 
     # removes a client to the vault item keys
-    # @param client [Chef::ApiClient,Chef::Node] the API client or node to remove
+    # @param client_or_node [Chef::ApiClient,Chef::Node] the API client or node to remove
     # @return [void]
     def delete_client_or_node(client_or_node)
       keys.delete(client_or_node.name, 'clients')

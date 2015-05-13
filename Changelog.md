@@ -1,19 +1,14 @@
 ## Planned (Unreleased)
 ## v2.6.0
 
-This release will focus on adding any new features covered by open issues
 * ChefVault::Item#clients can now accept a Chef::ApiClient object instead of a search string.  Requested by @lamont-granquist to make implementing chef-vault into `knife bootstrap` easier
-
 * allow Ruby 1.9.3 failures to not cause the overall build to fail on Travis
 * switch to latest 2.0.x, 2.1.x, and 2.2.x releases of Ruby
-
 * add --clean-unknown-clients switch to `knife vault refresh`
-* as a side effect, `ChefVault::Item` now has a `#refresh` method which can be used to programatically perform the same operation as `knife vault refresh`
-* ChefVault::Item#clients can now accept a Chef::ApiClient object instead of a search string.  Requested by @lamont-granquist to make implementing chef-vault into `knife bootstrap` easier
-* allow Ruby 1.9.3 failures to not cause the overall build to fail on Travis
-* switch to latest 2.0.x, 2.1.x, and 2.2.x releases of Ruby
+  * as a side effect, `ChefVault::Item` now has a `#refresh` method which can be used to programatically perform the same operation as `knife vault refresh`
 * enhance 'knife vault show VAULTNAME' (without an item name) to list the names of the items in the vault for parity with 'knife data bag show'
 * add #raw_keys to ChefVault::Item that calls #keys on the underlying data bag item.  We can't make ChefVault::Item work like a true hash without breaking the public API, but this at least makes it easier to get a list of keys
+* allow ChefVault::Item.new and ChefVault::Item.load to specify an alternate node name and client key path.  See the README for the use case this serves.
 
 ## v2.7.0
 
