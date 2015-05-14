@@ -8,6 +8,8 @@
 
 [![Code Climate](https://codeclimate.com/github/Nordstrom/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/Nordstrom/chef-vault)
 
+[![Join the chat at https://gitter.im/Nordstrom/chef-vault](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Nordstrom/chef-vault)
+
 ## DESCRIPTION:
 
 Gem that allows you to encrypt a Chef Data Bag Item using the public keys of
@@ -226,6 +228,9 @@ feel free to fork the repo and add more RSpec and Aruba tests. Frequent
 small pull requests are preferred to large omnibus patches, as the
 robustness pass is a multi-person effort and we don't want to create merge
 conflicts unnecessarily.
+
+We also have a [Gitter room](https://gitter.im/Nordstrom/chef-vault)
+where you can discuss chef-vault and the robustness improvements.
 
 ## Authors
 
