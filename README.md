@@ -1,5 +1,7 @@
 # Chef-Vault
 
+[![Join the chat at https://gitter.im/Nordstrom/chef-vault](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Nordstrom/chef-vault?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Gem Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
 
 [![Build Status](https://travis-ci.org/Nordstrom/chef-vault.png?branch=master)](https://travis-ci.org/Nordstrom/chef-vault)
