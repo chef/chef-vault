@@ -21,8 +21,8 @@ Gem::Specification.new do |s|
   s.name             = 'chef-vault'
   s.version          = ChefVault::VERSION
   s.has_rdoc         = true
-  s.authors          = ['Kevin Moser']
-  s.email            = ['kevin.moser@nordstrom.com']
+  s.authors          = ['Kevin Moser', 'James FitzGibbon']
+  s.email            = ['techcheftm@nordstrom.com']
   s.summary          = 'Data encryption support for Chef using data bags'
   s.description      = s.summary
   s.homepage         = 'https://github.com/Nordstrom/chef-vault'
@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake', '~> 10.4'
   s.add_development_dependency 'rspec', '~> 3.2'
-  s.add_development_dependency 'rspec-its', '~> 1.1'
   s.add_development_dependency 'aruba', '~> 0.6'
   s.add_development_dependency 'simplecov', '~> 0.9'
   s.add_development_dependency 'simplecov-console', '~> 0.2'

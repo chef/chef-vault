@@ -1,15 +1,21 @@
 RSpec.describe ChefVault::ItemKeys do
   describe '#new' do
-    subject(:keys) { ChefVault::ItemKeys.new("foo", "bar") }
+    let(:keys) { ChefVault::ItemKeys.new("foo", "bar") }
 
-    it { should be_an_instance_of ChefVault::ItemKeys }
+    it "'foo' is assigned to @data_bag" do
+      expect(keys.data_bag).to eq 'foo'
+    end
 
-    its(:data_bag) { should eq "foo" }
+    it "sets the keys id to 'bar'" do
+      expect(keys["id"]).to eq 'bar'
+    end
 
-    specify { expect(keys["id"]).to eq 'bar' }
+    it 'initializes the keys[admin] to an empty array' do
+      expect(keys['admins']).to eq []
+    end
 
-    specify { expect(keys["admins"]).to eq [] }
-
-    specify { expect(keys["clients"]).to eq [] }
+    it 'initializes the keys[clients] to an empty array' do
+      expect(keys['admins']).to eq []
+    end
   end
 end

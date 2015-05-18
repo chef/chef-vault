@@ -23,7 +23,9 @@ RSpec.describe ChefVault::User do
   end
 
   describe '#[]' do
-    specify { expect(user['id']).to eq 'bar' }
+    it "returns the value of the 'id' parameter" do
+      expect(user['id']).to eq 'bar'
+    end
   end
 
   describe 'decrypt_password' do
