@@ -17,7 +17,7 @@
 class ChefVault
   class ItemKeys < Chef::DataBagItem
     def initialize(vault, name)
-      super() # parenthesis required to strip off parameters
+      super() # parentheses required to strip off parameters
       @data_bag = vault
       @raw_data["id"] = name
       @raw_data["admins"] = []

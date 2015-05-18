@@ -129,17 +129,25 @@ RSpec.describe ChefVault::Item do
   end
 
   describe '::new' do
-    it { should be_an_instance_of ChefVault::Item }
+    it 'item[keys] is an instance of ChefVault::ItemKeys' do
+      expect(item.keys).to be_an_instance_of(ChefVault::ItemKeys)
+    end
 
-    its(:keys) { should be_an_instance_of ChefVault::ItemKeys }
+    it "the item's 'vault' parameter is assigned to data_bag" do
+      expect(item.data_bag).to eq 'foo'
+    end
 
-    its(:data_bag) { should eq "foo" }
+    it "the vault item name is assiged to the data bag ['id']" do
+      expect(item['id']).to eq 'bar'
+    end
 
-    specify { expect(item['id']).to eq 'bar' }
+    it "creates a corresponding 'keys' data bag with an '_keys' id" do
+      expect(item.keys['id']).to eq 'bar_keys'
+    end
 
-    specify { expect(item.keys['id']).to eq 'bar_keys' }
-
-    specify { expect(item.keys.data_bag).to eq 'foo' }
+    it "sets the item keys data bag to 'foo'" do
+      expect(item.keys.data_bag).to eq 'foo'
+    end
 
     it 'defaults the node name' do
       item = ChefVault::Item.new('foo', 'bar')
@@ -205,10 +213,13 @@ RSpec.describe ChefVault::Item do
   describe '#save' do
     context 'when item["id"] is bar.bar' do
       let(:item) { ChefVault::Item.new("foo", "bar.bar") }
-      specify { expect { item.save }.to raise_error }
+      it "raises an error on save with an invalid item['id']" do
+        expect { item.save }.to raise_error
+
+      end
     end
 
-    it 'should validate that the id of the vault matches the id of the keys data bag' do
+    it 'validates that the id of the vault matches the id of the keys data bag' do
       item = ChefVault::Item.new('foo', 'bar')
       item['id'] = 'baz'
       item.keys['clients'] = %w(admin)

@@ -23,7 +23,9 @@ RSpec.describe ChefVault::Certificate do
   end
 
   describe '#[]' do
-    specify { expect(cert['id']).to eq 'bar' }
+    it "given an 'id' parameter, returns its value" do
+      expect(cert['id']).to eq 'bar'
+    end
   end
 
   describe 'decrypt_contents' do
