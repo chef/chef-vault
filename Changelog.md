@@ -1,7 +1,5 @@
 ## Planned (Unreleased)
 
-* Remove dependency on [rspec-its](https://github.com/rspec/rspec-its)
-
 ## v2.7.0
 
 This release will focus on reducing tech debt:
@@ -26,6 +24,11 @@ chef-vault issues on github for news).
 This release will also remove the chef-vault 1.x commands (encrypt/decrypt)
 
 ## Released
+
+## v2.6.1
+
+* Remove dependency on [rspec-its](https://github.com/rspec/rspec-its)
+* (via Chef/Dan DeLeo): reduce the number of parts of chef that chef-vault `require`s to easy integration of chef-vault into ChefDK
 
 ## v2.6.0 / 2015-05-13
 
