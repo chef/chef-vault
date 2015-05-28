@@ -1,5 +1,7 @@
 ## Planned (Unreleased)
 
+* Remove dependency on [rspec-its](https://github.com/rspec/rspec-its)
+
 ## v2.7.0
 
 This release will focus on reducing tech debt:

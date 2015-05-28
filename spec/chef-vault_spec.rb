@@ -1,29 +1,35 @@
 RSpec.describe ChefVault do
-  subject(:vault) { ChefVault.new('foo') }
+  let(:vault) { ChefVault.new('foo') }
 
   describe '#new' do
     context 'with only a vault parameter specified' do
-      it { should be_an_instance_of ChefVault }
 
-      its(:vault) { should eq "foo" }
-    end
-
-    context 'with a vault and config file parameter specified' do
-      before do
-        allow(IO).to receive(:read).with('knife.rb').and_return("node_name 'bar'")
+      it "assigns 'foo' to the vault accessor" do
+        expect(vault.vault).to eq 'foo'
       end
+    end
+  end
 
-      let(:vault) { ChefVault.new('foo', 'knife.rb') }
-
-      it { should be_an_instance_of ChefVault }
-
-      its(:vault) { should eq "foo" }
-
-      specify { expect { Chef::Config[:node_name].should eq "bar" } }
+  context 'with a vault and config file parameter specified' do
+    before do
+      allow(IO).to receive(:read).with('knife.rb').and_return("node_name 'myserver'")
     end
 
-    describe '#version' do
-      its(:version) { should eq ChefVault::VERSION }
+    let(:vault) { ChefVault.new('foo', 'knife.rb') }
+
+    it "assigns 'foo' to the vault accessor" do
+        expect(vault.vault).to eq 'foo'
+    end
+
+    it 'loads the Chef config values' do
+      expect(ChefVault).to receive(:load_config).with('knife.rb')
+      vault
+    end
+  end
+
+  describe '#version' do
+    it 'the version method equals VERSION' do
+      expect(vault.version).to eq(ChefVault::VERSION)
     end
   end
 end
