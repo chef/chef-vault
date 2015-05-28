@@ -16,7 +16,12 @@
 # limitations under the License.
 #
 
-require 'chef'
+require 'chef/search/query'
+require 'chef/version'
+require 'chef/config'
+require 'chef/api_client'
+require 'chef/data_bag_item'
+require 'chef/encrypted_data_bag_item'
 require 'chef/user'
 require 'chef-vault/version'
 require 'chef-vault/exceptions'
