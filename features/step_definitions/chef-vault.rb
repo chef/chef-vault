@@ -99,8 +99,8 @@ Given(/^I can('t)? decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |neg, vau
   end
 end
 
-Given(/^I add '(.+)' as an admin for the vault item '(.+)\/(.+)'$/) do |newadmin, vault, item|
-  run_simple "knife vault update #{vault} #{item} -c knife.rb -z -A #{newadmin}"
+Given(/^I (try to )?add '(.+)' as an admin for the vault item '(.+)\/(.+)'$/) do |try, newadmin, vault, item|
+  run_simple "knife vault update #{vault} #{item} -c knife.rb -z -A #{newadmin}", !try
 end
 
 Given(/^I show the keys of the vault '(.+)'$/) do |vault|
@@ -113,4 +113,12 @@ end
 
 Given(/^I check the type of the data bag item '(.+)\/(.+)'$/) do |vault, item|
   run_simple "knife vault itemtype #{vault} #{item} -c knife.rb -z"
+end
+
+Given(/^I downgrade the vault item '(.+)\/(.+)' to v1 syntax/) do |vault, item|
+  # v1 syntax doesn't have the admins, clients and search_query keys
+  keysfile = "tmp/aruba/data_bags/#{vault}/#{item}_keys.json"
+  data = JSON.parse(IO.read(keysfile))
+  %w(admins clients search_query).each { |k| data.delete(k) }
+  IO.write(keysfile, JSON.generate(data))
 end
