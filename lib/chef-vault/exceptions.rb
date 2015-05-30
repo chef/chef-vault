@@ -48,5 +48,8 @@ class ChefVault
 
     class IdMismatch < Exceptions
     end
+
+    class V1Format < Exceptions
+    end
   end
 end

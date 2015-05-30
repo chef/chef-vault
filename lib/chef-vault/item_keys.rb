@@ -30,6 +30,10 @@ class ChefVault
     end
 
     def add(chef_client, data_bag_shared_secret, type)
+      unless @raw_data.key?(type)
+        raise ChefVault::Exceptions::V1Format,
+              'cannot manage a v1 vault.  See UPGRADE.md for help'
+      end
       public_key = OpenSSL::PKey::RSA.new chef_client.public_key
       self[chef_client.name] =
         Base64.encode64(public_key.public_encrypt(data_bag_shared_secret))
