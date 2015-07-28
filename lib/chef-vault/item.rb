@@ -77,18 +77,18 @@ class ChefVault
       elsif search_or_client
         results_returned = false
         query = Chef::Search::Query.new
-        query.search(:node, search_or_client)[0].each do |node|
+        query.search(:node, search_or_client, {:filter_result => {:name => ["name"]}})[0].each do |node|
           results_returned = true
           case action
           when :add
             begin
-              client = load_client(node.name)
+              client = load_client(node["name"])
               add_client(client)
             rescue ChefVault::Exceptions::ClientNotFound
-              $stdout.puts "node '#{node.name}' has no private key; skipping"
+              $stdout.puts "node '#{node["name"]}' has no private key; skipping"
             end
           when :delete
-            delete_client_or_node(node)
+            delete_client_or_node(node["name"])
           else
             raise ChefVault::Exceptions::KeysActionNotValid,
               "#{action} is not a valid action"
@@ -435,7 +435,7 @@ class ChefVault
       # the node does not exist if a search for the node with that
       # name returns no results
       query = Chef::Search::Query.new
-      numresults = query.search(:node, "name:#{nodename}")[2]
+      numresults = query.search(:node, "name:#{nodename}", {:filter_result => {:name => ["name"]}})[2]
       return false unless numresults > 0
       # if the node search does return results, predicate node
       # existence on the existence of a like-named client
