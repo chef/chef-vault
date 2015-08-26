@@ -48,7 +48,7 @@ These examples assume that I have two nodes in my Chef
 server/organization, named 'one' and 'two'.  I also have
 two administrators named 'alice' and 'bob'.
 
-Given a file named `item.json` containin the following:
+Given a file named `item.json` containing the following:
 
 ```json
 { "foo": "bar" }
