@@ -2,11 +2,11 @@
 
 [![Gem Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
 
-[![Build Status](https://travis-ci.org/Nordstrom/chef-vault.png?branch=master)](https://travis-ci.org/Nordstrom/chef-vault)
+[![Build Status](https://travis-ci.org/chef/chef-vault.png?branch=master)](https://travis-ci.org/chef/chef-vault)
 
-[![Inline docs](http://inch-ci.org/github/nordstrom/chef-vault.svg?branch=master)](http://inch-ci.org/github/nordstrom/chef-vault)
+[![Inline docs](http://inch-ci.org/github/chef/chef-vault.svg?branch=master)](http://inch-ci.org/github/chef/chef-vault)
 
-[![Code Climate](https://codeclimate.com/github/Nordstrom/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/Nordstrom/chef-vault)
+[![Code Climate](https://codeclimate.com/github/chef/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/chef/chef-vault)
 
 [![Join the chat at https://gitter.im/Nordstrom/chef-vault](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Nordstrom/chef-vault)
 
