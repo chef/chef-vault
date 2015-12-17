@@ -45,7 +45,7 @@ Then(/^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'$/) do |
   nodes = nodelist.split(/,/)
   command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
   run_simple(command)
-  output = stdout_from(command)
+  output = last_command_started.stdout
   data = JSON.parse(output)
   nodes.each do |node|
     if neg
@@ -60,7 +60,7 @@ Given(/^'(.+)' should( not)? be a client for the vault item '(.+)\/(.+)'$/) do |
   nodes = nodelist.split(/,/)
   command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
   run_simple(command)
-  output = stdout_from(command)
+  output = last_command_started.stdout
   data = JSON.parse(output)
   nodes.each do |node|
     if neg
@@ -75,7 +75,7 @@ Given(/^'(.+)' should( not)? be an admin for the vault item '(.+)\/(.+)'$/) do |
   nodes = nodelist.split(/,/)
   command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
   run_simple(command)
-  output = stdout_from(command)
+  output = last_command_started.stdout
   data = JSON.parse(output)
   nodes.each do |node|
     if neg
@@ -93,9 +93,9 @@ end
 Given(/^I can('t)? decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |neg, vault, item, client|
   run_simple "knife vault show #{vault} #{item} -c knife.rb -z -u #{client} -k #{client}.pem", false
   if neg
-    assert_not_exit_status(0)
+    expect(last_command_started).not_to have_exit_status(0)
   else
-    assert_exit_status(0)
+    expect(last_command_started).to have_exit_status(0)
   end
 end
 

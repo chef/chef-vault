@@ -1,7 +1,7 @@
 Given(/^a local mode chef repo with nodes '(.+?)'(?: with admins '(.+?)')?$/) do |nodelist, adminlist|
   # create the repo directory hierarchy
   %w(cookbooks clients nodes data_bags).each do |dir|
-    create_dir dir
+    create_directory dir
   end
   # create a basic knife.rb
   write_file 'knife.rb', <<EOF
@@ -59,7 +59,7 @@ end
 def create_client(name, args = nil)
   command = "knife client create #{name} -z -d -c knife.rb #{args} >#{name}.pem"
   run_simple command
-  write_file("#{name}.pem", stdout_from(command))
+  write_file("#{name}.pem", last_command_started.stdout)
 end
 
 def delete_client(name)
