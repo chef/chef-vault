@@ -1,14 +1,13 @@
 language: ruby
+branches:
+  only:
+    - master
 rvm:
-  - "1.9.3-p551"
-  - "2.0.0-p598"
+  - "2.0.0-p647"
   - "2.1.6"
   - "2.2.2"
 install: bundle install --binstubs
 env: TRAVIS_BUILD=true
-matrix:
-  allow_failures:
-    - rvm: "1.9.3-p551"
 notifications:
   webhooks:
     urls:

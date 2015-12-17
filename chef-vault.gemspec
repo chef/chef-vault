@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.email            = ['techcheftm@nordstrom.com']
   s.summary          = 'Data encryption support for Chef using data bags'
   s.description      = s.summary
-  s.homepage         = 'https://github.com/Nordstrom/chef-vault'
+  s.homepage         = 'https://github.com/chef/chef-vault'
 
   s.license          = 'Apache License, v2.0'
 
@@ -33,6 +33,8 @@ Gem::Specification.new do |s|
   s.require_paths    = ['lib']
   s.bindir           = 'bin'
   s.executables      = %w( chef-vault )
+
+  s.required_ruby_version = ">= 2.0.0"
 
   s.add_development_dependency 'rake', '~> 10.4'
   s.add_development_dependency 'rspec', '~> 3.2'
