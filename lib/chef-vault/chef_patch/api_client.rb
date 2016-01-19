@@ -25,7 +25,7 @@ class ChefVault
           response
         else
           client = Chef::ApiClient.new
-          client.name(response['clientname'])
+          client.name(response['clientname'] || response['name'])
 
           if response['certificate']
             der = OpenSSL::X509::Certificate.new response['certificate']
