@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+require "chef/knife"
+require "chef-vault"
 
 class Chef
   class Knife
@@ -22,17 +22,17 @@ class Chef
       def self.included(includer)
         includer.class_eval do
           deps do
-            require 'chef/search/query'
-            require File.expand_path('../mixin/compat', __FILE__)
-            require File.expand_path('../mixin/helper', __FILE__)
+            require "chef/search/query"
+            require File.expand_path("../mixin/compat", __FILE__)
+            require File.expand_path("../mixin/helper", __FILE__)
             include ChefVault::Mixin::KnifeCompat
             include ChefVault::Mixin::Helper
           end
 
           option :vault_mode,
-            :short => '-M MODE',
-            :long => '--mode MODE',
-            :description => 'Chef mode to run in default - solo',
+            :short => "-M MODE",
+            :long => "--mode MODE",
+            :description => "Chef mode to run in default - solo",
             :proc => proc { |i| Chef::Config[:knife][:vault_mode] = i }
         end
       end
@@ -53,7 +53,7 @@ class Chef
         # there must be an equal number of keyline and not-keylike items
         return false unless keylike.size == notkeylike.size
         # strip the _keys suffix and check if the sets match
-        keylike.map! { |k| k.gsub(/_keys$/, '') }
+        keylike.map! { |k| k.gsub(/_keys$/, "") }
         return false unless keylike.sort == notkeylike.sort
         # it's (probably) a vault
         true

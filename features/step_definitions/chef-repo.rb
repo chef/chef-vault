@@ -4,7 +4,7 @@ Given(/^a local mode chef repo with nodes '(.+?)'(?: with admins '(.+?)')?$/) do
     create_directory dir
   end
   # create a basic knife.rb
-  write_file 'knife.rb', <<EOF
+  write_file "knife.rb", <<EOF
 local_mode true
 chef_repo_path '.'
 chef_zero.enabled true
@@ -18,7 +18,7 @@ EOF
     create_admin(admin)
   end
   # add the admin key to the knife configuration
-  append_to_file 'knife.rb', <<EOF
+  append_to_file "knife.rb", <<EOF
 node_name 'admin'
 client_key 'admin.pem'
 EOF
@@ -53,7 +53,7 @@ def create_node(name)
 end
 
 def create_admin(admin)
-  create_client(admin, '-a')
+  create_client(admin, "-a")
 end
 
 def create_client(name, args = nil)

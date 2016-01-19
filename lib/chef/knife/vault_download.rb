@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
+require "chef/knife/vault_base"
 
 class Chef
   class Knife
@@ -32,7 +32,7 @@ class Chef
         if vault && item && path
           vault_item = ChefVault::Item.load(vault, item)
           File.open(path, "w") do |file|
-            file.write(vault_item['file-content'])
+            file.write(vault_item["file-content"])
           end
           ui.info("Saved #{vault_item['file-name']} as #{path}")
         else

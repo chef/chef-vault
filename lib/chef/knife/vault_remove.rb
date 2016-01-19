@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
+require "chef/knife/vault_base"
 
 class Chef
   class Knife
@@ -23,18 +23,18 @@ class Chef
       banner "knife vault remove VAULT ITEM VALUES (options)"
 
       option :search,
-        :short => '-S SEARCH',
-        :long => '--search SEARCH',
-        :description => 'Chef SOLR search for clients'
+        :short => "-S SEARCH",
+        :long => "--search SEARCH",
+        :description => "Chef SOLR search for clients"
 
       option :admins,
-        :short => '-A ADMINS',
-        :long => '--admins ADMINS',
-        :description => 'Chef users to be added as admins'
+        :short => "-A ADMINS",
+        :long => "--admins ADMINS",
+        :description => "Chef users to be added as admins"
 
       option :clean_unknown_clients,
-        :long => '--clean-unknown-clients',
-        :description => 'Remove unknown clients during key rotation'
+        :long => "--clean-unknown-clients",
+        :description => "Remove unknown clients during key rotation"
 
       def run
         vault = @name_args[0]

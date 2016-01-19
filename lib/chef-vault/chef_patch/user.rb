@@ -21,11 +21,11 @@ class ChefVault
       # set correctly for Chef 10 server
       def superclass.from_hash(user_hash)
         user = Chef::User.new
-        user.name user_hash['username'] ? user_hash['username'] : user_hash['name']
-        user.private_key user_hash['private_key'] if user_hash.key?('private_key')
-        user.password user_hash['password'] if user_hash.key?('password')
-        user.public_key user_hash['public_key']
-        user.admin user_hash['admin']
+        user.name user_hash["username"] ? user_hash["username"] : user_hash["name"]
+        user.private_key user_hash["private_key"] if user_hash.key?("private_key")
+        user.password user_hash["password"] if user_hash.key?("password")
+        user.public_key user_hash["public_key"]
+        user.admin user_hash["admin"]
         user
       end
     end

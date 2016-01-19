@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
-require 'chef/knife/vault_decrypt'
+require "chef/knife/vault_base"
+require "chef/knife/vault_decrypt"
 
 class Chef
   class Knife

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
-require 'chef/knife/vault_update'
+require "chef/knife/vault_base"
+require "chef/knife/vault_update"
 
 class Chef
   class Knife
@@ -22,23 +22,23 @@ class Chef
       include Knife::VaultBase
 
       option :search,
-        :short => '-S SEARCH',
-        :long => '--search SEARCH',
-        :description => 'Chef SOLR search for clients'
+        :short => "-S SEARCH",
+        :long => "--search SEARCH",
+        :description => "Chef SOLR search for clients"
 
       option :admins,
-        :short => '-A ADMINS',
-        :long => '--admins ADMINS',
-        :description => 'Chef users to be added as admins'
+        :short => "-A ADMINS",
+        :long => "--admins ADMINS",
+        :description => "Chef users to be added as admins"
 
       option :json,
-        :short => '-J FILE',
-        :long => '--json FILE',
-        :description => 'File containing JSON data to encrypt'
+        :short => "-J FILE",
+        :long => "--json FILE",
+        :description => "File containing JSON data to encrypt"
 
       option :file,
-        :long => '--file FILE',
-        :description => 'File to be added to vault item as file-content'
+        :long => "--file FILE",
+        :description => "File to be added to vault item as file-content"
 
       banner "knife encrypt update VAULT ITEM VALUES (options)"
 

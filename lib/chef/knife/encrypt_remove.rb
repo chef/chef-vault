@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
-require 'chef/knife/vault_remove'
+require "chef/knife/vault_base"
+require "chef/knife/vault_remove"
 
 class Chef
   class Knife
@@ -24,14 +24,14 @@ class Chef
       banner "knife encrypt remove VAULT ITEM VALUES (options)"
 
       option :search,
-        :short => '-S SEARCH',
-        :long => '--search SEARCH',
-        :description => 'Chef SOLR search for clients'
+        :short => "-S SEARCH",
+        :long => "--search SEARCH",
+        :description => "Chef SOLR search for clients"
 
       option :admins,
-        :short => '-A ADMINS',
-        :long => '--admins ADMINS',
-        :description => 'Chef users to be added as admins'
+        :short => "-A ADMINS",
+        :long => "--admins ADMINS",
+        :description => "Chef users to be added as admins"
 
       def run
         $stdout.puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife'
-require 'chef-vault'
+require "chef/knife"
+require "chef-vault"
 
 class Chef
   class Knife
@@ -32,7 +32,7 @@ class Chef
           admin_array += vault_admins
         end
 
-        admin_array.join(',')
+        admin_array.join(",")
       end
     end
   end

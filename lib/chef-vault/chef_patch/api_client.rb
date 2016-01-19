@@ -25,15 +25,15 @@ class ChefVault
           response
         else
           client = Chef::ApiClient.new
-          client.name(response['clientname'] || response['name'])
+          client.name(response["clientname"] || response["name"])
 
-          if response['certificate']
-            der = OpenSSL::X509::Certificate.new response['certificate']
+          if response["certificate"]
+            der = OpenSSL::X509::Certificate.new response["certificate"]
             client.public_key der.public_key.to_s
           end
 
-          if response['public_key']
-            der = OpenSSL::PKey::RSA.new response['public_key']
+          if response["public_key"]
+            der = OpenSSL::PKey::RSA.new response["public_key"]
             client.public_key der.public_key.to_s
           end
 

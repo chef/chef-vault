@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
+require "chef/knife/vault_base"
 
 class Chef
   class Knife
@@ -23,8 +23,8 @@ class Chef
       banner "knife vault rotate keys VAULT ITEM (options)"
 
       option :clean_unknown_clients,
-        :long => '--clean-unknown-clients',
-        :description => 'Remove unknown clients during key rotation'
+        :long => "--clean-unknown-clients",
+        :description => "Remove unknown clients during key rotation"
 
       def run
         vault = @name_args[0]

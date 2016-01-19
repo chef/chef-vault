@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
+require "chef/knife/vault_base"
 
 class Chef
   class Knife
@@ -23,9 +23,9 @@ class Chef
       banner "knife vault list (options)"
 
       option :mode,
-        :short => '-M MODE',
-        :long => '--mode MODE',
-        :description => 'Chef mode to run in default - solo'
+        :short => "-M MODE",
+        :long => "--mode MODE",
+        :description => "Chef mode to run in default - solo"
 
       def run
         set_mode(config[:vault_mode])

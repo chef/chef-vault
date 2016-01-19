@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
+require "chef/knife/vault_base"
 
 class Chef
   class Knife
@@ -23,14 +23,14 @@ class Chef
       banner "knife vault show VAULT [ITEM] [VALUES] (options)"
 
       option :mode,
-        :short => '-M MODE',
-        :long => '--mode MODE',
-        :description => 'Chef mode to run in default - solo'
+        :short => "-M MODE",
+        :long => "--mode MODE",
+        :description => "Chef mode to run in default - solo"
 
       option :print,
-        :short => '-p TYPE',
-        :long => '--print TYPE',
-        :description => 'Print extra vault data, can be search, admins, clients or all'
+        :short => "-p TYPE",
+        :long => "--print TYPE",
+        :description => "Print extra vault data, can be search, admins, clients or all"
 
       def run
         vault = @name_args[0]
@@ -55,13 +55,13 @@ class Chef
 
         if config[:print]
           case config[:print]
-          when 'search'
+          when "search"
             extra_data["search_query"] = vault_item.search
-          when 'admins'
+          when "admins"
             extra_data["admins"] = vault_item.admins
-          when 'clients'
+          when "clients"
             extra_data["clients"] = vault_item.clients
-          when 'all'
+          when "all"
             extra_data["search_query"] = vault_item.search
             extra_data["admins"] = vault_item.admins
             extra_data["clients"] = vault_item.clients

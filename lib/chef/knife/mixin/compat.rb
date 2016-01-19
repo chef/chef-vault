@@ -18,13 +18,13 @@
 class ChefVault
   module Mixin
     module KnifeCompat
-      require 'chef/version'
+      require "chef/version"
       def extend_context_object(obj)
         if Chef::VERSION.to_i >= 11
           require "chef/shell/ext"
           Shell::Extensions.extend_context_object(obj)
         else
-          require 'chef/shef/ext'
+          require "chef/shef/ext"
           Shef::Extensions.extend_context_object(obj)
         end
       end

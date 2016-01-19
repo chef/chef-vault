@@ -16,21 +16,21 @@
 # limitations under the License.
 #
 
-require 'chef/search/query'
-require 'chef/version'
-require 'chef/config'
-require 'chef/api_client'
-require 'chef/data_bag_item'
-require 'chef/encrypted_data_bag_item'
-require 'chef/user'
-require 'chef-vault/version'
-require 'chef-vault/exceptions'
-require 'chef-vault/item'
-require 'chef-vault/item_keys'
-require 'chef-vault/user'
-require 'chef-vault/certificate'
-require 'chef-vault/chef_patch/api_client'
-require 'chef-vault/chef_patch/user'
+require "chef/search/query"
+require "chef/version"
+require "chef/config"
+require "chef/api_client"
+require "chef/data_bag_item"
+require "chef/encrypted_data_bag_item"
+require "chef/user"
+require "chef-vault/version"
+require "chef-vault/exceptions"
+require "chef-vault/item"
+require "chef-vault/item_keys"
+require "chef-vault/user"
+require "chef-vault/certificate"
+require "chef-vault/chef_patch/api_client"
+require "chef-vault/chef_patch/user"
 
 class ChefVault
   attr_accessor :vault

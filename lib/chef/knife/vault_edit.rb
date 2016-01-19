@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/vault_base'
+require "chef/knife/vault_base"
 
 class Chef
   class Knife
@@ -23,9 +23,9 @@ class Chef
       banner "knife vault edit VAULT ITEM (options)"
 
       option :mode,
-        :short => '-M MODE',
-        :long => '--mode MODE',
-        :description => 'Chef mode to run in default - solo'
+        :short => "-M MODE",
+        :long => "--mode MODE",
+        :description => "Chef mode to run in default - solo"
 
       def run
         vault = @name_args[0]
@@ -37,13 +37,13 @@ class Chef
           begin
             vault_item = ChefVault::Item.load(vault, item)
 
-            filtered_vault_data = vault_item.raw_data.select{|x| x != 'id'}
+            filtered_vault_data = vault_item.raw_data.select{|x| x != "id"}
 
             updated_vault_json = edit_data(filtered_vault_data)
 
             # Clean out contents of existing local vault_item
             vault_item.raw_data.each do |key, _|
-              vault_item.remove(key) unless key == 'id'
+              vault_item.remove(key) unless key == "id"
             end
 
             # write new vault_item key/value pairs

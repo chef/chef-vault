@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'securerandom'
+require "securerandom"
 
 class ChefVault
   class Item < Chef::DataBagItem
@@ -60,7 +60,7 @@ class ChefVault
       @encrypted = false
       opts = {
         :node_name => Chef::Config[:node_name],
-        :client_key_path => Chef::Config[:client_key]
+        :client_key_path => Chef::Config[:client_key],
       }.merge(opts)
       @node_name = opts[:node_name]
       @client_key_path = opts[:client_key_path]
@@ -192,13 +192,13 @@ class ChefVault
       super
     end
 
-    def save(item_id=@raw_data['id'])
+    def save(item_id=@raw_data["id"])
       # validate the format of the id before attempting to save
       validate_id!(item_id)
 
       # ensure that the ID of the vault hasn't changed since the keys
       # data bag item was created
-      keys_id = keys['id'].match(/^(.+)_keys/)[1]
+      keys_id = keys["id"].match(/^(.+)_keys/)[1]
       if keys_id != item_id
         raise ChefVault::Exceptions::IdMismatch,
           "id mismatch - input JSON has id '#{item_id}' but vault item has id '#{keys_id}'"
@@ -222,7 +222,7 @@ class ChefVault
         data_bag_item_path = File.join(data_bag_path, item_id)
 
         FileUtils.mkdir(data_bag_path) unless File.exist?(data_bag_path)
-        File.open("#{data_bag_item_path}.json", 'w') do |file|
+        File.open("#{data_bag_item_path}.json", "w") do |file|
           file.write(JSON.pretty_generate(raw_data))
         end
 
@@ -317,7 +317,7 @@ class ChefVault
       # and https://github.com/sensu/sensu-chef/blob/2.9.0/libraries/sensu_helpers.rb
       dbi = Chef::DataBagItem.load(vault, name)
       encrypted = dbi.detect do |_, v|
-        v.is_a?(Hash) && v.key?('encrypted_data')
+        v.is_a?(Hash) && v.key?("encrypted_data")
       end
 
       # return a symbol describing the type of item we detected
@@ -340,9 +340,9 @@ class ChefVault
       unless search
         raise ChefVault::Exceptions::SearchNotFound,
               "#{vault}/#{item} does not have a stored search_query, "\
-              'probably because it was created with an older version '\
+              "probably because it was created with an older version "\
               "of chef-vault. Use 'knife vault update' to update the "\
-              'databag with the search query.'
+              "databag with the search query."
       end
 
       # a bit of a misnomer; this doesn't remove unknown
@@ -474,14 +474,14 @@ class ChefVault
     # @param client [Chef::ApiClient] the API client to add
     # @return [void]
     def add_client(client)
-      keys.add(client, @secret, 'clients')
+      keys.add(client, @secret, "clients")
     end
 
     # removes a client to the vault item keys
     # @param client_or_node [Chef::ApiClient,Chef::Node] the API client or node to remove
     # @return [void]
     def delete_client_or_node(client_or_node)
-      keys.delete(client_or_node.name, 'clients')
+      keys.delete(client_or_node.name, "clients")
     end
   end
 end

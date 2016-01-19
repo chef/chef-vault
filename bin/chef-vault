@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'optparse'
+require "optparse"
 
 options_config = {
   chef: {
@@ -26,29 +26,29 @@ options_config = {
     long: "chef-config-file",
     description: "Chef config file",
     default: "/etc/chef/knife.rb",
-    optional: false
+    optional: false,
   },
   vault: {
     short: "v",
     long: "vault",
     description: "Vault to look in",
     default: nil,
-    optional: false
+    optional: false,
   },
   item: {
     short: "i",
     long: "item",
     description: "Item to decrypt in vault",
     default: nil,
-    optional: false
+    optional: false,
   },
   values: {
     short: "a",
     long: "values",
     description: "Values of item to decrypt in vault",
     default: nil,
-    optional: false
-  }
+    optional: false,
+  },
 }
 
 banner = "Usage: chef-vault "
@@ -82,9 +82,9 @@ options_config.each do |option, config|
   options[option] = options[option] ? options[option] : config[:default]
 end
 
-require 'rubygems'
+require "rubygems"
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
-require 'chef-vault'
+require "chef-vault"
 
 ChefVault.load_config(options[:chef])
 item = ChefVault::Item.load(options[:vault], options[:item])
