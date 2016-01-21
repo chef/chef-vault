@@ -69,7 +69,7 @@ class Chef
         end
 
         if values
-          included_values = %w(id)
+          included_values = %w{id}
 
           values.split(",").each do |value|
             value.strip! # remove white space

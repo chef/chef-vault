@@ -222,7 +222,7 @@ RSpec.describe ChefVault::Item do
     it "validates that the id of the vault matches the id of the keys data bag" do
       item = ChefVault::Item.new("foo", "bar")
       item["id"] = "baz"
-      item.keys["clients"] = %w(admin)
+      item.keys["clients"] = %w{admin}
       expect { item.save }.to raise_error(ChefVault::Exceptions::IdMismatch)
     end
   end
@@ -268,7 +268,7 @@ RSpec.describe ChefVault::Item do
     it "should return the keys of the underlying data bag item" do
       item = ChefVault::Item.new("foo", "bar")
       item["foo"] = "bar"
-      expect(item.raw_keys).to eq(%w(id foo))
+      expect(item.raw_keys).to eq(%w{id foo})
     end
   end
 end

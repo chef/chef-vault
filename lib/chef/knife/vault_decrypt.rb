@@ -41,7 +41,7 @@ class Chef
         vault_item = ChefVault::Item.load(vault, item).raw_data
 
         if values
-          included_values = %w(id)
+          included_values = %w{id}
 
           values.split(",").each do |value|
             value.strip! # remove white space

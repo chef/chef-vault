@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.files            = `git ls-files`.split("\n")
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
-  s.executables      = %w( chef-vault )
+  s.executables      = %w{ chef-vault }
 
   s.required_ruby_version = ">= 2.0.0"
 

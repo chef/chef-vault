@@ -1,5 +1,5 @@
 source "https://rubygems.org/"
 
-gem "chefstyle", github: "chef/chefstyle"
+gem "chefstyle", git: "https://github.com/chef/chefstyle.git"
 
 gemspec

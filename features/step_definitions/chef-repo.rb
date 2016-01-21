@@ -1,6 +1,6 @@
 Given(/^a local mode chef repo with nodes '(.+?)'(?: with admins '(.+?)')?$/) do |nodelist, adminlist|
   # create the repo directory hierarchy
-  %w(cookbooks clients nodes data_bags).each do |dir|
+  %w{cookbooks clients nodes data_bags}.each do |dir|
     create_directory dir
   end
   # create a basic knife.rb
@@ -12,7 +12,7 @@ EOF
   # create the admin users and capture their private key we
   # always create an admin called 'admin' because otherwise subsequent
   # steps become annoying to determine who the admin is
-  admins = %w(admin)
+  admins = %w{admin}
   admins.push(adminlist.split(/,/)) if adminlist
   admins.flatten.each do |admin|
     create_admin(admin)
