@@ -15,9 +15,12 @@
 # limitations under the License.
 
 require "securerandom"
+require "chef-vault/mixins"
 
 class ChefVault
   class Item < Chef::DataBagItem
+    include ChefVault::Mixins
+
     # @!attribute [rw] keys
     #   @return [ChefVault::ItemKeys] the keys associated with this vault
     attr_accessor :keys
@@ -217,16 +220,7 @@ class ChefVault
 
       # Now save the encrypted data
       if Chef::Config[:solo]
-        data_bag_path = File.join(Chef::Config[:data_bag_path],
-                                  data_bag)
-        data_bag_item_path = File.join(data_bag_path, item_id)
-
-        FileUtils.mkdir(data_bag_path) unless File.exist?(data_bag_path)
-        File.open("#{data_bag_item_path}.json", "w") do |file|
-          file.write(JSON.pretty_generate(raw_data))
-        end
-
-        raw_data
+        save_solo(item_id)
       else
         begin
           Chef::DataBag.load(data_bag)
