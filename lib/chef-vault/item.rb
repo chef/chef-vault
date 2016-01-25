@@ -80,21 +80,55 @@ class ChefVault
       elsif search_or_client
         results_returned = false
         query = Chef::Search::Query.new
-        query.search(:node, search_or_client)[0].each do |node|
+        client_names = []
+        nodes = query.search(:node, search_or_client, {
+                               :rows => 10000000,
+                               :filter_result => {
+                                 :name => ["name"]
+                               }
+                             })[0]
+        clients_search = "*:*"
+        if nodes.length < 140 # observed: 144 max
+          clients_search = nodes.map { |k| "name:" + k["name"] }.join " OR "
+        end
+        clients = query.search(:client, clients_search, {
+                                 :rows => 10000000,
+                                 :filter_result => {
+                                   :name => ["name"],
+                                   :certificate => ["certificate"],
+                                   :public_key => ["public_key"],
+                                 }
+                               })[0]
+        clients = Hash[clients.map {|k| [k["name"],k] }]
+        nodes.each do |node|
+          $stdout.puts "node '#{node["name"]}' has no public key; skipping" unless
+            clients.include? node["name"]
+        end
+
+        clients.each do |name, response|
           results_returned = true
+
+          client = Chef::ApiClient.new
+          client.name(response['name'])
+
+          if response['certificate']
+            der = OpenSSL::X509::Certificate.new response['certificate']
+            client.public_key der.public_key.to_s
+          end
+
+          if response['public_key']
+            der = OpenSSL::PKey::RSA.new response['public_key']
+            client.public_key der.public_key.to_s
+          end
+
           case action
           when :add
-            begin
-              client = load_client(node.name)
-              add_client(client)
-            rescue ChefVault::Exceptions::ClientNotFound
-              $stdout.puts "node '#{node.name}' has no private key; skipping"
-            end
+            add_client(client)
           when :delete
-            delete_client_or_node(node)
+            delete_client_or_node(client)
           else
             raise ChefVault::Exceptions::KeysActionNotValid,
-              "#{action} is not a valid action"
+                  "#{action} is not a valid action"
           end
         end
 
@@ -429,7 +463,7 @@ class ChefVault
       # the node does not exist if a search for the node with that
       # name returns no results
       query = Chef::Search::Query.new
-      numresults = query.search(:node, "name:#{nodename}")[2]
+      numresults = query.search(:node, "name:#{nodename}", {:filter_result => {:name => ["name"]}})[2]
       return false unless numresults > 0
       # if the node search does return results, predicate node
       # existence on the existence of a like-named client
