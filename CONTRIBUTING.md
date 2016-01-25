@@ -7,7 +7,7 @@ request to be merged sooner.
 ### Create an Issue
 
 Each pull request should have a corresponding [Chef-Vault GitHub
-issue](https://github.com/Nordstrom/chef-vault/issues?state=open). Search the
+issue](https://github.com/chef/chef-vault/issues?state=open). Search the
 issue list to make sure someone hasn't already submitted a pull request to fix
 your issue. If not, please create a new issue.
 
@@ -21,7 +21,7 @@ guide](https://help.github.com/articles/fork-a-repo) for more info.
 ```bash
 $ git clone https://github.com/<username>/chef-vault.git
 $ cd chef-vault
-$ git remote add upstream https://github.com/Nordstrom/chef-vault.git
+$ git remote add upstream https://github.com/chef/chef-vault.git
 ```
 
 ### Create a Local Feature Branch
