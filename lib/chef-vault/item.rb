@@ -196,25 +196,7 @@ class ChefVault
     end
 
     def save(item_id = @raw_data["id"])
-      # validate the format of the id before attempting to save
-      validate_id!(item_id)
-
-      # ensure that the ID of the vault hasn't changed since the keys
-      # data bag item was created
-      keys_id = keys["id"].match(/^(.+)_keys/)[1]
-      if keys_id != item_id
-        raise ChefVault::Exceptions::IdMismatch,
-          "id mismatch - input JSON has id '#{item_id}' but vault item has id '#{keys_id}'"
-      end
-
-      # save the keys first, raising an error if no keys were defined
-      if keys.admins.empty? && keys.clients.empty?
-        raise ChefVault::Exceptions::NoKeysDefined,
-          "No keys defined for #{item_id}"
-      end
-
-      keys.save
-
+      save_keys(item_id)
       # Make sure the item is encrypted before saving
       encrypt! unless @encrypted
 
@@ -234,6 +216,27 @@ class ChefVault
 
         super
       end
+    end
+
+    def save_keys(item_id)
+      # validate the format of the id before attempting to save
+      validate_id!(item_id)
+
+      # ensure that the ID of the vault hasn't changed since the keys
+      # data bag item was created
+      keys_id = keys["id"].match(/^(.+)_keys/)[1]
+      if keys_id != item_id
+        raise ChefVault::Exceptions::IdMismatch,
+          "id mismatch - input JSON has id '#{item_id}' but vault item has id '#{keys_id}'"
+      end
+
+      # save the keys first, raising an error if no keys were defined
+      if keys.admins.empty? && keys.clients.empty?
+        raise ChefVault::Exceptions::NoKeysDefined,
+          "No keys defined for #{item_id}"
+      end
+
+      keys.save
     end
 
     def to_json(*a)
@@ -346,8 +349,8 @@ class ChefVault
       # re-process the search query to add new clients
       clients(search)
 
-      # save the updated vault
-      save
+      # save the updated keys only
+      save_keys(@raw_data["id"])
     end
 
     private
