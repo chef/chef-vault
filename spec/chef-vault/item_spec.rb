@@ -23,7 +23,7 @@ module BorkedNodeWithoutPublicKey
     allow(query_result)
       .to receive(:search)
       .with(Symbol, String)
-      .and_return([[node_foo, node_bar]])
+      .and_yield(node_foo).and_yield(node_bar)
     allow(Chef::Search::Query)
       .to receive(:new)
       .and_return(query_result)
