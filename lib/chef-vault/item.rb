@@ -80,7 +80,7 @@ class ChefVault
       elsif search_or_client
         results_returned = false
         query = Chef::Search::Query.new
-        query.search(:node, search_or_client)[0].each do |node|
+        query.search(:node, search_or_client) do |node|
           results_returned = true
           case action
           when :add
