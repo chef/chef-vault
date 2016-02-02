@@ -16,8 +16,7 @@ Gem that allows you to encrypt a Chef Data Bag Item using the public keys of
 a list of chef nodes. This allows only those chef nodes to decrypt the
 encrypted values.
 
-For a more detailed explanation of how chef-vault works, please refer to the
-file THEORY.md.
+For a more detailed explanation of how chef-vault works, please refer to this blog post [Chef Vault – what is it and what can it do for you?](https://www.chef.io/blog/2016/01/21/chef-vault-what-is-it-and-what-can-it-do-for-you/) by Nell Shamrell-Harrington.
 
 ## INSTALLATION:
 
