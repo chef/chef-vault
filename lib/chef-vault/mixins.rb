@@ -22,7 +22,7 @@ class ChefVault
       [data_bag_path, data_bag_item_path]
     end
 
-    def save_solo(item_id=@raw_data["id"])
+    def save_solo(item_id = @raw_data["id"])
       data_bag_path, data_bag_item_path = find_solo_path(item_id)
 
       FileUtils.mkdir(data_bag_path) unless File.exist?(data_bag_path)

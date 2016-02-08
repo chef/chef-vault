@@ -34,7 +34,7 @@ class Chef
 
       private
 
-      def rotate_all_keys(clean_unknown_clients=false)
+      def rotate_all_keys(clean_unknown_clients = false)
         vaults = Chef::DataBag.list.keys
         vaults.each { |vault| rotate_vault_keys(vault, clean_unknown_clients) }
       end

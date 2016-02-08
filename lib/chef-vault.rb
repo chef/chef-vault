@@ -35,7 +35,7 @@ require "chef-vault/chef_patch/user"
 class ChefVault
   attr_accessor :vault
 
-  def initialize(vault, chef_config_file=nil)
+  def initialize(vault, chef_config_file = nil)
     @vault = vault
     ChefVault.load_config(chef_config_file) if chef_config_file
   end

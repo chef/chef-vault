@@ -3,9 +3,9 @@ RSpec.describe ChefVault::Certificate do
   let(:cert) { ChefVault::Certificate.new("foo", "bar") }
 
   before do
-    allow(ChefVault::Item).to receive(:load).with("foo", "bar"){ item }
-    allow(item).to receive(:[]).with("id"){ "bar" }
-    allow(item).to receive(:[]).with("contents"){ "baz" }
+    allow(ChefVault::Item).to receive(:load).with("foo", "bar") { item }
+    allow(item).to receive(:[]).with("id") { "bar" }
+    allow(item).to receive(:[]).with("contents") { "baz" }
     @orig_stdout = $stdout
     $stdout = File.open(File::NULL, "w")
   end

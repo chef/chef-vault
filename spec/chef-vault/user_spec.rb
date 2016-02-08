@@ -3,9 +3,9 @@ RSpec.describe ChefVault::User do
   let(:user) { ChefVault::User.new("foo", "bar") }
 
   before do
-    allow(ChefVault::Item).to receive(:load).with("foo", "bar"){ item }
-    allow(item).to receive(:[]).with("id"){ "bar" }
-    allow(item).to receive(:[]).with("password"){ "baz" }
+    allow(ChefVault::Item).to receive(:load).with("foo", "bar") { item }
+    allow(item).to receive(:[]).with("id") { "bar" }
+    allow(item).to receive(:[]).with("password") { "baz" }
     @orig_stdout = $stdout
     $stdout = File.open(File::NULL, "w")
   end

@@ -18,7 +18,7 @@ RSpec.describe ChefVault do
     let(:vault) { ChefVault.new("foo", "knife.rb") }
 
     it "assigns 'foo' to the vault accessor" do
-        expect(vault.vault).to eq "foo"
+      expect(vault.vault).to eq "foo"
     end
 
     it "loads the Chef config values" do

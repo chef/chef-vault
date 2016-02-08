@@ -37,7 +37,7 @@ class Chef
           begin
             vault_item = ChefVault::Item.load(vault, item)
 
-            filtered_vault_data = vault_item.raw_data.select{|x| x != "id"}
+            filtered_vault_data = vault_item.raw_data.select { |x| x != "id" }
 
             updated_vault_json = edit_data(filtered_vault_data)
 

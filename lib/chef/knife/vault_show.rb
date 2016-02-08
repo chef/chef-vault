@@ -76,7 +76,7 @@ class Chef
             included_values << value
           end
 
-          filtered_data = Hash[vault_item.raw_data.find_all{|k, _| included_values.include?(k)}]
+          filtered_data = Hash[vault_item.raw_data.find_all { |k, _| included_values.include?(k) }]
 
           output_data = filtered_data.merge(extra_data)
         else

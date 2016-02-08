@@ -48,7 +48,7 @@ class Chef
             included_values << value
           end
 
-          output(Hash[vault_item.find_all{|k, _| included_values.include?(k)}])
+          output(Hash[vault_item.find_all { |k, _| included_values.include?(k) }])
         else
           output(vault_item)
         end

@@ -74,7 +74,7 @@ class ChefVault
       @secret = secret
     end
 
-    def clients(search_or_client=nil, action=:add)
+    def clients(search_or_client = nil, action = :add)
       if search_or_client.is_a?(Chef::ApiClient)
         handle_client_action(search_or_client, action)
       elsif search_or_client
@@ -107,7 +107,7 @@ class ChefVault
       end
     end
 
-    def search(search_query=nil)
+    def search(search_query = nil)
       if search_query
         keys.search_query(search_query)
       else
@@ -115,7 +115,7 @@ class ChefVault
       end
     end
 
-    def admins(admins=nil, action=:add)
+    def admins(admins = nil, action = :add)
       if admins
         admins.split(",").each do |admin|
           admin.strip!
@@ -179,7 +179,7 @@ class ChefVault
       reload_raw_data
     end
 
-    def generate_secret(key_size=32)
+    def generate_secret(key_size = 32)
       # Defaults to 32 bytes, as this is the size that a Chef
       # Encrypted Data Bag Item will digest all secrets down to anyway
       SecureRandom.random_bytes(key_size)
@@ -195,7 +195,7 @@ class ChefVault
       super
     end
 
-    def save(item_id=@raw_data["id"])
+    def save(item_id = @raw_data["id"])
       # validate the format of the id before attempting to save
       validate_id!(item_id)
 

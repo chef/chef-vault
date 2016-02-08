@@ -52,7 +52,7 @@ class ChefVault
       raw_data[type].delete(chef_client)
     end
 
-    def search_query(search_query=nil)
+    def search_query(search_query = nil)
       if search_query
         @raw_data["search_query"] = search_query
       else
@@ -68,7 +68,7 @@ class ChefVault
       @raw_data["admins"]
     end
 
-    def save(item_id=@raw_data["id"])
+    def save(item_id = @raw_data["id"])
       if Chef::Config[:solo]
         save_solo(item_id)
       else
