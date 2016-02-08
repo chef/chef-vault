@@ -1,7 +1,7 @@
 # UPGRADING A v1 VAULT to v2
 
 chef-vault v2 added metadata to the vault to keep track of
-which secrets belong to admins and which belong to admins,
+which secrets belong to clients and which belong to admins,
 as well as the search query to use during a `knife vault refresh`
 operation.
 
