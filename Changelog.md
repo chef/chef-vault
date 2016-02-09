@@ -25,6 +25,10 @@ This release will also remove the chef-vault 1.x commands (encrypt/decrypt)
 
 ## Released
 
+## v2.8.0
+
+* Fix searches for more than 1000 nodes
+
 ## v2.6.1
 
 * Remove dependency on [rspec-its](https://github.com/rspec/rspec-its)
