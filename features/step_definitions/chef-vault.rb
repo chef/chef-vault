@@ -119,6 +119,6 @@ Given(/^I downgrade the vault item '(.+)\/(.+)' to v1 syntax/) do |vault, item|
   # v1 syntax doesn't have the admins, clients and search_query keys
   keysfile = "tmp/aruba/data_bags/#{vault}/#{item}_keys.json"
   data = JSON.parse(IO.read(keysfile))
-  %w{admins clients search_query}.each { |k| data["raw_data"].delete(k) }
+  %w{admins clients search_query}.each { |k| data.key?("raw_data") ? data["raw_data"].delete(k) : data.delete(k) }
   IO.write(keysfile, JSON.generate(data))
 end
