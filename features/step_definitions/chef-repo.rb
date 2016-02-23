@@ -8,6 +8,7 @@ Given(/^a local mode chef repo with nodes '(.+?)'(?: with admins '(.+?)')?$/) do
 local_mode true
 chef_repo_path '.'
 chef_zero.enabled true
+knife[:vault_mode] = 'client'
 EOF
   # create the admin users and capture their private key we
   # always create an admin called 'admin' because otherwise subsequent
