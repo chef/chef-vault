@@ -198,7 +198,7 @@ RSpec.describe ChefVault::Item do
       allow(OpenSSL::PKey::RSA).to receive(:new).and_return(privkey)
       allow(Chef::EncryptedDataBagItem).to receive(:load).and_return(
         "id" => "bar",
-        "password" => "12345",
+        "password" => "12345"
       )
       item = ChefVault::Item.load(
         "foo", "bar",

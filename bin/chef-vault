@@ -75,7 +75,7 @@ OptionParser.new do |opts|
 end.parse!
 
 options_config.each do |option, config|
-  raise OptionParser::MissingArgument, option if (options[option].nil? && !config[:optional])
+  raise OptionParser::MissingArgument, option if options[option].nil? && !config[:optional]
 end
 
 options_config.each do |option, config|
