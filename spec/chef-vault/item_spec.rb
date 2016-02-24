@@ -227,6 +227,35 @@ RSpec.describe ChefVault::Item do
     end
   end
 
+  describe '#refresh' do
+
+    it "saves only the keys" do
+      keys = double("keys",
+                    search_query: "*:*",
+                    add: nil,
+                    admins: [],
+                    clients: ["testnode"])
+      allow(keys).to receive(:[]).with("id").and_return("bar_keys")
+      allow(ChefVault::ItemKeys).to receive(:new).and_return(keys)
+
+      item = ChefVault::Item.new("foo", "bar")
+
+      node  = double("node", name: "testnode")
+      query = double("query")
+      allow(Chef::Search::Query).to receive(:new).and_return(query)
+      allow(query).to receive(:search).and_yield(node)
+
+      client = double("client",
+                     name: "testclient",
+                     public_key: OpenSSL::PKey::RSA.new(1024).public_key)
+      allow(ChefVault::ChefPatch::ApiClient).to receive(:load).and_return(client)
+
+      expect(item).not_to receive(:save)
+      expect(keys).to receive(:save)
+      item.refresh
+    end
+  end
+
   describe '#clients' do
     include BorkedNodeWithoutPublicKey
 
