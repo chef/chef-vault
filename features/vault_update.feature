@@ -11,7 +11,9 @@ Feature: knife vault update
       And 'alice' should be an admin for the vault item 'test/item'
       And I can decrypt the vault item 'test/item' as 'alice'
       But I can't decrypt the vault item 'test/item' as 'bob'
+      And I can save the JSON object of the encrypted data bag for the vault item 'test/item'
     When I add 'bob' as an admin for the vault item 'test/item'
     Then 'alice,bob' should be an admin for the vault item 'test/item'
       And I can decrypt the vault item 'test/item' as 'alice'
       And I can decrypt the vault item 'test/item' as 'bob'
+      And the data bag of the vault item 'test/item' has not been re-encrypted
