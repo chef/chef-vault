@@ -218,7 +218,7 @@ class ChefVault
       end
     end
 
-    def save_keys(item_id)
+    def save_keys(item_id = @raw_data["id"])
       # validate the format of the id before attempting to save
       validate_id!(item_id)
 
