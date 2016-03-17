@@ -62,15 +62,7 @@ class Chef
           begin
             vault_item = ChefVault::Item.load(vault, item)
 
-            merge_values(values, json_file).each do |key, value|
-              vault_item[key] = value
-            end
-
-            if file
-              vault_item["file-name"] = File.basename(file)
-              vault_item["file-content"] = File.open(file) { |f| f.read() }
-            end
-
+            # Keys management first
             if clean
               clients = vault_item.clients().clone().sort()
               clients.each do |client|
@@ -78,11 +70,27 @@ class Chef
                 vault_item.keys.delete(client, "clients")
               end
             end
+
             vault_item.search(search) if search
             vault_item.clients(search) if search
             vault_item.admins(admins) if admins
 
-            vault_item.save
+            # Save only the keys if no value is provided, otherwise save the item
+            if values || json_file || file
+              merge_values(values, json_file).each do |key, value|
+                vault_item[key] = value
+              end
+
+              if file
+                vault_item["file-name"] = File.basename(file)
+                vault_item["file-content"] = File.open(file) { |f| f.read() }
+              end
+
+              vault_item.save
+            else
+              vault_item.save_keys
+            end
+
           rescue ChefVault::Exceptions::KeysNotFound,
                  ChefVault::Exceptions::ItemNotFound
             raise ChefVault::Exceptions::ItemNotFound,

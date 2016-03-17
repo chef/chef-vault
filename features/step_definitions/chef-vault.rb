@@ -122,3 +122,19 @@ Given(/^I downgrade the vault item '(.+)\/(.+)' to v1 syntax/) do |vault, item|
   %w{admins clients search_query}.each { |k| data.key?("raw_data") ? data["raw_data"].delete(k) : data.delete(k) }
   IO.write(keysfile, JSON.generate(data))
 end
+
+Given(/^I can save the JSON object of the encrypted data bag for the vault item '(.+)\/(.+)'$/) do |vault, item|
+  command = "knife data bag show #{vault} #{item} -z -c knife.rb -F json"
+  run_simple(command)
+  output = last_command_started.stdout
+  @saved_encrypted_vault_item = JSON.parse(output)
+end
+
+Given(/^the data bag of the vault item '(.+)\/(.+)' has not been re-encrypted$/) do |vault, item|
+  command = "knife data bag show #{vault} #{item} -z -c knife.rb -F json"
+  run_simple(command)
+  output = last_command_started.stdout
+  encrypted_vault_item = JSON.parse(output)
+
+  expect(encrypted_vault_item).to eq(@saved_encrypted_vault_item)
+end
