@@ -47,7 +47,7 @@ class Chef
 
       def vault_items(vault)
         Chef::DataBag.load(vault).keys.each_with_object([]) do |key, array|
-          array << key.sub("_keys", "") if key.match(/.+_keys$/)
+          array << key.sub("_keys", "") if key =~ /.+_keys$/
         end
       end
 
