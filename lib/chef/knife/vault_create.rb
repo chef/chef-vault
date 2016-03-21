@@ -61,7 +61,8 @@ class Chef
               "use 'knife vault remove' 'knife vault update' "\
               "or 'knife vault edit' to make changes."
           rescue ChefVault::Exceptions::KeysNotFound,
-                 ChefVault::Exceptions::ItemNotFound
+                 ChefVault::Exceptions::ItemNotFound,
+                 Chef::Exceptions::InvalidDataBagItemID
             vault_item = ChefVault::Item.new(vault, item)
             if values || json_file || file
               merge_values(values, json_file).each do |key, value|
