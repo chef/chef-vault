@@ -1,4 +1,5 @@
 require "bundler/gem_tasks"
+require_relative "tasks/github_changelog_generator"
 
 # Style Tests
 begin
