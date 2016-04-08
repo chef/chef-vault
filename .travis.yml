@@ -7,7 +7,7 @@ rvm:
   - "2.0.0-p647"
   - "2.1.6"
   - "2.2.2"
-install: bundle install --binstubs
+install: bundle install --binstubs --without changelog
 before_install: gem install bundler
 env: TRAVIS_BUILD=true
 notifications:
