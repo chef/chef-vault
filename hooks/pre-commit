@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+output = `bundle exec chefstyle -a`
+if !$?.success?
+  puts "pre-commit hook: Tried to run `bundle exec chefstyle -a` to autocleanup errors, but it failed with output:"
+  puts output
+end
+
+detected  = /(\d+) offenses detected/.match(output)
+corrected = /(\d+) offenses corrected/.match(output)
+
+# no errors detected by chefstyle
+exit 0 if detected.nil?
+
+# chefstyle found errors
+if !detected.nil?
+  # get the first result from the capture group that isn't the whole capture
+  num_detected = detected.to_a[1].to_i
+  num_corrected = if corrected.nil?
+                    0
+                  else
+                    corrected.to_a[1].to_i
+                  end
+  if num_detected == num_corrected
+    puts <<EOF
+pre-commit hook: Ran `bundle exec chefstyle -a` to autocleanup errors if any existed and
+#{num_detected} were detected, but all were cleaned up. `git add` all files that were
+autoupdated and try commiting again. New git status:
+
+EOF
+    puts `git status`
+  else
+    puts <<EOF
+pre-commit hook: Ran `bundle exec chefstyle -a` to autocleanup errors if any existed and
+#{num_detected} were detected, but #{num_detected - num_corrected} could not be cleaned up
+automatically. Run:
+
+bundle exec chefstyle -a
+
+to see remaining errors to clean up by hand, add all updated files, and try commiting again.
+EOF
+  end
+  exit 1
+end

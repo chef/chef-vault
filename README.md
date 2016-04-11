@@ -32,6 +32,59 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 Depending on your system's configuration, you may need to run this command
 with root privileges.
 
+## DEVELOPMENT:
+
+### Running Your Changes
+
+To run your changes locally:
+
+```
+bundle install
+bundle exec knife vault
+```
+
+### Testing
+
+#### Rspec Tests
+
+There are some unit tests that can be run with:
+
+```
+bundle exec rspec spec/
+```
+
+#### Cucumber Testing
+
+There are cucumber tests. Run the whole suite with:
+
+```
+bundle exec rake features
+```
+
+If you get any failures, you can run the specific feature that failed with:
+
+```
+bundle exec cucumber features/<failed>.feature
+```
+
+If you want to test things out directly, after a failure you can go into the test
+directory and try out the commands that failed:
+
+```
+cd tmp/aruba
+bundle exec knife <your command that failed from test with -c knife.rb>
+```
+
+Optionally add `-VV` to the above to get a full stacktrace.
+
+### Rubocop Errors
+
+If you are seeing rubocop errors in travis for your pull request, run:
+
+`bundle exec chefstyle -a`
+
+This will fix up your rubocop errors automatically, and warn you about any it can't.
+
 ## KNIFE COMMANDS:
 
 See KNIFE_EXAMPLES.md for examples of commands

@@ -51,4 +51,4 @@ Feature: knife vault create
     Given a local mode chef repo with nodes 'one,two'
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three' with 'alice' as admin
     Then the exit status should not be 0
-    And the output should contain "FATAL: Could not find alice in users or clients!"
+    And the output should contain "FATAL: Could not find default key for alice in users or clients!"
