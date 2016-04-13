@@ -120,7 +120,7 @@ class ChefVault
       if request_actor_type == "clients"
         chef_api_client.load(actor_name).public_key
       else
-        user = chef_user.load(actor_name).public_key
+        chef_user.load(actor_name).public_key
       end
     end
 

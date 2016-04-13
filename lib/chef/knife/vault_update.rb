@@ -64,7 +64,7 @@ class Chef
 
             # Keys management first
             if clean
-              clients = vault_item.get_clients().clone().sort()
+              clients = vault_item.get_clients.clone().sort()
               clients.each do |client|
                 $stdout.puts "Deleting #{client}"
                 vault_item.delete_client(client)

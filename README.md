@@ -34,6 +34,16 @@ with root privileges.
 
 ## DEVELOPMENT:
 
+### Git Hooks
+
+There is a git pre-commit hook to help you keep your chefstyle up to date.
+If you wish to use it, simply:
+
+```
+mv hooks/pre-commit .git/hooks/
+chmod +x .git/hooks/pre-commit
+```
+
 ### Running Your Changes
 
 To run your changes locally:
