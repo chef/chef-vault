@@ -79,6 +79,7 @@ Short | Long | Description | Default | Valid Values | Sub-Commands
 -p DATA | --print DATA | Print extra vault data | | search, clients, admins, all | show
 -F FORMAT | --format FORMAT | Format for decrypted output | summary | summary, json, yaml, pp | show
 | --clean-unknown-clients | Remove unknown clients during key rotation | | | refresh, remove, rotate
+| --clean | Clean clients list before performing search | | | refresh, update
 
 ## USAGE IN RECIPES
 
