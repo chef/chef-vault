@@ -1,54 +1,4 @@
 require "openssl"
-require "rspec/core/shared_context"
-
-# it turns out that simulating a node that doesn't have a public
-# key is not a simple thing
-module BorkedNodeWithoutPublicKey
-  extend RSpec::Core::SharedContext
-
-  before do
-    # a node 'foo' with a public key
-    node_foo = double("chef node foo")
-    allow(node_foo).to receive(:name).and_return("foo")
-    client_foo = double("chef apiclient foo")
-    allow(client_foo).to receive(:name).and_return("foo")
-    privkey = OpenSSL::PKey::RSA.new(1024)
-    pubkey = privkey.public_key
-    allow(client_foo).to receive(:public_key).and_return(pubkey.to_pem)
-    # a node 'bar' without a public key
-    node_bar = double("chef node bar")
-    allow(node_bar).to receive(:name).and_return("bar")
-    # fake out searches to return both of our nodes
-    query_result = double("chef search results")
-    allow(query_result)
-      .to receive(:search)
-      .with(Symbol, String)
-      .and_yield(node_foo).and_yield(node_bar)
-    allow(Chef::Search::Query)
-      .to receive(:new)
-      .and_return(query_result)
-    # create a new vault item
-    @vaultitem = ChefVault::Item.new("foo", "bar")
-    @vaultitem["foo"] = "bar"
-    # make the vault item return the apiclient for foo but raise for bar
-    allow(@vaultitem).to receive(:load_client).with("foo")
-      .and_return(client_foo)
-    allow(@vaultitem).to receive(:load_client).with("bar")
-      .and_raise(ChefVault::Exceptions::ClientNotFound)
-    # make the vault item fall back to 'load-admin-as-client' behaviour
-    http_response = double("http not found")
-    allow(http_response).to receive(:code).and_return("404")
-    http_not_found = Net::HTTPServerException.new("not found", http_response)
-    allow(ChefVault::ChefPatch::User)
-      .to receive(:load)
-      .with("foo")
-      .and_return(client_foo)
-    allow(ChefVault::ChefPatch::User)
-      .to receive(:load)
-      .with("bar")
-      .and_raise(http_not_found)
-  end
-end
 
 RSpec.describe ChefVault::Item do
   before do
@@ -61,6 +11,10 @@ RSpec.describe ChefVault::Item do
   end
 
   subject(:item) { ChefVault::Item.new("foo", "bar") }
+
+  before do
+    item["foo"] = "bar"
+  end
 
   describe "vault probe predicates" do
     before do
@@ -245,10 +199,10 @@ RSpec.describe ChefVault::Item do
       allow(Chef::Search::Query).to receive(:new).and_return(query)
       allow(query).to receive(:search).and_yield(node)
 
-      client = double("client",
-                     name: "testclient",
-                     public_key: OpenSSL::PKey::RSA.new(1024).public_key)
-      allow(ChefVault::ChefPatch::ApiClient).to receive(:load).and_return(client)
+      client_key = double("client_key",
+                          name: "testnode",
+                          public_key: OpenSSL::PKey::RSA.new(1024).public_key)
+      allow(item).to receive(:load_public_key).with("testnode", "clients").and_return(client_key)
 
       expect(item).not_to receive(:save)
       expect(keys).to receive(:save)
@@ -257,38 +211,101 @@ RSpec.describe ChefVault::Item do
   end
 
   describe '#clients' do
-    include BorkedNodeWithoutPublicKey
+    context "when search returns a node with a valid client backing it and one without a valid client" do
+      let(:node_with_valid_client) { double("chef node valid") }
+      let(:node_without_valid_client) { double("chef node no valid client") }
+      let(:query_result) { double("chef search results") }
+      let(:client_key) { double("chef key") }
 
-    it "should not blow up when search returns a node without a public key" do
-      # try to set clients when we know a node is missing a public key
-      # this should not die as of v2.4.1
-      expect { @vaultitem.clients("*:*") }.not_to raise_error
+      before do
+        # node with valid client proper loads client key
+        allow(node_with_valid_client).to receive(:name).and_return("foo")
+        allow(item).to receive(:load_public_key).with("foo", "clients").and_return(client_key)
+        privkey = OpenSSL::PKey::RSA.new(1024)
+        pubkey = privkey.public_key
+        allow(client_key).to receive(:key).and_return(pubkey.to_pem)
+        allow(client_key).to receive(:actor_name).and_return("foo")
+        allow(client_key).to receive(:actor_type).and_return("clients")
+
+        # node without client throws relevant error on key load
+        allow(node_without_valid_client).to receive(:name).and_return("bar")
+        allow(item).to receive(:load_public_key).with("bar", "clients").and_raise(ChefVault::Exceptions::ClientNotFound)
+
+        allow(query_result)
+          .to receive(:search)
+               .with(Symbol, String)
+               .and_yield(node_with_valid_client).and_yield(node_without_valid_client)
+        allow(Chef::Search::Query)
+          .to receive(:new)
+               .and_return(query_result)
+      end
+
+      it "should not blow up when search returns a node without a public key" do
+        # try to set clients when we know a node is missing a public key
+        # this should not die as of v2.4.1
+        expect { item.clients("*:*") }.not_to raise_error
+      end
+
+      it "should emit a warning if search returns a node without a public key" do
+        # it should however emit a warning that you have a borked node
+        expect { item.clients("*:*") }
+          .to output(/node 'bar' has no private key; skipping/).to_stdout
+      end
     end
 
-    it "should emit a warning if search returns a node without a public key" do
-      # it should however emit a warning that you have a borked node
-      expect { @vaultitem.clients("*:*") }
-        .to output(/node 'bar' has no private key; skipping/).to_stdout
-    end
+    context "when a Chef::ApiClient is passed" do
+      let(:client) { Chef::ApiClient.new }
+      let(:client_name) { "foo" }
+      let(:client_key) { double("chef key") }
 
-    it "should accept a client object and not perform a search" do
-      client = Chef::ApiClient.new
-      client.name "foo"
-      privkey = OpenSSL::PKey::RSA.new(1024)
-      pubkey = privkey.public_key
-      client.public_key(pubkey.to_pem)
-      expect(Chef::Search::Query).not_to receive(:new)
-      expect(ChefVault::ChefPatch::User).not_to receive(:load)
-      @vaultitem.clients(client)
-      expect(@vaultitem.clients).to include("foo")
+      before do
+        client.name client_name
+        privkey = OpenSSL::PKey::RSA.new(1024)
+        pubkey = privkey.public_key
+        allow(item).to receive(:load_public_key).with(client_name, "clients").and_return(client_key)
+        allow(client_key).to receive(:key).and_return(pubkey.to_pem)
+        allow(client_key).to receive(:actor_name).and_return(client_name)
+        allow(client_key).to receive(:actor_type).and_return("clients")
+      end
+
+      context "when no action is passed" do
+        it "default to add and properly add the client" do
+          item.clients(client)
+          expect(item.get_clients).to include(client_name)
+        end
+
+        it "does not perform a query" do
+          expect(Chef::Search::Query).not_to receive(:new)
+          item.clients(client)
+        end
+      end
+
+      context "when the delete action is passed on an existing client" do
+        before do
+          # add the client
+          item.clients(client)
+        end
+
+        it "properly deletes the client" do
+          item.clients(client, :delete)
+          expect(item.get_clients).to_not include(client_name)
+        end
+
+        it "does not perform a query" do
+          expect(Chef::Search::Query).not_to receive(:new)
+          item.clients(client, :delete)
+        end
+      end
     end
   end
 
   describe '#admins' do
-    include BorkedNodeWithoutPublicKey
+    before do
+      allow(item).to receive(:load_public_key).with("foo", "admins").and_raise(ChefVault::Exceptions::AdminNotFound)
+    end
 
     it "should blow up if you try to use a node without a public key as an admin" do
-      expect { @vaultitem.admins("foo,bar") }
+      expect { item.admins("foo,bar") }
         .to raise_error(ChefVault::Exceptions::AdminNotFound)
     end
   end

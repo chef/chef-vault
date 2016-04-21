@@ -34,22 +34,20 @@ class ChefVault
       @raw_data.keys.include?(key)
     end
 
-    def add(chef_client, data_bag_shared_secret, type)
+    def add(chef_key, data_bag_shared_secret)
+      type = chef_key.actor_type
       unless @raw_data.key?(type)
         raise ChefVault::Exceptions::V1Format,
               "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
-      public_key = OpenSSL::PKey::RSA.new chef_client.public_key
-      self[chef_client.name] =
-        Base64.encode64(public_key.public_encrypt(data_bag_shared_secret))
-
-      @raw_data[type] << chef_client.name unless @raw_data[type].include?(chef_client.name)
+      self[chef_key.actor_name] = ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      @raw_data[type] << chef_key.actor_name unless @raw_data[type].include?(chef_key.actor_name)
       @raw_data[type]
     end
 
-    def delete(chef_client, type)
-      raw_data.delete(chef_client)
-      raw_data[type].delete(chef_client)
+    def delete(chef_key)
+      raw_data.delete(chef_key.actor_name)
+      raw_data[chef_key.actor_type].delete(chef_key.actor_name)
     end
 
     def search_query(search_query = nil)
@@ -127,6 +125,13 @@ class ChefVault
       end
 
       from_data_bag_item(data_bag_item)
+    end
+
+    # @private
+
+    def self.encode_key(key_string, data_bag_shared_secret)
+      public_key = OpenSSL::PKey::RSA.new(key_string)
+      Base64.encode64(public_key.public_encrypt(data_bag_shared_secret))
     end
   end
 end

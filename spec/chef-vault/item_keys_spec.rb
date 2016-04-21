@@ -1,6 +1,7 @@
 RSpec.describe ChefVault::ItemKeys do
   describe '#new' do
     let(:keys) { ChefVault::ItemKeys.new("foo", "bar") }
+    let(:shared_secret) { "super_secret" }
 
     it "'foo' is assigned to @data_bag" do
       expect(keys.data_bag).to eq "foo"
@@ -16,6 +17,57 @@ RSpec.describe ChefVault::ItemKeys do
 
     it "initializes the keys[clients] to an empty array" do
       expect(keys["admins"]).to eq []
+    end
+
+    describe "key mgmt operations" do
+      let(:public_key_string) {
+        "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMXT9IOV9pkQsxsnhSx8\n8RX6GW3caxkjcXFfHg6E7zUVBFAsfw4B1D+eHAks3qrDB7UrUxsmCBXwU4dQHaQy\ngAn5Sv0Jc4CejDNL2EeCBLZ4TF05odHmuzyDdPkSZP6utpR7+uF7SgVQedFGySIB\nih86aM+HynhkJqgJYhoxkrdo/JcWjpk7YEmWb6p4esnvPWOpbcjIoFs4OjavWBOF\niTfpkS0SkygpLi/iQu9RQfd4hDMWCc6yh3Th/1nVMUd+xQCdUK5wxluAWSv8U0zu\nhiIlZNazpCGHp+3QdP3f6rebmQA8pRM8qT5SlOvCYPk79j+IMUVSYrR4/DTZ+VM+\naQIDAQAB\n-----END PUBLIC KEY-----\n"
+      }
+
+      shared_examples_for "proper key management" do
+        let(:chef_key) { ChefVault::ChefKey.new(type, name) }
+        before do
+          allow(chef_key).to receive(:key) { public_key_string }
+          keys.add(chef_key, shared_secret)
+        end
+
+        describe "#add" do
+          after do
+            keys.delete(chef_key)
+          end
+
+          it "stores the encoded key in the data bag item under the actor's name and the name in the raw data" do
+            expect(described_class).to receive(:encode_key).with(public_key_string, shared_secret).and_return("encrypted_result")
+            keys.add(chef_key, shared_secret)
+            expect(keys[name]).to eq("encrypted_result")
+            expect(keys[type].include?(name)).to eq(true)
+          end
+        end
+
+        describe '#delete' do
+          before do
+            keys.add(chef_key, shared_secret)
+          end
+
+          it "removes the actor's name from the data bag and from the array for the actor's type" do
+            keys.delete(chef_key)
+            expect(keys.has_key?(chef_key.actor_name)).to eq(false)
+            expect(keys[type].include?(name)).to eq(false)
+          end
+        end
+      end
+
+      context "when a client is added" do
+        let(:name) { "client_name" }
+        let(:type) { "clients" }
+        it_should_behave_like "proper key management"
+      end
+
+      context "when a admin is added" do
+        let(:name) { "admin_name" }
+        let(:type) { "admins" }
+        it_should_behave_like "proper key management"
+      end
     end
 
     context "when running with chef-solo" do

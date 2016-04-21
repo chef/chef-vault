@@ -58,13 +58,13 @@ class Chef
           when "search"
             extra_data["search_query"] = vault_item.search
           when "admins"
-            extra_data["admins"] = vault_item.admins
+            extra_data["admins"] = vault_item.get_admins
           when "clients"
-            extra_data["clients"] = vault_item.clients
+            extra_data["clients"] = vault_item.get_clients
           when "all"
             extra_data["search_query"] = vault_item.search
-            extra_data["admins"] = vault_item.admins
-            extra_data["clients"] = vault_item.clients
+            extra_data["admins"] = vault_item.get_admins
+            extra_data["clients"] = vault_item.get_clients
           end
         end
 
