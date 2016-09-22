@@ -26,20 +26,18 @@ Gem::Specification.new do |s|
   s.summary          = "Data encryption support for Chef using data bags"
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
-
   s.license          = "Apache License, v2.0"
-
   s.files            = `git ls-files`.split("\n")
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
 
-  s.add_development_dependency "rake", "~> 10.4"
+  s.add_development_dependency "rake", "~> 11.0"
   s.add_development_dependency "rspec", "~> 3.2"
   s.add_development_dependency "aruba", "~> 0.6"
   s.add_development_dependency "simplecov", "~> 0.9"
   s.add_development_dependency "simplecov-console", "~> 0.2"
-  if ENV.key?("TRAVIS_BUILD") && RUBY_VERSION == "2.1.6"
+  if ENV.key?("TRAVIS_BUILD") && RUBY_VERSION == "2.1.9"
     # Test version of Chef with Chef Zero before
     # /orgs/org/users/user/keys endpoint was added.
     s.add_development_dependency "chef", "12.8.1"
