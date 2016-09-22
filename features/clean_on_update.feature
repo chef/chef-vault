@@ -8,14 +8,14 @@ Feature: clean client keys
   the data bag before encrypting the item for all clients
   returned by the query
 
-  Scenario: Do not clean client keys on update
+  Scenario: Do not clean client keys on update without 'clean' option
     Given a local mode chef repo with nodes 'one,two,three'
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two'
     Then the vault item 'test/item' should be encrypted for 'one,two'
     And I update the vault item 'test/item' to be encrypted for 'two,three'
     Then the vault item 'test/item' should be encrypted for 'one,two,three'
 
-  Scenario: Clean client keys on update
+  Scenario: Clean client keys on update with 'clean' option
     Given a local mode chef repo with nodes 'one,two,three'
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two'
     Then the vault item 'test/item' should be encrypted for 'one,two'
