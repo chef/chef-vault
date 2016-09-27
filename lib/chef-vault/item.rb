@@ -89,6 +89,8 @@ class ChefVault
               add_client(client)
             rescue ChefVault::Exceptions::ClientNotFound
               $stdout.puts "node '#{node.name}' has no private key; skipping"
+            rescue ChefVault::Exceptions::ClientUnknownError
+              $stdout.puts "Something went wrong with client '#{node.name}'; skipping"
             end
           when :delete
             delete_client_or_node(node)
@@ -396,7 +398,8 @@ class ChefVault
           raise ChefVault::Exceptions::ClientNotFound,
             "#{client} is not a valid chef client and/or node"
         else
-          raise http_error
+          raise ChefVault::Exceptions::ClientUnknownError,
+          "#{http_error.message} for client #{client}"
         end
       end
 
@@ -441,15 +444,19 @@ class ChefVault
 
     # checks if a client exists on the Chef server.  If we get back
     # a 404, the client does not exist.  Any other HTTP errors are
-    # re-raised.  Otherwise, the client exists
+    # displayed.  Otherwise, the client exists
     # @param clientname [String] the name of the client
     # @return [Boolean] whether the client exists or not
+    #
+    # We do not re-raise the error as in 'load_client()'. If we do,
+    # it will fail the whole 'knife vault refresh' operation with
+    # a very low level message from the chef-server REST API
     def client_exists?(clientname)
       begin
         ChefVault::ChefPatch::ApiClient.load(clientname)
       rescue Net::HTTPServerException => http_error
-        return false if http_error.response.code == "404"
-        raise http_error
+        $stdout.puts "#{http_error.message} for client #{clientname}" unless http_error.response.code == "404"
+        return false
       end
       true
     end

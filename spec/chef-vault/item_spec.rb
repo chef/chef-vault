@@ -210,7 +210,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#save' do
+  describe "#save" do
     context 'when item["id"] is bar.bar' do
       let(:item) { ChefVault::Item.new("foo", "bar.bar") }
       it "raises an error on save with an invalid item['id']" do
@@ -227,7 +227,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#refresh' do
+  describe "#refresh" do
 
     it "saves only the keys" do
       keys = double("keys",
@@ -256,7 +256,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#clients' do
+  describe "#clients" do
     include BorkedNodeWithoutPublicKey
 
     it "should not blow up when search returns a node without a public key" do
@@ -282,9 +282,43 @@ RSpec.describe ChefVault::Item do
       @vaultitem.clients(client)
       expect(@vaultitem.clients).to include("foo")
     end
+
+    # To prevent
+    it "should not blow up when it gets an error while trying to get the client info" do
+      keys = double("keys",
+                    search_query: "*:*",
+                    add: nil,
+                    admins: [],
+                    clients: ["testnode"])
+      allow(keys).to receive(:[]).with("id").and_return("bar_keys")
+      allow(ChefVault::ItemKeys).to receive(:new).and_return(keys)
+
+      item = ChefVault::Item.new("foo", "bar")
+
+      # Fake the query
+      node  = double("node", name: "testnode")
+      query = double("query")
+      allow(Chef::Search::Query).to receive(:new).and_return(query)
+      allow(query).to receive(:search).and_yield(node)
+
+      # Fake the Error from the remote Chef-server
+      http_response = double("http error from Chef-server")
+      http_error    = Net::HTTPServerException.new("ERROR", http_response)
+      allow(http_response).to receive(:code).and_return("403")
+
+      allow(ChefVault::ChefPatch::ApiClient)
+        .to receive(:load)
+        .with("testnode")
+        .and_raise(http_error)
+
+      expect { item.clients("*:*") }.not_to raise_error
+      expect { item.clients("*:*") }
+        .to output(/Something went wrong with client 'testnode'; skipping/).to_stdout
+    end
+
   end
 
-  describe '#admins' do
+  describe "#admins" do
     include BorkedNodeWithoutPublicKey
 
     it "should blow up if you try to use a node without a public key as an admin" do
@@ -293,7 +327,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#raw_keys' do
+  describe "#raw_keys" do
     it "should return the keys of the underlying data bag item" do
       item = ChefVault::Item.new("foo", "bar")
       item["foo"] = "bar"
