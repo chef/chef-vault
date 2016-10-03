@@ -14,11 +14,13 @@
 # limitations under the License.
 
 require "chef/knife/vault_base"
+require "chef/knife/vault_clients"
 
 class Chef
   class Knife
     class VaultRemove < Knife
       include Chef::Knife::VaultBase
+      include Chef::Knife::VaultClients
 
       banner "knife vault remove VAULT ITEM VALUES (options)"
 
@@ -26,6 +28,11 @@ class Chef
         :short => "-S SEARCH",
         :long => "--search SEARCH",
         :description => "Chef SOLR search for clients"
+
+      option :clients,
+        :short => "-C CLIENTS",
+        :long => "--clients CLIENTS",
+        :description => "Chef clients to be added as clients"
 
       option :admins,
         :short => "-A ADMINS",
@@ -47,7 +54,7 @@ class Chef
 
         set_mode(config[:vault_mode])
 
-        if vault && item && ((values || json_file) || (search || admins))
+        if vault && item && ((values || json_file) || (search || clients || admins))
           begin
             vault_item = ChefVault::Item.load(vault, item)
             remove_items = []
@@ -69,6 +76,7 @@ class Chef
             end
 
             vault_item.clients(search, :delete) if search
+            vault_item.clients(clients, :delete) if clients
             vault_item.admins(admins, :delete) if admins
 
             vault_item.rotate_keys!(clean_unknown_clients)

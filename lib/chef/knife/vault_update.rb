@@ -15,12 +15,14 @@
 
 require "chef/knife/vault_base"
 require "chef/knife/vault_admins"
+require "chef/knife/vault_clients"
 
 class Chef
   class Knife
     class VaultUpdate < Knife
       include Chef::Knife::VaultBase
       include Chef::Knife::VaultAdmins
+      include Chef::Knife::VaultClients
 
       banner "knife vault update VAULT ITEM VALUES (options)"
 
@@ -28,6 +30,11 @@ class Chef
         :short => "-S SEARCH",
         :long => "--search SEARCH",
         :description => "Chef SOLR search for clients"
+
+      option :clients,
+        :short => "-C CLIENTS",
+        :long => "--clients CLIENTS",
+        :description => "Chef clients to be added as clients"
 
       option :admins,
         :short => "-A ADMINS",
@@ -58,14 +65,14 @@ class Chef
 
         set_mode(config[:vault_mode])
 
-        if vault && item && ((values || json_file || file) || (search || admins))
+        if vault && item && ((values || json_file || file) || (search || clients || admins))
           begin
             vault_item = ChefVault::Item.load(vault, item)
 
             # Keys management first
             if clean
-              clients = vault_item.get_clients.clone().sort()
-              clients.each do |client|
+              vault_clients = vault_item.get_clients.clone().sort()
+              vault_clients.each do |client|
                 $stdout.puts "Deleting #{client}"
                 vault_item.delete_client(client)
               end
@@ -73,6 +80,7 @@ class Chef
 
             vault_item.search(search) if search
             vault_item.clients(search) if search
+            vault_item.clients(clients) if clients
             vault_item.admins(admins) if admins
 
             # Save only the keys if no value is provided, otherwise save the item

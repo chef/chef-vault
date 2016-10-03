@@ -78,6 +78,11 @@ class ChefVault
     def clients(search_or_client, action = :add)
       if search_or_client.is_a?(Chef::ApiClient)
         handle_client_action(search_or_client, action)
+      elsif search_or_client.is_a?(Array)
+        search_or_client.each do |name|
+          client = load_client(name)
+          handle_client_action(client, action)
+        end
       else
         results_returned = false
         query = Chef::Search::Query.new
@@ -376,6 +381,21 @@ class ChefVault
       @encrypted = false
 
       @raw_data
+    end
+
+    def load_client(client)
+      begin
+        client = Chef::ApiClient.load(client)
+      rescue Net::HTTPServerException => http_error
+        if http_error.response.code == "404"
+          raise ChefVault::Exceptions::ClientNotFound,
+            "#{client} is not a valid chef client"
+        else
+          raise http_error
+        end
+      end
+
+      client
     end
 
     def load_public_key(actor_name, type)
