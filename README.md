@@ -1,8 +1,8 @@
 # Chef-Vault
 
-[![Gem Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
+[![Gem Version](https://badge.fury.io/rb/chef-vault.svg)](http://badge.fury.io/rb/chef-vault)
 
-[![Build Status](https://travis-ci.org/chef/chef-vault.png?branch=master)](https://travis-ci.org/chef/chef-vault)
+[![Build Status](https://travis-ci.org/chef/chef-vault.svg?branch=master)](https://travis-ci.org/chef/chef-vault)
 
 [![Inline docs](http://inch-ci.org/github/chef/chef-vault.svg?branch=master)](http://inch-ci.org/github/chef/chef-vault)
 
