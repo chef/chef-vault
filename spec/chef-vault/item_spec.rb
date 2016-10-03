@@ -164,7 +164,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#save' do
+  describe "#save" do
     context 'when item["id"] is bar.bar' do
       let(:item) { ChefVault::Item.new("foo", "bar.bar") }
       it "raises an error on save with an invalid item['id']" do
@@ -181,7 +181,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#refresh' do
+  describe "#refresh" do
 
     it "saves only the keys" do
       keys = double("keys",
@@ -210,7 +210,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#clients' do
+  describe "#clients" do
     context "when search returns a node with a valid client backing it and one without a valid client" do
       let(:node_with_valid_client) { double("chef node valid") }
       let(:node_without_valid_client) { double("chef node no valid client") }
@@ -299,7 +299,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#admins' do
+  describe "#admins" do
     before do
       allow(item).to receive(:load_public_key).with("foo", "admins").and_raise(ChefVault::Exceptions::AdminNotFound)
     end
@@ -310,7 +310,7 @@ RSpec.describe ChefVault::Item do
     end
   end
 
-  describe '#raw_keys' do
+  describe "#raw_keys" do
     it "should return the keys of the underlying data bag item" do
       item = ChefVault::Item.new("foo", "bar")
       item["foo"] = "bar"

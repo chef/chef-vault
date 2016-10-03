@@ -2,9 +2,9 @@ require "spec_helper"
 
 RSpec.describe ChefVault::ChefKey do
   let(:actor_name) { "actor" }
-  let(:public_key_string) {
+  let(:public_key_string) do
     "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMXT9IOV9pkQsxsnhSx8\n8RX6GW3caxkjcXFfHg6E7zUVBFAsfw4B1D+eHAks3qrDB7UrUxsmCBXwU4dQHaQy\ngAn5Sv0Jc4CejDNL2EeCBLZ4TF05odHmuzyDdPkSZP6utpR7+uF7SgVQedFGySIB\nih86aM+HynhkJqgJYhoxkrdo/JcWjpk7YEmWb6p4esnvPWOpbcjIoFs4OjavWBOF\niTfpkS0SkygpLi/iQu9RQfd4hDMWCc6yh3Th/1nVMUd+xQCdUK5wxluAWSv8U0zu\nhiIlZNazpCGHp+3QdP3f6rebmQA8pRM8qT5SlOvCYPk79j+IMUVSYrR4/DTZ+VM+\naQIDAQAB\n-----END PUBLIC KEY-----\n"
-  }
+  end
 
   let(:key_response) do
     {
@@ -28,7 +28,7 @@ RSpec.describe ChefVault::ChefKey do
 
   subject(:chef_key) { described_class.new(actor_type, actor_name) }
 
-  describe '#new' do
+  describe "#new" do
     context "when something besides 'clients' or 'users' is passed" do
       let(:actor_type) { "charmander" }
       it "throws an error" do
@@ -69,7 +69,7 @@ RSpec.describe ChefVault::ChefKey do
     end
   end
 
-  describe '#get_client_key' do
+  describe "#get_client_key" do
     let(:request_actor_type) { "clients" }
     let(:actor_type) { "clients" }
     let(:method) { :get_client_key }
@@ -91,7 +91,7 @@ RSpec.describe ChefVault::ChefKey do
     end
   end # get_client_key
 
-  describe '#get_admin_key' do
+  describe "#get_admin_key" do
     let(:request_actor_type) { "users" }
     let(:actor_type) { "admins" }
     let(:method) { :get_admin_key }
@@ -147,7 +147,7 @@ RSpec.describe ChefVault::ChefKey do
     end
   end # get_admin_key
 
-  describe '#get_key' do
+  describe "#get_key" do
 
     shared_examples_for "a properly retrieved and error handled key fetch" do
       # mock out the API

@@ -14,7 +14,7 @@ RSpec.describe ChefVault::User do
     $stdout = @orig_stdout
   end
 
-  describe '#new' do
+  describe "#new" do
     it "loads item" do
       expect(ChefVault::Item).to receive(:load).with("foo", "bar")
 
@@ -22,7 +22,7 @@ RSpec.describe ChefVault::User do
     end
   end
 
-  describe '#[]' do
+  describe "#[]" do
     it "returns the value of the 'id' parameter" do
       expect(user["id"]).to eq "bar"
     end

@@ -1,5 +1,5 @@
 RSpec.describe ChefVault::ItemKeys do
-  describe '#new' do
+  describe "#new" do
     let(:keys) { ChefVault::ItemKeys.new("foo", "bar") }
     let(:shared_secret) { "super_secret" }
 
@@ -20,9 +20,9 @@ RSpec.describe ChefVault::ItemKeys do
     end
 
     describe "key mgmt operations" do
-      let(:public_key_string) {
+      let(:public_key_string) do
         "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMXT9IOV9pkQsxsnhSx8\n8RX6GW3caxkjcXFfHg6E7zUVBFAsfw4B1D+eHAks3qrDB7UrUxsmCBXwU4dQHaQy\ngAn5Sv0Jc4CejDNL2EeCBLZ4TF05odHmuzyDdPkSZP6utpR7+uF7SgVQedFGySIB\nih86aM+HynhkJqgJYhoxkrdo/JcWjpk7YEmWb6p4esnvPWOpbcjIoFs4OjavWBOF\niTfpkS0SkygpLi/iQu9RQfd4hDMWCc6yh3Th/1nVMUd+xQCdUK5wxluAWSv8U0zu\nhiIlZNazpCGHp+3QdP3f6rebmQA8pRM8qT5SlOvCYPk79j+IMUVSYrR4/DTZ+VM+\naQIDAQAB\n-----END PUBLIC KEY-----\n"
-      }
+      end
 
       shared_examples_for "proper key management" do
         let(:chef_key) { ChefVault::ChefKey.new(type, name) }
@@ -44,7 +44,7 @@ RSpec.describe ChefVault::ItemKeys do
           end
         end
 
-        describe '#delete' do
+        describe "#delete" do
           before do
             keys.add(chef_key, shared_secret)
           end
