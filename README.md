@@ -1,8 +1,8 @@
 # Chef-Vault
 
-[![Gem Version](https://badge.fury.io/rb/chef-vault.png)](http://badge.fury.io/rb/chef-vault)
+[![Gem Version](https://badge.fury.io/rb/chef-vault.svg)](http://badge.fury.io/rb/chef-vault)
 
-[![Build Status](https://travis-ci.org/chef/chef-vault.png?branch=master)](https://travis-ci.org/chef/chef-vault)
+[![Build Status](https://travis-ci.org/chef/chef-vault.svg?branch=master)](https://travis-ci.org/chef/chef-vault)
 
 [![Inline docs](http://inch-ci.org/github/chef/chef-vault.svg?branch=master)](http://inch-ci.org/github/chef/chef-vault)
 
@@ -292,8 +292,9 @@ small pull requests are preferred to large omnibus patches, as the
 robustness pass is a multi-person effort and we don't want to create merge
 conflicts unnecessarily.
 
-We also have a [Gitter room](https://gitter.im/Nordstrom/chef-vault)
-where you can discuss chef-vault and the robustness improvements.
+## Contributing
+
+For information on contributing to this project see <https://github.com/chef/chef/blob/master/CONTRIBUTING.md>
 
 ## Authors
 
@@ -314,6 +315,7 @@ Contributor:: Reto Hermann<br>
 Copyright:: Copyright (c) 2013-15 Nordstrom, Inc.<br>
 License:: Apache License, Version 2.0
 
+```text
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -325,3 +327,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
