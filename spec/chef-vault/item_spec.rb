@@ -168,8 +168,7 @@ RSpec.describe ChefVault::Item do
     context 'when item["id"] is bar.bar' do
       let(:item) { ChefVault::Item.new("foo", "bar.bar") }
       it "raises an error on save with an invalid item['id']" do
-        expect { item.save }.to raise_error
-
+        expect { item.save }.to raise_error(RuntimeError)
       end
     end
 

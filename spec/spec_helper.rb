@@ -39,6 +39,7 @@ RSpec.configure do |config|
     # a real object. This is generally recommended, and will default to
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
+    mocks.allow_message_expectations_on_nil = true
   end
 
   # The settings below are suggested to provide a good initial experience

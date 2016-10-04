@@ -69,10 +69,10 @@ class ChefVault
       begin
         get_key("clients")
       rescue Net::HTTPServerException => http_error
-        if http_error.response.code == "403"
+        if http_error.response.code.eql?("403")
           print_forbidden_error
           raise http_error
-        elsif http_error.response.code == "404"
+        elsif http_error.response.code.eql?("404")
           raise ChefVault::Exceptions::ClientNotFound,
                 "#{actor_name} is not a valid chef client and/or node"
         else
@@ -113,11 +113,11 @@ class ChefVault
     end
 
     def get_key(request_actor_type)
-      api.org_scoped_rest_v1.get("#{request_actor_type}/#{actor_name}/keys/default")["public_key"]
+      api.org_scoped_rest_v1.get("#{request_actor_type}/#{actor_name}/keys/default").fetch("public_key")
     # If the keys endpoint doesn't exist, try getting it directly from the V0 chef object.
     rescue Net::HTTPServerException => http_error
-      raise http_error unless http_error.response.code == "404"
-      if request_actor_type == "clients"
+      raise http_error unless http_error.response.code.eql?("404")
+      if request_actor_type.eql?("clients")
         chef_api_client.load(actor_name).public_key
       else
         chef_user.load(actor_name).public_key

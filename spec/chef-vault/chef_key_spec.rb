@@ -32,7 +32,21 @@ RSpec.describe ChefVault::ChefKey do
     context "when something besides 'clients' or 'users' is passed" do
       let(:actor_type) { "charmander" }
       it "throws an error" do
-        expect { described_class.new("charmander", actor_name) }.to raise_error
+        expect { described_class.new("charmander", actor_name) }.to raise_error(RuntimeError)
+      end
+    end
+
+    context "when 'clients' is passed" do
+      it "requests a client key" do
+        expect_any_instance_of(described_class).to receive(:get_client_key)
+        described_class.new("clients", actor_name).key
+      end
+    end
+
+    context "when 'admins' is passed" do
+      it "requests a admin key" do
+        expect_any_instance_of(described_class).to receive(:get_admin_key)
+        described_class.new("admins", actor_name).key
       end
     end
   end
@@ -84,7 +98,7 @@ RSpec.describe ChefVault::ChefKey do
       context "when the error code is 404" do
         let(:http_response_code) { "404" }
 
-        it "rasies ChefVault::Exceptions::ClientNotFound" do
+        it "raises ChefVault::Exceptions::ClientNotFound" do
           expect { chef_key.get_client_key }.to raise_error(ChefVault::Exceptions::ClientNotFound)
         end
       end
@@ -126,14 +140,20 @@ RSpec.describe ChefVault::ChefKey do
             end
           end
 
+          context "when it is a 403" do
+            let(:http_response_code_2) { "403" }
+
+            it "raises the original error" do
+              expect { chef_key.get_admin_key }.to raise_error(http_error_2)
+            end
+          end
+
           context "when it is not a 404" do
             let(:http_response_code_2) { "500" }
 
             it "raises the original error" do
               expect { chef_key.get_admin_key }.to raise_error(http_error_2)
-
             end
-
           end
         end # when the second get_key for clients returns an http error
 
