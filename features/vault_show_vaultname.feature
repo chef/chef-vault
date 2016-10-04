@@ -1,5 +1,4 @@
 Feature: knife vault show [VAULTNAME]
-
   'knife vault show [VAULTNAME]' displays the keys of a vault
   (i.e. the items that are not suffixed with _keys)
 

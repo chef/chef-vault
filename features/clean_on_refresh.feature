@@ -1,5 +1,4 @@
 Feature: clean unknown clients on vault refresh
-
   When refreshing a vault, new clients may be added if they match
   the search query or client list, but old clients that no longer
   exist will never be removed.  The --clean-unknown-clients switch

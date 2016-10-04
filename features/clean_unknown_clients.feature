@@ -1,5 +1,4 @@
 Feature: clean unknown clients on key rotation
-
   When removing a client from a vault item, chef-vault normally
   removes the key and then rotates the key.  If a client has been
   deleted in the meantime from the Chef server but not the vault,

@@ -1,5 +1,4 @@
 Feature: knife vault update
-
   'knife vault update' is used to add clients, or administrators
   and to re-run the search query and update the vault's item values.
 

@@ -1,5 +1,4 @@
 Feature: Detect and Warn for v1 Vaults
-
   chef-vault can read a v1 vault, but the management commands
   tend to break when they try to reference v2 fields like
   clients and admins.  They should detect and warn when trying

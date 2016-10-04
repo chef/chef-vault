@@ -1,5 +1,4 @@
 Feature: knife vault show
-
   'knife vault show' displays the contents of a Chef encrypted
   data bag by fetching the asymmetrically encrypted shared
   secret and decrypting it using the private key of the user

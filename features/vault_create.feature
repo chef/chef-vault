@@ -1,5 +1,4 @@
 Feature: knife vault create
-
   'knife vault create' creates two Chef data bag items: an
   encrypted data bag item encrypted with a randomized shared
   secret, and a side-along data bag item suffixed with _keys

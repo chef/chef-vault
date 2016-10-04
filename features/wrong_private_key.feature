@@ -1,5 +1,4 @@
 Feature: Wrong private key during decrypt
-
   https://github.com/Nordstrom/chef-vault/issues/43
   If a vault is encrypted for a node and then the node's private
   key is regenerated, the error that comes back from chef-vault

@@ -1,5 +1,4 @@
 Feature: knife vault create with mismatched ID
-
   'knife vault create' creates a vault.  A JSON file can be passed
   on the command line.  If the vault ID specified on the command line
   does not match the value of the 'id' key in the JSON file, knife

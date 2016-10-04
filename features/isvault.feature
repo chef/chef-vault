@@ -1,5 +1,4 @@
 Feature: determine if a data bag item is a vault
-
   If a data bag item is a vault, 'knife vault isvault VAULTNAME ITEMNAME'
   should exit 0.  Otherwise it should exit 1.
 

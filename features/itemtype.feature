@@ -1,5 +1,4 @@
 Feature: determine the type of a data bag item
-
   'knife vault itemtype VAULTNAME ITEMNAME' should output one of
   'normal', 'encrypted', or 'vault' depending on what type of item
   it detects

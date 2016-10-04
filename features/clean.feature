@@ -1,5 +1,4 @@
 Feature: clean client keys
-
   When updating a vault item, chef-vault normally performs the
   saved or specified query and encrypts the item for all nodes
   returned.  It does not remove old client keys from the vault

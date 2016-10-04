@@ -1,5 +1,4 @@
 Feature: list data bags that are vaults
-
   knife vault list should list all data bags that appear to
   be vaults.  This is not an exact science; we assume that
   any data bag containing an even number of items and for
