@@ -9,28 +9,28 @@ RSpec.describe ChefVault::ChefApi do
     Chef::Config[:chef_server_url]  = scoped_url
   end
 
-  describe '#rest_v0' do
+  describe "#rest_v0" do
     it "returns an instance of Chef::ServerAPI set to use API version 0 scoped to root" do
       expect(Chef::ServerAPI).to receive(:new).with(root_url, api_v0_hash)
       subject.rest_v0
     end
   end
 
-  describe '#rest_v1' do
+  describe "#rest_v1" do
     it "returns an instance of Chef::ServerAPI set to use API version 0 scoped to root" do
       expect(Chef::ServerAPI).to receive(:new).with(root_url, api_v1_hash)
       subject.rest_v1
     end
   end
 
-  describe '#org_scoped_rest_v0' do
+  describe "#org_scoped_rest_v0" do
     it "returns an instance of Chef::ServerAPI set to use API version 0 scoped to root" do
       expect(Chef::ServerAPI).to receive(:new).with(scoped_url, api_v0_hash)
       subject.org_scoped_rest_v0
     end
   end
 
-  describe '#org_scoped_rest_v1' do
+  describe "#org_scoped_rest_v1" do
     it "returns an instance of Chef::ServerAPI set to use API version 0 scoped to root" do
       expect(Chef::ServerAPI).to receive(:new).with(scoped_url, api_v1_hash)
       subject.org_scoped_rest_v1

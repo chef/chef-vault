@@ -14,7 +14,7 @@ RSpec.describe ChefVault::Certificate do
     $stdout = @orig_stdout
   end
 
-  describe '#new' do
+  describe "#new" do
     it "loads item" do
       expect(ChefVault::Item).to receive(:load).with("foo", "bar")
 
@@ -22,7 +22,7 @@ RSpec.describe ChefVault::Certificate do
     end
   end
 
-  describe '#[]' do
+  describe "#[]" do
     it "given an 'id' parameter, returns its value" do
       expect(cert["id"]).to eq "bar"
     end
