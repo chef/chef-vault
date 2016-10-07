@@ -13,13 +13,25 @@ These are the commands that are used to take data in JSON format and encrypt tha
 ## vault commands
 
 ### create
+Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver, client1 & client2 and admins admin1 & admin2
+
+    knife vault create passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -C "client1,client2" -A "admin1,admin2"
+
 Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver and admins admin1 & admin2
 
     knife vault create passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -A "admin1,admin2"
 
+Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver, client1 & client2
+
+    knife vault create passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -C "client1,client2"
+
 Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients role:webserver
 
     knife vault create passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver"
+
+Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for clients client1 & client2
+
+    knife vault create passwords root '{"username": "root", "password": "mypassword"}' -C "client1,client2"
 
 Create a vault called passwords and put an item called root in it with the given values for username and password encrypted for admins admin1 & admin2
 
@@ -37,29 +49,49 @@ Update the values in username and password in the vault passwords and item root.
 
     knife vault update passwords root '{"username": "root", "password": "mypassword"}'
 
-Update the values in username and password in the vault passwords and item root and add admin1 & admin2 to the encrypted admins.  Will overwrite existing values if values already exist!
+Update the values in username and password in the vault passwords and item root and add role:webserver, client1 & client2 to the encrypted clients and admin1 & admin2 to the encrypted admins.  Will overwrite existing values if values already exist!
 
-    knife vault update passwords root '{"username": "root", "password": "mypassword"}' -A "admin1,admin2"
-
-Update the values in username and password in the vault passwords and item root and add role:webserver to the encrypted clients.  Will overwrite existing values if values already exist!
-
-    knife vault update passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver"
+    knife vault update passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -C "client1,client2" -A "admin1,admin2"
 
 Update the values in username and password in the vault passwords and item root and add role:webserver to the encrypted clients and admin1 & admin2 to the encrypted admins.  Will overwrite existing values if values already exist!
 
     knife vault update passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -A "admin1,admin2"
 
-Add admin1 & admin2 to encrypted admins for the vault passwords and item root.
+Update the values in username and password in the vault passwords and item root and add role:webserver to the encrypted clients.  Will overwrite existing values if values already exist!
 
-    knife vault update passwords root -A "admin1,admin2"
+    knife vault update passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver"
+
+Update the values in username and password in the vault passwords and item root and add client1 & client2 to the encrypted clients.  Will overwrite existing values if values already exist!
+
+    knife vault update passwords root '{"username": "root", "password": "mypassword"}' -C "client1,client2"
+
+Update the values in username and password in the vault passwords and item root and add admin1 & admin2 to the encrypted admins.  Will overwrite existing values if values already exist!
+
+    knife vault update passwords root '{"username": "root", "password": "mypassword"}' -A "admin1,admin2"
 
 Add role:webserver to encrypted clients for the vault passwords and item root.
 
     knife vault update passwords root -S "role:webserver"
 
+Add client1 & client2 to encrypted clients for the vault passwords and item root.
+
+    knife vault update passwords root -C "client1,client2"
+
+Add admin1 & admin2 to encrypted admins for the vault passwords and item root.
+
+    knife vault update passwords root -A "admin1,admin2"
+
+Add admin1 & admin2 to encrypted admins and role:webserver, client1 & client2 to encrypted clients for the vault passwords and item root.
+
+    knife vault update passwords root -S "role:webserver" -C "client1,client2" -A "admin1,admin2"
+
 Add admin1 & admin2 to encrypted admins and role:webserver to encrypted clients for the vault passwords and item root.
 
     knife vault update passwords root -S "role:webserver" -A "admin1,admin2"
+
+Add admin1 & admin2 to encrypted admins and client1 & client2 to encrypted clients for the vault passwords and item root.
+
+    knife vault update passwords root -C "client1,client2" -A "admin1,admin2"
 
 Note: A JSON file can be used in place of specifying the values on the command line, see global options below for details
 
@@ -69,29 +101,49 @@ Remove the values in username and password from the vault passwords and item roo
 
     knife vault remove passwords root '{"username": "root", "password": "mypassword"}'
 
-Remove the values in username and password from the vault passwords and item root and remove admin1 & admin2 from the encrypted admins.
+Remove the values in username and password from the vault passwords and item root and remove role:webserver, client1 & client2 from the encrypted clients and admin1 & admin2 from the encrypted admins.
 
-    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -A "admin1,admin2"
-
-Remove the values in username and password from the vault passwords and item root and remove role:webserver from the encrypted clients.
-
-    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver"
+    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -C "client1,client2" -A "admin1,admin2"
 
 Remove the values in username and password from the vault passwords and item root and remove role:webserver from the encrypted clients and admin1 & admin2 from the encrypted admins.
 
     knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver" -A "admin1,admin2"
 
-Remove admin1 & admin2 from encrypted admins for the vault passwords and item root.
+Remove the values in username and password from the vault passwords and item root and remove client1 & client2 from the encrypted clients and admin1 & admin2 from the encrypted admins.
 
-    knife vault remove passwords root -A "admin1,admin2"
+    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -C "client1,client2" -A "admin1,admin2"
+
+Remove the values in username and password from the vault passwords and item root and remove role:webserver from the encrypted clients.
+
+    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -S "role:webserver"
+
+Remove the values in username and password from the vault passwords and item root and remove client1 & client2 from the encrypted clients.
+
+    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -C "client1,client2"
+
+Remove the values in username and password from the vault passwords and item root and remove admin1 & admin2 from the encrypted admins.
+
+    knife vault remove passwords root '{"username": "root", "password": "mypassword"}' -A "admin1,admin2"
+
+Remove admin1 & admin2 from encrypted admins and role:webserver, client1 & client2 from encrypted clients for the vault passwords and item root.
+
+    knife vault remove passwords root -S "role:webserver" -C "client1,client2" -A "admin1,admin2"
+
+Remove admin1 & admin2 from encrypted admins and role:webserver from encrypted clients for the vault passwords and item root.
+
+    knife vault remove passwords root -S "role:webserver" -A "admin1,admin2"
 
 Remove role:webserver from encrypted clients for the vault passwords and item root.
 
     knife vault remove passwords root -S "role:webserver"
 
-Remove admin1 & admin2 from encrypted admins and role:webserver from encrypted clients for the vault passwords and item root.
+Remove client1 & client2 from encrypted clients for the vault passwords and item root.
 
-    knife vault remove passwords root -S "role:webserver" -A "admin1,admin2"
+    knife vault remove passwords root -C "client1,client2"
+
+Remove admin1 & admin2 from encrypted admins for the vault passwords and item root.
+
+    knife vault remove passwords root -A "admin1,admin2"
 
 ### delete
 

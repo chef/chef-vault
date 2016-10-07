@@ -296,6 +296,54 @@ RSpec.describe ChefVault::Item do
         end
       end
     end
+
+    context "when an Array with named clients is passed" do
+      let(:client) { Chef::ApiClient.new }
+      let(:clients) { Array.new }
+      let(:client_name) { "foo" }
+      let(:client_key) { double("chef key") }
+
+      before do
+        clients << client_name
+        client.name client_name
+        privkey = OpenSSL::PKey::RSA.new(1024)
+        pubkey = privkey.public_key
+        allow(item).to receive(:load_client).with("foo").and_return(client)
+        allow(item).to receive(:load_public_key).with(client_name, "clients").and_return(client_key)
+        allow(client_key).to receive(:key).and_return(pubkey.to_pem)
+        allow(client_key).to receive(:actor_name).and_return(client_name)
+        allow(client_key).to receive(:actor_type).and_return("clients")
+      end
+
+      context "when no action is passed" do
+        it "default to add and properly add the client" do
+          item.clients(clients)
+          expect(item.get_clients).to include(client_name)
+        end
+
+        it "does not perform a query" do
+          expect(Chef::Search::Query).not_to receive(:new)
+          item.clients(clients)
+        end
+      end
+
+      context "when the delete action is passed on an existing client" do
+        before do
+          # add the client
+          item.clients(clients)
+        end
+
+        it "properly deletes the client" do
+          item.clients(clients, :delete)
+          expect(item.get_clients).to_not include(client_name)
+        end
+
+        it "does not perform a query" do
+          expect(Chef::Search::Query).not_to receive(:new)
+          item.clients(clients, :delete)
+        end
+      end
+    end
   end
 
   describe "#admins" do

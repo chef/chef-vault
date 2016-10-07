@@ -15,12 +15,14 @@
 
 require "chef/knife/vault_base"
 require "chef/knife/vault_admins"
+require "chef/knife/vault_clients"
 
 class Chef
   class Knife
     class VaultCreate < Knife
       include Chef::Knife::VaultBase
       include Chef::Knife::VaultAdmins
+      include Chef::Knife::VaultClients
 
       banner "knife vault create VAULT ITEM VALUES (options)"
 
@@ -28,6 +30,11 @@ class Chef
         :short => "-S SEARCH",
         :long => "--search SEARCH",
         :description => "Chef SOLR search for clients"
+
+      option :clients,
+        :short => "-C CLIENTS",
+        :long => "--clients CLIENTS",
+        :description => "Chef clients to be added as clients"
 
       option :admins,
         :short => "-A ADMINS",
@@ -53,7 +60,7 @@ class Chef
 
         set_mode(config[:vault_mode])
 
-        if vault && item && (search || admins)
+        if vault && item && (search || clients || admins)
           begin
             vault_item = ChefVault::Item.load(vault, item)
             raise ChefVault::Exceptions::ItemAlreadyExists,
@@ -82,6 +89,7 @@ class Chef
 
             vault_item.search(search) if search
             vault_item.clients(search) if search
+            vault_item.clients(clients) if clients
             vault_item.admins(admins) if admins
 
             vault_item.save

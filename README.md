@@ -136,6 +136,7 @@ Short | Long | Description | Default | Valid Values | Sub-Commands
 ------|------|-------------|---------|--------------|-------------
 -M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
 -S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
+-C CLIENTS | --clients CLIENTS | Chef clients to be added as clients, can be comma list | | | create, remove , update
 -A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update
 -J FILE | --json FILE | JSON file to be used for values, will be merged with VALUES if VALUES is passed | | | create, update
 | --file FILE | File that chef-vault should encrypt.  It adds "file-content" & "file-name" keys to the vault item | | | create, update
