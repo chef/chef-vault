@@ -344,6 +344,37 @@ RSpec.describe ChefVault::Item do
         end
       end
     end
+
+    it "should not blow up when it gets an error while trying to get the client info" do
+      keys = double("keys",
+                    search_query: "*:*",
+                    add: nil,
+                    admins: [],
+                    clients: ["testnode"])
+      allow(keys).to receive(:[]).with("id").and_return("bar_keys")
+      allow(ChefVault::ItemKeys).to receive(:new).and_return(keys)
+
+      item = ChefVault::Item.new("foo", "bar")
+
+      node  = double("node", name: "testnode")
+      query = double("query")
+      allow(Chef::Search::Query).to receive(:new).and_return(query)
+      allow(query).to receive(:search).and_yield(node)
+
+      http_response = double("http error from Chef-server")
+      http_error    = Net::HTTPServerException.new("ERROR", http_response)
+      allow(http_response).to receive(:code).and_return("403")
+
+      allow(ChefVault::ChefPatch::ApiClient)
+        .to receive(:load)
+        .with("testnode")
+        .and_raise(http_error)
+
+      expect { item.clients("*:*") }.not_to raise_error
+      expect { item.clients("*:*") }
+        .to output(/Something went wrong with client 'testnode'; skipping/).to_stdout
+    end
+
   end
 
   describe "#admins" do
