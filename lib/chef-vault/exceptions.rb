@@ -51,5 +51,8 @@ class ChefVault
 
     class V1Format < Exceptions
     end
+
+    class ClientUnknownError < Exceptions
+    end
   end
 end
