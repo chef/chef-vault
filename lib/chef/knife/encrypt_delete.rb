@@ -24,7 +24,7 @@ class Chef
       banner "knife encrypt delete VAULT ITEM (options)"
 
       def run
-        $stdout.puts "DEPRECATION WARNING: knife encrypt is deprecated. Please use knife vault instead."
+        Chef.log_deprecation "knife encrypt is deprecated. Please use knife vault instead."
         super
       end
     end

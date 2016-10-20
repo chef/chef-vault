@@ -6,12 +6,6 @@ RSpec.describe ChefVault::User do
     allow(ChefVault::Item).to receive(:load).with("foo", "bar") { item }
     allow(item).to receive(:[]).with("id") { "bar" }
     allow(item).to receive(:[]).with("password") { "baz" }
-    @orig_stdout = $stdout
-    $stdout = File.open(File::NULL, "w")
-  end
-
-  after do
-    $stdout = @orig_stdout
   end
 
   describe "#new" do
@@ -30,9 +24,8 @@ RSpec.describe ChefVault::User do
 
   describe "decrypt_password" do
     it "echoes warning" do
-      expect { user.decrypt_password }
-        .to output("WARNING: This method is deprecated, please switch to item['value'] calls\n")
-        .to_stdout
+      expect(ChefVault::Log).to receive(:warn).with("This method is deprecated, please switch to item['value'] calls")
+      user.decrypt_password
     end
 
     it "returns items password" do

@@ -32,6 +32,8 @@ require "chef-vault/certificate"
 require "chef-vault/chef_api"
 require "chef-vault/chef_key"
 
+require "mixlib/log"
+
 class ChefVault
   attr_accessor :vault
 
@@ -55,4 +57,10 @@ class ChefVault
   def self.load_config(chef_config_file)
     Chef::Config.from_file(chef_config_file)
   end
+
+  class Log
+    extend Mixlib::Log
+  end
+
+  Log.level = :error
 end

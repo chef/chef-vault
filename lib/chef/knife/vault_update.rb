@@ -73,7 +73,7 @@ class Chef
             if clean
               vault_clients = vault_item.get_clients.clone().sort()
               vault_clients.each do |client|
-                $stdout.puts "Deleting #{client}"
+                ui.info "Deleting #{client}"
                 vault_item.delete_client(client)
               end
             end

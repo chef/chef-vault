@@ -24,7 +24,7 @@ class ChefVault
     end
 
     def decrypt_password
-      $stdout.puts "WARNING: This method is deprecated, please switch to item['value'] calls"
+      ChefVault::Log.warn "This method is deprecated, please switch to item['value'] calls"
       @item["password"]
     end
   end

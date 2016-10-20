@@ -86,12 +86,13 @@ require "rubygems"
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require "chef-vault"
 
+ChefVault::Log.init(STDOUT)
 ChefVault.load_config(options[:chef])
 item = ChefVault::Item.load(options[:vault], options[:item])
 
-$stdout.puts "#{options[:vault]}/#{options[:item]}"
+ChefVault::Log.info "#{options[:vault]}/#{options[:item]}"
 
 options[:values].split(",").each do |value|
   value.strip! # remove white space
-  $stdout.puts("\t#{value}: #{item[value]}")
+  ChefVault::Log.info ("\t#{value}: #{item[value]}")
 end

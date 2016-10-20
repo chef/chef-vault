@@ -52,7 +52,7 @@ class Chef
       end
 
       def rotate_vault_item_keys(vault, item, clean_unknown_clients)
-        $stdout.puts "Rotating keys for: #{vault} #{item}"
+        ui.info "Rotating keys for: #{vault} #{item}"
         ChefVault::Item.load(vault, item).rotate_keys!(clean_unknown_clients)
       end
     end
