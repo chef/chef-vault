@@ -304,6 +304,7 @@ Author:: Eli Klein - @eliklein<br>
 Author:: Joey Geiger - @jgeiger<br>
 Author:: Joshua Timberman - @jtimberman<br>
 Author:: James FitzGibbon - @jf647<br>
+Author:: Thom May - @thommay<br>
 
 ## Contributors
 
@@ -314,6 +315,7 @@ Contributor:: Reto Hermann<br>
 ## License
 
 Copyright:: Copyright (c) 2013-15 Nordstrom, Inc.<br>
+Copyright:: Copyright (c) 2016 Chef Software, Inc.<br>
 License:: Apache License, Version 2.0
 
 ```text

@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.name             = "chef-vault"
   s.version          = ChefVault::VERSION
   s.has_rdoc         = true
-  s.authors          = ["Kevin Moser", "James FitzGibbon", "Thom May"]
+  s.authors          = ["Thom May"]
   s.email            = ["thom@chef.io"]
   s.summary          = "Data encryption support for Chef using data bags"
   s.description      = s.summary
