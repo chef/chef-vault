@@ -94,7 +94,7 @@ class ChefVault
               client_key = load_public_key(node.name, "clients")
               add_client(client_key)
             rescue ChefVault::Exceptions::ClientNotFound
-              $stdout.puts "node '#{node.name}' has no private key; skipping"
+              ChefVault::Log.warn "node '#{node.name}' has no private key; skipping"
             end
           when :delete
             delete_client_or_node(node)
@@ -105,7 +105,7 @@ class ChefVault
         end
 
         unless results_returned
-          $stdout.puts "WARNING: No clients were returned from search, you may not have "\
+          ChefVault::Log.warn "No clients were returned from search, you may not have "\
                        "got what you expected!!"
         end
       end
@@ -416,7 +416,7 @@ class ChefVault
       end
       # now delete any flagged clients from the keys data bag
       clients_to_remove.each do |client|
-        $stdout.puts "Removing unknown client '#{client}'"
+        ChefVault::Log.warn "Removing unknown client '#{client}'"
         keys.delete(load_public_key(client, "clients"))
       end
     end

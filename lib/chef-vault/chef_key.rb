@@ -46,7 +46,7 @@ class ChefVault
         raise http_error
       when "404"
         begin
-          $stdout.puts "WARNING: The default key for #{actor_name} not found in users, trying client keys."
+          ChefVault::Log.warn "The default key for #{actor_name} not found in users, trying client keys."
           get_key("clients")
         rescue Net::HTTPServerException => http_error
           case http_error.response.code
@@ -125,8 +125,8 @@ class ChefVault
     end
 
     def print_forbidden_error
-      $stdout.puts <<EOF
-ERROR: You received a 403 FORBIDDEN while requesting an #{actor_type} key for #{actor_name}.
+      ChefVault::Log.error <<EOF
+You received a 403 FORBIDDEN while requesting an #{actor_type} key for #{actor_name}.
 
 If you are on Chef Server < 12.5:
   Clients do not have access to all public keys within their org.

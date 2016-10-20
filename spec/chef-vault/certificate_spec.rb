@@ -6,12 +6,6 @@ RSpec.describe ChefVault::Certificate do
     allow(ChefVault::Item).to receive(:load).with("foo", "bar") { item }
     allow(item).to receive(:[]).with("id") { "bar" }
     allow(item).to receive(:[]).with("contents") { "baz" }
-    @orig_stdout = $stdout
-    $stdout = File.open(File::NULL, "w")
-  end
-
-  after do
-    $stdout = @orig_stdout
   end
 
   describe "#new" do
@@ -30,9 +24,8 @@ RSpec.describe ChefVault::Certificate do
 
   describe "decrypt_contents" do
     it "echoes warning" do
-      expect { cert.decrypt_contents }
-        .to output("WARNING: This method is deprecated, please switch to item['value'] calls\n")
-        .to_stdout
+      expect(ChefVault::Log).to receive(:warn).with("This method is deprecated, please switch to item['value'] calls")
+      cert.decrypt_contents
     end
 
     it "returns items contents" do

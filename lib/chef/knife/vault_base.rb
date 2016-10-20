@@ -42,6 +42,11 @@ class Chef
         exit 1
       end
 
+      def configure_chef
+        super
+        ChefVault::Log.logger = Chef::Log.logger
+      end
+
       private
 
       def bag_is_vault?(bagname)

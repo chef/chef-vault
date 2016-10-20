@@ -1,15 +1,6 @@
 require "openssl"
 
 RSpec.describe ChefVault::Item do
-  before do
-    @orig_stdout = $stdout
-    $stdout = File.open(File::NULL, "w")
-  end
-
-  after do
-    $stdout = @orig_stdout
-  end
-
   subject(:item) { ChefVault::Item.new("foo", "bar") }
 
   before do
@@ -247,8 +238,8 @@ RSpec.describe ChefVault::Item do
 
       it "should emit a warning if search returns a node without a public key" do
         # it should however emit a warning that you have a borked node
-        expect { item.clients("*:*") }
-          .to output(/node 'bar' has no private key; skipping/).to_stdout
+        expect(ChefVault::Log).to receive(:warn).with(/node 'bar' has no private key; skipping/)
+        item.clients("*:*")
       end
     end
 
