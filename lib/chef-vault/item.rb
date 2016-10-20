@@ -80,7 +80,7 @@ class ChefVault
         handle_client_action(search_or_client, action)
       elsif search_or_client.is_a?(Array)
         search_or_client.each do |name|
-          client = load_client(name)
+          client = load_actor(name, "clients")
           handle_client_action(client, action)
         end
       else
@@ -91,7 +91,7 @@ class ChefVault
           case action
           when :add
             begin
-              client_key = load_public_key(node.name, "clients")
+              client_key = load_actor(node.name, "clients")
               add_client(client_key)
             rescue ChefVault::Exceptions::ClientNotFound
               ChefVault::Log.warn "node '#{node.name}' has no private key; skipping"
@@ -126,7 +126,7 @@ class ChefVault
     def admins(admin_string, action = :add)
       admin_string.split(",").each do |admin|
         admin.strip!
-        admin_key = load_public_key(admin, "admins")
+        admin_key = load_actor(admin, "admins")
         case action
         when :add
           keys.add(admin_key, @secret)
@@ -296,7 +296,7 @@ class ChefVault
     end
 
     def delete_client(client_name)
-      client_key = load_public_key(client_name, "clients")
+      client_key = load_actor(client_name, "clients")
       keys.delete(client_key)
     end
 
@@ -383,23 +383,8 @@ class ChefVault
       @raw_data
     end
 
-    def load_client(client)
-      begin
-        client = Chef::ApiClient.load(client)
-      rescue Net::HTTPServerException => http_error
-        if http_error.response.code == "404"
-          raise ChefVault::Exceptions::ClientNotFound,
-            "#{client} is not a valid chef client"
-        else
-          raise http_error
-        end
-      end
-
-      client
-    end
-
-    def load_public_key(actor_name, type)
-      ChefVault::ChefKey.new(type, actor_name)
+    def load_actor(actor_name, type)
+      ChefVault::Actor.new(type, actor_name)
     end
 
     # removes unknown nodes by performing a node search
@@ -417,7 +402,7 @@ class ChefVault
       # now delete any flagged clients from the keys data bag
       clients_to_remove.each do |client|
         ChefVault::Log.warn "Removing unknown client '#{client}'"
-        keys.delete(load_public_key(client, "clients"))
+        keys.delete(load_actor(client, "clients"))
       end
     end
 
@@ -460,8 +445,8 @@ class ChefVault
     def handle_client_action(api_client, action)
       case action
       when :add
-        client_key = load_public_key(api_client.name, "clients")
-        add_client(client_key)
+        client = load_actor(api_client.name, "clients")
+        add_client(client)
       when :delete
         delete_client_or_node(api_client)
       end
@@ -470,16 +455,16 @@ class ChefVault
     # adds a client to the vault item keys
     # @param client [Chef::ApiClient] the API client to add
     # @return [void]
-    def add_client(client_key)
-      keys.add(client_key, @secret)
+    def add_client(client)
+      keys.add(client, @secret)
     end
 
     # removes a client to the vault item keys
     # @param client_or_node [Chef::ApiClient, Chef::Node] the API client or node to remove
     # @return [void]
     def delete_client_or_node(client_or_node)
-      client_key = load_public_key(client_or_node.name, "clients")
-      keys.delete(client_key)
+      client = load_actor(client_or_node.name, "clients")
+      keys.delete(client)
     end
   end
 end

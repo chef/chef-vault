@@ -25,7 +25,7 @@ RSpec.describe ChefVault::ItemKeys do
       end
 
       shared_examples_for "proper key management" do
-        let(:chef_key) { ChefVault::ChefKey.new(type, name) }
+        let(:chef_key) { ChefVault::Actor.new(type, name) }
         before do
           allow(chef_key).to receive(:key) { public_key_string }
           keys.add(chef_key, shared_secret)
@@ -51,7 +51,7 @@ RSpec.describe ChefVault::ItemKeys do
 
           it "removes the actor's name from the data bag and from the array for the actor's type" do
             keys.delete(chef_key)
-            expect(keys.has_key?(chef_key.actor_name)).to eq(false)
+            expect(keys.has_key?(chef_key.name)).to eq(false)
             expect(keys[type].include?(name)).to eq(false)
           end
         end

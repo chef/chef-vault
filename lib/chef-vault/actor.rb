@@ -17,18 +17,18 @@
 require "json"
 
 class ChefVault
-  class ChefKey
+  class Actor
 
     attr_accessor :key_string
-    attr_reader :actor_type
-    attr_reader :actor_name
+    attr_reader :type
+    attr_reader :name
 
     def initialize(actor_type, actor_name)
       if actor_type != "clients" && actor_type != "admins"
-        raise "You must pass either 'clients' or 'admins' as the first argument to ChefVault::ChefKey.new."
+        raise "You must pass either 'clients' or 'admins' as the first argument to ChefVault::Actor.new."
       end
-      @actor_type = actor_type
-      @actor_name = actor_name
+      @type = actor_type
+      @name = actor_name
     end
 
     def key
@@ -46,13 +46,13 @@ class ChefVault
         raise http_error
       when "404"
         begin
-          ChefVault::Log.warn "The default key for #{actor_name} not found in users, trying client keys."
+          ChefVault::Log.warn "The default key for #{name} not found in users, trying client keys."
           get_key("clients")
         rescue Net::HTTPServerException => http_error
           case http_error.response.code
           when "404"
             raise ChefVault::Exceptions::AdminNotFound,
-                  "FATAL: Could not find default key for #{actor_name} in users or clients!"
+                  "FATAL: Could not find default key for #{name} in users or clients!"
           when "403"
             print_forbidden_error
             raise http_error
@@ -74,7 +74,7 @@ class ChefVault
           raise http_error
         elsif http_error.response.code.eql?("404")
           raise ChefVault::Exceptions::ClientNotFound,
-                "#{actor_name} is not a valid chef client and/or node"
+                "#{name} is not a valid chef client and/or node"
         else
           raise http_error
         end
@@ -82,11 +82,11 @@ class ChefVault
     end
 
     def is_client?
-      actor_type == "clients"
+      type == "clients"
     end
 
     def is_admin?
-      actor_type == "admins"
+      type == "admins"
     end
 
     # @private
@@ -113,20 +113,20 @@ class ChefVault
     end
 
     def get_key(request_actor_type)
-      api.org_scoped_rest_v1.get("#{request_actor_type}/#{actor_name}/keys/default").fetch("public_key")
+      api.org_scoped_rest_v1.get("#{request_actor_type}/#{name}/keys/default").fetch("public_key")
     # If the keys endpoint doesn't exist, try getting it directly from the V0 chef object.
     rescue Net::HTTPServerException => http_error
       raise http_error unless http_error.response.code.eql?("404")
       if request_actor_type.eql?("clients")
-        chef_api_client.load(actor_name).public_key
+        chef_api_client.load(name).public_key
       else
-        chef_user.load(actor_name).public_key
+        chef_user.load(name).public_key
       end
     end
 
     def print_forbidden_error
       ChefVault::Log.error <<EOF
-You received a 403 FORBIDDEN while requesting an #{actor_type} key for #{actor_name}.
+ERROR: You received a 403 FORBIDDEN while requesting an #{type} key for #{name}.
 
 If you are on Chef Server < 12.5:
   Clients do not have access to all public keys within their org.
