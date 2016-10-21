@@ -30,7 +30,7 @@ require "chef-vault/item_keys"
 require "chef-vault/user"
 require "chef-vault/certificate"
 require "chef-vault/chef_api"
-require "chef-vault/chef_key"
+require "chef-vault/actor"
 
 require "mixlib/log"
 

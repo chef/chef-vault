@@ -192,7 +192,7 @@ RSpec.describe ChefVault::Item do
       client_key = double("client_key",
                           name: "testnode",
                           public_key: OpenSSL::PKey::RSA.new(1024).public_key)
-      allow(item).to receive(:load_public_key).with("testnode", "clients").and_return(client_key)
+      allow(item).to receive(:load_actor).with("testnode", "clients").and_return(client_key)
 
       expect(item).not_to receive(:save)
       expect(keys).to receive(:save)
@@ -210,24 +210,24 @@ RSpec.describe ChefVault::Item do
       before do
         # node with valid client proper loads client key
         allow(node_with_valid_client).to receive(:name).and_return("foo")
-        allow(item).to receive(:load_public_key).with("foo", "clients").and_return(client_key)
+        allow(item).to receive(:load_actor).with("foo", "clients").and_return(client_key)
         privkey = OpenSSL::PKey::RSA.new(1024)
         pubkey = privkey.public_key
         allow(client_key).to receive(:key).and_return(pubkey.to_pem)
-        allow(client_key).to receive(:actor_name).and_return("foo")
-        allow(client_key).to receive(:actor_type).and_return("clients")
+        allow(client_key).to receive(:name).and_return("foo")
+        allow(client_key).to receive(:type).and_return("clients")
 
         # node without client throws relevant error on key load
         allow(node_without_valid_client).to receive(:name).and_return("bar")
-        allow(item).to receive(:load_public_key).with("bar", "clients").and_raise(ChefVault::Exceptions::ClientNotFound)
+        allow(item).to receive(:load_actor).with("bar", "clients").and_raise(ChefVault::Exceptions::ClientNotFound)
 
         allow(query_result)
           .to receive(:search)
-               .with(Symbol, String)
-               .and_yield(node_with_valid_client).and_yield(node_without_valid_client)
+          .with(Symbol, String)
+          .and_yield(node_with_valid_client).and_yield(node_without_valid_client)
         allow(Chef::Search::Query)
           .to receive(:new)
-               .and_return(query_result)
+          .and_return(query_result)
       end
 
       it "should not blow up when search returns a node without a public key" do
@@ -252,10 +252,10 @@ RSpec.describe ChefVault::Item do
         client.name client_name
         privkey = OpenSSL::PKey::RSA.new(1024)
         pubkey = privkey.public_key
-        allow(item).to receive(:load_public_key).with(client_name, "clients").and_return(client_key)
+        allow(item).to receive(:load_actor).with(client_name, "clients").and_return(client_key)
         allow(client_key).to receive(:key).and_return(pubkey.to_pem)
-        allow(client_key).to receive(:actor_name).and_return(client_name)
-        allow(client_key).to receive(:actor_type).and_return("clients")
+        allow(client_key).to receive(:name).and_return(client_name)
+        allow(client_key).to receive(:type).and_return("clients")
       end
 
       context "when no action is passed" do
@@ -299,11 +299,10 @@ RSpec.describe ChefVault::Item do
         client.name client_name
         privkey = OpenSSL::PKey::RSA.new(1024)
         pubkey = privkey.public_key
-        allow(item).to receive(:load_client).with("foo").and_return(client)
-        allow(item).to receive(:load_public_key).with(client_name, "clients").and_return(client_key)
+        allow(item).to receive(:load_actor).with(client_name, "clients").and_return(client_key)
         allow(client_key).to receive(:key).and_return(pubkey.to_pem)
-        allow(client_key).to receive(:actor_name).and_return(client_name)
-        allow(client_key).to receive(:actor_type).and_return("clients")
+        allow(client_key).to receive(:name).and_return(client_name)
+        allow(client_key).to receive(:type).and_return("clients")
       end
 
       context "when no action is passed" do
@@ -339,7 +338,7 @@ RSpec.describe ChefVault::Item do
 
   describe "#admins" do
     before do
-      allow(item).to receive(:load_public_key).with("foo", "admins").and_raise(ChefVault::Exceptions::AdminNotFound)
+      allow(item).to receive(:load_actor).with("foo", "admins").and_raise(ChefVault::Exceptions::AdminNotFound)
     end
 
     it "should blow up if you try to use a node without a public key as an admin" do

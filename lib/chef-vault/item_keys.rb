@@ -35,19 +35,19 @@ class ChefVault
     end
 
     def add(chef_key, data_bag_shared_secret)
-      type = chef_key.actor_type
+      type = chef_key.type
       unless @raw_data.key?(type)
         raise ChefVault::Exceptions::V1Format,
               "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
-      self[chef_key.actor_name] = ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
-      @raw_data[type] << chef_key.actor_name unless @raw_data[type].include?(chef_key.actor_name)
+      self[chef_key.name] = ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      @raw_data[type] << chef_key.name unless @raw_data[type].include?(chef_key.name)
       @raw_data[type]
     end
 
     def delete(chef_key)
-      raw_data.delete(chef_key.actor_name)
-      raw_data[chef_key.actor_type].delete(chef_key.actor_name)
+      raw_data.delete(chef_key.name)
+      raw_data[chef_key.type].delete(chef_key.name)
     end
 
     def search_query(search_query = nil)
