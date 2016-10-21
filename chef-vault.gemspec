@@ -32,6 +32,8 @@ Gem::Specification.new do |s|
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
 
+  s.required_ruby_version = ">= 2.2.0"
+
   s.add_development_dependency "rake", "~> 11.0"
   s.add_development_dependency "rspec", "~> 3.4"
   s.add_development_dependency "mutant-rspec"
