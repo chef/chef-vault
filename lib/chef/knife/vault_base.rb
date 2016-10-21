@@ -23,9 +23,7 @@ class Chef
         includer.class_eval do
           deps do
             require "chef/search/query"
-            require File.expand_path("../mixin/compat", __FILE__)
             require File.expand_path("../mixin/helper", __FILE__)
-            include ChefVault::Mixin::KnifeCompat
             include ChefVault::Mixin::Helper
           end
 
