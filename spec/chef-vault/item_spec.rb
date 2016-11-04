@@ -172,6 +172,7 @@ RSpec.describe ChefVault::Item do
   end
 
   describe "#refresh" do
+    let(:node) { { "name" => "testnode" } }
 
     it "saves only the keys" do
       keys = double("keys",
@@ -184,7 +185,6 @@ RSpec.describe ChefVault::Item do
 
       item = ChefVault::Item.new("foo", "bar")
 
-      node  = double("node", name: "testnode")
       query = double("query")
       allow(Chef::Search::Query).to receive(:new).and_return(query)
       allow(query).to receive(:search).and_yield(node)
@@ -202,14 +202,13 @@ RSpec.describe ChefVault::Item do
 
   describe "#clients" do
     context "when search returns a node with a valid client backing it and one without a valid client" do
-      let(:node_with_valid_client) { double("chef node valid") }
-      let(:node_without_valid_client) { double("chef node no valid client") }
+      let(:node_with_valid_client) { { "name" => "foo" } }
+      let(:node_without_valid_client) { { "name" => "bar" } }
       let(:query_result) { double("chef search results") }
       let(:client_key) { double("chef key") }
 
       before do
         # node with valid client proper loads client key
-        allow(node_with_valid_client).to receive(:name).and_return("foo")
         allow(item).to receive(:load_actor).with("foo", "clients").and_return(client_key)
         privkey = OpenSSL::PKey::RSA.new(1024)
         pubkey = privkey.public_key
@@ -218,12 +217,11 @@ RSpec.describe ChefVault::Item do
         allow(client_key).to receive(:type).and_return("clients")
 
         # node without client throws relevant error on key load
-        allow(node_without_valid_client).to receive(:name).and_return("bar")
         allow(item).to receive(:load_actor).with("bar", "clients").and_raise(ChefVault::Exceptions::ClientNotFound)
 
         allow(query_result)
           .to receive(:search)
-          .with(Symbol, String)
+          .with(Symbol, String, Hash)
           .and_yield(node_with_valid_client).and_yield(node_without_valid_client)
         allow(Chef::Search::Query)
           .to receive(:new)

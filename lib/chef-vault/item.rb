@@ -86,18 +86,18 @@ class ChefVault
       else
         results_returned = false
         query = Chef::Search::Query.new
-        query.search(:node, search_or_client) do |node|
+        query.search(:node, search_or_client, filter_result: { name: ["name"] }, rows: 100000) do |node|
           results_returned = true
           case action
           when :add
             begin
-              client_key = load_actor(node.name, "clients")
+              client_key = load_actor(node["name"], "clients")
               add_client(client_key)
             rescue ChefVault::Exceptions::ClientNotFound
-              ChefVault::Log.warn "node '#{node.name}' has no private key; skipping"
+              ChefVault::Log.warn "node '#{node['name']}' has no private key; skipping"
             end
           when :delete
-            delete_client_or_node(node)
+            delete_client_or_node(node["name"])
           else
             raise ChefVault::Exceptions::KeysActionNotValid,
                   "#{action} is not a valid action"
@@ -416,7 +416,7 @@ class ChefVault
       # the node does not exist if a search for the node with that
       # name returns no results
       query = Chef::Search::Query.new
-      numresults = query.search(:node, "name:#{nodename}")[2]
+      numresults = query.search(:node, "name:#{nodename}", filter_result: { name: ["name"] }, rows: 0)[2]
       return false unless numresults > 0
       # if the node search does return results, predicate node
       # existence on the existence of a like-named client
@@ -448,7 +448,7 @@ class ChefVault
         client = load_actor(api_client.name, "clients")
         add_client(client)
       when :delete
-        delete_client_or_node(api_client)
+        delete_client_or_node(api_client.name)
       end
     end
 
@@ -460,10 +460,10 @@ class ChefVault
     end
 
     # removes a client to the vault item keys
-    # @param client_or_node [Chef::ApiClient, Chef::Node] the API client or node to remove
+    # @param client_or_node [String] the name of the API client or node to remove
     # @return [void]
-    def delete_client_or_node(client_or_node)
-      client = load_actor(client_or_node.name, "clients")
+    def delete_client_or_node(name)
+      client = load_actor(name, "clients")
       keys.delete(client)
     end
   end
