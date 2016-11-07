@@ -18,9 +18,9 @@ class ChefVault
     module Helper
       def set_mode(mode)
         if mode == "client"
-          Chef::Config[:solo] = false
+          Chef::Config[:solo_legacy_mode] = false
         else
-          Chef::Config[:solo] = true
+          Chef::Config[:solo_legacy_mode] = true
         end
       end
 
