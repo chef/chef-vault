@@ -67,7 +67,7 @@ class ChefVault
     end
 
     def save(item_id = @raw_data["id"])
-      if Chef::Config[:solo]
+      if Chef::Config[:solo_legacy_mode]
         save_solo(item_id)
       else
         begin
@@ -85,7 +85,7 @@ class ChefVault
     end
 
     def destroy
-      if Chef::Config[:solo]
+      if Chef::Config[:solo_legacy_mode]
         data_bag_path = File.join(Chef::Config[:data_bag_path],
                                   data_bag)
         data_bag_item_path = File.join(data_bag_path, @raw_data["id"])
