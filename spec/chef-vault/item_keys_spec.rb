@@ -105,7 +105,7 @@ RSpec.describe ChefVault::ItemKeys do
       describe "#save" do
         let(:data_bag_path) { Dir.mktmpdir("vault_item_keys") }
         before do
-          Chef::Config[:solo] = true
+          Chef::Config[:solo_legacy_mode] = true
           Chef::Config[:data_bag_path] = data_bag_path
         end
 

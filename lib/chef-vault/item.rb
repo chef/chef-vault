@@ -211,7 +211,7 @@ class ChefVault
       encrypt! unless @encrypted
 
       # Now save the encrypted data
-      if Chef::Config[:solo]
+      if Chef::Config[:solo_legacy_mode]
         save_solo(item_id)
       else
         begin
@@ -257,7 +257,7 @@ class ChefVault
     def destroy
       keys.destroy
 
-      if Chef::Config[:solo]
+      if Chef::Config[:solo_legacy_mode]
         data_bag_path = File.join(Chef::Config[:data_bag_path],
                                   data_bag)
         data_bag_item_path = File.join(data_bag_path, @raw_data["id"])
