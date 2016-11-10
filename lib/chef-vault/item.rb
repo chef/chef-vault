@@ -1,5 +1,6 @@
 # Author:: Kevin Moser <kevin.moser@nordstrom.com>
 # Copyright:: Copyright 2013-15, Nordstrom, Inc.
+# Copyright:: Copyright 2015-16, Chef Software, Inc.
 # License:: Apache License, Version 2.0
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,6 +68,7 @@ class ChefVault
       }.merge(opts)
       @node_name = opts[:node_name]
       @client_key_path = opts[:client_key_path]
+      @current_query = search
     end
 
     # private
@@ -75,39 +77,42 @@ class ChefVault
       @secret = secret
     end
 
-    def clients(search_or_client, action = :add)
-      if search_or_client.is_a?(Chef::ApiClient)
+    def clients(search_or_client = search_results, action = :add)
+      # for backwards compatibility, if we're handed a string
+      # do a search using that string and recurse
+      if search_or_client.is_a?(String)
+        clients(search_results(search_or_client), action)
+      elsif search_or_client.is_a?(Chef::ApiClient)
         handle_client_action(search_or_client, action)
-      elsif search_or_client.is_a?(Array)
-        search_or_client.each do |name|
-          client = load_actor(name, "clients")
-          handle_client_action(client, action)
-        end
       else
-        results_returned = false
-        query = Chef::Search::Query.new
-        query.search(:node, search_or_client, filter_result: { name: ["name"] }, rows: 100000) do |node|
-          results_returned = true
-          case action
-          when :add
-            begin
-              client_key = load_actor(node["name"], "clients")
-              add_client(client_key)
-            rescue ChefVault::Exceptions::ClientNotFound
-              ChefVault::Log.warn "node '#{node['name']}' has no private key; skipping"
-            end
-          when :delete
-            delete_client_or_node(node["name"])
-          else
-            raise ChefVault::Exceptions::KeysActionNotValid,
-                  "#{action} is not a valid action"
+        search_or_client.each do |name|
+          begin
+            client = load_actor(name, "clients")
+            handle_client_action(client, action)
+          rescue ChefVault::Exceptions::ClientNotFound
+            ChefVault::Log.warn "node '#{name}' has no private key; skipping"
           end
+        end
+      end
+    end
+
+    def search_results(statement = search)
+      @search_results = nil if statement != @current_query
+      @current_query = statement
+      @search_results ||= begin
+        results_returned = false
+        results = []
+        query = Chef::Search::Query.new
+        query.search(:node, statement, filter_result: { name: ["name"] }, rows: 100000) do |node|
+          results_returned = true
+          results << node["name"]
         end
 
         unless results_returned
           ChefVault::Log.warn "No clients were returned from search, you may not have "\
-                       "got what you expected!!"
+            "got what you expected!!"
         end
+        results
       end
     end
 
@@ -172,9 +177,7 @@ class ChefVault
         # admins, just clients which are nodes
         remove_unknown_nodes if clean_unknown_clients
         # re-encrypt the new shared secret for all remaining clients
-        get_clients.each do |client|
-          clients("name:#{client}")
-        end
+        clients(get_clients)
       end
 
       unless get_admins.empty?
@@ -362,7 +365,7 @@ class ChefVault
       remove_unknown_nodes if clean_unknown_clients
 
       # re-process the search query to add new clients
-      clients(search)
+      clients
 
       # save the updated keys only
       save_keys(@raw_data["id"])
@@ -413,14 +416,10 @@ class ChefVault
     # @param nodename [String] the name of the node
     # @return [Boolean] whether the node exists or not
     def node_exists?(nodename)
-      # the node does not exist if a search for the node with that
-      # name returns no results
-      query = Chef::Search::Query.new
-      numresults = query.search(:node, "name:#{nodename}", filter_result: { name: ["name"] }, rows: 0)[2]
-      return false unless numresults > 0
-      # if the node search does return results, predicate node
-      # existence on the existence of a like-named client
-      client_exists?(nodename)
+      # if we don't have a client it really doesn't matter if we have a node.
+      if client_exists?(nodename)
+        search_results.include?(nodename)
+      end
     end
 
     # checks if a client exists on the Chef server.  If we get back
@@ -429,13 +428,11 @@ class ChefVault
     # @param clientname [String] the name of the client
     # @return [Boolean] whether the client exists or not
     def client_exists?(clientname)
-      begin
-        Chef::ApiClient.load(clientname)
-      rescue Net::HTTPServerException => http_error
-        return false if http_error.response.code == "404"
-        raise http_error
-      end
+      Chef::ApiClient.load(clientname)
       true
+    rescue Net::HTTPServerException => http_error
+      return false if http_error.response.code == "404"
+      raise http_error
     end
 
     # adds or deletes an API client from the vault item keys
