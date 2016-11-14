@@ -88,7 +88,7 @@ class Chef
             end
 
             vault_item.search(search) if search
-            vault_item.clients(search) if search
+            vault_item.clients if search
             vault_item.clients(clients) if clients
             vault_item.admins(admins) if admins
 

@@ -304,7 +304,7 @@ RSpec.describe ChefVault::Item do
       end
 
       context "when no action is passed" do
-        it "default to add and properly add the client" do
+        it "defaults to add and properly adds the client" do
           item.clients(clients)
           expect(item.get_clients).to include(client_name)
         end
