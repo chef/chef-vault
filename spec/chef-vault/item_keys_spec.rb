@@ -70,7 +70,23 @@ RSpec.describe ChefVault::ItemKeys do
       end
     end
 
+    context "when running with chef-zero" do
+      let(:server) { chef_zero }
+      before { server.start_background }
+      after  { server.stop }
+
+      describe "#save" do
+        it "should save the key data" do
+          keys.save("bar")
+          expect(Chef::DataBagItem.load("foo", "bar").to_hash).to include("id" => "bar")
+        end
+      end
+    end
+
     context "when running with chef-solo" do
+      before { Chef::Config[:solo_legacy_mode] = true  }
+      after  { Chef::Config[:solo_legacy_mode] = false }
+
       describe "#find_solo_path" do
         context "when data_bag_path is an array" do
           before do
@@ -105,7 +121,6 @@ RSpec.describe ChefVault::ItemKeys do
       describe "#save" do
         let(:data_bag_path) { Dir.mktmpdir("vault_item_keys") }
         before do
-          Chef::Config[:solo_legacy_mode] = true
           Chef::Config[:data_bag_path] = data_bag_path
         end
 
