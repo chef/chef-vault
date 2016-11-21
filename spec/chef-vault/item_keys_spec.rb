@@ -19,7 +19,7 @@ RSpec.describe ChefVault::ItemKeys do
       expect(keys["admins"]).to eq []
     end
 
-    describe "key mgmt operations" do
+    shared_context "key mgmt operations" do
       let(:public_key_string) do
         "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMXT9IOV9pkQsxsnhSx8\n8RX6GW3caxkjcXFfHg6E7zUVBFAsfw4B1D+eHAks3qrDB7UrUxsmCBXwU4dQHaQy\ngAn5Sv0Jc4CejDNL2EeCBLZ4TF05odHmuzyDdPkSZP6utpR7+uF7SgVQedFGySIB\nih86aM+HynhkJqgJYhoxkrdo/JcWjpk7YEmWb6p4esnvPWOpbcjIoFs4OjavWBOF\niTfpkS0SkygpLi/iQu9RQfd4hDMWCc6yh3Th/1nVMUd+xQCdUK5wxluAWSv8U0zu\nhiIlZNazpCGHp+3QdP3f6rebmQA8pRM8qT5SlOvCYPk79j+IMUVSYrR4/DTZ+VM+\naQIDAQAB\n-----END PUBLIC KEY-----\n"
       end
@@ -41,6 +41,7 @@ RSpec.describe ChefVault::ItemKeys do
             keys.add(chef_key, shared_secret)
             expect(keys[name]).to eq("encrypted_result")
             expect(keys[type].include?(name)).to eq(true)
+            expect(keys.include?(name)).to eq(true)
           end
         end
 
@@ -53,6 +54,7 @@ RSpec.describe ChefVault::ItemKeys do
             keys.delete(chef_key)
             expect(keys.has_key?(chef_key.name)).to eq(false)
             expect(keys[type].include?(name)).to eq(false)
+            expect(keys.include?(name)).to eq(false)
           end
         end
       end
@@ -75,6 +77,8 @@ RSpec.describe ChefVault::ItemKeys do
       before { server.start_background }
       after  { server.stop }
 
+      include_context "key mgmt operations"
+
       describe "#save" do
         it "should save the key data" do
           keys.save("bar")
@@ -86,6 +90,8 @@ RSpec.describe ChefVault::ItemKeys do
     context "when running with chef-solo" do
       before { Chef::Config[:solo_legacy_mode] = true  }
       after  { Chef::Config[:solo_legacy_mode] = false }
+
+      include_context "key mgmt operations"
 
       describe "#find_solo_path" do
         context "when data_bag_path is an array" do
