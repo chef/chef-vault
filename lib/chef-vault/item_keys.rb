@@ -28,25 +28,52 @@ class ChefVault
       @raw_data["admins"] = []
       @raw_data["clients"] = []
       @raw_data["search_query"] = []
+      @raw_data["mode"] = "default"
       @cache = {} # write-back cache for keys
     end
 
     def [](key)
       # return options immediately
-      return @raw_data[key] if %w(id admins clients search_query).include?(key)
+      return @raw_data[key] if %w{id admins clients search_query mode}.include?(key)
       # check if the key is in the write-back cache
       ckey = @cache[key]
       return ckey unless ckey.nil?
-      # fallback to raw data
-      @raw_data[key]
+      # check if the key is saved in sparse mode
+      spath = "#{@raw_data["id"]}_key_#{key}"
+      skey = if Chef::Config[:solo_legacy_mode]
+               load_solo(spath)
+             else
+               begin
+                 Chef::DataBagItem.load(@data_bag, spath)
+               rescue Net::HTTPServerException => http_error
+                 nil if http_error.response.code == "404"
+               end
+             end
+      if skey
+        skey[key]
+      else
+        # fallback to raw data
+        @raw_data[key]
+      end
     end
 
     def include?(key)
       # check if the key is in the write-back cache
       ckey = @cache[key]
       return (ckey ? true : false) unless ckey.nil?
-      # fallback to raw data
-      @raw_data.keys.include?(key)
+      # check if the key is saved in sparse mode
+      spath = "#{@raw_data["id"]}_key_#{key}"
+      skey = if Chef::Config[:solo_legacy_mode]
+               load_solo(spath)
+             else
+               begin
+                 Chef::DataBagItem.load(@data_bag, spath)
+               rescue Net::HTTPServerException => http_error
+                 nil if http_error.response.code == "404"
+               end
+             end
+      # fallback to non-sparse mode if sparse key is not found
+      @raw_data.keys.include?(key) if skey.nil?
     end
 
     def add(chef_key, data_bag_shared_secret)
@@ -63,6 +90,14 @@ class ChefVault
     def delete(chef_key)
       @cache[chef_key.name] = false
       raw_data[chef_key.type].delete(chef_key.name)
+    end
+
+    def mode(mode = nil)
+      if mode
+        @raw_data["mode"] = mode
+      else
+        @raw_data["mode"]
+      end
     end
 
     def search_query(search_query = nil)
@@ -82,18 +117,8 @@ class ChefVault
     end
 
     def save(item_id = @raw_data["id"])
-      # write cached keys to data
-      @cache.each do |key, val|
-        if val == false
-          @raw_data.delete(key)
-        else
-          @raw_data[key] = val
-        end
-      end
-      # save raw data
-      if Chef::Config[:solo_legacy_mode]
-        save_solo(item_id)
-      else
+      # create data bag if not running in solo mode
+      unless Chef::Config[:solo_legacy_mode]
         begin
           Chef::DataBag.load(data_bag)
         rescue Net::HTTPServerException => http_error
@@ -103,7 +128,48 @@ class ChefVault
             chef_data_bag.create
           end
         end
+      end
 
+      # write cached keys to data
+      @cache.each do |key, val|
+        spath = "#{@raw_data["id"]}_key_#{key}"
+        # delete across all modes on key deletion
+        if val == false
+          # sparse mode key deletion
+          if Chef::Config[:solo_legacy_mode]
+            delete_solo(spath)
+          else
+            begin
+              Chef::DataBagItem.from_hash("data_bag" => data_bag, "id" => spath)
+                               .destroy(data_bag, spath)
+            rescue Net::HTTPServerException => http_error
+              raise http_error unless http_error.response.code == "404"
+            end
+          end
+          # default mode key deletion
+          @raw_data.delete(key)
+        else
+          if @raw_data["mode"] == "sparse"
+            # sparse mode key creation
+            skey = Chef::DataBagItem.from_hash(
+              "data_bag" => data_bag,
+              "id" => spath, key => val
+            )
+            if Chef::Config[:solo_legacy_mode]
+              save_solo(skey.id, skey.raw_data)
+            else
+              skey.save
+            end
+          else
+            # default mode key creation
+            @raw_data[key] = val
+          end
+        end
+      end
+      # save raw data
+      if Chef::Config[:solo_legacy_mode]
+        save_solo(item_id)
+      else
         super
       end
       # clear write-back cache

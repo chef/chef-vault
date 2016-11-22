@@ -81,7 +81,7 @@ RSpec.describe ChefVault::ItemKeys do
 
       describe "#save" do
         let(:client_name) { "client_name" }
-        let(:chef_key)    { ChefVault::Actor.new('clients', client_name) }
+        let(:chef_key)    { ChefVault::Actor.new("clients", client_name) }
 
         before do
           allow(chef_key).to receive(:key) { public_key_string }
@@ -92,6 +92,22 @@ RSpec.describe ChefVault::ItemKeys do
           keys.save("bar")
           expect(Chef::DataBagItem.load("foo", "bar").to_hash).to include("id" => "bar")
           expect(keys[client_name]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+        end
+
+        it "should save the key data in sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          expect(Chef::DataBagItem.load("foo", "bar").to_hash).to include("id" => "bar")
+          expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
+          expect(keys[client_name]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+          keys.mode("default")
         end
       end
     end
@@ -144,11 +160,26 @@ RSpec.describe ChefVault::ItemKeys do
         end
 
         it "should save the key data" do
-          expect(File).to receive(:exist?).with(File.join(data_bag_path, "foo")).and_call_original
           keys.add(chef_key, shared_secret)
           keys.save("bar")
           expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"id":.*"bar"/)
           expect(keys[client_name]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+        end
+
+        it "should save the key data in sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"id":.*"bar"/)
+          expect(File.read(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to match(/"id":.*"bar_key_client_name"/)
+          expect(keys[client_name]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+          keys.mode("default")
         end
       end
     end
