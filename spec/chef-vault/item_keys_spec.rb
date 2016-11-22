@@ -2,6 +2,9 @@ RSpec.describe ChefVault::ItemKeys do
   describe "#new" do
     let(:keys) { ChefVault::ItemKeys.new("foo", "bar") }
     let(:shared_secret) { "super_secret" }
+    let(:public_key_string) do
+      "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMXT9IOV9pkQsxsnhSx8\n8RX6GW3caxkjcXFfHg6E7zUVBFAsfw4B1D+eHAks3qrDB7UrUxsmCBXwU4dQHaQy\ngAn5Sv0Jc4CejDNL2EeCBLZ4TF05odHmuzyDdPkSZP6utpR7+uF7SgVQedFGySIB\nih86aM+HynhkJqgJYhoxkrdo/JcWjpk7YEmWb6p4esnvPWOpbcjIoFs4OjavWBOF\niTfpkS0SkygpLi/iQu9RQfd4hDMWCc6yh3Th/1nVMUd+xQCdUK5wxluAWSv8U0zu\nhiIlZNazpCGHp+3QdP3f6rebmQA8pRM8qT5SlOvCYPk79j+IMUVSYrR4/DTZ+VM+\naQIDAQAB\n-----END PUBLIC KEY-----\n"
+    end
 
     it "'foo' is assigned to @data_bag" do
       expect(keys.data_bag).to eq "foo"
@@ -20,9 +23,6 @@ RSpec.describe ChefVault::ItemKeys do
     end
 
     shared_context "key mgmt operations" do
-      let(:public_key_string) do
-        "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMXT9IOV9pkQsxsnhSx8\n8RX6GW3caxkjcXFfHg6E7zUVBFAsfw4B1D+eHAks3qrDB7UrUxsmCBXwU4dQHaQy\ngAn5Sv0Jc4CejDNL2EeCBLZ4TF05odHmuzyDdPkSZP6utpR7+uF7SgVQedFGySIB\nih86aM+HynhkJqgJYhoxkrdo/JcWjpk7YEmWb6p4esnvPWOpbcjIoFs4OjavWBOF\niTfpkS0SkygpLi/iQu9RQfd4hDMWCc6yh3Th/1nVMUd+xQCdUK5wxluAWSv8U0zu\nhiIlZNazpCGHp+3QdP3f6rebmQA8pRM8qT5SlOvCYPk79j+IMUVSYrR4/DTZ+VM+\naQIDAQAB\n-----END PUBLIC KEY-----\n"
-      end
 
       shared_examples_for "proper key management" do
         let(:chef_key) { ChefVault::Actor.new(type, name) }
@@ -80,9 +80,18 @@ RSpec.describe ChefVault::ItemKeys do
       include_context "key mgmt operations"
 
       describe "#save" do
+        let(:client_name) { "client_name" }
+        let(:chef_key)    { ChefVault::Actor.new('clients', client_name) }
+
+        before do
+          allow(chef_key).to receive(:key) { public_key_string }
+        end
+
         it "should save the key data" do
+          keys.add(chef_key, shared_secret)
           keys.save("bar")
           expect(Chef::DataBagItem.load("foo", "bar").to_hash).to include("id" => "bar")
+          expect(keys[client_name]).not_to be_empty
         end
       end
     end
@@ -125,15 +134,21 @@ RSpec.describe ChefVault::ItemKeys do
       end
 
       describe "#save" do
+        let(:client_name)   { "client_name" }
+        let(:chef_key)      { ChefVault::Actor.new("clients", client_name) }
         let(:data_bag_path) { Dir.mktmpdir("vault_item_keys") }
+
         before do
           Chef::Config[:data_bag_path] = data_bag_path
+          allow(chef_key).to receive(:key) { public_key_string }
         end
 
         it "should save the key data" do
           expect(File).to receive(:exist?).with(File.join(data_bag_path, "foo")).and_call_original
+          keys.add(chef_key, shared_secret)
           keys.save("bar")
           expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"id":.*"bar"/)
+          expect(keys[client_name]).not_to be_empty
         end
       end
     end

@@ -28,9 +28,24 @@ class ChefVault
       @raw_data["admins"] = []
       @raw_data["clients"] = []
       @raw_data["search_query"] = []
+      @cache = {} # write-back cache for keys
+    end
+
+    def [](key)
+      # return options immediately
+      return @raw_data[key] if %w(id admins clients search_query).include?(key)
+      # check if the key is in the write-back cache
+      ckey = @cache[key]
+      return ckey unless ckey.nil?
+      # fallback to raw data
+      @raw_data[key]
     end
 
     def include?(key)
+      # check if the key is in the write-back cache
+      ckey = @cache[key]
+      return (ckey ? true : false) unless ckey.nil?
+      # fallback to raw data
       @raw_data.keys.include?(key)
     end
 
@@ -40,13 +55,13 @@ class ChefVault
         raise ChefVault::Exceptions::V1Format,
               "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
-      self[chef_key.name] = ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      @cache[chef_key.name] = ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
       @raw_data[type] << chef_key.name unless @raw_data[type].include?(chef_key.name)
       @raw_data[type]
     end
 
     def delete(chef_key)
-      raw_data.delete(chef_key.name)
+      @cache[chef_key.name] = false
       raw_data[chef_key.type].delete(chef_key.name)
     end
 
@@ -67,6 +82,15 @@ class ChefVault
     end
 
     def save(item_id = @raw_data["id"])
+      # write cached keys to data
+      @cache.each do |key, val|
+        if val == false
+          @raw_data.delete(key)
+        else
+          @raw_data[key] = val
+        end
+      end
+      # save raw data
       if Chef::Config[:solo_legacy_mode]
         save_solo(item_id)
       else
@@ -82,6 +106,8 @@ class ChefVault
 
         super
       end
+      # clear write-back cache
+      @cache = {}
     end
 
     def destroy
