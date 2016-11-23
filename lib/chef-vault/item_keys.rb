@@ -39,16 +39,7 @@ class ChefVault
       ckey = @cache[key]
       return ckey unless ckey.nil?
       # check if the key is saved in sparse mode
-      spath = "#{@raw_data["id"]}_key_#{key}"
-      skey = if Chef::Config[:solo_legacy_mode]
-               load_solo(spath)
-             else
-               begin
-                 Chef::DataBagItem.load(@data_bag, spath)
-               rescue Net::HTTPServerException => http_error
-                 nil if http_error.response.code == "404"
-               end
-             end
+      skey = sparse_key(sparse_id(key))
       if skey
         skey[key]
       else
@@ -62,18 +53,9 @@ class ChefVault
       ckey = @cache[key]
       return (ckey ? true : false) unless ckey.nil?
       # check if the key is saved in sparse mode
-      spath = "#{@raw_data["id"]}_key_#{key}"
-      skey = if Chef::Config[:solo_legacy_mode]
-               load_solo(spath)
-             else
-               begin
-                 Chef::DataBagItem.load(@data_bag, spath)
-               rescue Net::HTTPServerException => http_error
-                 nil if http_error.response.code == "404"
-               end
-             end
+      return true unless sparse_key(sparse_id(key)).nil?
       # fallback to non-sparse mode if sparse key is not found
-      @raw_data.keys.include?(key) if skey.nil?
+      @raw_data.keys.include?(key)
     end
 
     def add(chef_key, data_bag_shared_secret)
@@ -132,16 +114,16 @@ class ChefVault
 
       # write cached keys to data
       @cache.each do |key, val|
-        spath = "#{@raw_data["id"]}_key_#{key}"
         # delete across all modes on key deletion
         if val == false
           # sparse mode key deletion
           if Chef::Config[:solo_legacy_mode]
-            delete_solo(spath)
+            delete_solo(sparse_id(key))
           else
             begin
-              Chef::DataBagItem.from_hash("data_bag" => data_bag, "id" => spath)
-                               .destroy(data_bag, spath)
+              Chef::DataBagItem.from_hash("data_bag" => data_bag,
+                                          "id" => sparse_id(key))
+                               .destroy(data_bag, sparse_id(key))
             rescue Net::HTTPServerException => http_error
               raise http_error unless http_error.response.code == "404"
             end
@@ -153,7 +135,8 @@ class ChefVault
             # sparse mode key creation
             skey = Chef::DataBagItem.from_hash(
               "data_bag" => data_bag,
-              "id" => spath, key => val
+              "id" => sparse_id(key),
+              key => val
             )
             if Chef::Config[:solo_legacy_mode]
               save_solo(skey.id, skey.raw_data)
@@ -220,6 +203,22 @@ class ChefVault
     end
 
     # @private
+
+    def sparse_id(key, item_id = @raw_data["id"])
+      "#{item_id}_key_#{key}"
+    end
+
+    def sparse_key(sid)
+      if Chef::Config[:solo_legacy_mode]
+        load_solo(sid)
+      else
+        begin
+          Chef::DataBagItem.load(@data_bag, sid)
+        rescue Net::HTTPServerException => http_error
+          nil if http_error.response.code == "404"
+        end
+      end
+    end
 
     def self.encode_key(key_string, data_bag_shared_secret)
       public_key = OpenSSL::PKey::RSA.new(key_string)
