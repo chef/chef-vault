@@ -22,7 +22,7 @@ class ChefVault
       [data_bag_path, data_bag_item_path]
     end
 
-    def save_solo(item_id = @raw_data["id"])
+    def save_solo(item_id = @raw_data["id"], raw_data = @raw_data)
       data_bag_path, data_bag_item_path = find_solo_path(item_id)
 
       FileUtils.mkdir(data_bag_path) unless File.exist?(data_bag_path)
@@ -31,6 +31,16 @@ class ChefVault
       end
 
       raw_data
+    end
+
+    def delete_solo(item_id = @raw_data["id"])
+      _data_bag_path, data_bag_item_path = find_solo_path(item_id)
+      FileUtils.rm(data_bag_item_path) if File.exist?(data_bag_item_path)
+    end
+
+    def load_solo(item_id = @raw_data["id"])
+      _data_bag_path, data_bag_item_path = find_solo_path(item_id)
+      JSON.parse(File.read(data_bag_item_path)) if File.exist?(data_bag_item_path)
     end
   end
 end
