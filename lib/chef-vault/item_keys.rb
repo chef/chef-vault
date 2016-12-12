@@ -205,7 +205,7 @@ class ChefVault
     # @private
 
     def sparse_id(key, item_id = @raw_data["id"])
-      "#{item_id}_key_#{key}"
+      "#{item_id.chomp("_keys")}_key_#{key}"
     end
 
     def sparse_key(sid)
