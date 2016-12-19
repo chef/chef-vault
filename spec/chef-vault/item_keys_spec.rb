@@ -81,11 +81,8 @@ RSpec.describe ChefVault::ItemKeys do
 
       describe "#save" do
         let(:client_name) { "client_name" }
-        let(:chef_key)    { ChefVault::Actor.new("clients", client_name) }
-
-        before do
-          allow(chef_key).to receive(:key) { public_key_string }
-        end
+        let(:chef_key) { ChefVault::Actor.new("clients", client_name) }
+        before { allow(chef_key).to receive(:key) { public_key_string } }
 
         it "should save the key data" do
           keys.add(chef_key, shared_secret)
@@ -107,6 +104,29 @@ RSpec.describe ChefVault::ItemKeys do
           keys.delete(chef_key)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
+      end
+
+      describe "#destroy" do
+        let(:client_name) { "client_name" }
+        let(:chef_key) { ChefVault::Actor.new("clients", client_name) }
+        before { allow(chef_key).to receive(:key) { public_key_string } }
+
+        it "should destroy the keys" do
+          keys.add(chef_key, shared_secret)
+          keys.save("bar")
+          keys.destroy
+          expect { Chef::DataBagItem.load("foo", "bar") }.to raise_error(Net::HTTPServerException)
+        end
+
+        it "should destroy the keys in sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          keys.destroy
+          expect { Chef::DataBagItem.load("foo", "bar") }.to raise_error(Net::HTTPServerException)
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name") }.to raise_error(Net::HTTPServerException)
           keys.mode("default")
         end
       end
@@ -179,6 +199,34 @@ RSpec.describe ChefVault::ItemKeys do
           keys.delete(chef_key)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
+      end
+
+      describe "#destroy" do
+        let(:client_name) { "client_name" }
+        let(:chef_key) { ChefVault::Actor.new("clients", client_name) }
+        let(:data_bag_path) { Dir.mktmpdir("vault_item_keys") }
+
+        before do
+          Chef::Config[:data_bag_path] = data_bag_path
+          allow(chef_key).to receive(:key) { public_key_string }
+        end
+
+        it "should destroy the keys" do
+          keys.add(chef_key, shared_secret)
+          keys.save("bar")
+          keys.destroy
+          expect(File.exist?(File.join(data_bag_path, "foo", "bar.json"))).to be(false)
+        end
+
+        it "should destroy the keys in sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          keys.destroy
+          expect(File.exist?(File.join(data_bag_path, "foo", "bar.json"))).to be(false)
+          expect(File.exist?(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to be(false)
           keys.mode("default")
         end
       end

@@ -161,14 +161,23 @@ class ChefVault
 
     def destroy
       if Chef::Config[:solo_legacy_mode]
-        data_bag_path = File.join(Chef::Config[:data_bag_path],
-                                  data_bag)
+        data_bag_path = File.join(Chef::Config[:data_bag_path], data_bag)
         data_bag_item_path = File.join(data_bag_path, @raw_data["id"])
-
+        data_bag_sparse_keys_path = File.join(data_bag_path, sparse_id("*"))
+        # destroy all sparse keys
+        FileUtils.rm(Dir.glob("#{data_bag_sparse_keys_path}.json"))
+        # destroy this metadata
         FileUtils.rm("#{data_bag_item_path}.json")
-
         nil
       else
+        # destroy all sparse keys
+        rgx = Regexp.new("^#{sparse_id(".*")}")
+        items = Chef::DataBag.load(data_bag).keys.select { |item| item =~ rgx }
+        items.each do |id|
+          Chef::DataBagItem.from_hash("data_bag" => data_bag, "id" => id)
+                           .destroy(data_bag, id)
+        end
+        # destroy this metadata
         super(data_bag, id)
       end
     end

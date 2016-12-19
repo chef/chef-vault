@@ -4,7 +4,7 @@ Given(/^I create a vault item '(.+)\/(.+)'( with keys in sparse mode)? containin
   write_file "item.json", json
   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")
   adminarg = admins.nil? ? "-A admin" : "-A #{admins}"
-  sparseopt = sparse.nil? ? '' : '-K sparse'
+  sparseopt = sparse.nil? ? "" : "-K sparse"
   run_simple "knife vault create #{vault} #{item} -z -c knife.rb #{adminarg} #{sparseopt} -S '#{query}' -J item.json", false
 end
 
@@ -49,20 +49,20 @@ Then(/^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'( with k
   output = last_command_started.stdout
   data = JSON.parse(output)
   if sparse
-    expect(data).to include('mode' => 'sparse')
+    expect(data).to include("mode" => "sparse")
     nodes.each do |node|
       command = "knife data bag show #{vault} #{item}_key_#{node} -z -c knife.rb -F json"
       run_simple(command, fail_on_error: false)
       if neg
         error = last_command_started.stderr
-        expect(error).to include('ERROR: The object you are looking for could not be found')
+        expect(error).to include("ERROR: The object you are looking for could not be found")
       else
         data = JSON.parse(last_command_started.stdout)
-        expect(data).to include('id' => "#{item}_key_#{node}")
+        expect(data).to include("id" => "#{item}_key_#{node}")
       end
     end
   else
-    expect(data).to include('mode' => 'default')
+    expect(data).to include("mode" => "default")
     nodes.each { |node| neg ? (expect(data).not_to include(node)) : (expect(data).to include(node)) }
   end
 end
