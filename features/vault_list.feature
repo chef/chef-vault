@@ -10,6 +10,12 @@ Feature: list data bags that are vaults
     And I list the vaults
     Then the output should match /(?m:^test$)/
 
+  Scenario: List bags that are vaults with keys in sparse mode
+    Given a local mode chef repo with nodes 'one,two,three'
+    And I create a vault item 'test/item' with keys in sparse mode containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three'
+    And I list the vaults
+    Then the output should match /(?m:^test$)/
+
   Scenario: Skip data bags that are not vaults
     Given a local mode chef repo with nodes 'one,two,three'
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three'
