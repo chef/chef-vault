@@ -5,7 +5,7 @@ group :development do
 end
 if RUBY_VERSION.to_f >= 2.0
   group :changelog do
-    gem "github_changelog_generator", "1.11.3"
+    gem "github_changelog_generator", git: "https://github.com/tduffield/github-changelog-generator", branch: "adjust-tag-section-mapping"
   end
 end
 
