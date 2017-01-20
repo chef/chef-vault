@@ -8,6 +8,12 @@ Feature: determine if a data bag item is a vault
     And I check if the data bag item 'test/item' is a vault
     Then the exit status should be 0
 
+  Scenario: detect vault item with keys in sparse mode
+    Given a local mode chef repo with nodes 'one,two,three'
+    And I create a vault item 'test/item' with keys in sparse mode containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three'
+    And I check if the data bag item 'test/item' is a vault
+    Then the exit status should be 0
+
   Scenario: detect non-vault item (encrypted data bag)
     Given a local mode chef repo with nodes 'one,two,three'
     And I create an empty data bag 'test'

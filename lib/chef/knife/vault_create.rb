@@ -26,6 +26,11 @@ class Chef
 
       banner "knife vault create VAULT ITEM VALUES (options)"
 
+      option :keys_mode,
+        :short => "-K KEYS_MODE",
+        :long => "--keys-mode KEYS_MODE",
+        :description => "Mode in which to save vault keys"
+
       option :search,
         :short => "-S SEARCH",
         :long => "--search SEARCH",
@@ -57,6 +62,7 @@ class Chef
         search = config[:search]
         json_file = config[:json]
         file = config[:file]
+        keys_mode = config[:keys_mode]
 
         set_mode(config[:vault_mode])
 
@@ -91,6 +97,7 @@ class Chef
             vault_item.clients if search
             vault_item.clients(clients) if clients
             vault_item.admins(admins) if admins
+            vault_item.keys.mode(keys_mode) if keys_mode
 
             vault_item.save
           end

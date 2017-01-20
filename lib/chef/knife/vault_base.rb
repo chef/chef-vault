@@ -49,8 +49,12 @@ class Chef
 
       def bag_is_vault?(bagname)
         bag = Chef::DataBag.load(bagname)
-        # vaults have at even number of keys >= 2
-        return false unless bag.keys.size >= 2 && 0 == bag.keys.size % 2
+        # a data bag is a vault if and only if:
+        # - it has at least one item with item_keys
+        # - every item has a matching item_keys
+        # - item_keys has zero or more keys in sparse mode
+        # vaults have a number of keys >= 2
+        return false unless bag.keys.size >= 2
         # partition into those that end in _keys
         keylike, notkeylike = split_vault_keys(bag)
         # there must be an equal number of keyline and not-keylike items
@@ -63,8 +67,15 @@ class Chef
       end
 
       def split_vault_keys(bag)
-        # partition into those that end in _keys
-        bag.keys.partition { |k| k =~ /_keys$/ }
+        # get all item keys
+        keys = bag.keys.select { |k| k =~ /_keys$/ }
+        # get all sparse keys
+        r = Regexp.union(keys.map { |k| Regexp.new("^#{k.chomp('_keys')}_key_.*") })
+        sparse = bag.keys.select { |k| k =~ r }
+        # the rest
+        items = bag.keys - keys - sparse
+        # return item keys and items
+        [keys, items]
       end
     end
   end

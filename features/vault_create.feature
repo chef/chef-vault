@@ -46,6 +46,16 @@ Feature: knife vault create
     And 'alice' should be an admin for the vault item 'test/item'
     And 'bob' should not be an admin for the vault item 'test/item'
 
+  Scenario: create vault with several admins in sparse mode
+    Given a local mode chef repo with nodes 'one,two' with admins 'alice,bob'
+    And I create a vault item 'test/item' with keys in sparse mode containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three' with 'alice' as admin
+    Then the vault item 'test/item' should be encrypted for 'one,two' with keys in sparse mode
+    And the vault item 'test/item' should not be encrypted for 'three' with keys in sparse mode
+    And 'one,two' should be a client for the vault item 'test/item'
+    And 'three' should not be a client for the vault item 'test/item'
+    And 'alice' should be an admin for the vault item 'test/item'
+    And 'bob' should not be an admin for the vault item 'test/item'
+
   Scenario: create vault with an unknown admin
     Given a local mode chef repo with nodes 'one,two'
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three' with 'alice' as admin

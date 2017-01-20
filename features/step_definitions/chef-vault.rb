@@ -1,10 +1,11 @@
 require "json"
 
-Given(/^I create a vault item '(.+)\/(.+)' containing the JSON '(.+)' encrypted for '(.+)'(?: with '(.+)' as admins?)?$/) do |vault, item, json, nodelist, admins|
+Given(/^I create a vault item '(.+)\/(.+)'( with keys in sparse mode)? containing the JSON '(.+)' encrypted for '(.+)'(?: with '(.+)' as admins?)?$/) do |vault, item, sparse, json, nodelist, admins|
   write_file "item.json", json
   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")
   adminarg = admins.nil? ? "-A admin" : "-A #{admins}"
-  run_simple "knife vault create #{vault} #{item} -z -c knife.rb #{adminarg} -S '#{query}' -J item.json", false
+  sparseopt = sparse.nil? ? "" : "-K sparse"
+  run_simple "knife vault create #{vault} #{item} -z -c knife.rb #{adminarg} #{sparseopt} -S '#{query}' -J item.json", false
 end
 
 Given(/^I update the vault item '(.+)\/(.+)' to be encrypted for '(.+)'( with the clean option)?$/) do |vault, item, nodelist, cleanopt|
@@ -41,18 +42,28 @@ Given(/^I try to decrypt the vault item '(.+)\/(.+)' as '(.+)'$/) do |vault, ite
   run_simple "knife vault show #{vault} #{item} -z -c knife.rb -u #{node} -k #{node}.pem", false
 end
 
-Then(/^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'$/) do |vault, item, neg, nodelist|
+Then(/^the vault item '(.+)\/(.+)' should( not)? be encrypted for '(.+)'( with keys in sparse mode)?$/) do |vault, item, neg, nodelist, sparse|
   nodes = nodelist.split(/,/)
   command = "knife data bag show #{vault} #{item}_keys -z -c knife.rb -F json"
   run_simple(command)
   output = last_command_started.stdout
   data = JSON.parse(output)
-  nodes.each do |node|
-    if neg
-      expect(data).not_to include(node)
-    else
-      expect(data).to include(node)
+  if sparse
+    expect(data).to include("mode" => "sparse")
+    nodes.each do |node|
+      command = "knife data bag show #{vault} #{item}_key_#{node} -z -c knife.rb -F json"
+      run_simple(command, fail_on_error: false)
+      if neg
+        error = last_command_started.stderr
+        expect(error).to include("ERROR: The object you are looking for could not be found")
+      else
+        data = JSON.parse(last_command_started.stdout)
+        expect(data).to include("id" => "#{item}_key_#{node}")
+      end
     end
+  else
+    expect(data).to include("mode" => "default")
+    nodes.each { |node| neg ? (expect(data).not_to include(node)) : (expect(data).to include(node)) }
   end
 end
 
