@@ -1,7 +1,39 @@
 # Change Log
 
-## [2.9.0](https://github.com/chef/chef-vault/tree/2.9.0) (2016-04-06)
-[Full Changelog](https://github.com/chef/chef-vault/compare/v2.8.0...2.9.0)
+## [v3.0.0](https://github.com/chef/chef-vault/tree/v3.0.0) (2017-04-10)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v2.9.1...v3.0.0)
+
+**Implemented enhancements:**
+
+- Vault creation, list, and destruction in sparse mode [\#252](https://github.com/chef/chef-vault/pull/252) ([rveznaver](https://github.com/rveznaver))
+
+## [v3.0.0.rc2](https://github.com/chef/chef-vault/tree/v3.0.0.rc2) (2016-12-05)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v3.0.0.rc1...v3.0.0.rc2)
+
+**Implemented enhancements:**
+
+- Add feature to save each key in different data bag item [\#246](https://github.com/chef/chef-vault/pull/246) ([rveznaver](https://github.com/rveznaver))
+- Enable testing with Chef Zero [\#244](https://github.com/chef/chef-vault/pull/244) ([rveznaver](https://github.com/rveznaver))
+- Minimize the number of searches [\#243](https://github.com/chef/chef-vault/pull/243) ([thommay](https://github.com/thommay))
+- Optimise queries when finding nodes [\#240](https://github.com/chef/chef-vault/pull/240) ([thommay](https://github.com/thommay))
+
+**Fixed bugs:**
+
+- Use solo\_legacy\_mode fully [\#242](https://github.com/chef/chef-vault/pull/242) ([thommay](https://github.com/thommay))
+- Use legacy solo mode [\#241](https://github.com/chef/chef-vault/pull/241) ([thommay](https://github.com/thommay))
+
+## [v3.0.0.rc1](https://github.com/chef/chef-vault/tree/v3.0.0.rc1) (2016-10-21)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v2.9.0...v3.0.0.rc1)
+
+**Implemented enhancements:**
+
+- Removed deprecated knife commands [\#236](https://github.com/chef/chef-vault/pull/236) ([thommay](https://github.com/thommay))
+- rename ChefKey to Actor [\#234](https://github.com/chef/chef-vault/pull/234) ([thommay](https://github.com/thommay))
+- Move to using a logger for all user output [\#232](https://github.com/chef/chef-vault/pull/232) ([thommay](https://github.com/thommay))
+- Add support for clients [\#227](https://github.com/chef/chef-vault/pull/227) ([svanharmelen](https://github.com/svanharmelen))
+
+## [v2.9.0](https://github.com/chef/chef-vault/tree/v2.9.0) (2016-04-08)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v2.8.0...v2.9.0)
 
 **Implemented enhancements:**
 

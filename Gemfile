@@ -6,7 +6,7 @@ group :development do
 end
 
 group :changelog do
-  gem "github_changelog_generator", git: "https://github.com/tduffield/github-changelog-generator", branch: "adjust-tag-section-mapping"
+  gem "github_changelog_generator", git: "https://github.com/chef/github-changelog-generator"
 end
 
 gemspec
