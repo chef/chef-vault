@@ -66,18 +66,16 @@ class ChefVault
     end
 
     def get_client_key
-      begin
-        get_key("clients")
-      rescue Net::HTTPServerException => http_error
-        if http_error.response.code.eql?("403")
-          print_forbidden_error
-          raise http_error
-        elsif http_error.response.code.eql?("404")
-          raise ChefVault::Exceptions::ClientNotFound,
-                "#{name} is not a valid chef client and/or node"
-        else
-          raise http_error
-        end
+      get_key("clients")
+    rescue Net::HTTPServerException => http_error
+      if http_error.response.code.eql?("403")
+        print_forbidden_error
+        raise http_error
+      elsif http_error.response.code.eql?("404")
+        raise ChefVault::Exceptions::ClientNotFound,
+              "#{name} is not a valid chef client and/or node"
+      else
+        raise http_error
       end
     end
 
