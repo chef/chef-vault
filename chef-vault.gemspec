@@ -45,6 +45,6 @@ Gem::Specification.new do |s|
     # /orgs/org/users/user/keys endpoint was added.
     s.add_development_dependency "chef", "12.8.1"
   else # Test most current version of Chef on 2.2.2
-    s.add_dependency :chef, "~> 12"
+    s.add_development_dependency :chef
   end
 end
