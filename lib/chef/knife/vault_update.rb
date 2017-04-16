@@ -54,6 +54,10 @@ class Chef
         :long => "--clean",
         :description => "Clean clients before performing search"
 
+      option :clean,
+        :long => '--clean',
+        :description => 'Clean clients before performing search'
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
@@ -78,6 +82,13 @@ class Chef
               end
             end
 
+            if clean
+                clients = vault_item.clients().clone().sort()
+                clients.each do |client|
+                    print "Deleting #{client}\n"
+                    vault_item.keys.delete(client, "clients")
+                end
+            end
             vault_item.search(search) if search
             vault_item.clients if search
             vault_item.clients(clients) if clients
