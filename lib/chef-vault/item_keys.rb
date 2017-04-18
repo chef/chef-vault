@@ -64,14 +64,21 @@ class ChefVault
         raise ChefVault::Exceptions::V1Format,
               "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
-      @cache[chef_key.name] = ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      @cache[chef_key.name] = self[chef_key.name] || ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
       @raw_data[type] << chef_key.name unless @raw_data[type].include?(chef_key.name)
       @raw_data[type]
+    end
+
+    def clear_encrypted
+      @cache.clear
+      self["clients"].each { |client| @raw_data.delete(client) }
+      self["admins"].each { |admin| @raw_data.delete(admin) }
     end
 
     def delete(chef_key)
       @cache[chef_key.name] = false
       raw_data[chef_key.type].delete(chef_key.name)
+      raw_data.delete(chef_key.name)
     end
 
     def mode(mode = nil)

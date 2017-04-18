@@ -172,6 +172,9 @@ class ChefVault
     def rotate_keys!(clean_unknown_clients = false)
       @secret = generate_secret
 
+      # clean existing encrypted data for clients/admins
+      keys.clear_encrypted
+
       unless get_clients.empty?
         # a bit of a misnomer; this doesn't remove unknown
         # admins, just clients which are nodes
