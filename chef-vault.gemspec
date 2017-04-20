@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake", "~> 11.0"
   s.add_development_dependency "rspec", "~> 3.4"
-  s.add_development_dependency "mutant-rspec"
   s.add_development_dependency "aruba", "~> 0.6"
   s.add_development_dependency "simplecov", "~> 0.9"
   s.add_development_dependency "simplecov-console", "~> 0.2"
