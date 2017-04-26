@@ -411,15 +411,11 @@ class ChefVault
 
     # checks if a node exists on the Chef server by performing
     # a search against the node index.  If the search returns no
-    # results, the node does not exist.  If it does return results,
-    # check if there is a matching client
+    # results, the node does not exist.
     # @param nodename [String] the name of the node
     # @return [Boolean] whether the node exists or not
     def node_exists?(nodename)
-      # if we don't have a client it really doesn't matter if we have a node.
-      if client_exists?(nodename)
-        search_results.include?(nodename)
-      end
+      search_results.include?(nodename)
     end
 
     # checks if a client exists on the Chef server.  If we get back
