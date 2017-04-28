@@ -39,7 +39,7 @@ class Chef
 
             filtered_vault_data = vault_item.raw_data.select { |x| x != "id" }
 
-            updated_vault_json = edit_data(filtered_vault_data)
+            updated_vault_json = edit_hash(filtered_vault_data)
 
             # Clean out contents of existing local vault_item
             vault_item.raw_data.each do |key, _|
