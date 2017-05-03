@@ -103,7 +103,7 @@ class ChefVault
         results_returned = false
         results = []
         query = Chef::Search::Query.new
-        query.search(:node, statement, filter_result: { name: ["name"] }, rows: 100000) do |node|
+        query.search(:node, statement, filter_result: { name: ["name"] }, rows: 10000) do |node|
           results_returned = true
           results << node["name"]
         end
