@@ -39,7 +39,7 @@ class ChefVault
       ckey = @cache[key]
       return ckey unless ckey.nil?
       # check if the key is saved in sparse mode
-      skey = sparse_key(sparse_id(key))
+      skey = sparse_key(sparse_id(key)) if sparse?
       if skey
         skey[key]
       else
@@ -212,6 +212,10 @@ class ChefVault
     end
 
     # @private
+
+    def sparse?
+      @raw_data["mode"] == "sparse"
+    end
 
     def sparse_id(key, item_id = @raw_data["id"])
       "#{item_id.chomp("_keys")}_key_#{key}"
