@@ -53,7 +53,7 @@ class ChefVault
       ckey = @cache[key]
       return (ckey ? true : false) unless ckey.nil?
       # check if the key is saved in sparse mode
-      return true unless sparse_key(sparse_id(key)).nil?
+      return true if sparse? && sparse_key(sparse_id(key))
       # fallback to non-sparse mode if sparse key is not found
       @raw_data.keys.include?(key)
     end
