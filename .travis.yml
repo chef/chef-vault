@@ -5,6 +5,7 @@ branches:
 rvm:
   - "2.2.5"
   - "2.3.1"
+  - "2.4.1"
 install: bundle install --binstubs --without changelog
 before_install: gem install bundler
 env: TRAVIS_BUILD=true
