@@ -87,7 +87,7 @@ class Chef
                 vault_item["file-content"] = File.open(file) { |f| f.read() }
               end
             else
-              vault_json = edit_data({})
+              vault_json = edit_hash({})
               vault_json.each do |key, value|
                 vault_item[key] = value
               end
