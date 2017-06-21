@@ -1,7 +1,7 @@
 RSpec.describe ChefVault do
   let(:vault) { ChefVault.new("foo") }
 
-  describe '#new' do
+  describe "#new" do
     context "with only a vault parameter specified" do
 
       it "assigns 'foo' to the vault accessor" do
@@ -27,7 +27,7 @@ RSpec.describe ChefVault do
     end
   end
 
-  describe '#version' do
+  describe "#version" do
     it "the version method equals VERSION" do
       expect(vault.version).to eq(ChefVault::VERSION)
     end

@@ -1,5 +1,5 @@
 RSpec.describe ChefVault::ItemKeys do
-  describe '#new' do
+  describe "#new" do
     let(:keys) { ChefVault::ItemKeys.new("foo", "bar") }
 
     it "'foo' is assigned to @data_bag" do
