@@ -7,9 +7,9 @@ class ChefVault
     #  1. Otherwise, just use the first location in the array
     def find_solo_path(item_id)
       if Chef::Config[:data_bag_path].kind_of?(Array)
-        path = Chef::Config[:data_bag_path].find { |dir|
+        path = Chef::Config[:data_bag_path].find do |dir|
           File.exist?(File.join(dir, data_bag, "#{item_id}.json"))
-        }
+        end
 
         path ||= Chef::Config[:data_bag_path].first
         data_bag_path = File.join(path, data_bag)

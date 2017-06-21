@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.9.2](https://github.com/chef/chef-vault/tree/2.9.2) (2017-06-21)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v2.9.0...2.9.2)
+
+- Lock chefstyle to let ChefDK build
+
 ## [2.9.0](https://github.com/chef/chef-vault/tree/2.9.0) (2016-04-06)
 [Full Changelog](https://github.com/chef/chef-vault/compare/v2.8.0...2.9.0)
 
