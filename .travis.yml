@@ -1,11 +1,19 @@
 language: ruby
 branches:
   only:
-    - master
+  - master
 rvm:
-  - "2.2.5"
-  - "2.3.1"
-  - "2.4.1"
+- 2.2.5
+- 2.3.1
+- 2.4.1
 install: bundle install --binstubs --without changelog
 before_install: gem install bundler
 env: TRAVIS_BUILD=true
+deploy:
+  provider: rubygems
+  api_key:
+    secure: NNbOEQWaX+67bsMd1A/BB5lxd2dDzx+4uYsKxSvhVvx34UixKoLRmPhGJr0WapndsXdnG+crPpx3gpseOfJ3u42uNHQI9ASsgOOgmEiJKcW/MO/IQReRI998+XH2A4QLfLQ4JIWjpl8KNZCJSCp7w1LnDV6imy7FSM0mWS+3Lzk=
+  gem: chef-vault
+  on:
+    repo: chef/chef-vault
+    branch: master
