@@ -18,7 +18,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "chef-vault/version"
 
 def self.prerelease?
-  !ENV["TRAVIS_TAG"]
+  !ENV["TRAVIS_TAG"] || ENV["TRAVIS_TAG"].empty?
 end
 
 Gem::Specification.new do |s|
