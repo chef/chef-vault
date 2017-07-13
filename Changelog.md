@@ -1,8 +1,17 @@
 # Change Log
 
+## [v3.2.0](https://github.com/chef/chef-vault/tree/v3.2.0) (2017-07-13)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v3.1.0...v3.2.0)
+
+**Closed issues:**
+
+- offline network installation of the chef-vault gem [\#279](https://github.com/chef/chef-vault/issues/279)
+
 ## [v3.1.0](https://github.com/chef/chef-vault/tree/v3.1.0) (2017-07-04)
-[Full
-Changelog](https://github.com/chef/chef-vault/compare/v3.0.3...v3.1.0)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v2.9.2...v3.1.0)
+
+## [v2.9.2](https://github.com/chef/chef-vault/tree/v2.9.2) (2017-06-21)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v3.0.3...v2.9.2)
 
 **Implemented enhancements:**
 
