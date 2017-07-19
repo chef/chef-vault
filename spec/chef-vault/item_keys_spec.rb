@@ -37,12 +37,25 @@ RSpec.describe ChefVault::ItemKeys do
           end
 
           context "when key is already there" do
-            it "keeps the encoded key in the data bag item under the actor's name and the name in the raw data" do
-              expect(described_class).not_to receive(:encode_key).with(public_key_string, shared_secret)
-              keys.add(chef_key, shared_secret)
-              expect(keys[name]).not_to be_empty
-              expect(keys[type].include?(name)).to eq(true)
-              expect(keys.include?(name)).to eq(true)
+            context "when skip_reencryption is not specified (default to false)" do
+              it "encodes key in the data bag item under the actor's name and the name in the raw data" do
+                expect(described_class).to receive(:encode_key).with(public_key_string, shared_secret).and_return("encrypted_result")
+                keys.add(chef_key, shared_secret)
+                expect(keys[name]).to eq("encrypted_result")
+                expect(keys[type].include?(name)).to eq(true)
+                expect(keys.include?(name)).to eq(true)
+              end
+            end
+
+            context "when skip_reencryption is true" do
+              it "keeps the encoded key in the data bag item under the actor's name and the name in the raw data" do
+                expect(described_class).not_to receive(:encode_key).with(public_key_string, shared_secret)
+                keys.skip_reencryption = true
+                keys.add(chef_key, shared_secret)
+                expect(keys[name]).not_to be_empty
+                expect(keys[type].include?(name)).to eq(true)
+                expect(keys.include?(name)).to eq(true)
+              end
             end
           end
 

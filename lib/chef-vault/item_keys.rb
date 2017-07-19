@@ -21,6 +21,10 @@ class ChefVault
 
     include ChefVault::Mixins
 
+    # @!attribute [rw] skip_reencryption
+    #   @return [TrueClass,FalseClass] whether symetrical key is reencrypted all the time or re-used from previous computations
+    attr_accessor :skip_reencryption
+
     def initialize(vault, name)
       super() # parentheses required to strip off parameters
       @data_bag = vault
@@ -64,7 +68,8 @@ class ChefVault
         raise ChefVault::Exceptions::V1Format,
               "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
-      @cache[chef_key.name] = self[chef_key.name] || ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      @cache[chef_key.name] = skip_reencryption ? self[chef_key.name] : nil
+      @cache[chef_key.name] ||= ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
       @raw_data[type] << chef_key.name unless @raw_data[type].include?(chef_key.name)
       @raw_data[type]
     end
