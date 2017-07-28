@@ -30,4 +30,3 @@ test_script:
   - c:\opscode\chefdk\bin\chef.bat exec bundle exec rake spec
   # aruba on windows seems pretty terribadly broken: https://github.com/cucumber/aruba/pull/422
   # - c:\opscode\chefdk\bin\chef.bat exec bundle exec cucumber
-  - c:\opscode\chefdk\bin\chef.bat exec bundle exec rake style
