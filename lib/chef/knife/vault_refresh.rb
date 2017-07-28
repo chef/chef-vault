@@ -26,16 +26,22 @@ class Chef
         :long => "--clean-unknown-clients",
         :description => "Remove unknown clients during refresh"
 
+      option :skip_reencryption,
+        :long => "--skip-reencryption",
+        :description => "Skip reencrypt symetrical key for existing clients/admins."
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
         clean = config[:clean_unknown_clients]
+        skip_reencryption = config[:skip_reencryption]
 
         set_mode(config[:vault_mode])
 
         if vault && item
           begin
             vault_item = ChefVault::Item.load(vault, item)
+            vault_item.skip_reencryption = skip_reencryption
             vault_item.refresh(clean)
           rescue ChefVault::Exceptions::KeysNotFound,
                  ChefVault::Exceptions::ItemNotFound

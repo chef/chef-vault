@@ -47,6 +47,9 @@ class ChefVault
     # revisit this as part of the 3.x rewrite
     def_delegator :@raw_data, :keys, :raw_keys
 
+    # allow to control whether keys are reencrypted or cached
+    def_delegator :keys, :skip_reencryption=
+
     # constructs a new ChefVault::Item
     # @param vault [String] the name of the data bag that contains the vault
     # @param name [String] the name of the item in the vault
@@ -441,6 +444,7 @@ class ChefVault
     def handle_client_action(api_client, action)
       case action
       when :add
+        # TODO: next line seems to create a client from the api_client (which seems to be identical)
         client = load_actor(api_client.name, "clients")
         add_client(client)
       when :delete
