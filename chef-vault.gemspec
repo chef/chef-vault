@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
   s.license          = "Apache License, v2.0"
-  s.files            = `git ls-files`.split("\n")
+  s.files            = `git ls-files`.split("\n").select { |f| f =~ %r{^(?:LiCENSE|bin/|lib/)}i }
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
