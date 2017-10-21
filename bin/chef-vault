@@ -94,5 +94,5 @@ ChefVault::Log.info "#{options[:vault]}/#{options[:item]}"
 
 options[:values].split(",").each do |value|
   value.strip! # remove white space
-  ChefVault::Log.info ("\t#{value}: #{item[value]}")
+  ChefVault::Log.info("\t#{value}: #{item[value]}")
 end
