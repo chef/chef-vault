@@ -241,7 +241,7 @@ RSpec.describe ChefVault::Item do
 
       it "should emit a warning if search returns a node without a public key" do
         # it should however emit a warning that you have a borked node
-        expect(ChefVault::Log).to receive(:warn).with(/node 'bar' has no private key; skipping/)
+        expect(ChefVault::Log).to receive(:warn).with(/node 'bar' has no 'default' public key; skipping/)
         item.clients("*:*")
       end
     end

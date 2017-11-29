@@ -93,7 +93,7 @@ class ChefVault
             client = load_actor(name, "clients")
             handle_client_action(client, action)
           rescue ChefVault::Exceptions::ClientNotFound
-            ChefVault::Log.warn "node '#{name}' has no private key; skipping"
+            ChefVault::Log.warn "node '#{name}' has no 'default' public key; skipping"
           end
         end
       end

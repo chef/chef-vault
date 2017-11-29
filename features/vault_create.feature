@@ -17,8 +17,8 @@ Feature: knife vault create
     And I delete clients 'two,three' from the Chef server
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'two,three'
     Then the vault item 'test/item' should not be encrypted for 'one,two,three'
-    And the output should contain "node 'two' has no private key; skipping"
-    And the output should contain "node 'three' has no private key; skipping"
+    And the output should contain "node 'two' has no 'default' public key; skipping"
+    And the output should contain "node 'three' has no 'default' public key; skipping"
     And 'two,three' should not be a client for the vault item 'test/item'
 
   Scenario: create vault with mix of known and unknown clients
@@ -26,7 +26,7 @@ Feature: knife vault create
     And I delete client 'three' from the Chef server
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two,three'
     Then the vault item 'test/item' should be encrypted for 'one,two'
-    And the output should contain "node 'three' has no private key; skipping"
+    And the output should contain "node 'three' has no 'default' public key; skipping"
     And 'one,two' should be a client for the vault item 'test/item'
     And 'three' should not be a client for the vault item 'test/item'
 
