@@ -252,12 +252,22 @@ Use `chef-vault --help` to see all all available options
 
 ## TESTING
 
+To use Chef Vault in Test Kitchen, ensure that the `chef-vault` recipe
+is in your `run_list`, and then add the following to your
+suite in `.kitchen.yml`:
+
+```yaml
+data_bags_path: 'path/to/data_bags'
+attributes:
+  chef_vault:
+    databags_fallback: true
+```
+
+You can then use the `chef_vault_item` helper in the aforementioned chef-vault cookbook.
+
 To stub vault items in ChefSpec, use the
 [chef-vault-testfixtures](https://rubygems.org/gems/chef-vault-testfixtures)
 gem.
-
-To fall back to unencrypted JSON files in Test Kitchen, use the
-`chef_vault_item` helper in the aforementioned chef-vault cookbook.
 
 ## Contributing
 
