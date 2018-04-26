@@ -156,7 +156,7 @@ class ChefVault
     end
 
     def secret
-      if @keys.include?(@node_name)
+      if @keys.include?(@node_name) && !@keys[@node_name].nil?
         private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read())
         begin
           private_key.private_decrypt(Base64.decode64(@keys[@node_name]))
