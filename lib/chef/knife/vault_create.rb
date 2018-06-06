@@ -29,7 +29,7 @@ class Chef
       option :keys_mode,
         :short => "-K KEYS_MODE",
         :long => "--keys-mode KEYS_MODE",
-        :description => "Mode in which to save vault keys"
+        :description => "Mode in which to save vault keys. Options are `sparse`, which creates a data bag item per vault key, or `default` which creates a single `<item>_keys` data bag item."
 
       option :search,
         :short => "-S SEARCH",
