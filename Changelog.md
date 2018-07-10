@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.3.1](https://github.com/chef/chef-vault/tree/v3.3.1) (2018-07-10)
+[Full Changelog](https://github.com/chef/chef-vault/compare/v3.3.0...v3.3.1)
+
+**Closed issues:**
+
+- Fix FrozenError when using 'knife vault remove'
+
 ## [v3.3.0](https://github.com/chef/chef-vault/tree/v3.3.0) (2017-07-28)
 [Full Changelog](https://github.com/chef/chef-vault/compare/v3.2.0...v3.3.0)
 
