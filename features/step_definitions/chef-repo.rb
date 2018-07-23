@@ -4,12 +4,12 @@ Given(/^a local mode chef repo with nodes '(.+?)'(?: with admins '(.+?)')?$/) do
     create_directory dir
   end
   # create a basic knife.rb
-  write_file "knife.rb", <<EOF
-local_mode true
-chef_repo_path '.'
-chef_zero.enabled true
-knife[:vault_mode] = 'client'
-EOF
+  write_file "knife.rb", <<~EOF
+    local_mode true
+    chef_repo_path '.'
+    chef_zero.enabled true
+    knife[:vault_mode] = 'client'
+  EOF
   # create the admin users and capture their private key we
   # always create an admin called 'admin' because otherwise subsequent
   # steps become annoying to determine who the admin is
@@ -19,10 +19,10 @@ EOF
     create_admin(admin)
   end
   # add the admin key to the knife configuration
-  append_to_file "knife.rb", <<EOF
-node_name 'admin'
-client_key 'admin.pem'
-EOF
+  append_to_file "knife.rb", <<~EOF
+    node_name 'admin'
+    client_key 'admin.pem'
+  EOF
   # create the requested nodes
   nodelist.split(/,/).each do |node|
     create_client(node)

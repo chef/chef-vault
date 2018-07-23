@@ -21,23 +21,23 @@ if !detected.nil?
                     corrected.to_a[1].to_i
                   end
   if num_detected == num_corrected
-    puts <<EOF
-pre-commit hook: Ran `bundle exec chefstyle -a` to autocleanup errors if any existed and
-#{num_detected} were detected, but all were cleaned up. `git add` all files that were
-autoupdated and try commiting again. New git status:
+    puts <<~EOF
+      pre-commit hook: Ran `bundle exec chefstyle -a` to autocleanup errors if any existed and
+      #{num_detected} were detected, but all were cleaned up. `git add` all files that were
+      autoupdated and try commiting again. New git status:
 
-EOF
+    EOF
     puts `git status`
   else
-    puts <<EOF
-pre-commit hook: Ran `bundle exec chefstyle -a` to autocleanup errors if any existed and
-#{num_detected} were detected, but #{num_detected - num_corrected} could not be cleaned up
-automatically. Run:
+    puts <<~EOF
+      pre-commit hook: Ran `bundle exec chefstyle -a` to autocleanup errors if any existed and
+      #{num_detected} were detected, but #{num_detected - num_corrected} could not be cleaned up
+      automatically. Run:
 
-bundle exec chefstyle -a
+      bundle exec chefstyle -a
 
-to see remaining errors to clean up by hand, add all updated files, and try commiting again.
-EOF
+      to see remaining errors to clean up by hand, add all updated files, and try commiting again.
+    EOF
   end
   exit 1
 end
