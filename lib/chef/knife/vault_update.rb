@@ -27,32 +27,32 @@ class Chef
       banner "knife vault update VAULT ITEM VALUES (options)"
 
       option :search,
-        :short => "-S SEARCH",
-        :long => "--search SEARCH",
-        :description => "Chef SOLR search for clients"
+        short: "-S SEARCH",
+        long: "--search SEARCH",
+        description: "Chef SOLR search for clients"
 
       option :clients,
-        :short => "-C CLIENTS",
-        :long => "--clients CLIENTS",
-        :description => "Chef clients to be added as clients"
+        short: "-C CLIENTS",
+        long: "--clients CLIENTS",
+        description: "Chef clients to be added as clients"
 
       option :admins,
-        :short => "-A ADMINS",
-        :long => "--admins ADMINS",
-        :description => "Chef users to be added as admins"
+        short: "-A ADMINS",
+        long: "--admins ADMINS",
+        description: "Chef users to be added as admins"
 
       option :json,
-        :short => "-J FILE",
-        :long => "--json FILE",
-        :description => "File containing JSON data to encrypt"
+        short: "-J FILE",
+        long: "--json FILE",
+        description: "File containing JSON data to encrypt"
 
       option :file,
-        :long => "--file FILE",
-        :description => "File to be added to vault item as file-content"
+        long: "--file FILE",
+        description: "File to be added to vault item as file-content"
 
       option :clean,
-        :long => "--clean",
-        :description => "Clean clients before performing search"
+        long: "--clean",
+        description: "Clean clients before performing search"
 
       def run
         vault = @name_args[0]

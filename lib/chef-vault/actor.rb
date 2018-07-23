@@ -123,25 +123,25 @@ class ChefVault
     end
 
     def print_forbidden_error
-      ChefVault::Log.error <<EOF
-ERROR: You received a 403 FORBIDDEN while requesting an #{type} key for #{name}.
+      ChefVault::Log.error <<~EOF
+        ERROR: You received a 403 FORBIDDEN while requesting an #{type} key for #{name}.
 
-If you are on Chef Server < 12.5:
-  Clients do not have access to all public keys within their org.
-  Either upgrade to Chef Server >= 12.5 or make this request using a user.
+        If you are on Chef Server < 12.5:
+          Clients do not have access to all public keys within their org.
+          Either upgrade to Chef Server >= 12.5 or make this request using a user.
 
-If you are on Chef Server == 12.5.0
-  All clients and users have access to the public keys endpoint. Getting
-  this error on 12.5.0 is unexpected regardless of what your
-  public_key_read_access_group contains.
+        If you are on Chef Server == 12.5.0
+          All clients and users have access to the public keys endpoint. Getting
+          this error on 12.5.0 is unexpected regardless of what your
+          public_key_read_access_group contains.
 
-If you are on Chef Server > 12.5.1
-  Has your public_key_read_access_group been modified? This group controls
-  read access on public keys within your org. It defaults to the users
-  and client groups, so all org actors should have permission unless
-  the defaults have been changed.
+        If you are on Chef Server > 12.5.1
+          Has your public_key_read_access_group been modified? This group controls
+          read access on public keys within your org. It defaults to the users
+          and client groups, so all org actors should have permission unless
+          the defaults have been changed.
 
-EOF
+      EOF
     end
   end
 end
