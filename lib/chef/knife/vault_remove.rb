@@ -70,8 +70,8 @@ class Chef
               end
 
               remove_items.each do |key|
-                key.strip!
-                vault_item.remove(key)
+                key = key.dup
+                vault_item.remove(key.strip)
               end
             end
 
