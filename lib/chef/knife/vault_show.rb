@@ -94,7 +94,7 @@ class Chef
           split_vault_keys(bag)[1].each do |item|
             data << item
           end
-          output(list)
+          output(data)
         else
           output "data bag #{vault} is not a chef-vault"
         end
