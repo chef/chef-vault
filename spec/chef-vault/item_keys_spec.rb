@@ -80,7 +80,7 @@ RSpec.describe ChefVault::ItemKeys do
 
           it "removes the actor's name from the data bag and from the array for the actor's type" do
             keys.delete(chef_key)
-            expect(keys.has_key?(chef_key.name)).to eq(false)
+            expect(keys.key?(chef_key.name)).to eq(false)
             expect(keys[type].include?(name)).to eq(false)
             expect(keys.include?(name)).to eq(false)
           end
