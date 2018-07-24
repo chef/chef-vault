@@ -1,8 +1,8 @@
 RSpec.describe ChefVault::ChefApi do
   let(:root_url) { "https://localhost" }
   let(:scoped_url) { "https://localhost/organizations/fakeorg" }
-  let(:api_v0_hash) { { :api_version => "0" } }
-  let(:api_v1_hash) { { :api_version => "1" } }
+  let(:api_v0_hash) { { api_version: "0" } }
+  let(:api_v1_hash) { { api_version: "1" } }
 
   before do
     Chef::Config[:chef_server_root] = root_url

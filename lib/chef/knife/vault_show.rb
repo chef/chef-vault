@@ -23,14 +23,14 @@ class Chef
       banner "knife vault show VAULT [ITEM] [VALUES] (options)"
 
       option :mode,
-        :short => "-M MODE",
-        :long => "--mode MODE",
-        :description => "Chef mode to run in default - solo"
+        short: "-M MODE",
+        long: "--mode MODE",
+        description: "Chef mode to run in default - solo"
 
       option :print,
-        :short => "-p TYPE",
-        :long => "--print TYPE",
-        :description => "Print extra vault data, can be search, admins, clients or all"
+        short: "-p TYPE",
+        long: "--print TYPE",
+        description: "Print extra vault data, can be search, admins, clients or all"
 
       def run
         vault = @name_args[0]

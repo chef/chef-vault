@@ -1,6 +1,10 @@
 AllCops:
+  TargetRubyVersion: 2.2
   Exclude:
     - "spec/data/**/*"
     - "vendor/**/*"
     - "pkg/**/*"
     - "tmp/**/*"
+# Disabled until the gem moves to supporting only Ruby 2.3+
+Layout/IndentHeredoc:
+  Enabled: false
