@@ -20,19 +20,19 @@ class ChefVault
   class ChefApi
 
     def rest_v0
-      @rest_v0 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_root], { :api_version => "0" })
+      @rest_v0 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_root], { api_version: "0" })
     end
 
     def rest_v1
-      @rest_v1 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_root], { :api_version => "1" })
+      @rest_v1 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_root], { api_version: "1" })
     end
 
     def org_scoped_rest_v0
-      @org_scoped_rest_v0 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_url], { :api_version => "0" })
+      @org_scoped_rest_v0 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_url], { api_version: "0" })
     end
 
     def org_scoped_rest_v1
-      @org_scoped_rest_v1 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_url], { :api_version => "1" })
+      @org_scoped_rest_v1 ||= Chef::ServerAPI.new(Chef::Config[:chef_server_url], { api_version: "1" })
     end
 
   end
