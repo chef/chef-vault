@@ -37,11 +37,4 @@ Gem::Specification.new do |s|
   s.executables      = %w{ chef-vault }
 
   s.required_ruby_version = ">= 2.2.0"
-
-  s.add_development_dependency "rake", "~> 12.0"
-  s.add_development_dependency "rspec", "~> 3.4"
-  s.add_development_dependency "aruba", "~> 0.6"
-  s.add_development_dependency "simplecov", "~> 0.9"
-  s.add_development_dependency "simplecov-console", "~> 0.2"
-  s.add_development_dependency "chef"
 end

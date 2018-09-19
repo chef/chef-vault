@@ -15,6 +15,6 @@ branches:
   only:
   - master
 
-bundler_args: --without docs development
+bundler_args: --without docs
 
 script: bundle exec rake
