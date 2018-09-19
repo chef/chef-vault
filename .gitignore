@@ -31,3 +31,7 @@ Gemfile.lock
 .rvmrc
 
 .chef
+
+# editor
+.idea
+*.swp

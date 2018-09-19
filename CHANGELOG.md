@@ -1,18 +1,19 @@
-# Change Log
+# chef-vault Change Log
 
-## [v3.3.1](https://github.com/chef/chef-vault/tree/v3.3.1) (2018-07-10)
-[Full Changelog](https://github.com/chef/chef-vault/compare/v3.3.0...v3.3.1)
+<!-- latest_release -->
+<!-- latest_release -->
 
-**Closed issues:**
+<!-- release_rollup -->
+<!-- release_rollup -->
 
-- Fix FrozenError when using 'knife vault remove'
-
+<!-- latest_stable_release -->
 ## [v3.3.0](https://github.com/chef/chef-vault/tree/v3.3.0) (2017-07-28)
 [Full Changelog](https://github.com/chef/chef-vault/compare/v3.2.0...v3.3.0)
 
 **Closed issues:**
 
 - With recreated nodes, existing keys are not updated [\#286](https://github.com/chef/chef-vault/issues/286)
+<!-- latest_stable_release -->
 
 ## [v3.2.0](https://github.com/chef/chef-vault/tree/v3.2.0) (2017-07-11)
 [Full Changelog](https://github.com/chef/chef-vault/compare/v3.1.0...v3.2.0)

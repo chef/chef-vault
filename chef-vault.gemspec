@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
   s.name             = "chef-vault"
   s.version          = ChefVault::VERSION
   s.version          = "#{s.version}-pre#{ENV['TRAVIS_BUILD_NUMBER']}" if ENV["TRAVIS"]
-  s.has_rdoc         = true
   s.authors          = ["Thom May"]
   s.email            = ["thom@chef.io"]
   s.summary          = "Data encryption support for Chef using data bags"
@@ -38,17 +37,4 @@ Gem::Specification.new do |s|
   s.executables      = %w{ chef-vault }
 
   s.required_ruby_version = ">= 2.2.0"
-
-  s.add_development_dependency "rake", "~> 11.0"
-  s.add_development_dependency "rspec", "~> 3.4"
-  s.add_development_dependency "aruba", "~> 0.6"
-  s.add_development_dependency "simplecov", "~> 0.9"
-  s.add_development_dependency "simplecov-console", "~> 0.2"
-  if ENV.key?("TRAVIS_BUILD") && RUBY_VERSION == "2.1.9"
-    # Test version of Chef with Chef Zero before
-    # /orgs/org/users/user/keys endpoint was added.
-    s.add_development_dependency "chef", "12.8.1"
-  else # Test most current version of Chef on 2.2.2
-    s.add_development_dependency :chef
-  end
 end

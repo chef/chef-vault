@@ -66,8 +66,8 @@ class ChefVault
       @secret = generate_secret
       @encrypted = false
       opts = {
-        :node_name => Chef::Config[:node_name],
-        :client_key_path => Chef::Config[:client_key],
+        node_name: Chef::Config[:node_name],
+        client_key_path: Chef::Config[:client_key],
       }.merge(opts)
       @node_name = opts[:node_name]
       @client_key_path = opts[:client_key_path]

@@ -23,12 +23,12 @@ class Chef
       banner "knife vault refresh VAULT ITEM"
 
       option :clean_unknown_clients,
-        :long => "--clean-unknown-clients",
-        :description => "Remove unknown clients during refresh"
+        long: "--clean-unknown-clients",
+        description: "Remove unknown clients during refresh"
 
       option :skip_reencryption,
-        :long => "--skip-reencryption",
-        :description => "Skip reencrypt symetrical key for existing clients/admins."
+        long: "--skip-reencryption",
+        description: "Skip reencrypt symetrical key for existing clients/admins."
 
       def run
         vault = @name_args[0]
