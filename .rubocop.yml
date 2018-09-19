@@ -1,6 +1,13 @@
-AllCops:
+Layout/IndentHeredoc:
   Exclude:
-    - "spec/data/**/*"
-    - "vendor/**/*"
-    - "pkg/**/*"
-    - "tmp/**/*"
+    - 'features/step_definitions/chef-repo.rb'
+    - 'hooks/pre-commit'
+    - 'lib/chef-vault/actor.rb'
+
+Style/MutableConstant:
+  Exclude:
+    - 'lib/chef-vault/version.rb'
+
+Style/PreferredHashMethods:
+  Exclude:
+    - 'spec/chef-vault/item_keys_spec.rb'
