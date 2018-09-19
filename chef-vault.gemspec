@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
   s.name             = "chef-vault"
   s.version          = ChefVault::VERSION
   s.version          = "#{s.version}-pre#{ENV['TRAVIS_BUILD_NUMBER']}" if ENV["TRAVIS"]
-  s.has_rdoc         = true
   s.authors          = ["Thom May"]
   s.email            = ["thom@chef.io"]
   s.summary          = "Data encryption support for Chef using data bags"
