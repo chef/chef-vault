@@ -1,4 +1,15 @@
-# Change Log
+# chef-vault Change Log
+
+
+
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
+<!-- latest_stable_release -->
 
 ## [v3.3.1](https://github.com/chef/chef-vault/tree/v3.3.1) (2018-07-10)
 [Full Changelog](https://github.com/chef/chef-vault/compare/v3.3.0...v3.3.1)
