@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release unreleased -->
+## Unreleased
+
+#### Merged Pull Requests
+- Switch from github changelog generator to Expeditor [#322](https://github.com/chef/chef-vault/pull/322) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=3.3.0 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Switch from github changelog generator to Expeditor [#322](https://github.com/chef/chef-vault/pull/322) ([tas50](https://github.com/tas50)) <!-- 3.4.0 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
