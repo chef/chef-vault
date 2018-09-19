@@ -23,9 +23,9 @@ class Chef
       banner "knife vault edit VAULT ITEM (options)"
 
       option :mode,
-        :short => "-M MODE",
-        :long => "--mode MODE",
-        :description => "Chef mode to run in default - solo"
+        short: "-M MODE",
+        long: "--mode MODE",
+        description: "Chef mode to run in default - solo"
 
       def run
         vault = @name_args[0]

@@ -28,10 +28,10 @@ class Chef
           end
 
           option :vault_mode,
-            :short => "-M MODE",
-            :long => "--mode MODE",
-            :description => "Chef mode to run in default - solo",
-            :proc => proc { |i| Chef::Config[:knife][:vault_mode] = i }
+            short: "-M MODE",
+            long: "--mode MODE",
+            description: "Chef mode to run in default - solo",
+            proc: proc { |i| Chef::Config[:knife][:vault_mode] = i }
         end
       end
 

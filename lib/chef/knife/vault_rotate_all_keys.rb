@@ -23,8 +23,8 @@ class Chef
       banner "knife vault rotate all keys"
 
       option :clean_unknown_clients,
-        :long => "--clean-unknown-clients",
-        :description => "Remove unknown clients during key rotation"
+        long: "--clean-unknown-clients",
+        description: "Remove unknown clients during key rotation"
 
       def run
         clean_unknown_clients = config[:clean_unknown_clients]
