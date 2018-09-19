@@ -1,3 +1,10 @@
+AllCops:
+  Exclude:
+    - "spec/data/**/*"
+    - "vendor/**/*"
+    - "pkg/**/*"
+    - "tmp/**/*"
+
 Layout/IndentHeredoc:
   Exclude:
     - 'features/step_definitions/chef-repo.rb'
