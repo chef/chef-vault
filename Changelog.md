@@ -1,7 +1,5 @@
 # chef-vault Change Log
 
-
-
 <!-- latest_release -->
 <!-- latest_release -->
 
