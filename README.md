@@ -8,8 +8,6 @@
 
 [![Code Climate](https://codeclimate.com/github/chef/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/chef/chef-vault)
 
-[![Join the chat at https://gitter.im/Nordstrom/chef-vault](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Nordstrom/chef-vault)
-
 ## DESCRIPTION:
 
 Gem that allows you to encrypt a Chef Data Bag Item using the public keys of
