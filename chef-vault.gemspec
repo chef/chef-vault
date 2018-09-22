@@ -30,8 +30,8 @@ Gem::Specification.new do |s|
   s.summary          = "Data encryption support for Chef using data bags"
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
-  s.license          = "Apache License, v2.0"
-  s.files            = `git ls-files`.split("\n").select { |f| f =~ %r{^(?:LICENSE|Gemfile|bin/|lib/)}i }
+  s.license          = "Apache-2.0"
+  s.files            = %w{LICENSE README.md Gemfile} + Dir.glob("*.gemspec") + `git ls-files`.split("\n").select { |f| f =~ %r{^(?:bin/|lib/)}i }
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
