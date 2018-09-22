@@ -1,25 +1,22 @@
 # chef-vault Change Log
 
-<!-- latest_release 3.4.2 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v3.4.2](https://github.com/chef/chef-vault/tree/v3.4.2) (2018-09-22)
 
 #### Merged Pull Requests
 - Fix license string in gemspec + ship gemspec / readme [#324](https://github.com/chef/chef-vault/pull/324) ([tas50](https://github.com/tas50))
-<!-- latest_release -->
-
-<!-- release_rollup since=3.4.1 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fix license string in gemspec + ship gemspec / readme [#324](https://github.com/chef/chef-vault/pull/324) ([tas50](https://github.com/tas50)) <!-- 3.4.2 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v3.4.1](https://github.com/chef/chef-vault/tree/v3.4.1) (2018-09-22)
 
 #### Merged Pull Requests
 - Ship the gemfile in the gem [#323](https://github.com/chef/chef-vault/pull/323) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v3.4.0](https://github.com/chef/chef-vault/tree/v3.4.0) (2018-09-19)
 
