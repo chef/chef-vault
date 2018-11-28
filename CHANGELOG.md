@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 3.4.4 -->
+## [v3.4.4](https://github.com/chef/chef-vault/tree/v3.4.4) (2018-11-28)
+
+#### Merged Pull Requests
+- add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=3.4.3 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito)) <!-- 3.4.4 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
