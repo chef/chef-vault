@@ -142,6 +142,7 @@ Short | Long | Description | Default | Valid Values | Sub-Commands
 -F FORMAT | --format FORMAT | Format for decrypted output | summary | summary, json, yaml, pp | show
 | --clean-unknown-clients | Remove unknown clients during key rotation | | | refresh, remove, rotate
 | --clean | Clean clients list before performing search | | | refresh, update
+| --keys-mode | | method to use to manage keys | default | default, sparse | create
 
 ## USAGE IN RECIPES
 
@@ -247,6 +248,11 @@ Use `chef-vault --help` to see all all available options
 ### Example usage (password)
 
     chef-vault -v passwords -i root -a password -k /etc/chef/knife.rb
+
+## SCALING
+As more nodes use a shared key, some operations like refresh or update can execute more efficiently using sparse mode (see [issue #237](https://github.com/chef/chef-vault/issues/237)).
+
+To create a vault item using sparse mode, pass the value `sparse` to the `--keys-mode` option to `knife vault create`.
 
 ## TESTING
 
