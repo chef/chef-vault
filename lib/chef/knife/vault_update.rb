@@ -55,9 +55,9 @@ class Chef
         description: "Clean clients before performing search"
 
       option :keys_mode,
-         short: '-K KEYS_MODE',
-         long: '--keys-mode KEYS_MODE',
-         description: 'Mode in which to save vault keys'
+         short: "-K KEYS_MODE",
+         long: "--keys-mode KEYS_MODE",
+         description: "Mode in which to save vault keys"
 
       def run
         vault = @name_args[0]
