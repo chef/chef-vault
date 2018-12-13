@@ -111,19 +111,6 @@ class ChefVault
     end
 
     def save(item_id = @raw_data["id"])
-      # create data bag if not running in solo mode
-      unless Chef::Config[:solo_legacy_mode]
-        begin
-          Chef::DataBag.load(data_bag)
-        rescue Net::HTTPServerException => http_error
-          if http_error.response.code == "404"
-            chef_data_bag = Chef::DataBag.new
-            chef_data_bag.name data_bag
-            chef_data_bag.create
-          end
-        end
-      end
-
       # write cached keys to data
       @cache.each do |key, val|
         # delete across all modes on key deletion
@@ -164,21 +151,21 @@ class ChefVault
 
       if @raw_data["mode"] == "sparse"
         @raw_data.keys.each do |key, val|
-        next if %w{ id clients admins search_query mode }.include?(key)
-        @raw_data.delete(key)
-        skey = Chef::DataBagItem.from_hash(
-            "data_bag" => data_bag,
-            "id" => sparse_id(key),
-            key => val
-        )
+          next if %w{ id clients admins search_query mode }.include?(key)
+          @raw_data.delete(key)
+          skey = Chef::DataBagItem.from_hash(
+              "data_bag" => data_bag,
+              "id" => sparse_id(key),
+              key => val
+          )
 
-        if Chef::Config[:solo_legacy_mode]
-          save_solo(skey.id, skey.raw_data)
-        else
-          skey.save
+          if Chef::Config[:solo_legacy_mode]
+            save_solo(skey.id, skey.raw_data)
+          else
+            skey.save
+          end
         end
       end
-    end
 
       # save raw data
       if Chef::Config[:solo_legacy_mode]
