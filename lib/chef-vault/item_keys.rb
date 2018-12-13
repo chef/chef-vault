@@ -164,7 +164,7 @@ class ChefVault
 
       if @raw_data["mode"] == "sparse"
         @raw_data.keys.each do |key, val|
-        next if %w[ id clients admins search_query mode ].include?(key)
+        next if %w{ id clients admins search_query mode }.include?(key)
         @raw_data.delete(key)
         skey = Chef::DataBagItem.from_hash(
             "data_bag" => data_bag,
