@@ -143,6 +143,7 @@ RSpec.describe ChefVault::ItemKeys do
           keys.save("bar")
           expect(Chef::DataBagItem.load("foo", "bar").to_hash[client_name]).to be_nil
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
+          expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash['client_name']).not_to be_empty
           keys.delete(chef_key)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
@@ -252,6 +253,7 @@ RSpec.describe ChefVault::ItemKeys do
           keys.save("bar")
           expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"id":.*"bar"/)
           expect(File.read(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to match(/"id":.*"bar_key_client_name"/)
+          expect(File.read(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to match(/"client_name": ".*"/)
           keys.delete(chef_key)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
