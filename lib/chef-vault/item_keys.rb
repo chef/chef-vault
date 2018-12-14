@@ -111,6 +111,19 @@ class ChefVault
     end
 
     def save(item_id = @raw_data["id"])
+      # create data bag if not running in solo mode
+      unless Chef::Config[:solo_legacy_mode]
+        begin
+          Chef::DataBag.load(data_bag)
+        rescue Net::HTTPServerException => http_error
+          if http_error.response.code == "404"
+            chef_data_bag = Chef::DataBag.new
+            chef_data_bag.name data_bag
+            chef_data_bag.create
+          end
+        end
+      end
+
       # write cached keys to data
       @cache.each do |key, val|
         # delete across all modes on key deletion
