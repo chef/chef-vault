@@ -69,7 +69,11 @@ class ChefVault
               "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
       @cache[chef_key.name] = skip_reencryption ? self[chef_key.name] : nil
-      @cache[chef_key.name] ||= ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      begin
+        @cache[chef_key.name] ||= ChefVault::ItemKeys.encode_key(chef_key.key, data_bag_shared_secret)
+      rescue OpenSSL::PKey::RSAError
+        raise OpenSSL::PKey::RSAError, "While adding #{chef_key.type} an invalid or old (pre chef-server 12) format public key was found for #{chef_key.name}"
+      end
       @raw_data[type] << chef_key.name unless @raw_data[type].include?(chef_key.name)
       @raw_data[type]
     end
