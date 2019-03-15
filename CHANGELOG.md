@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 3.4.4 -->
-## [v3.4.4](https://github.com/chef/chef-vault/tree/v3.4.4) (2018-11-28)
+<!-- latest_release 3.4.5 -->
+## [v3.4.5](https://github.com/chef/chef-vault/tree/v3.4.5) (2019-03-15)
 
 #### Merged Pull Requests
-- add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito))
+- Send a better error message when an invalid SSL key is encountered when creating a vault item [#330](https://github.com/chef/chef-vault/pull/330) ([MarkGibbons](https://github.com/MarkGibbons))
 <!-- latest_release -->
 
 <!-- release_rollup since=3.4.3 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Send a better error message when an invalid SSL key is encountered when creating a vault item [#330](https://github.com/chef/chef-vault/pull/330) ([MarkGibbons](https://github.com/MarkGibbons)) <!-- 3.4.5 -->
 - add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito)) <!-- 3.4.4 -->
 <!-- release_rollup -->
 
