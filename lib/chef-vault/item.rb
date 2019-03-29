@@ -438,7 +438,7 @@ class ChefVault
     end
 
     # adds or deletes an API client from the vault item keys
-    # @param client [Chef::ApiClient] the API client to operate on
+    # @param api_client [Chef::ApiClient] the API client to operate on
     # @param action [Symbol] :add or :delete
     # @return [void]
     def handle_client_action(api_client, action)
@@ -460,7 +460,7 @@ class ChefVault
     end
 
     # removes a client to the vault item keys
-    # @param client_or_node [String] the name of the API client or node to remove
+    # @param name [String] the name of the API client or node to remove
     # @return [void]
     def delete_client_or_node(name)
       client = load_actor(name, "clients")
