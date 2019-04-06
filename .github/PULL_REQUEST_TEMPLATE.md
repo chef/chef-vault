@@ -12,3 +12,4 @@ StackOverflow discussions that are relevant]
 - [ ] New functionality includes tests
 - [ ] All tests pass
 - [ ] All commits have been signed-off for the Developer Certificate of Origin. See <https://github.com/chef/chef/blob/master/CONTRIBUTING.md#developer-certification-of-origin-dco>
+- [ ] PR title is a worthy inclusion in the CHANGELOG
