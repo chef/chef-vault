@@ -2,11 +2,9 @@
 
 [![Gem Version](https://badge.fury.io/rb/chef-vault.svg)](http://badge.fury.io/rb/chef-vault)
 
-[![Build Status](https://travis-ci.org/chef/chef-vault.svg?branch=master)](https://travis-ci.org/chef/chef-vault)
+[![Build status](https://badge.buildkite.com/12995d1511cba167621634791600aa4b1156a42ef557452d07.svg?branch=master)](https://buildkite.com/chef-oss/chef-chef-vault-master-verify)
 
 [![Inline docs](http://inch-ci.org/github/chef/chef-vault.svg?branch=master)](http://inch-ci.org/github/chef/chef-vault)
-
-[![Code Climate](https://codeclimate.com/github/chef/chef-vault/badges/gpa.svg)](https://codeclimate.com/github/chef/chef-vault)
 
 ## DESCRIPTION:
 
