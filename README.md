@@ -80,7 +80,7 @@ directory and try out the commands that failed:
 
 ```
 cd tmp/aruba
-bundle exec knife <your command that failed from test with -c knife.rb>
+bundle exec knife <your command that failed from test with -c config.rb>
 ```
 
 Optionally add `-VV` to the above to get a full stacktrace.
@@ -97,14 +97,14 @@ This will fix up your rubocop errors automatically, and warn you about any it ca
 
 See KNIFE_EXAMPLES.md for examples of commands
 
-### knife.rb
+### config.rb (aka knife.rb)
 
-To set 'client' as the default mode, add the following line to the knife.rb file.
+To set 'client' as the default mode, add the following line to the config.rb file.
 
     knife[:vault_mode] = 'client'
 
 To set the default list of admins for creating and updating vaults, add the
-following line to the knife.rb file.
+following line to the config.rb file.
 
     knife[:vault_admins] = [ 'example-alice', 'example-bob', 'example-carol' ]
 
@@ -132,7 +132,7 @@ NOTE: chef-vault 1.0 knife commands are not supported! Please use chef-vault
 
 Short | Long | Description | Default | Valid Values | Sub-Commands
 ------|------|-------------|---------|--------------|-------------
--M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
+-M MODE | --mode MODE | Chef mode to run in. Can be set in config.rb | solo | solo, client | all
 -S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
 -C CLIENTS | --clients CLIENTS | Chef clients to be added as clients, can be comma list | | | create, remove , update
 -A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update
@@ -235,7 +235,7 @@ This functionality is also available from the command line as `knife vault itemt
 
 `chef-vault` can be used as a stand alone binary to decrypt values stored in
 Chef. It requires that Chef is installed on the system and that you have a
-valid knife.rb. This is useful if you want to mix `chef-vault` into non-Chef
+valid config.rb. This is useful if you want to mix `chef-vault` into non-Chef
 recipe code, for example some other script where you want to protect a
 password.
 
@@ -247,7 +247,7 @@ Use `chef-vault --help` to see all all available options
 
 ### Example usage (password)
 
-    chef-vault -v passwords -i root -a password -k /etc/chef/knife.rb
+    chef-vault -v passwords -i root -a password -k /etc/chef/config.rb
 
 ## SCALING
 As more nodes use a shared key, some operations like refresh or update can execute more efficiently using sparse mode (see [issue #237](https://github.com/chef/chef-vault/issues/237)).

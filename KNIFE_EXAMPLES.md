@@ -246,7 +246,7 @@ This command outputs the type of the data bag item: normal, encrypted or vault
 
 Short | Long | Description | Default | Valid Values | Sub-Commands
 ------|------|-------------|---------|--------------|-------------
--M MODE | --mode MODE | Chef mode to run in. Can be set in knife.rb | solo | solo, client | all
+-M MODE | --mode MODE | Chef mode to run in. Can be set in config.rb | solo | solo, client | all
 -S SEARCH | --search SEARCH | Chef Server SOLR Search Of Nodes | | | create, remove , update
 -A ADMINS | --admins ADMINS | Chef clients or users to be vault admins, can be comma list | | | create, remove, update
 -J FILE | --json FILE | JSON file to be used for values, will be merged with VALUES if VALUES is passed | | | create, update

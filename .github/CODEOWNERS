@@ -1,5 +1,5 @@
 # Order is important. The last matching pattern has the most precedence.
 
 *                 @chef/chef-vault-maintainers
-.expeditor/       @chef/jex-team
+.expeditor/**     @chef/jex-team
 *.md              @chef/docs-team

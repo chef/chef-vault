@@ -42,17 +42,17 @@ RSpec.describe ChefVault do
 
   context "with a vault and config file parameter specified" do
     before do
-      allow(IO).to receive(:read).with("knife.rb").and_return("node_name 'myserver'")
+      allow(IO).to receive(:read).with("config.rb").and_return("node_name 'myserver'")
     end
 
-    let(:vault) { ChefVault.new("foo", "knife.rb") }
+    let(:vault) { ChefVault.new("foo", "config.rb") }
 
     it "assigns 'foo' to the vault accessor" do
       expect(vault.vault).to eq "foo"
     end
 
     it "loads the Chef config values" do
-      expect(ChefVault).to receive(:load_config).with("knife.rb")
+      expect(ChefVault).to receive(:load_config).with("config.rb")
       vault
     end
   end

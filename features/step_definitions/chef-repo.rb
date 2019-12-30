@@ -3,8 +3,8 @@ Given(/^a local mode chef repo with nodes '(.+?)'(?: with admins '(.+?)')?$/) do
   %w{cookbooks clients nodes data_bags}.each do |dir|
     create_directory dir
   end
-  # create a basic knife.rb
-  write_file "knife.rb", <<EOF
+  # create a basic config.rb
+  write_file "config.rb", <<EOF
 local_mode true
 chef_repo_path '.'
 chef_zero.enabled true
@@ -19,7 +19,7 @@ EOF
     create_admin(admin)
   end
   # add the admin key to the knife configuration
-  append_to_file "knife.rb", <<EOF
+  append_to_file "config.rb", <<EOF
 node_name 'admin'
 client_key 'admin.pem'
 EOF
@@ -50,7 +50,7 @@ Given(/^I delete nodes? '(.+)' from the Chef server$/) do |nodelist|
 end
 
 def create_node(name)
-  run_simple "knife node create #{name} -z -d -c knife.rb"
+  run_command_and_stop "knife node create #{name} -z -d -c config.rb"
 end
 
 def create_admin(admin)
@@ -58,15 +58,15 @@ def create_admin(admin)
 end
 
 def create_client(name, args = nil)
-  command = "knife client create #{name} -z -d -c knife.rb #{args} >#{name}.pem"
-  run_simple command
+  command = "knife client create #{name} -z -d -c config.rb #{args} >#{name}.pem"
+  run_command_and_stop command
   write_file("#{name}.pem", last_command_started.stdout)
 end
 
 def delete_client(name)
-  run_simple "knife client delete #{name} -y -z -c knife.rb"
+  run_command_and_stop "knife client delete #{name} -y -z -c config.rb"
 end
 
 def delete_node(name)
-  run_simple "knife node delete #{name} -y -z -c knife.rb"
+  run_command_and_stop "knife node delete #{name} -y -z -c config.rb"
 end
