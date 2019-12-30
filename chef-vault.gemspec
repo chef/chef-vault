@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Chef-Vault Gemspec file
-# Copyright 2013-15, Nordstrom, Inc.
+# Copyright 2013-2015, Nordstrom, Inc.
+# Copyright 2017-2019, Chef Software, Inc.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +18,12 @@
 $:.push File.expand_path("../lib", __FILE__)
 require "chef-vault/version"
 
-def self.prerelease?
-  !ENV["TRAVIS_TAG"] || ENV["TRAVIS_TAG"].empty?
-end
-
 Gem::Specification.new do |s|
   s.name             = "chef-vault"
   s.version          = ChefVault::VERSION
-  s.version          = "#{s.version}-pre#{ENV['TRAVIS_BUILD_NUMBER']}" if ENV["TRAVIS"]
   s.authors          = ["Thom May"]
   s.email            = ["thom@chef.io"]
-  s.summary          = "Data encryption support for Chef using data bags"
+  s.summary          = "Data encryption support for Chef Infra using data bags"
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
   s.license          = "Apache-2.0"
@@ -36,5 +32,5 @@ Gem::Specification.new do |s|
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
 
-  s.required_ruby_version = ">= 2.2.0"
+  s.required_ruby_version = ">= 2.4"
 end

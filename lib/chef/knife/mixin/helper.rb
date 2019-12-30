@@ -33,7 +33,7 @@ class ChefVault
       end
 
       def values_from_file(file)
-        json = File.open(file) { |fh| fh.read() }
+        json = File.open(file, &:read)
 
         values_from_json(json)
       end

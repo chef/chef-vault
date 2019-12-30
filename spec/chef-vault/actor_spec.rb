@@ -173,7 +173,7 @@ RSpec.describe ChefVault::Actor do
       # mock out the API
       before do
         allow(chef_key).to receive(:api).and_return(api)
-        [:rest_v0, :rest_v1, :org_scoped_rest_v0, :org_scoped_rest_v1].each do |method|
+        %i{rest_v0 rest_v1 org_scoped_rest_v0 org_scoped_rest_v1}.each do |method|
           allow(api).to receive(method)
         end
       end

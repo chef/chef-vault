@@ -146,7 +146,7 @@ class ChefVault
           keys.delete(admin_key)
         else
           raise ChefVault::Exceptions::KeysActionNotValid,
-                "#{action} is not a valid action"
+            "#{action} is not a valid action"
         end
       end
     end
@@ -161,7 +161,7 @@ class ChefVault
 
     def secret
       if @keys.include?(@node_name) && !@keys[@node_name].nil?
-        private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read())
+        private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read)
         begin
           private_key.private_decrypt(Base64.decode64(@keys[@node_name]))
         rescue OpenSSL::PKey::RSAError
@@ -272,7 +272,7 @@ class ChefVault
 
       if Chef::Config[:solo_legacy_mode]
         data_bag_path = File.join(Chef::Config[:data_bag_path],
-                                  data_bag)
+          data_bag)
         data_bag_item_path = File.join(data_bag_path, @raw_data["id"])
 
         FileUtils.rm("#{data_bag_item_path}.json")
@@ -364,10 +364,10 @@ class ChefVault
     def refresh(clean_unknown_clients = false)
       if search.empty?
         raise ChefVault::Exceptions::SearchNotFound,
-              "#{@data_bag}/#{@raw_data["id"]} does not have a stored "\
-              "search_query, probably because it was created with an "\
-              "older version of chef-vault. Use 'knife vault update' "\
-              "to update the databag with the search query."
+          "#{@data_bag}/#{@raw_data["id"]} does not have a stored "\
+          "search_query, probably because it was created with an "\
+          "older version of chef-vault. Use 'knife vault update' "\
+          "to update the databag with the search query."
       end
 
       # a bit of a misnomer; this doesn't remove unknown
@@ -438,6 +438,7 @@ class ChefVault
       true
     rescue Net::HTTPServerException => http_error
       return false if http_error.response.code == "404"
+
       raise http_error
     end
 

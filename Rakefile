@@ -45,5 +45,5 @@ end
 
 # test or the default task runs spec, features, style
 desc "run all tests"
-task default: [:coverage, :features, :style]
+task default: %i{coverage features style}
 task test: :default

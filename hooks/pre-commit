@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 output = `bundle exec chefstyle -a`
-if !$?.success?
+unless $?.success?
   puts "pre-commit hook: Tried to run `bundle exec chefstyle -a` to autocleanup errors, but it failed with output:"
   puts output
 end
@@ -12,7 +12,7 @@ corrected = /(\d+) offenses corrected/.match(output)
 exit 0 if detected.nil?
 
 # chefstyle found errors
-if !detected.nil?
+unless detected.nil?
   # get the first result from the capture group that isn't the whole capture
   num_detected = detected.to_a[1].to_i
   num_corrected = if corrected.nil?

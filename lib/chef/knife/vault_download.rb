@@ -34,7 +34,7 @@ class Chef
           File.open(path, "w") do |file|
             file.write(vault_item["file-content"])
           end
-          ui.info("Saved #{vault_item['file-name']} as #{path}")
+          ui.info("Saved #{vault_item["file-name"]} as #{path}")
         else
           show_usage
         end

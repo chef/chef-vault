@@ -55,9 +55,9 @@ class Chef
         description: "Clean clients before performing search"
 
       option :keys_mode,
-         short: "-K KEYS_MODE",
-         long: "--keys-mode KEYS_MODE",
-         description: "Mode in which to save vault keys"
+        short: "-K KEYS_MODE",
+        long: "--keys-mode KEYS_MODE",
+        description: "Mode in which to save vault keys"
 
       def run
         vault = @name_args[0]
@@ -77,7 +77,7 @@ class Chef
 
             # Keys management first
             if clean
-              vault_clients = vault_item.get_clients.clone().sort()
+              vault_clients = vault_item.get_clients.clone.sort
               vault_clients.each do |client|
                 ui.info "Deleting #{client}"
                 vault_item.delete_client(client)
@@ -97,7 +97,7 @@ class Chef
 
               if file
                 vault_item["file-name"] = File.basename(file)
-                vault_item["file-content"] = File.open(file) { |f| f.read() }
+                vault_item["file-content"] = File.open(file, &:read)
               end
 
               vault_item.save

@@ -181,10 +181,10 @@ RSpec.describe ChefVault::Item do
 
     it "saves only the keys" do
       keys = double("keys",
-                    search_query: "*:*",
-                    add: nil,
-                    admins: [],
-                    clients: ["testnode"])
+        search_query: "*:*",
+        add: nil,
+        admins: [],
+        clients: ["testnode"])
       allow(keys).to receive(:[]).with("id").and_return("bar_keys")
       allow(ChefVault::ItemKeys).to receive(:new).and_return(keys)
 
@@ -195,8 +195,8 @@ RSpec.describe ChefVault::Item do
       allow(query).to receive(:search).and_yield(node)
 
       client_key = double("client_key",
-                          name: "testnode",
-                          public_key: OpenSSL::PKey::RSA.new(1024).public_key)
+        name: "testnode",
+        public_key: OpenSSL::PKey::RSA.new(1024).public_key)
       allow(item).to receive(:load_actor).with("testnode", "clients").and_return(client_key)
 
       expect(item).not_to receive(:save)
@@ -293,7 +293,7 @@ RSpec.describe ChefVault::Item do
 
     context "when an Array with named clients is passed" do
       let(:client) { Chef::ApiClient.new }
-      let(:clients) { Array.new }
+      let(:clients) { [] }
       let(:client_name) { "foo" }
       let(:client_key) { double("chef key") }
 
