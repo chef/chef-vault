@@ -1,33 +1,30 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.0.1 -->
-## [v4.0.1](https://github.com/chef/chef-vault/tree/v4.0.1) (2019-12-30)
-
-#### Merged Pull Requests
-- Use Chef 14 to avoid license failures in test + use config.rb where we can [#338](https://github.com/chef/chef-vault/pull/338) ([tas50](https://github.com/tas50))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=3.4.3 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Use Chef 14 to avoid license failures in test + use config.rb where we can [#338](https://github.com/chef/chef-vault/pull/338) ([tas50](https://github.com/tas50)) <!-- 4.0.1 -->
-- Drop Ruby 2.2/2.3 support and resolve Chefstyle warnings [#337](https://github.com/chef/chef-vault/pull/337) ([tas50](https://github.com/tas50)) <!-- 4.0.0 -->
-- Sparse mode converter [#327](https://github.com/chef/chef-vault/pull/327) ([jeunito](https://github.com/jeunito)) <!-- 3.5.0 -->
-- Ensure search is not empty when refreshing [#332](https://github.com/chef/chef-vault/pull/332) ([jeremy-clerc](https://github.com/jeremy-clerc)) <!-- 3.4.9 -->
-- API docs: Fix YARD warnings [#331](https://github.com/chef/chef-vault/pull/331) ([olleolleolle](https://github.com/olleolleolle)) <!-- 3.4.8 -->
-- Migrate to Buildkite for PR testing [#336](https://github.com/chef/chef-vault/pull/336) ([tas50](https://github.com/tas50)) <!-- 3.4.7 -->
-- Switch from require to require_relative [#335](https://github.com/chef/chef-vault/pull/335) ([tas50](https://github.com/tas50)) <!-- 3.4.6 -->
-- Send a better error message when an invalid SSL key is encountered when creating a vault item [#330](https://github.com/chef/chef-vault/pull/330) ([MarkGibbons](https://github.com/MarkGibbons)) <!-- 3.4.5 -->
-- add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito)) <!-- 3.4.4 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.0.1](https://github.com/chef/chef-vault/tree/v4.0.1) (2019-12-30)
+
+#### Merged Pull Requests
+- add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito))
+- Send a better error message when an invalid SSL key is encountered when creating a vault item [#330](https://github.com/chef/chef-vault/pull/330) ([MarkGibbons](https://github.com/MarkGibbons))
+- Switch from require to require_relative [#335](https://github.com/chef/chef-vault/pull/335) ([tas50](https://github.com/tas50))
+- Migrate to Buildkite for PR testing [#336](https://github.com/chef/chef-vault/pull/336) ([tas50](https://github.com/tas50))
+- API docs: Fix YARD warnings [#331](https://github.com/chef/chef-vault/pull/331) ([olleolleolle](https://github.com/olleolleolle))
+- Ensure search is not empty when refreshing [#332](https://github.com/chef/chef-vault/pull/332) ([jeremy-clerc](https://github.com/jeremy-clerc))
+- Sparse mode converter [#327](https://github.com/chef/chef-vault/pull/327) ([jeunito](https://github.com/jeunito))
+- Drop Ruby 2.2/2.3 support and resolve Chefstyle warnings [#337](https://github.com/chef/chef-vault/pull/337) ([tas50](https://github.com/tas50))
+- Use Chef 14 to avoid license failures in test + use config.rb where we can [#338](https://github.com/chef/chef-vault/pull/338) ([tas50](https://github.com/tas50))
+<!-- latest_stable_release -->
+
 ## [v3.4.3](https://github.com/chef/chef-vault/tree/v3.4.3) (2018-10-25)
 
 #### Merged Pull Requests
 - Don&#39;t ship the readme in the gem [#326](https://github.com/chef/chef-vault/pull/326) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v3.4.2](https://github.com/chef/chef-vault/tree/v3.4.2) (2018-09-22)
 
