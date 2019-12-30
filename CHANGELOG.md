@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 3.4.6 -->
-## [v3.4.6](https://github.com/chef/chef-vault/tree/v3.4.6) (2019-12-30)
+<!-- latest_release 3.4.7 -->
+## [v3.4.7](https://github.com/chef/chef-vault/tree/v3.4.7) (2019-12-30)
 
 #### Merged Pull Requests
-- Switch from require to require_relative [#335](https://github.com/chef/chef-vault/pull/335) ([tas50](https://github.com/tas50))
+- Migrate to Buildkite for PR testing [#336](https://github.com/chef/chef-vault/pull/336) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
 <!-- release_rollup since=3.4.3 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Migrate to Buildkite for PR testing [#336](https://github.com/chef/chef-vault/pull/336) ([tas50](https://github.com/tas50)) <!-- 3.4.7 -->
 - Switch from require to require_relative [#335](https://github.com/chef/chef-vault/pull/335) ([tas50](https://github.com/tas50)) <!-- 3.4.6 -->
 - Send a better error message when an invalid SSL key is encountered when creating a vault item [#330](https://github.com/chef/chef-vault/pull/330) ([MarkGibbons](https://github.com/MarkGibbons)) <!-- 3.4.5 -->
 - add documentation for sparse mode [#325](https://github.com/chef/chef-vault/pull/325) ([jeunito](https://github.com/jeunito)) <!-- 3.4.4 -->
