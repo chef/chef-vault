@@ -358,12 +358,12 @@ class ChefVault
     #   no longer be found
     # @return [void]
     def refresh(clean_unknown_clients = false)
-      unless search
+      if search.empty?
         raise ChefVault::Exceptions::SearchNotFound,
-              "#{vault}/#{item} does not have a stored search_query, "\
-              "probably because it was created with an older version "\
-              "of chef-vault. Use 'knife vault update' to update the "\
-              "databag with the search query."
+              "#{@data_bag}/#{@raw_data["id"]} does not have a stored "\
+              "search_query, probably because it was created with an "\
+              "older version of chef-vault. Use 'knife vault update' "\
+              "to update the databag with the search query."
       end
 
       # a bit of a misnomer; this doesn't remove unknown
