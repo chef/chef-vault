@@ -27,6 +27,7 @@ class ChefVault
       if actor_type != "clients" && actor_type != "admins"
         raise "You must pass either 'clients' or 'admins' as the first argument to ChefVault::Actor.new."
       end
+
       @type = actor_type
       @name = actor_name
     end
@@ -52,7 +53,7 @@ class ChefVault
           case http_error.response.code
           when "404"
             raise ChefVault::Exceptions::AdminNotFound,
-                  "FATAL: Could not find default key for #{name} in users or clients!"
+              "FATAL: Could not find default key for #{name} in users or clients!"
           when "403"
             print_forbidden_error
             raise http_error
@@ -73,7 +74,7 @@ class ChefVault
         raise http_error
       elsif http_error.response.code.eql?("404")
         raise ChefVault::Exceptions::ClientNotFound,
-              "#{name} is not a valid chef client and/or node"
+          "#{name} is not a valid chef client and/or node"
       else
         raise http_error
       end
@@ -115,6 +116,7 @@ class ChefVault
     # If the keys endpoint doesn't exist, try getting it directly from the V0 chef object.
     rescue Net::HTTPServerException => http_error
       raise http_error unless http_error.response.code.eql?("404")
+
       if request_actor_type.eql?("clients")
         chef_api_client.load(name).public_key
       else

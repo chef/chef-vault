@@ -55,13 +55,16 @@ class Chef
         # - item_keys has zero or more keys in sparse mode
         # vaults have a number of keys >= 2
         return false unless bag.keys.size >= 2
+
         # partition into those that end in _keys
         keylike, notkeylike = split_vault_keys(bag)
         # there must be an equal number of keyline and not-keylike items
         return false unless keylike.size == notkeylike.size
+
         # strip the _keys suffix and check if the sets match
         keylike.map! { |k| k.gsub(/_keys$/, "") }
         return false unless keylike.sort == notkeylike.sort
+
         # it's (probably) a vault
         true
       end
@@ -70,7 +73,7 @@ class Chef
         # get all item keys
         keys = bag.keys.select { |k| k =~ /_keys$/ }
         # get all sparse keys
-        r = Regexp.union(keys.map { |k| Regexp.new("^#{k.chomp('_keys')}_key_.*") })
+        r = Regexp.union(keys.map { |k| Regexp.new("^#{k.chomp("_keys")}_key_.*") })
         sparse = bag.keys.select { |k| k =~ r }
         # the rest
         items = bag.keys - keys - sparse

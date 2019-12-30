@@ -39,9 +39,11 @@ class ChefVault
     def [](key)
       # return options immediately
       return @raw_data[key] if %w{id admins clients search_query mode}.include?(key)
+
       # check if the key is in the write-back cache
       ckey = @cache[key]
       return ckey unless ckey.nil?
+
       # check if the key is saved in sparse mode
       skey = sparse_key(sparse_id(key)) if sparse?
       if skey
@@ -58,6 +60,7 @@ class ChefVault
       return (ckey ? true : false) unless ckey.nil?
       # check if the key is saved in sparse mode
       return true if sparse? && sparse_key(sparse_id(key))
+
       # fallback to non-sparse mode if sparse key is not found
       @raw_data.keys.include?(key)
     end
@@ -66,7 +69,7 @@ class ChefVault
       type = chef_key.type
       unless @raw_data.key?(type)
         raise ChefVault::Exceptions::V1Format,
-              "cannot manage a v1 vault.  See UPGRADE.md for help"
+          "cannot manage a v1 vault.  See UPGRADE.md for help"
       end
       @cache[chef_key.name] = skip_reencryption ? self[chef_key.name] : nil
       begin
@@ -139,7 +142,7 @@ class ChefVault
             begin
               Chef::DataBagItem.from_hash("data_bag" => data_bag,
                                           "id" => sparse_id(key))
-                               .destroy(data_bag, sparse_id(key))
+                .destroy(data_bag, sparse_id(key))
             rescue Net::HTTPServerException => http_error
               raise http_error unless http_error.response.code == "404"
             end
@@ -169,10 +172,11 @@ class ChefVault
       if @raw_data["mode"] == "sparse"
         @raw_data.each do |key, val|
           next if %w{ id clients admins search_query mode }.include?(key)
+
           skey = Chef::DataBagItem.from_hash(
-              "data_bag" => data_bag,
-              "id" => sparse_id(key),
-              key => val
+            "data_bag" => data_bag,
+            "id" => sparse_id(key),
+            key => val
           )
           @raw_data.delete(key)
           if Chef::Config[:solo_legacy_mode]
@@ -209,7 +213,7 @@ class ChefVault
         items = Chef::DataBag.load(data_bag).keys.select { |item| item =~ rgx }
         items.each do |id|
           Chef::DataBagItem.from_hash("data_bag" => data_bag, "id" => id)
-                           .destroy(data_bag, id)
+            .destroy(data_bag, id)
         end
         # destroy this metadata
         super(data_bag, id)
