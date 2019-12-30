@@ -1,5 +1,6 @@
 # Documentation available at https://expeditor.chef.io/docs/getting-started/
 ---
+
 # Slack channel in Chef Software slack to send notifications about build failures, etc
 slack:
   notify_channel: sustaining-notify
@@ -42,3 +43,8 @@ promote:
   actions:
     - built_in:rollover_changelog
     - built_in:publish_rubygems
+
+pipelines:
+  - verify:
+      description: Pull Request validation tests
+      public: true
