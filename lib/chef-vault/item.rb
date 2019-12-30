@@ -131,6 +131,10 @@ class ChefVault
       end
     end
 
+    def mode(mode)
+      keys.mode(mode) if mode
+    end
+
     def admins(admin_string, action = :add)
       admin_string.split(",").each do |admin|
         admin.strip!

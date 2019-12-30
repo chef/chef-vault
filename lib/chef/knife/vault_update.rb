@@ -54,6 +54,11 @@ class Chef
         long: "--clean",
         description: "Clean clients before performing search"
 
+      option :keys_mode,
+         short: "-K KEYS_MODE",
+         long: "--keys-mode KEYS_MODE",
+         description: "Mode in which to save vault keys"
+
       def run
         vault = @name_args[0]
         item = @name_args[1]
@@ -62,10 +67,11 @@ class Chef
         json_file = config[:json]
         file = config[:file]
         clean = config[:clean]
+        keys_mode = config[:keys_mode]
 
         set_mode(config[:vault_mode])
 
-        if vault && item && ((values || json_file || file) || (search || clients || admins))
+        if vault && item && ((values || json_file || file) || (search || clients || admins) || (keys_mode))
           begin
             vault_item = ChefVault::Item.load(vault, item)
 
@@ -104,6 +110,11 @@ class Chef
             raise ChefVault::Exceptions::ItemNotFound,
               "#{vault}/#{item} does not exist, "\
               "use 'knife vault create' to create."
+          end
+
+          if keys_mode
+            vault_item.mode(keys_mode)
+            vault_item.save_keys
           end
         else
           show_usage

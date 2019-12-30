@@ -165,6 +165,24 @@ class ChefVault
           end
         end
       end
+
+      if @raw_data["mode"] == "sparse"
+        @raw_data.each do |key, val|
+          next if %w{ id clients admins search_query mode }.include?(key)
+          skey = Chef::DataBagItem.from_hash(
+              "data_bag" => data_bag,
+              "id" => sparse_id(key),
+              key => val
+          )
+          @raw_data.delete(key)
+          if Chef::Config[:solo_legacy_mode]
+            save_solo(skey.id, skey.raw_data)
+          else
+            skey.save
+          end
+        end
+      end
+
       # save raw data
       if Chef::Config[:solo_legacy_mode]
         save_solo(item_id)

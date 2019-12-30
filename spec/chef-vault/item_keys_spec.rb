@@ -134,6 +134,21 @@ RSpec.describe ChefVault::ItemKeys do
           expect(keys[client_name]).to be_nil
           keys.mode("default")
         end
+
+        it "should remove key data in sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.save("bar")
+          expect(keys[client_name]).not_to be_empty
+          keys.mode("sparse")
+          keys.save("bar")
+          expect(Chef::DataBagItem.load("foo", "bar").to_hash[client_name]).to be_nil
+          expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
+          expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
       end
 
       describe "#destroy" do
@@ -224,6 +239,21 @@ RSpec.describe ChefVault::ItemKeys do
           expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"id":.*"bar"/)
           expect(File.read(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to match(/"id":.*"bar_key_client_name"/)
           expect(keys[client_name]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
+
+        it "should remove key data in sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.save("bar")
+          expect(keys[client_name]).not_to be_empty
+          keys.mode("sparse")
+          keys.save("bar")
+          expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"id":.*"bar"/)
+          expect(File.read(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to match(/"id":.*"bar_key_client_name"/)
+          expect(File.read(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to match(/"client_name": ".*"/)
           keys.delete(chef_key)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
