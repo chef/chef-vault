@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 3.4.9 -->
-## [v3.4.9](https://github.com/chef/chef-vault/tree/v3.4.9) (2019-12-30)
+<!-- latest_release 3.5.0 -->
+## [v3.5.0](https://github.com/chef/chef-vault/tree/v3.5.0) (2019-12-30)
 
 #### Merged Pull Requests
-- Ensure search is not empty when refreshing [#332](https://github.com/chef/chef-vault/pull/332) ([jeremy-clerc](https://github.com/jeremy-clerc))
+- Sparse mode converter [#327](https://github.com/chef/chef-vault/pull/327) ([jeunito](https://github.com/jeunito))
 <!-- latest_release -->
 
 <!-- release_rollup since=3.4.3 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Sparse mode converter [#327](https://github.com/chef/chef-vault/pull/327) ([jeunito](https://github.com/jeunito)) <!-- 3.5.0 -->
 - Ensure search is not empty when refreshing [#332](https://github.com/chef/chef-vault/pull/332) ([jeremy-clerc](https://github.com/jeremy-clerc)) <!-- 3.4.9 -->
 - API docs: Fix YARD warnings [#331](https://github.com/chef/chef-vault/pull/331) ([olleolleolle](https://github.com/olleolleolle)) <!-- 3.4.8 -->
 - Migrate to Buildkite for PR testing [#336](https://github.com/chef/chef-vault/pull/336) ([tas50](https://github.com/tas50)) <!-- 3.4.7 -->
