@@ -14,7 +14,7 @@
 # limitations under the License.
 
 require "chef/knife"
-require "chef-vault"
+require_relative "../../chef-vault"
 
 class Chef
   class Knife

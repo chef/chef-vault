@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "chef-vault/mixins"
+require_relative "mixins"
 
 class ChefVault
   class ItemKeys < Chef::DataBagItem

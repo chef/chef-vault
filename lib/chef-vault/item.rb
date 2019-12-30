@@ -16,7 +16,7 @@
 # limitations under the License.
 
 require "securerandom"
-require "chef-vault/mixins"
+require_relative "mixins"
 
 class ChefVault
   class Item < Chef::DataBagItem
