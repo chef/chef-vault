@@ -39,7 +39,7 @@ class ChefVault
     def get_admin_key
       # chef vault currently only supports using the default key
       get_key("users")
-    rescue Net::HTTPServerException => http_error
+    rescue Net::HTTPServerException, Net::HTTPClientException => http_error
       # if we failed to find an admin key, attempt to load a client key by the same name
       case http_error.response.code
       when "403"
@@ -49,7 +49,7 @@ class ChefVault
         begin
           ChefVault::Log.warn "The default key for #{name} not found in users, trying client keys."
           get_key("clients")
-        rescue Net::HTTPServerException => http_error
+        rescue Net::HTTPServerException, Net::HTTPClientException => http_error
           case http_error.response.code
           when "404"
             raise ChefVault::Exceptions::AdminNotFound,
@@ -68,7 +68,7 @@ class ChefVault
 
     def get_client_key
       get_key("clients")
-    rescue Net::HTTPServerException => http_error
+    rescue Net::HTTPServerException, Net::HTTPClientException => http_error
       if http_error.response.code.eql?("403")
         print_forbidden_error
         raise http_error
@@ -114,7 +114,7 @@ class ChefVault
     def get_key(request_actor_type)
       api.org_scoped_rest_v1.get("#{request_actor_type}/#{name}/keys/default").fetch("public_key")
     # If the keys endpoint doesn't exist, try getting it directly from the V0 chef object.
-    rescue Net::HTTPServerException => http_error
+    rescue Net::HTTPServerException, Net::HTTPClientException => http_error
       raise http_error unless http_error.response.code.eql?("404")
 
       if request_actor_type.eql?("clients")

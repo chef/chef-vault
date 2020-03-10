@@ -122,7 +122,7 @@ class ChefVault
       unless Chef::Config[:solo_legacy_mode]
         begin
           Chef::DataBag.load(data_bag)
-        rescue Net::HTTPServerException => http_error
+        rescue Net::HTTPServerException, Net::HTTPClientException => http_error
           if http_error.response.code == "404"
             chef_data_bag = Chef::DataBag.new
             chef_data_bag.name data_bag
@@ -143,7 +143,7 @@ class ChefVault
               Chef::DataBagItem.from_hash("data_bag" => data_bag,
                                           "id" => sparse_id(key))
                 .destroy(data_bag, sparse_id(key))
-            rescue Net::HTTPServerException => http_error
+            rescue Net::HTTPServerException, Net::HTTPClientException => http_error
               raise http_error unless http_error.response.code == "404"
             end
           end
@@ -234,7 +234,7 @@ class ChefVault
     def self.load(vault, name)
       begin
         data_bag_item = Chef::DataBagItem.load(vault, name)
-      rescue Net::HTTPServerException => http_error
+      rescue Net::HTTPServerException, Net::HTTPClientException => http_error
         if http_error.response.code == "404"
           raise ChefVault::Exceptions::KeysNotFound,
             "#{vault}/#{name} could not be found"
@@ -265,7 +265,7 @@ class ChefVault
       else
         begin
           Chef::DataBagItem.load(@data_bag, sid)
-        rescue Net::HTTPServerException => http_error
+        rescue Net::HTTPServerException, Net::HTTPClientException => http_error
           nil if http_error.response.code == "404"
         end
       end
