@@ -27,6 +27,7 @@ class ChefVault
       def merge_values(json, file)
         values = {}
         values.merge!(values_from_file(file)) if file
+        validate_json(json)
         values.merge!(values_from_json(json)) if json
 
         values
@@ -42,6 +43,35 @@ class ChefVault
         JSON.parse(json)
       rescue JSON::ParserError
         raise JSON::ParserError, "#{json} is not valid JSON!"
+      end
+
+      # I/P: json string
+      # It checks wheather it contains any non-printable character present or not,
+      # If present then raises error of InvalidValue
+      def validate_json(json)
+        begin
+          evaled_json = eval(json)
+        rescue StandardError => e
+          puts e.message
+        end
+
+        if evaled_json.is_a?(Hash)
+          evaled_json.each do |key, value|
+            next if printable?(value)
+
+            msg = "Value '#{value}' of key '#{key}' contains non-printable characters. Check that backslashes are escaped with another backslash (e.g. C:\\\\Windows) in double-quoted strings."
+            raise ChefVault::Exceptions::InvalidValue, msg
+          end
+        end
+      end
+
+      # I/P: String
+      # O/P: true/false
+      # returns true if string is free of non-printable characters (escape sequences)
+      # this returns false for whitespace escape sequences as well, e.g. \n\t
+      def printable?(string)
+        return false if string =~ /[^[:print:]]/
+        true
       end
     end
   end
