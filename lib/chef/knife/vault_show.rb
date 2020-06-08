@@ -90,9 +90,7 @@ class Chef
       def print_keys(vault)
         if bag_is_vault?(vault)
           bag = Chef::DataBag.load(vault)
-          split_vault_keys(bag)[1].each do |item|
-            output item
-          end
+          output split_vault_keys(bag)[1]
         else
           output "data bag #{vault} is not a chef-vault"
         end
