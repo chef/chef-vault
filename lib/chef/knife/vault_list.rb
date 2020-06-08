@@ -35,7 +35,7 @@ class Chef
         bags.each_key do |bagname|
           vaultbags.push(bagname) if bag_is_vault?(bagname)
         end
-        output vaultbags.join("\n")
+        output vaultbags
       end
     end
   end
