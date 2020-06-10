@@ -340,7 +340,19 @@ class ChefVault
     def self.data_bag_item_type(vault, name)
       # adapted from https://github.com/opscode-cookbooks/chef-vault/blob/v1.3.0/libraries/chef_vault_item.rb
       # and https://github.com/sensu/sensu-chef/blob/2.9.0/libraries/sensu_helpers.rb
-      dbi = Chef::DataBagItem.load(vault, name)
+      begin
+        dbi = Chef::DataBagItem.load(vault, name)
+      rescue Net::HTTPServerException => http_error
+        if http_error.response.code == "404"
+          raise ChefVault::Exceptions::ItemNotFound,
+            "#{vault}/#{name} could not be found"
+        else
+          raise http_error
+        end
+      rescue Chef::Exceptions::ValidationFailed
+        raise ChefVault::Exceptions::ItemNotFound,
+          "#{vault}/#{name} could not be found"
+      end
       encrypted = dbi.detect do |_, v|
         v.is_a?(Hash) && v.key?("encrypted_data")
       end
