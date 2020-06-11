@@ -128,7 +128,7 @@ NOTE: chef-vault 1.0 knife commands are not supported! Please use chef-vault
     knife vault isvault VAULT ITEM
     knife vault itemtype VAULT ITEM
 
-    Note: While creating the VAULT ITEM, ITEM name should not end with '_keys', if you included '_keys' then the VAULT will be treated as an ordinary data_bag instead of as a vault.
+    Note: Creating a VAULT ITEM with an ITEM name ending in "_keys" causes the VAULT to treat it as an ordinary `data_bag` instead of as a vault.
 
 #### Global Options
 
