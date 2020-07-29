@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.0.2 -->
+## [v4.0.2](https://github.com/chef/chef-vault/tree/v4.0.2) (2020-07-29)
+
+#### Merged Pull Requests
+- Added note in documentation regarding the vault item name [#349](https://github.com/chef/chef-vault/pull/349) ([sanga1794](https://github.com/sanga1794))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.0.1 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Added note in documentation regarding the vault item name [#349](https://github.com/chef/chef-vault/pull/349) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.2 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
