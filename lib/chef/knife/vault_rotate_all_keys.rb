@@ -45,9 +45,10 @@ class Chef
         end
       end
 
+      # Permalink for regex of replacing '_keys' with '': https://rubular.com/r/5cA5JNSyLfPSfY
       def vault_items(vault)
         Chef::DataBag.load(vault).keys.each_with_object([]) do |key, array|
-          array << key.sub("_keys", "") if key =~ /.+_keys$/
+          array << key.sub(/_keys(?=[^_keys]*$)/, "") if key =~ /.+_keys$/
         end
       end
 

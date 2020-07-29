@@ -5,7 +5,7 @@ AllCops:
     - "pkg/**/*"
     - "tmp/**/*"
 
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Exclude:
     - 'features/step_definitions/chef-repo.rb'
     - 'hooks/pre-commit'
