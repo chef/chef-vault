@@ -46,8 +46,7 @@ class ChefVault
       end
 
       # I/P: json string
-      # It checks wheather it contains any non-printable character present or not,
-      # If present then raises error of InvalidValue
+      # Raises `InvalidValue` if any of the json's values contain non-printable characters.
       def validate_json(json)
         begin
           evaled_json = eval(json)
