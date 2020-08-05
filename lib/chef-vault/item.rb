@@ -349,9 +349,6 @@ class ChefVault
         else
           raise http_error
         end
-      rescue Chef::Exceptions::ValidationFailed
-        raise ChefVault::Exceptions::ItemNotFound,
-          "#{vault}/#{name} could not be found"
       end
       encrypted = dbi.detect do |_, v|
         v.is_a?(Hash) && v.key?("encrypted_data")
