@@ -345,7 +345,7 @@ class ChefVault
       rescue Net::HTTPServerException => http_error
         if http_error.response.code == "404"
           raise ChefVault::Exceptions::ItemNotFound,
-            "#{vault}/#{name} could not be found"
+            "#{vault}/#{name} not found"
         else
           raise http_error
         end
