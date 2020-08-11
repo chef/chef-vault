@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 # Chef-Vault Gemspec file
 # Copyright 2013-2015, Nordstrom, Inc.
 # Copyright 2017-2019, Chef Software, Inc.
