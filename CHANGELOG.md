@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.0.3 -->
-## [v4.0.3](https://github.com/chef/chef-vault/tree/v4.0.3) (2020-07-29)
+<!-- latest_release 4.0.4 -->
+## [v4.0.4](https://github.com/chef/chef-vault/tree/v4.0.4) (2020-08-12)
 
 #### Merged Pull Requests
-- Replaced string with regex in sub method [#351](https://github.com/chef/chef-vault/pull/351) ([sanga1794](https://github.com/sanga1794))
+- Handled exception from vault? method [#350](https://github.com/chef/chef-vault/pull/350) ([sanga1794](https://github.com/sanga1794))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.0.1 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Handled exception from vault? method [#350](https://github.com/chef/chef-vault/pull/350) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.4 -->
 - Replaced string with regex in sub method [#351](https://github.com/chef/chef-vault/pull/351) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.3 -->
 - Added note in documentation regarding the vault item name [#349](https://github.com/chef/chef-vault/pull/349) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.2 -->
 <!-- release_rollup -->
