@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.0.7 -->
+## [v4.0.7](https://github.com/chef/chef-vault/tree/v4.0.7) (2020-08-13)
+
+#### Merged Pull Requests
+- Update simplecov-console requirement from ~&gt; 0.2.0 to ~&gt; 0.7.2 [#344](https://github.com/chef/chef-vault/pull/344) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.0.6 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Update simplecov-console requirement from ~&gt; 0.2.0 to ~&gt; 0.7.2 [#344](https://github.com/chef/chef-vault/pull/344) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.7 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
