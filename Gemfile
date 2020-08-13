@@ -8,8 +8,6 @@ group :development do
   gem "rake"
   gem "rspec", "~> 3.4"
   gem "aruba", "~> 0.6"
-  gem "simplecov", "~> 0.9"
-  gem "simplecov-console", "~> 0.7.2"
   gem "chef", "~> 14.0" # avoids test failures on license acceptance
 end
 
