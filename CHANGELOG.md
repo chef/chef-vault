@@ -1,24 +1,22 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.0.6 -->
-## [v4.0.6](https://github.com/chef/chef-vault/tree/v4.0.6) (2020-08-13)
-
-#### Merged Pull Requests
-- Optimize requires for non-omnibus installs [#355](https://github.com/chef/chef-vault/pull/355) ([tas50](https://github.com/tas50))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.0.1 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Optimize requires for non-omnibus installs [#355](https://github.com/chef/chef-vault/pull/355) ([tas50](https://github.com/tas50)) <!-- 4.0.6 -->
-- Update expeditor config for new gem caching [#354](https://github.com/chef/chef-vault/pull/354) ([tas50](https://github.com/tas50)) <!-- 4.0.5 -->
-- Handled exception from vault? method [#350](https://github.com/chef/chef-vault/pull/350) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.4 -->
-- Replaced string with regex in sub method [#351](https://github.com/chef/chef-vault/pull/351) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.3 -->
-- Added note in documentation regarding the vault item name [#349](https://github.com/chef/chef-vault/pull/349) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.2 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.0.6](https://github.com/chef/chef-vault/tree/v4.0.6) (2020-08-13)
+
+#### Merged Pull Requests
+- Added note in documentation regarding the vault item name [#349](https://github.com/chef/chef-vault/pull/349) ([sanga1794](https://github.com/sanga1794))
+- Replaced string with regex in sub method [#351](https://github.com/chef/chef-vault/pull/351) ([sanga1794](https://github.com/sanga1794))
+- Handled exception from vault? method [#350](https://github.com/chef/chef-vault/pull/350) ([sanga1794](https://github.com/sanga1794))
+- Update expeditor config for new gem caching [#354](https://github.com/chef/chef-vault/pull/354) ([tas50](https://github.com/tas50))
+- Optimize requires for non-omnibus installs [#355](https://github.com/chef/chef-vault/pull/355) ([tas50](https://github.com/tas50))
+<!-- latest_stable_release -->
+
 ## [v4.0.1](https://github.com/chef/chef-vault/tree/v4.0.1) (2019-12-30)
 
 #### Merged Pull Requests
@@ -31,7 +29,6 @@
 - Sparse mode converter [#327](https://github.com/chef/chef-vault/pull/327) ([jeunito](https://github.com/jeunito))
 - Drop Ruby 2.2/2.3 support and resolve Chefstyle warnings [#337](https://github.com/chef/chef-vault/pull/337) ([tas50](https://github.com/tas50))
 - Use Chef 14 to avoid license failures in test + use config.rb where we can [#338](https://github.com/chef/chef-vault/pull/338) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v3.4.3](https://github.com/chef/chef-vault/tree/v3.4.3) (2018-10-25)
 
