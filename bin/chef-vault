@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "optparse"
+require "optparse" unless defined?(OptionParser)
 
 options_config = {
   chef: {
@@ -82,7 +82,7 @@ options_config.each do |option, config|
   options[option] = options[option] ? options[option] : config[:default]
 end
 
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 require "chef-vault"
 
