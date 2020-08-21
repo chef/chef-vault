@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.0.11 -->
+## [v4.0.11](https://github.com/chef/chef-vault/tree/v4.0.11) (2020-08-21)
+
+#### Merged Pull Requests
+- Fix bad code causing errors [#359](https://github.com/chef/chef-vault/pull/359) ([ramereth](https://github.com/ramereth))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.0.10 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Fix bad code causing errors [#359](https://github.com/chef/chef-vault/pull/359) ([ramereth](https://github.com/ramereth)) <!-- 4.0.11 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
