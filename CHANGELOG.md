@@ -1,23 +1,21 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.0.10 -->
-## [v4.0.10](https://github.com/chef/chef-vault/tree/v4.0.10) (2020-08-21)
-
-#### Merged Pull Requests
-- Optimize our requires [#357](https://github.com/chef/chef-vault/pull/357) ([tas50](https://github.com/tas50))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.0.6 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Optimize our requires [#357](https://github.com/chef/chef-vault/pull/357) ([tas50](https://github.com/tas50)) <!-- 4.0.10 -->
-- Added warning if input of vault admin is other than array [#352](https://github.com/chef/chef-vault/pull/352) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.9 -->
-- Remove simplecov [#356](https://github.com/chef/chef-vault/pull/356) ([tas50](https://github.com/tas50)) <!-- 4.0.8 -->
-- Update simplecov-console requirement from ~&gt; 0.2.0 to ~&gt; 0.7.2 [#344](https://github.com/chef/chef-vault/pull/344) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.7 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.0.10](https://github.com/chef/chef-vault/tree/v4.0.10) (2020-08-21)
+
+#### Merged Pull Requests
+- Update simplecov-console requirement from ~&gt; 0.2.0 to ~&gt; 0.7.2 [#344](https://github.com/chef/chef-vault/pull/344) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+- Remove simplecov [#356](https://github.com/chef/chef-vault/pull/356) ([tas50](https://github.com/tas50))
+- Added warning if input of vault admin is other than array [#352](https://github.com/chef/chef-vault/pull/352) ([sanga1794](https://github.com/sanga1794))
+- Optimize our requires [#357](https://github.com/chef/chef-vault/pull/357) ([tas50](https://github.com/tas50))
+<!-- latest_stable_release -->
+
 ## [v4.0.6](https://github.com/chef/chef-vault/tree/v4.0.6) (2020-08-13)
 
 #### Merged Pull Requests
@@ -26,7 +24,6 @@
 - Handled exception from vault? method [#350](https://github.com/chef/chef-vault/pull/350) ([sanga1794](https://github.com/sanga1794))
 - Update expeditor config for new gem caching [#354](https://github.com/chef/chef-vault/pull/354) ([tas50](https://github.com/tas50))
 - Optimize requires for non-omnibus installs [#355](https://github.com/chef/chef-vault/pull/355) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v4.0.1](https://github.com/chef/chef-vault/tree/v4.0.1) (2019-12-30)
 
