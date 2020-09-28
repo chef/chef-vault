@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.0.12 -->
+## [v4.0.12](https://github.com/chef/chef-vault/tree/v4.0.12) (2020-09-28)
+
+#### Merged Pull Requests
+- Fixed knife vault show -F json and knife vault list -F json don&#39;t always output valid JSON [#348](https://github.com/chef/chef-vault/pull/348) ([sanga1794](https://github.com/sanga1794))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.0.11 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Fixed knife vault show -F json and knife vault list -F json don&#39;t always output valid JSON [#348](https://github.com/chef/chef-vault/pull/348) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.12 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
