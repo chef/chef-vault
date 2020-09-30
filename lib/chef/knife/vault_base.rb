@@ -23,7 +23,7 @@ class Chef
         includer.class_eval do
           deps do
             require "chef/search/query"
-            require File.expand_path("../mixin/helper", __FILE__)
+            require File.expand_path("mixin/helper", __dir__)
             include ChefVault::Mixin::Helper
           end
 
