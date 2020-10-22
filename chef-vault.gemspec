@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$:.push File.expand_path("../lib", __FILE__)
+$:.push File.expand_path("lib", __dir__)
 require "chef-vault/version"
 
 Gem::Specification.new do |s|

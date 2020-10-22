@@ -79,7 +79,7 @@ options_config.each do |option, config|
 end
 
 options_config.each do |option, config|
-  options[option] = options[option] ? options[option] : config[:default]
+  options[option] ||= config[:default]
 end
 
 require "rubygems" unless defined?(Gem)
