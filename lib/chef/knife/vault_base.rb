@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require "set" unless defined?(::Set)
 require "chef/knife"
 require_relative "../../chef-vault"
 
@@ -70,13 +71,19 @@ class Chef
       end
 
       def split_vault_keys(bag)
-        # get all item keys
-        keys = bag.keys.select { |k| k =~ /_keys$/ }
-        # get all sparse keys
-        r = Regexp.union(keys.map { |k| Regexp.new("^#{k.chomp("_keys")}_key_.*") })
-        sparse = bag.keys.select { |k| k =~ r }
-        # the rest
-        items = bag.keys - keys - sparse
+        items = []
+        keys = ::Set.new
+        possible_sparses = ::Set.new
+
+        # spread bag keys into 3 categories: items, keys or possible sparse items
+        bag.each_key do |key|
+          next keys << key if key.end_with?("_keys")
+          next possible_sparses << key if key.include?("_key_")
+
+          items << key
+        end
+        # 2nd pass "sparse" items to avoid false positive when items have "_key" in their name
+        possible_sparses.each { |key| items << key if keys.include?("#{key}_keys") }
         # return item keys and items
         [keys, items]
       end
