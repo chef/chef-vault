@@ -49,8 +49,8 @@ class ChefVault
       # Raises `InvalidValue` if any of the json's values contain non-printable characters.
       def validate_json(json)
         begin
-          evaled_json = eval(json)
-        rescue SyntaxError => e
+          evaled_json = eval(json) # rubocop: disable Security/Eval
+        rescue SyntaxError
           raise ChefVault::Exceptions::InvalidValue, "#{json} is not valid JSON!"
         end
 

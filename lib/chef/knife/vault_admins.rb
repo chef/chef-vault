@@ -26,7 +26,7 @@ class Chef
         vault_admins = Chef::Config[:knife][:vault_admins]
         admin_array = [Chef::Config[:node_name]]
 
-        if !vault_admins.kind_of?(Array)
+        unless vault_admins.is_a?(Array)
           ui.warn("Vault admin must be an array")
         end
 
