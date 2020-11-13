@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.0.14 -->
-## [v4.0.14](https://github.com/chef/chef-vault/tree/v4.0.14) (2020-11-13)
+<!-- latest_release 4.1.0 -->
+## [v4.1.0](https://github.com/chef/chef-vault/tree/v4.1.0) (2020-11-13)
 
 #### Merged Pull Requests
-- Resolve chefstyle warnings [#363](https://github.com/chef/chef-vault/pull/363) ([tas50](https://github.com/tas50))
+- Optimize split_vault_keys method for large bag [#364](https://github.com/chef/chef-vault/pull/364) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.0.12 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Optimize split_vault_keys method for large bag [#364](https://github.com/chef/chef-vault/pull/364) ([tas50](https://github.com/tas50)) <!-- 4.1.0 -->
 - Resolve chefstyle warnings [#363](https://github.com/chef/chef-vault/pull/363) ([tas50](https://github.com/tas50)) <!-- 4.0.14 -->
 - Fixed problem escaping string in JSON [#347](https://github.com/chef/chef-vault/pull/347) ([sanga1794](https://github.com/sanga1794)) <!-- 4.0.13 -->
 <!-- release_rollup -->
