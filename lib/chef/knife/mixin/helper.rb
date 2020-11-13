@@ -39,9 +39,37 @@ class ChefVault
       end
 
       def values_from_json(json)
+        validate_json(json)
         JSON.parse(json)
       rescue JSON::ParserError
         raise JSON::ParserError, "#{json} is not valid JSON!"
+      end
+
+      # I/P: json string
+      # Raises `InvalidValue` if any of the json's values contain non-printable characters.
+      def validate_json(json)
+        begin
+          evaled_json = eval(json)
+        rescue SyntaxError => e
+          raise ChefVault::Exceptions::InvalidValue, "#{json} is not valid JSON!"
+        end
+
+        if evaled_json.is_a?(Hash)
+          evaled_json.each do |key, value|
+            next unless printable?(value.to_s)
+
+            msg = "Value '#{value}' of key '#{key}' contains non-printable characters. Check that backslashes are escaped with another backslash (e.g. C:\\\\Windows) in double-quoted strings."
+            raise ChefVault::Exceptions::InvalidValue, msg
+          end
+        end
+      end
+
+      # I/P: String
+      # O/P: true/false
+      # returns true if string is free of non-printable characters (escape sequences)
+      # this returns false for whitespace escape sequences as well, e.g. \n\t
+      def printable?(string)
+        /[^[:print:]]/.match(string)
       end
     end
   end
