@@ -160,11 +160,11 @@ class ChefVault
     end
 
     def secret
-      t = @keys[@node_name]
-      if !t.nil?
+      data_bag_key = @keys[@node_name]
+      if !data_bag_key.nil?
         private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read)
         begin
-          private_key.private_decrypt(Base64.decode64(t))
+          private_key.private_decrypt(Base64.decode64(data_bag_key))
         rescue OpenSSL::PKey::RSAError
           raise ChefVault::Exceptions::SecretDecryption,
             "#{data_bag}/#{id} is encrypted for you, but your private key failed to decrypt the contents.  "\

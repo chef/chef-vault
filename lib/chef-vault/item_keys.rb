@@ -34,12 +34,12 @@ class ChefVault
       @raw_data["search_query"] = []
       @raw_data["mode"] = "default"
       @cache = {} # write-back cache for keys
-      @tmpcache = nil
+      @tmpcache = {}
     end
 
     def [](key)
-      # return if cache contents is not empty
-      return @tmpcache unless @tmpcache.nil?
+      # return if cache contains client key
+      return @tmpcache[key] if @tmpcache.key?(key)
       # return options immediately
       return @raw_data[key] if %w{id admins clients search_query mode}.include?(key)
 
@@ -50,7 +50,7 @@ class ChefVault
       # check if the key is saved in sparse mode
       skey = sparse_key(sparse_id(key)) if sparse?
       if skey
-        @tmpcache = skey[key]
+        @tmpcache[key] = skey[key]
         skey[key]
       else
         # fallback to raw data
@@ -93,7 +93,7 @@ class ChefVault
 
     def delete(chef_key)
       @cache[chef_key.name] = false
-      @tmpcache = nil
+      @tmpcache = {}
       raw_data[chef_key.type].delete(chef_key.name)
       raw_data.delete(chef_key.name)
     end
