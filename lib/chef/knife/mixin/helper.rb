@@ -59,7 +59,7 @@ class ChefVault
             next unless printable?(value.to_s)
 
             msg = "Value '#{value}' of key '#{key}' contains non-printable characters. Check that backslashes are escaped with another backslash (e.g. C:\\\\Windows) in double-quoted strings."
-            raise ChefVault::Exceptions::InvalidValue, msg
+            ChefVault::Log.warn(msg)
           end
         end
       end
