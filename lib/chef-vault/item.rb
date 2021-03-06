@@ -229,7 +229,7 @@ class ChefVault
       else
         begin
           Chef::DataBag.load(data_bag)
-        rescue Net::HTTPServerException => http_error
+        rescue Net::HTTPClientException => http_error
           if http_error.response.code == "404"
             chef_data_bag = Chef::DataBag.new
             chef_data_bag.name data_bag
@@ -293,7 +293,7 @@ class ChefVault
       begin
         item.raw_data =
           Chef::EncryptedDataBagItem.load(vault, name, item.secret).to_hash
-      rescue Net::HTTPServerException => http_error
+      rescue Net::HTTPClientException => http_error
         if http_error.response.code == "404"
           raise ChefVault::Exceptions::ItemNotFound,
             "#{vault}/#{name} could not be found"
@@ -342,7 +342,7 @@ class ChefVault
       # and https://github.com/sensu/sensu-chef/blob/2.9.0/libraries/sensu_helpers.rb
       begin
         dbi = Chef::DataBagItem.load(vault, name)
-      rescue Net::HTTPServerException => http_error
+      rescue Net::HTTPClientException => http_error
         if http_error.response.code == "404"
           raise ChefVault::Exceptions::ItemNotFound,
             "#{vault}/#{name} not found"
@@ -445,7 +445,7 @@ class ChefVault
     def client_exists?(clientname)
       Chef::ApiClient.load(clientname)
       true
-    rescue Net::HTTPServerException => http_error
+    rescue Net::HTTPClientException => http_error
       return false if http_error.response.code == "404"
 
       raise http_error

@@ -31,5 +31,5 @@ Gem::Specification.new do |s|
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
 
-  s.required_ruby_version = ">= 2.4"
+  s.required_ruby_version = ">= 2.6"
 end

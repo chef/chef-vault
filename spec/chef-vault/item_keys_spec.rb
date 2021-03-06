@@ -160,7 +160,7 @@ RSpec.describe ChefVault::ItemKeys do
           keys.add(chef_key, shared_secret)
           keys.save("bar")
           keys.destroy
-          expect { Chef::DataBagItem.load("foo", "bar") }.to raise_error(Net::HTTPServerException)
+          expect { Chef::DataBagItem.load("foo", "bar") }.to raise_error(Net::HTTPClientException)
         end
 
         it "should destroy the keys in sparse mode" do
@@ -168,8 +168,8 @@ RSpec.describe ChefVault::ItemKeys do
           keys.mode("sparse")
           keys.save("bar")
           keys.destroy
-          expect { Chef::DataBagItem.load("foo", "bar") }.to raise_error(Net::HTTPServerException)
-          expect { Chef::DataBagItem.load("foo", "bar_key_client_name") }.to raise_error(Net::HTTPServerException)
+          expect { Chef::DataBagItem.load("foo", "bar") }.to raise_error(Net::HTTPClientException)
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name") }.to raise_error(Net::HTTPClientException)
           keys.mode("default")
         end
       end
