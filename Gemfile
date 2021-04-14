@@ -7,7 +7,7 @@ group :development do
   gem "chef-zero"
   gem "rake"
   gem "rspec", "~> 3.4"
-  gem "aruba", "~> 0.6"
+  gem "aruba", "~> 1.1"
   gem "chef", "~> 14.0" # avoids test failures on license acceptance
 end
 
