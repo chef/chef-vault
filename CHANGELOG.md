@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.1.1 -->
+## [v4.1.1](https://github.com/chef/chef-vault/tree/v4.1.1) (2021-05-24)
+
+#### Merged Pull Requests
+- Upgrade to GitHub-native Dependabot [#371](https://github.com/chef/chef-vault/pull/371) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.1.0 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Upgrade to GitHub-native Dependabot [#371](https://github.com/chef/chef-vault/pull/371) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.1.1 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
