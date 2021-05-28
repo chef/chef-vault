@@ -5,6 +5,7 @@ RSpec.describe ChefVault::Mixin::Helper do
   include ChefVault::Mixin::Helper
 
   let(:json_data) { '{"username": "root", "password": "abcabc"}' }
+  let(:json_data_whitespace) { '{"username": "root", "password": "abc\nabc\tabc"}' }
   let(:json_data_control_char) { '{"username": "root", "password": "abc\abc"}' }
   let(:buggy_json_data) { '{"username": "root", "password": "abc\abc"' }
 
@@ -19,6 +20,10 @@ RSpec.describe ChefVault::Mixin::Helper do
 
     it "Not to raise error if valid data provided" do
       expect { validate_json(json_data) }.to_not raise_error
+    end
+
+    it "Not to raise error if valid data with whitespace provided" do
+      expect { validate_json(json_data_whitespace) }.to_not raise_error
     end
   end
 end

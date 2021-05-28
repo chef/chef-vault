@@ -66,10 +66,10 @@ class ChefVault
 
       # I/P: String
       # O/P: true/false
-      # returns true if string is free of non-printable characters (escape sequences)
-      # this returns false for whitespace escape sequences as well, e.g. \n\t
+      # returns true if string is free of non-printable and whitespace characters
+      # (escape sequences)
       def printable?(string)
-        /[^[:print:]]/.match(string)
+        /[^[:graph:][:space:]]/.match(string)
       end
     end
   end
