@@ -51,8 +51,5 @@ class ChefVault
 
     class V1Format < Exceptions
     end
-
-    class InvalidValue < Exceptions
-    end
   end
 end
