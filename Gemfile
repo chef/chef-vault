@@ -9,6 +9,7 @@ group :development do
   gem "rspec", "~> 3.4"
   gem "aruba", "~> 0.6"
   gem "chef", "~> 14.0" # avoids test failures on license acceptance
+  gem "contracts", "~> 0.16.1"
 end
 
 group :docs do
