@@ -59,7 +59,7 @@ class ChefVault
             next unless printable?(value.to_s)
 
             msg = "Value '#{value}' of key '#{key}' contains non-printable characters. Check that backslashes are escaped with another backslash (e.g. C:\\\\Windows) in double-quoted strings."
-            raise ChefVault::Exceptions::InvalidValue, msg
+            ChefVault::Log.warn(msg)
           end
         end
       end
@@ -69,7 +69,7 @@ class ChefVault
       # returns true if string is free of non-printable characters (escape sequences)
       # this returns false for whitespace escape sequences as well, e.g. \n\t
       def printable?(string)
-        /[^[:print:]]/.match(string)
+        /[^[:print:]]|[[:space:]]/.match(string)
       end
     end
   end
