@@ -1,29 +1,26 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.3 -->
-## [v4.1.3](https://github.com/chef/chef-vault/tree/v4.1.3) (2021-09-01)
-
-#### Merged Pull Requests
-- Replaced exception with the warnings and removed related failing specs(used earlier for raising issue) [#367](https://github.com/chef/chef-vault/pull/367) ([sanga1794](https://github.com/sanga1794))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.1.0 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Replaced exception with the warnings and removed related failing specs(used earlier for raising issue) [#367](https://github.com/chef/chef-vault/pull/367) ([sanga1794](https://github.com/sanga1794)) <!-- 4.1.3 -->
-- fix-verify-pipeline [#377](https://github.com/chef/chef-vault/pull/377) ([jayashrig158](https://github.com/jayashrig158)) <!-- 4.1.2 -->
-- Upgrade to GitHub-native Dependabot [#371](https://github.com/chef/chef-vault/pull/371) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.1.1 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.1.3](https://github.com/chef/chef-vault/tree/v4.1.3) (2021-09-07)
+
+#### Merged Pull Requests
+- Upgrade to GitHub-native Dependabot [#371](https://github.com/chef/chef-vault/pull/371) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+- fix-verify-pipeline [#377](https://github.com/chef/chef-vault/pull/377) ([jayashrig158](https://github.com/jayashrig158))
+- Replaced exception with the warnings and removed related failing specs(used earlier for raising issue) [#367](https://github.com/chef/chef-vault/pull/367) ([sanga1794](https://github.com/sanga1794))
+<!-- latest_stable_release -->
+
 ## [v4.1.0](https://github.com/chef/chef-vault/tree/v4.1.0) (2020-11-13)
 
 #### Merged Pull Requests
 - Fixed problem escaping string in JSON [#347](https://github.com/chef/chef-vault/pull/347) ([sanga1794](https://github.com/sanga1794))
 - Resolve chefstyle warnings [#363](https://github.com/chef/chef-vault/pull/363) ([tas50](https://github.com/tas50))
 - Optimize split_vault_keys method for large bag [#364](https://github.com/chef/chef-vault/pull/364) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v4.0.12](https://github.com/chef/chef-vault/tree/v4.0.12) (2020-09-28)
 
