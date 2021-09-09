@@ -1,27 +1,24 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.4 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v4.1.4](https://github.com/chef/chef-vault/tree/v4.1.4) (2021-09-09)
 
 #### Merged Pull Requests
 - added back the begin and end [#380](https://github.com/chef/chef-vault/pull/380) ([nikhil2611](https://github.com/nikhil2611))
-<!-- latest_release -->
-
-<!-- release_rollup since=4.1.3 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- added back the begin and end [#380](https://github.com/chef/chef-vault/pull/380) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.4 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v4.1.3](https://github.com/chef/chef-vault/tree/v4.1.3) (2021-09-07)
 
 #### Merged Pull Requests
 - Upgrade to GitHub-native Dependabot [#371](https://github.com/chef/chef-vault/pull/371) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
 - fix-verify-pipeline [#377](https://github.com/chef/chef-vault/pull/377) ([jayashrig158](https://github.com/jayashrig158))
 - Replaced exception with the warnings and removed related failing specs(used earlier for raising issue) [#367](https://github.com/chef/chef-vault/pull/367) ([sanga1794](https://github.com/sanga1794))
-<!-- latest_stable_release -->
 
 ## [v4.1.0](https://github.com/chef/chef-vault/tree/v4.1.0) (2020-11-13)
 
