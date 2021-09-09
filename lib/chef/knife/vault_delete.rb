@@ -30,13 +30,15 @@ class Chef
 
         if vault && item
           delete_object(ChefVault::Item, "#{vault}/#{item}", "chef_vault_item") do
-
-            ChefVault::Item.load(vault, item).destroy
-          rescue ChefVault::Exceptions::KeysNotFound,
-                 ChefVault::Exceptions::ItemNotFound
-            raise ChefVault::Exceptions::ItemNotFound,
-              "#{vault}/#{item} not found."
-
+            # rubocop:disable all
+            begin
+              ChefVault::Item.load(vault, item).destroy
+            rescue ChefVault::Exceptions::KeysNotFound,
+              ChefVault::Exceptions::ItemNotFound
+              raise ChefVault::Exceptions::ItemNotFound,
+                "#{vault}/#{item} not found."
+            end
+            # rubocop:enable all
           end
         else
           show_usage
