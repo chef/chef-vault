@@ -89,12 +89,14 @@ class ChefVault
         handle_client_action(search_or_client, action)
       else
         search_or_client.each do |name|
+          # rubocop:disable all
           begin
             client = load_actor(name, "clients")
             handle_client_action(client, action)
           rescue ChefVault::Exceptions::ClientNotFound
             ChefVault::Log.warn "node '#{name}' has no 'default' public key; skipping"
           end
+          # rubocop:enable all
         end
       end
     end
