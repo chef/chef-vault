@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.1.4 -->
+## [v4.1.4](https://github.com/chef/chef-vault/tree/v4.1.4) (2021-09-09)
+
+#### Merged Pull Requests
+- added back the begin and end [#380](https://github.com/chef/chef-vault/pull/380) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.1.3 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- added back the begin and end [#380](https://github.com/chef/chef-vault/pull/380) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.4 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
