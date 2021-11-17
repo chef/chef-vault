@@ -312,7 +312,7 @@ class ChefVault
 
     def self.format_output(values, item)
       values.split(",").each do |value|
-        value.strip! 
+        value.strip!
         $stdout.puts("#{value}: #{item[value]}")
       end
     end

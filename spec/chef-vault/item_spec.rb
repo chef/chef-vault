@@ -2,7 +2,7 @@ require "openssl"
 
 RSpec.describe ChefVault::Item do
   subject(:item) { ChefVault::Item.new("foo", "bar") }
-  let(:options) {{chef: "bar", values: "foo"}}
+  let(:options) { { chef: "bar", values: "foo" } }
 
   before do
     item["foo"] = "bar"
@@ -79,13 +79,13 @@ RSpec.describe ChefVault::Item do
       it "should detect an encrypted data bag item" do
         expect(ChefVault::Item.data_bag_item_type("encrypted", "foo")).to eq(:encrypted)
       end
-      
+
       it "should detect a normal data bag item" do
         expect(ChefVault::Item.data_bag_item_type("normal", "foo")).to eq(:normal)
       end
 
       it "outputs the loaded item credentials on the stdout" do
-        expect { ChefVault::Item.format_output(options[:values],@dbi) }.to output("foo: bar\n").to_stdout
+        expect { ChefVault::Item.format_output(options[:values], @dbi) }.to output("foo: bar\n").to_stdout
       end
     end
   end
