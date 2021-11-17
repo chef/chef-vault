@@ -306,8 +306,15 @@ class ChefVault
         raise ChefVault::Exceptions::ItemNotFound,
           "#{vault}/#{name} could not be found"
       end
-
+      format_output(opts[:values], item) if opts[:values]
       item
+    end
+
+    def self.format_output(values, item)
+      values.split(",").each do |value|
+        value.strip! 
+        $stdout.puts("#{value}: #{item[value]}")
+      end
     end
 
     def delete_client(client_name)
