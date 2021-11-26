@@ -88,7 +88,7 @@ require "chef-vault"
 
 ChefVault::Log.init(STDOUT)
 ChefVault.load_config(options[:chef])
-item = ChefVault::Item.load(options[:vault], options[:item])
+item = ChefVault::Item.load(options[:vault], options[:item], options)
 
 ChefVault::Log.info "#{options[:vault]}/#{options[:item]}"
 

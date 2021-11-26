@@ -2,6 +2,7 @@ require "openssl"
 
 RSpec.describe ChefVault::Item do
   subject(:item) { ChefVault::Item.new("foo", "bar") }
+  let(:options) { { chef: "bar", values: "foo" } }
 
   before do
     item["foo"] = "bar"
@@ -47,9 +48,16 @@ RSpec.describe ChefVault::Item do
       @vaultdbki = Chef::DataBagItem.new
       @vaultdbki.data_bag("vault")
       @vaultdbki.raw_data = { "id" => "foo_keys" }
+
       allow(@vaultdb).to receive(:load).with("foo_keys").and_return(@vaultdbki)
       allow(Chef::DataBag).to receive(:load).with("vault").and_return(@vaultdb)
       allow(Chef::DataBagItem).to receive(:load).with("vault", "foo").and_return(@vaultdbi)
+      @orig_stdout = $stdout
+      $stdout = File.open(File::NULL, "w")
+    end
+
+    after do
+      $stdout = @orig_stdout
     end
 
     describe "::vault?" do
@@ -74,6 +82,10 @@ RSpec.describe ChefVault::Item do
 
       it "should detect a normal data bag item" do
         expect(ChefVault::Item.data_bag_item_type("normal", "foo")).to eq(:normal)
+      end
+
+      it "outputs the loaded item credentials on the stdout" do
+        expect { ChefVault::Item.format_output(options[:values], @dbi) }.to output("foo: bar\n").to_stdout
       end
     end
   end
