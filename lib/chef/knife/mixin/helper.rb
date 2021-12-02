@@ -56,7 +56,7 @@ class ChefVault
 
         if evaled_json.is_a?(Hash)
           evaled_json.each do |key, value|
-            next unless printable?(value.to_s)
+            next if printable?(value.to_s)
 
             msg = "Value '#{value}' of key '#{key}' contains non-printable characters. Check that backslashes are escaped with another backslash (e.g. C:\\\\Windows) in double-quoted strings."
             ChefVault::Log.warn(msg)
@@ -66,10 +66,10 @@ class ChefVault
 
       # I/P: String
       # O/P: true/false
-      # returns true if string is free of non-printable characters (escape sequences)
+      # returns true if string is free of non-printable characters (escape sequences) or includes '\n' or '\r', which is perfectly valid
       # this returns false for whitespace escape sequences as well, e.g. \n\t
       def printable?(string)
-        /[^[:print:]]|[[:space:]]/.match(string)
+        /[[:print:]]|[\n\r]/.match?(string)
       end
     end
   end
