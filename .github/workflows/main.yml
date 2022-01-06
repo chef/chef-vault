@@ -31,6 +31,12 @@ jobs:
 
       - name: run specs
         run: bundle exec rake spec --trace
+      - name: Simplecov Report
+        uses: aki77/simplecov-report-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          failedThreshold: 90
+          resultPath: coverage/.last_run.json 
 
     
 
