@@ -28,18 +28,9 @@ jobs:
         run: |
           gem install bundler
           bundler install
-#       - name: Setup test database
-#         env:
-#           RAILS_ENV: test
-#           PGHOST: localhost
-#           PGUSER: myapp
-#         run: |
-#           rake db:setup
 
-      - name: Run tests
-        run: /spec
-      - name: Run tests
-        run: bundler exec rake
+      - name: run specs
+        run: bundle exec rake spec --trace
 
     
 
