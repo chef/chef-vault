@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.1.6 -->
+## [v4.1.6](https://github.com/chef/chef-vault/tree/v4.1.6) (2022-01-07)
+
+#### Merged Pull Requests
+- To integrate test coverage % report in PR creation or merge [#387](https://github.com/chef/chef-vault/pull/387) ([snehaldwivedi](https://github.com/snehaldwivedi))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.1.5 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- To integrate test coverage % report in PR creation or merge [#387](https://github.com/chef/chef-vault/pull/387) ([snehaldwivedi](https://github.com/snehaldwivedi)) <!-- 4.1.6 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
