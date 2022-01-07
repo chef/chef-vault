@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Action
+name: CI
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  coverage-test:
+    name: Coverage
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up ruby 2.7
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - name: run specs
+        run: bundle exec rake spec --trace
+      - name: Simplecov Report
+        uses: aki77/simplecov-report-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          failedThreshold: 90
+          resultPath: coverage/.last_run.json 
+  
