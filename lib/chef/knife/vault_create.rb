@@ -14,15 +14,11 @@
 # limitations under the License.
 
 require_relative "vault_base"
-require_relative "vault_admins"
-require_relative "vault_clients"
 
 class Chef
   class Knife
     class VaultCreate < Knife
       include Chef::Knife::VaultBase
-      include Chef::Knife::VaultAdmins
-      include Chef::Knife::VaultClients
 
       banner "knife vault create VAULT ITEM VALUES (options)"
 
@@ -54,6 +50,13 @@ class Chef
       option :file,
         long: "--file FILE",
         description: "File to be added to vault item as file-content"
+
+      deps do
+        require_relative "vault_admins"
+        require_relative "vault_clients"
+        include Chef::Knife::VaultAdmins
+        include Chef::Knife::VaultClients
+      end
 
       def run
         vault = @name_args[0]

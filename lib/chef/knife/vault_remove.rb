@@ -14,13 +14,11 @@
 # limitations under the License.
 
 require_relative "vault_base"
-require_relative "vault_clients"
 
 class Chef
   class Knife
     class VaultRemove < Knife
       include Chef::Knife::VaultBase
-      include Chef::Knife::VaultClients
 
       banner "knife vault remove VAULT ITEM VALUES (options)"
 
@@ -42,6 +40,11 @@ class Chef
       option :clean_unknown_clients,
         long: "--clean-unknown-clients",
         description: "Remove unknown clients during key rotation"
+
+      deps do
+        require_relative "vault_clients"
+        include Chef::Knife::VaultClients
+      end
 
       def run
         vault = @name_args[0]

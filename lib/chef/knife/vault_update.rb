@@ -14,15 +14,11 @@
 # limitations under the License.
 
 require_relative "vault_base"
-require_relative "vault_admins"
-require_relative "vault_clients"
 
 class Chef
   class Knife
     class VaultUpdate < Knife
       include Chef::Knife::VaultBase
-      include Chef::Knife::VaultAdmins
-      include Chef::Knife::VaultClients
 
       banner "knife vault update VAULT ITEM VALUES (options)"
 
@@ -58,6 +54,13 @@ class Chef
         short: "-K KEYS_MODE",
         long: "--keys-mode KEYS_MODE",
         description: "Mode in which to save vault keys"
+
+      deps do
+        require_relative "vault_admins"
+        require_relative "vault_clients"
+        include Chef::Knife::VaultAdmins
+        include Chef::Knife::VaultClients
+      end
 
       def run
         vault = @name_args[0]
