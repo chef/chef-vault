@@ -8,9 +8,17 @@ group :development do
   gem "rake"
   gem "rspec", "~> 3.4"
   gem "aruba", "~> 0.6"
-  gem "chef", " ~> 17.0" # pin until we drop ruby >=3 avoids test failures on license acceptance
+  if RUBY_VERSION < "3.0"
+    gem "chef", "~> 14.0"
+  else
+    gem "chef", "~> 17.0"
+  end
   gem "contracts", "~> 0.16.1" # pin until we drop ruby < 2.7
-  gem "chef-utils", "~> 17.0" # pin until we drop ruby >=3
+  if RUBY_VERSION  >= "3.0"
+    gem "chef-utils", "~> 17.0" # pin until we drop ruby >=3
+  else
+    gem "chef-utils", "= 16.6.14" # pin until we drop ruby 2.5
+  end
 end
 
 group :docs do
