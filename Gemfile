@@ -9,7 +9,7 @@ group :development do
   gem "rspec", "~> 3.4"
   gem "aruba", "~> 0.6"
   gem "contracts", "~> 0.16.1" # pin until we drop ruby < 2.7
-  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.0.0')
+  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0.0")
     gem "chef", "~> 14.0"
     gem "chef-utils", "= 16.6.14" # pin until we drop ruby 2.5
   else
