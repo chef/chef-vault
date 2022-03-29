@@ -21,7 +21,7 @@ RSpec.describe ChefVault::Actor do
   let(:http_error) do
     http_response = double("http error")
     allow(http_response).to receive(:code).and_return(http_response_code)
-    Net::HTTPServerException.new("http error message", http_response)
+    Net::HTTPClientException.new("http error message", http_response)
   end
 
   let(:api) { double("api") }
@@ -125,7 +125,7 @@ RSpec.describe ChefVault::Actor do
           let(:http_error_2) do
             http_response = double("http error")
             allow(http_response).to receive(:code).and_return(http_response_code_2)
-            Net::HTTPServerException.new("http error message", http_response)
+            Net::HTTPClientException.new("http error message", http_response)
           end
 
           before do
