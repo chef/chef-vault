@@ -5,5 +5,5 @@ When(/^I create a data bag '(.+)' containing the JSON '(.+)'$/) do |bag, json|
 end
 
 Given(/^I create an empty data bag '(.+)'$/) do |databag|
-  run_command_and_stop "knife data bag create #{databag} -z -c config.rb", false
+  run_command_and_stop "knife data bag create #{databag} -z -c config.rb", :fail_on_error => false
 end
