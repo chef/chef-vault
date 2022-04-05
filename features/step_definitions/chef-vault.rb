@@ -123,7 +123,7 @@ Given(%r{^I check if the data bag item '(.+)/(.+)' is a vault$}) do |vault, item
 end
 
 Given(%r{^I check the type of the data bag item '(.+)/(.+)'$}) do |vault, item|
-  run_command_and_stop "knife vault itemtype #{vault} #{item} -c config.rb -z"
+  run_command_and_stop "knife vault itemtype #{vault} #{item} -c config.rb -z", :fail_on_error => false
 end
 
 Given(%r{^I downgrade the vault item '(.+)/(.+)' to v1 syntax}) do |vault, item|
