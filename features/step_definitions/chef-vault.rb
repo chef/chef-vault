@@ -115,7 +115,7 @@ Given(%r{^I (try to )?add '(.+)' as an admin for the vault item '(.+)/(.+)'$}) d
 end
 
 Given(/^I show the keys of the vault '(.+)'$/) do |vault|
-  run_command_and_stop "knife vault show #{vault} -c config.rb -z", { fail_on_error: true }
+  run_command_and_stop "knife vault show #{vault} -c config.rb -z"
 end
 
 Given(%r{^I check if the data bag item '(.+)/(.+)' is a vault$}) do |vault, item|
@@ -123,9 +123,7 @@ Given(%r{^I check if the data bag item '(.+)/(.+)' is a vault$}) do |vault, item
 end
 
 Given(%r{^I check the type of the data bag item '(.+)/(.+)'$}) do |vault, item|
-  # require 'byebug'
-  # byebug
-  run_command_and_stop "knife vault itemtype #{vault} #{item} -c config.rb -z", { fail_on_error: true }
+  run_command_and_stop "knife vault itemtype #{vault} #{item} -c config.rb -z"
 end
 
 Given(%r{^I downgrade the vault item '(.+)/(.+)' to v1 syntax}) do |vault, item|
