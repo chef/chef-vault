@@ -5,7 +5,7 @@ Given(%r{^I create a vault item '(.+)/(.+)'( with keys in sparse mode)? containi
   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")
   adminarg = admins.nil? ? "-A admin" : "-A #{admins}"
   sparseopt = sparse.nil? ? "" : "-K sparse"
-  run_command_and_stop   "knife vault create #{vault} #{item} -z -c config.rb #{adminarg} #{sparseopt} -S '#{query}' -J item.json", { fail_on_error: false }
+  run_command_and_stop "knife vault create #{vault} #{item} -z -c config.rb #{adminarg} #{sparseopt} -S '#{query}' -J item.json", { fail_on_error: false }
 end
 
 Given(%r{^I update the vault item '(.+)/(.+)' to be encrypted for '(.+)'( with the clean option)?$}) do |vault, item, nodelist, cleanopt|
