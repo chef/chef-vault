@@ -5,7 +5,7 @@ Given(%r{^I create a vault item '(.+)/(.+)'( with keys in sparse mode)? containi
   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")
   adminarg = admins.nil? ? "-A admin" : "-A #{admins}"
   sparseopt = sparse.nil? ? "" : "-K sparse"
-  run_command_and_stop   "knife vault create #{vault} #{item} -z -c config.rb #{adminarg} #{sparseopt} -S '#{query}' -J item.json", :fail_on_error => false
+  run_command_and_stop   "knife vault create #{vault} #{item} -z -c config.rb #{adminarg} #{sparseopt} -S '#{query}' -J item.json", { fail_on_error: false }
 end
 
 Given(%r{^I update the vault item '(.+)/(.+)' to be encrypted for '(.+)'( with the clean option)?$}) do |vault, item, nodelist, cleanopt|
@@ -39,7 +39,7 @@ Given(%r{^I refresh the vault item '(.+)/(.+)' with the '(.+)' options?$}) do |v
 end
 
 Given(%r{^I try to decrypt the vault item '(.+)/(.+)' as '(.+)'$}) do |vault, item, node|
-  run_command_and_stop "knife vault show #{vault} #{item} -z -c config.rb -u #{node} -k #{node}.pem", :fail_on_error => false
+  run_command_and_stop "knife vault show #{vault} #{item} -z -c config.rb -u #{node} -k #{node}.pem", { fail_on_error: false }
 end
 
 Then(%r{^the vault item '(.+)/(.+)' should( not)? be encrypted for '(.+)'( with keys in sparse mode)?$}) do |vault, item, neg, nodelist, sparse|
@@ -52,7 +52,7 @@ Then(%r{^the vault item '(.+)/(.+)' should( not)? be encrypted for '(.+)'( with 
     expect(data).to include("mode" => "sparse")
     nodes.each do |node|
       command = "knife data bag show #{vault} #{item}_key_#{node} -z -c config.rb -F json"
-      run_command_and_stop(command, fail_on_error: false)
+      run_command_and_stop command, { fail_on_error: false }
       if neg
         error = last_command_started.stderr
         expect(error).to include("ERROR: The object you are looking for could not be found")
@@ -102,7 +102,7 @@ Given(/^I list the vaults$/) do
 end
 
 Given(%r{^I can('t)? decrypt the vault item '(.+)/(.+)' as '(.+)'$}) do |neg, vault, item, client|
-  run_command_and_stop "knife vault show #{vault} #{item} -c config.rb -z -u #{client} -k #{client}.pem", :fail_on_error => false
+  run_command_and_stop "knife vault show #{vault} #{item} -c config.rb -z -u #{client} -k #{client}.pem", { fail_on_error: false }
   if neg
     expect(last_command_started).not_to have_exit_status(0)
   else
@@ -111,19 +111,21 @@ Given(%r{^I can('t)? decrypt the vault item '(.+)/(.+)' as '(.+)'$}) do |neg, va
 end
 
 Given(%r{^I (try to )?add '(.+)' as an admin for the vault item '(.+)/(.+)'$}) do |try, newadmin, vault, item|
-  run_command_and_stop "knife vault update #{vault} #{item} -c config.rb -z -A #{newadmin}", :fail_on_error => !try
+  run_command_and_stop("knife vault update #{vault} #{item} -c config.rb -z -A #{newadmin}", { fail_on_error: !try })
 end
 
 Given(/^I show the keys of the vault '(.+)'$/) do |vault|
-  run_command_and_stop "knife vault show #{vault} -c config.rb -z"
+  run_command_and_stop "knife vault show #{vault} -c config.rb -z", { fail_on_error: true }
 end
 
 Given(%r{^I check if the data bag item '(.+)/(.+)' is a vault$}) do |vault, item|
-  run_command_and_stop "knife vault isvault #{vault} #{item} -c config.rb -z", :fail_on_error => false
+  run_command_and_stop "knife vault isvault #{vault} #{item} -c config.rb -z", { fail_on_error: false }
 end
 
 Given(%r{^I check the type of the data bag item '(.+)/(.+)'$}) do |vault, item|
-  run_command_and_stop "knife vault itemtype #{vault} #{item} -c config.rb -z", :fail_on_error => false
+  # require 'byebug'
+  # byebug
+  run_command_and_stop "knife vault itemtype #{vault} #{item} -c config.rb -z", { fail_on_error: true }
 end
 
 Given(%r{^I downgrade the vault item '(.+)/(.+)' to v1 syntax}) do |vault, item|
