@@ -54,11 +54,11 @@ def create_node(name)
 end
 
 def create_admin(admin)
-  create_client(admin, "-a")
+  create_client(admin)
 end
 
-def create_client(name, args = nil)
-  command = "knife client create #{name} -z -d -c config.rb #{args} >#{name}.pem"
+def create_client(name)
+  command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
   run_command_and_stop command
   write_file("#{name}.pem", last_command_started.stdout)
 end

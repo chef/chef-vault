@@ -8,7 +8,7 @@ RSpec.describe ChefVault::Item do
     item["foo"] = "bar"
     http_response = double("http_response")
     allow(http_response).to receive(:code).and_return("404")
-    non_existing = Net::HTTPServerException.new("http error message", http_response)
+    non_existing = Net::HTTPClientException.new("http error message", http_response)
 
     allow(Chef::DataBagItem).to receive(:load).with(anything, /_key_/).and_raise(non_existing)
   end
