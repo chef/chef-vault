@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.8 -->
-## [v4.1.8](https://github.com/chef/chef-vault/tree/v4.1.8) (2022-04-10)
+<!-- latest_release 4.1.9 -->
+## [v4.1.9](https://github.com/chef/chef-vault/tree/v4.1.9) (2022-04-12)
 
 #### Merged Pull Requests
-- Testing ruby 3.0 and 3.1 [#391](https://github.com/chef/chef-vault/pull/391) ([nikhil2611](https://github.com/nikhil2611))
+- Update chef-utils requirement from = 16.6.14 to 17.10.0 [#394](https://github.com/chef/chef-vault/pull/394) ([dependabot[bot]](https://github.com/dependabot[bot]))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.5 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Update chef-utils requirement from = 16.6.14 to 17.10.0 [#394](https://github.com/chef/chef-vault/pull/394) ([dependabot[bot]](https://github.com/dependabot[bot])) <!-- 4.1.9 -->
 - Testing ruby 3.0 and 3.1 [#391](https://github.com/chef/chef-vault/pull/391) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.8 -->
 - Avoid loading all of chef-vault unless we&#39;re running the plugin [#385](https://github.com/chef/chef-vault/pull/385) ([tas50](https://github.com/tas50)) <!-- 4.1.7 -->
 - To integrate test coverage % report in PR creation or merge [#387](https://github.com/chef/chef-vault/pull/387) ([snehaldwivedi](https://github.com/snehaldwivedi)) <!-- 4.1.6 -->
