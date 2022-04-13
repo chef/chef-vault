@@ -192,13 +192,13 @@ RSpec.describe ChefVault::ItemKeys do
             expect(File).to receive(:exist?).with("/tmp/site_data_bag/foo/bar.json").and_return(true)
             dbp, dbi = keys.find_solo_path("bar")
             expect(dbp).to eql("/tmp/site_data_bag/foo").or eq("C:/tmp/data_bag/foo")
-            expect(dbi).to eql("/tmp/site_data_bag/foo/bar.json")
+            expect(dbi).to eql("/tmp/site_data_bag/foo/bar.json").or eq("C:/tmp/data_bag/foo/bar.json")
           end
 
           it "should return the first item if none exist" do
             dbp, dbi = keys.find_solo_path("bar")
             expect(dbp).to eql("/tmp/data_bag/foo").or eq("C:/tmp/data_bag/foo")
-            expect(dbi).to eql("/tmp/data_bag/foo/bar.json")
+            expect(dbi).to eql("/tmp/data_bag/foo/bar.json").or eq("C:/tmp/data_bag/foo/bar.json")
           end
         end
 
@@ -207,7 +207,7 @@ RSpec.describe ChefVault::ItemKeys do
             Chef::Config[:data_bag_path] = "/tmp/data_bag"
             dbp, dbi = keys.find_solo_path("bar")
             expect(dbp).to eql("/tmp/data_bag/foo").or eq("C:/tmp/data_bag/foo")
-            expect(dbi).to eql("/tmp/data_bag/foo/bar.json")
+            expect(dbi).to eql("/tmp/data_bag/foo/bar.json").or eq("C:/tmp/data_bag/foo/bar.json")
           end
         end
       end
