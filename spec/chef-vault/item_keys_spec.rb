@@ -189,7 +189,7 @@ RSpec.describe ChefVault::ItemKeys do
           end
 
           it "should return an existing item" do
-            expect(File).to receive(:exist?).with("/tmp/site_data_bag/foo/bar.json").and_return(true)
+            allow(File).to receive(:exist?).with("/tmp/site_data_bag/foo/bar.json").and_return(true)
             dbp, dbi = keys.find_solo_path("bar")
             expect(dbp).to eql("/tmp/site_data_bag/foo").or eq("C:/tmp/data_bag/foo")
             expect(dbi).to eql("/tmp/site_data_bag/foo/bar.json").or eq("C:/tmp/data_bag/foo/bar.json")
