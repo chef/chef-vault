@@ -1,7 +1,7 @@
 ---
 expeditor:
   cached_folders:
-    - vendor
+   - vendor
   defaults:
     buildkite:
       retry:
@@ -18,6 +18,7 @@ steps:
     executor:
       docker:
         image: ruby:2.6
+
 - label: run-specs-ruby-2.7
   command:
     - .expeditor/run_linux_tests.sh rake
@@ -25,6 +26,7 @@ steps:
     executor:
       docker:
         image: ruby:2.7
+
 - label: run-specs-ruby-3.0
   command:
     - .expeditor/run_linux_tests.sh rake
@@ -32,6 +34,7 @@ steps:
     executor:
       docker:
         image: ruby:3.0
+
 - label: run-specs-ruby-3.1
   command:
     - .expeditor/run_linux_tests.sh rake
@@ -39,3 +42,25 @@ steps:
     executor:
       docker:
         image: ruby:3.1
+
+- label: run-specs-ruby-3.0-windows
+  command:
+    - .expeditor/run_windows_tests.ps1
+  expeditor:
+    executor:
+      docker:
+        host_os: windows
+        shell: ["powershell", "-Command"]
+        image: rubydistros/windows-2019:3.0
+        user: 'NT AUTHORITY\SYSTEM'
+
+- label: run-specs-ruby-3.1-windows
+  command:
+    - .expeditor/run_windows_tests.ps1
+  expeditor:
+    executor:
+      docker:
+        host_os: windows
+        shell: ["powershell", "-Command"]
+        image: rubydistros/windows-2019:3.1
+        user: 'NT AUTHORITY\SYSTEM'
