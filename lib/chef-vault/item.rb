@@ -40,6 +40,11 @@ class ChefVault
     #     decrypt secrets.  Defaults to the value of Chef::Config[:client_key]
     attr_accessor :client_key_path
 
+    # @!attribute [rw] client_key_contents
+    #   @return [String] the contents of the private key that is used to
+    #     decrypt secrets.  Defaults to the value of Chef::Config[:client_key_contents]
+    attr_accessor :client_key_contents
+
     # returns the raw keys of the underlying Chef::DataBagItem.  chef-vault v2
     # defined #keys as a public accessor that returns the ChefVault::ItemKeys
     # object for the vault.  Ideally, #keys would provide Hash-like behaviour
@@ -58,6 +63,8 @@ class ChefVault
     #   as. Defaults to the :node_name value of Chef::Config
     # @option opts [String] :client_key_path the name of the node to decrypt
     #   secrets as.  Defaults to the :client_key value of Chef::Config
+    # @option opts [String] :client_key_contents the private key to decrypt
+    #   secrets as.  Defaults to the :client_key_contents value of Chef::Config
     def initialize(vault, name, opts = {})
       super() # Don't pass parameters
       @data_bag = vault
@@ -68,9 +75,11 @@ class ChefVault
       opts = {
         node_name: Chef::Config[:node_name],
         client_key_path: Chef::Config[:client_key],
+        client_key_contents: Chef::Config[:client_key_contents],
       }.merge(opts)
       @node_name = opts[:node_name]
       @client_key_path = opts[:client_key_path]
+      @client_key_contents = opts[:client_key_contents]
       @current_query = search
     end
 
@@ -163,7 +172,11 @@ class ChefVault
 
     def secret
       if @keys.include?(@node_name) && !@keys[@node_name].nil?
-        private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read)
+        unless @client_key_contents.nil?
+          private_key = OpenSSL::PKey::RSA.new(@client_key_contents)
+        else
+          private_key = OpenSSL::PKey::RSA.new(File.open(@client_key_path).read)
+        end
         begin
           private_key.private_decrypt(Base64.decode64(@keys[@node_name]))
         rescue OpenSSL::PKey::RSAError
