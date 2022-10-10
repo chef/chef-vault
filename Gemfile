@@ -5,7 +5,7 @@ gemspec
 group :development do
   gem "chefstyle"
   gem "rake"
-  gem "contracts", "~> 0.16.1" # pin until we drop ruby < 2.7
+  gem "contracts", "~> 0.17" # pin until we drop ruby < 2.7
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0.0")
     gem "chef-zero"
     gem "rspec", "~> 3.4"
