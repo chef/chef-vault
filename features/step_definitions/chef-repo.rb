@@ -34,6 +34,10 @@ Given(/^I create an admin named '(.+)'$/) do |admin|
   create_admin(admin)
 end
 
+Given(/^I create( mismatched)? client config for client named '(.+)'$/) do |mismatched, client|
+  create_client_config(client, mismatched)
+end
+
 Given(/^I delete clients? '(.+)' from the Chef server$/) do |nodelist|
   nodelist.split(/,/).each do |node|
     delete_client(node)
@@ -69,4 +73,19 @@ end
 
 def delete_node(name)
   run_command_and_stop "knife node delete #{name} -y -z -c config.rb"
+end
+
+def create_client_config(name, mismatched = false)
+  content = <<EOF
+local_mode true
+chef_repo_path '.'
+chef_zero.enabled true
+knife[:vault_mode] = 'client'
+node_name '#{name}'
+client_key_contents IO.read('#{name}.pem')
+EOF
+  write_file("config_#{name}.rb", content)
+  if mismatched
+    append_to_file "config_#{name}.rb", "client_key 'admin.pem'"
+  end
 end
