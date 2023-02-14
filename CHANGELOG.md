@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.1.11 -->
+## [v4.1.11](https://github.com/chef/chef-vault/tree/v4.1.11) (2023-02-14)
+
+#### Merged Pull Requests
+- add support for client_key_contents [#402](https://github.com/chef/chef-vault/pull/402) ([Tyrael](https://github.com/Tyrael))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.1.10 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- add support for client_key_contents [#402](https://github.com/chef/chef-vault/pull/402) ([Tyrael](https://github.com/Tyrael)) <!-- 4.1.11 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
