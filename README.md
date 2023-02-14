@@ -174,8 +174,9 @@ instead.
 
 Normally, the value of `Chef::Config[:node_name]` is used to find the
 per-node encrypted secret in the keys data bag item, and the value of
-`Chef::Config[:client_key]` is used to locate the private key or
-`Chef::Config[:client_key_contents]` to decrypt this secret.
+`Chef::Config[:client_key]` is used to locate the private key to decrypt
+this secret. If `Chef::Config[:client_key_contents]` is defined, it takes
+precedence over the file path specified in `Chef::Config[:client_key]`.
 
 These can be overridden by passing a hash with the keys `:node_name` or
 `:client_key_path` to `ChefVault::Item.load`:
