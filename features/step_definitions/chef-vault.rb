@@ -101,8 +101,12 @@ Given(/^I list the vaults$/) do
   run_command_and_stop("knife vault list")
 end
 
-Given(%r{^I can('t)? decrypt the vault item '(.+)/(.+)' as '(.+)'$}) do |neg, vault, item, client|
-  run_command_and_stop "knife vault show #{vault} #{item} -c config.rb -z -u #{client} -k #{client}.pem", { fail_on_error: false }
+Given(%r{^I can('t)? decrypt the vault item '(.+)/(.+)' as '(.+)'( using client config)?$}) do |neg, vault, item, client, client_config|
+  if client_config
+    run_command_and_stop "knife vault show #{vault} #{item} -c config_#{client}.rb -z -u #{client}", { fail_on_error: false }
+  else
+    run_command_and_stop "knife vault show #{vault} #{item} -c config.rb -z -u #{client} -k #{client}.pem", { fail_on_error: false }
+  end
   if neg
     expect(last_command_started).not_to have_exit_status(0)
   else

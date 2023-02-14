@@ -121,6 +121,11 @@ RSpec.describe ChefVault::Item do
       expect(item.client_key_path).to eq(Chef::Config[:client_key])
     end
 
+    it "defaults the client key contents" do
+      item = ChefVault::Item.new("foo", "bar")
+      expect(item.client_key_contents).to eq(Chef::Config[:client_key_contents])
+    end
+
     it "allows for a node name override" do
       item = ChefVault::Item.new("foo", "bar", node_name: "baz")
       expect(item.node_name).to eq("baz")
@@ -131,6 +136,11 @@ RSpec.describe ChefVault::Item do
       expect(item.client_key_path).to eq("/foo/client.pem")
     end
 
+    it "allows for a client key contents override" do
+      item = ChefVault::Item.new("foo", "bar", client_key_contents: "baz")
+      expect(item.client_key_contents).to eq("baz")
+    end
+
     it "allows for both node name and client key overrides" do
       item = ChefVault::Item.new(
         "foo", "bar",
@@ -139,6 +149,18 @@ RSpec.describe ChefVault::Item do
       )
       expect(item.node_name).to eq("baz")
       expect(item.client_key_path).to eq("/foo/client.pem")
+    end
+
+    it "allows for node name, client key and client key contents overrides" do
+      item = ChefVault::Item.new(
+        "foo", "bar",
+        node_name: "baz",
+        client_key_path: "/foo/client.pem",
+        client_key_contents: "qux"
+      )
+      expect(item.node_name).to eq("baz")
+      expect(item.client_key_path).to eq("/foo/client.pem")
+      expect(item.client_key_contents).to eq("qux")
     end
   end
 
