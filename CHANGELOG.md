@@ -1,20 +1,18 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.11 -->
-## [v4.1.11](https://github.com/chef/chef-vault/tree/v4.1.11) (2023-02-14)
-
-#### Merged Pull Requests
-- add support for client_key_contents [#402](https://github.com/chef/chef-vault/pull/402) ([Tyrael](https://github.com/Tyrael))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.1.10 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- add support for client_key_contents [#402](https://github.com/chef/chef-vault/pull/402) ([Tyrael](https://github.com/Tyrael)) <!-- 4.1.11 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.1.11](https://github.com/chef/chef-vault/tree/v4.1.11) (2023-02-17)
+
+#### Merged Pull Requests
+- add support for client_key_contents [#402](https://github.com/chef/chef-vault/pull/402) ([Tyrael](https://github.com/Tyrael))
+<!-- latest_stable_release -->
+
 ## [v4.1.10](https://github.com/chef/chef-vault/tree/v4.1.10) (2022-04-18)
 
 #### Merged Pull Requests
@@ -23,7 +21,6 @@
 - Testing ruby 3.0 and 3.1 [#391](https://github.com/chef/chef-vault/pull/391) ([nikhil2611](https://github.com/nikhil2611))
 - Update chef-utils requirement from = 16.6.14 to 17.10.0 [#394](https://github.com/chef/chef-vault/pull/394) ([dependabot[bot]](https://github.com/dependabot[bot]))
 - Update pry-stack_explorer requirement from ~&gt; 0.4.0 to ~&gt; 0.6.1 [#395](https://github.com/chef/chef-vault/pull/395) ([dependabot[bot]](https://github.com/dependabot[bot]))
-<!-- latest_stable_release -->
 
 ## [v4.1.5](https://github.com/chef/chef-vault/tree/v4.1.5) (2021-12-16)
 
