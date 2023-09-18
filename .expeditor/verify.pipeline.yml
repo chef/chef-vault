@@ -42,7 +42,6 @@ steps:
         host_os: windows
         shell: ["powershell", "-Command"]
         image: rubydistros/windows-2019:3.0
-        user: 'NT AUTHORITY\SYSTEM'
 
 - label: run-specs-ruby-3.1-windows
   command:
@@ -53,4 +52,3 @@ steps:
         host_os: windows
         shell: ["powershell", "-Command"]
         image: rubydistros/windows-2019:3.1
-        user: 'NT AUTHORITY\SYSTEM'
