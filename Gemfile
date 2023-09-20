@@ -10,7 +10,9 @@ group :development do
     gem "chef-zero"
     gem "rspec", "~> 3.4"
     gem "aruba", "~> 0.6"
-    gem "chef", "~> 14.0"
+    # gem "chef", "~> 14.0"
+    gem "chef", "~> 17.0"
+    gem "knife", "~> 17.0"
     gem "chef-utils", "17.10.0" # pin until we drop ruby 2.5
   else
     gem "chef-zero", ">= 15.0.4"
