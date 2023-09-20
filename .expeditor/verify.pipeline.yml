@@ -36,19 +36,27 @@ steps:
 - label: run-specs-ruby-3.0-windows
   command:
     - .expeditor/run_windows_tests.ps1
+  timeout_in_minutes: 20
   expeditor:
     executor:
       docker:
         host_os: windows
         shell: ["powershell", "-Command"]
         image: rubydistros/windows-2019:3.0
+        user: 'NT AUTHORITY\SYSTEM'
+        environment:
+          - FORCE_FFI_YAJL=ext
+          - EXPIRE_CACHE=true
+          - CHEF_LICENSE=accept-no-persist
 
 - label: run-specs-ruby-3.1-windows
   command:
     - .expeditor/run_windows_tests.ps1
+  timeout_in_minutes: 20
   expeditor:
     executor:
       docker:
         host_os: windows
         shell: ["powershell", "-Command"]
         image: rubydistros/windows-2019:3.1
+        user: 'NT AUTHORITY\SYSTEM'
