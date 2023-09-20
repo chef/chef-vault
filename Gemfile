@@ -17,8 +17,8 @@ group :development do
   else
     gem "chef-zero", ">= 15.0.4"
     gem "chef", "~> 17.0"
-    gem "rspec", "~> 3.11"
-    gem "aruba", "~> 1.1"
+    gem "rspec", "~> 3.0"
+    gem "aruba", "~> 2.0"
     gem "knife", "~> 17.0"
     gem "chef-utils", "17.10.0" # pin until we drop ruby >=3
   end
