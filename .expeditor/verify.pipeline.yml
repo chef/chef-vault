@@ -52,7 +52,6 @@ steps:
 - label: run-specs-ruby-3.1-windows
   command:
     - .expeditor/run_windows_tests.ps1
-  timeout_in_minutes: 20
   expeditor:
     executor:
       docker:
