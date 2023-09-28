@@ -1,6 +1,6 @@
 require "bundler/gem_tasks"
 
-WindowsPlatforms = %w{ x64-mingw32 x64-mingw-ucrt ruby }.freeze
+WINDOWS_PLATFORM = %w{ x64-mingw32 x64-mingw-ucrt ruby }.freeze
 
 # Style Tests
 begin
@@ -39,7 +39,7 @@ begin
   require "cucumber"
   require "cucumber/rake/task"
   Cucumber::Rake::Task.new(:features) do |t|
-    if RUBY_PLATFORM =~ WindowsPlatforms || RUBY_PLATFORM =~ /darwin/
+    if RUBY_PLATFORM =~ WINDOWS_PLATFORM || RUBY_PLATFORM =~ /darwin/
       t.cucumber_opts = "--tags 'not @not-windows'"
     end
   end
