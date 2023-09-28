@@ -5,22 +5,20 @@ gemspec
 group :development do
   gem "chefstyle"
   gem "rake"
-  gem "contracts", "~> 0.16.1" # pin until we drop ruby < 2.7
+  gem "contracts", "~> 0.17" # pin until we drop ruby < 2.7
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0.0")
     gem "chef-zero"
-    gem "rspec", "~> 3.4"
-    gem "aruba", "~> 0.6"
-    # gem "chef", "~> 14.0"
-    gem "chef", "~> 17.0"
-    gem "knife", "~> 17.0"
-    gem "chef-utils", "17.10.0" # pin until we drop ruby 2.5
+    gem "rspec", "~> 3.12.0"
+    gem "aruba", "~> 2.2"
+    gem "chef", "~> 15.4"
+    gem "chef-utils", "17.10.68" # pin until we drop ruby 2.5
   else
     gem "chef-zero", ">= 15.0.4"
     gem "chef", "~> 17.0"
-    gem "rspec", "~> 3.0"
-    gem "aruba", "~> 2.0"
+    gem "rspec", "~> 3.12.0"
+    gem "aruba", "~> 2.2"
     gem "knife", "~> 17.0"
-    gem "chef-utils", "17.10.0" # pin until we drop ruby >=3
+    gem "chef-utils", "17.10.68" # pin until we drop ruby >=3
   end
 end
 
