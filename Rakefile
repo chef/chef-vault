@@ -1,5 +1,7 @@
 require "bundler/gem_tasks"
 
+WindowsPlatforms = %w{ x64-mingw32 x64-mingw-ucrt ruby }
+
 # Style Tests
 begin
   require "chefstyle"
@@ -36,7 +38,11 @@ end
 begin
   require "cucumber"
   require "cucumber/rake/task"
-  Cucumber::Rake::Task.new(:features)
+  Cucumber::Rake::Task.new(:features) do |t|
+    if RUBY_PLATFORM =~ WindowsPlatforms || RUBY_PLATFORM =~ /darwin/
+      t.cucumber_opts = "--tags 'not @not-windows'"
+    end
+  end
 rescue LoadError
   puts "Cucumber/Aruba not available; disabling feature tasks"
   # create a no-op spec task for :default
