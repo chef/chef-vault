@@ -1,6 +1,5 @@
 # Stop script execution when a non-terminating error occurs
 $ErrorActionPreference = "Stop"
-
 # This will run ruby test on windows platform
 
 Write-Output "--- Bundle install"
