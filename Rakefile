@@ -1,6 +1,6 @@
 require "bundler/gem_tasks"
 
-WindowsPlatforms = %w{ x64-mingw32 x64-mingw-ucrt ruby }
+WindowsPlatforms = %w{ x64-mingw32 x64-mingw-ucrt ruby }.freeze
 
 # Style Tests
 begin
