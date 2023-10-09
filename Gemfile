@@ -12,14 +12,6 @@ group :development do
     gem "aruba", "~> 2.2"
     gem "chef", "~> 15.4"
     gem "chef-utils", "17.10.68" # pin until we drop ruby 2.5
-  elsif Gem::Version.new(RUBY_VERSION) > Gem::Version.new("3.0.0")
-    gem "contracts", "~> 0.17"
-    gem "chef-zero", ">= 15.0.4"
-    gem "chef", "~> 18.0"
-    gem "rspec", "~> 3.0"
-    gem "aruba", "~> 2.2"
-    gem "knife", "~> 18.0"
-    gem "chef-utils", "~> 18.0"
   else
     gem "contracts", "~> 0.17"
     gem "chef-zero", ">= 15.0.4"
