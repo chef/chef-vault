@@ -39,7 +39,7 @@ begin
   require "cucumber"
   require "cucumber/rake/task"
   Cucumber::Rake::Task.new(:features) do |t|
-    if WINDOWS_PLATFORM.include?(WINDOWS_PLATFORM) || RUBY_PLATFORM.match?(/darwin/)
+    if WINDOWS_PLATFORM.include?(RUBY_PLATFORM) || RUBY_PLATFORM.match?(/darwin/)
       t.cucumber_opts = "--tags 'not @not-windows'"
     end
   end

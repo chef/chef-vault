@@ -16,7 +16,7 @@ group :development do
     gem "contracts", "~> 0.17"
     gem "chef-zero", ">= 15.0.11"
     gem "chef", "~> 18.0"
-    gem "rspec", "~> 3.12.0"
+    gem "rspec", "~> 3.12"
     gem "aruba", "~> 2.2"
     gem "knife", "~> 18.0"
     gem "chef-utils", "~> 18.0" # pin until we drop ruby >=3
