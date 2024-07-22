@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up ruby 2.7
+      - name: Set up ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: 3.3
           bundler-cache: true
       - name: run specs
         run: bundle exec rake spec --trace
