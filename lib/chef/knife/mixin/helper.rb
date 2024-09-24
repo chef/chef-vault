@@ -62,7 +62,8 @@ class ChefVault
           value.each { |item| check_value(item, parent_key) }
         elsif value.is_a?(Hash)
           value.each do |key, nested_value|
-            next if key == 'password' # Skip the password key
+            next if key == "password" # Skip the password key
+
             check_value(nested_value, key)
           end
         else
