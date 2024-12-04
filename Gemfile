@@ -5,6 +5,7 @@ gemspec
 group :development do
   gem "chefstyle"
   gem "rake"
+  gem "appbundler"
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0.0")
     gem "contracts", "~> 0.16.1" # pin until we drop ruby < 2.7
     gem "chef-zero"
