@@ -91,26 +91,26 @@ jobs:
           export pkg_ident
           chmod +x habitat/tests/test.sh
           habitat/tests/test.sh
-#      - name: Install Habitat on Windows
-#        if: ${{ matrix.os == 'windows-latest' }}
-#        shell: pwsh
-#        run: |
-#          write-output "--- STARTING HAB INSTALL ON ${{ matrix.os }} WINDOWS with habitat version:${{vars.HABITAT_VERSION_SET}}"
-#          $env:HAB_LICENSE = "accept-no-persist"
-#          $env:HAB_NONINTERACTIVE = "true"
-#          $env:HAB_FALLBACK_CHANNEL= "${{vars.HAB_FALLBACK_CHANNEL}}"
-#          Invoke-Expression "& { $(Invoke-RestMethod https://raw.githubusercontent.com/habitat-sh/habitat/main/components/hab/install.ps1) } -Version ${{vars.HABITAT_VERSION_SET}}"
-#      - name: run habitat packaging windows
-#        if: ${{ matrix.os == 'windows-latest' }}
-#        shell: pwsh
-#        run: |
-#          $env:Path += ";C:\ProgramData\Habitat"
-#          hab license accept
-#          hab origin key download ${{ env.HAB_ORIGIN }}
-#          hab origin key download --auth ${{ secrets.HAB_AUTH_TOKEN }} --secret ${{ env.HAB_ORIGIN }}
-#          write-output "--- running windows hab build"
-#          hab pkg build .
-#          $hartfile=(ls ./results -Name | findstr "chef-vault")
-#          hab pkg install ./results/$hartfile
-#          . ./results/last_build.ps1
-#          habitat/tests/test.ps1 $pkg_ident
+      - name: Install Habitat on Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
+        run: |
+          write-output "--- STARTING HAB INSTALL ON ${{ matrix.os }} WINDOWS with habitat version:${{vars.HABITAT_VERSION_SET}}"
+          $env:HAB_LICENSE = "accept-no-persist"
+          $env:HAB_NONINTERACTIVE = "true"
+          $env:HAB_FALLBACK_CHANNEL= "${{vars.HAB_FALLBACK_CHANNEL}}"
+          Invoke-Expression "& { $(Invoke-RestMethod https://raw.githubusercontent.com/habitat-sh/habitat/main/components/hab/install.ps1) } -Version ${{vars.HABITAT_VERSION_SET}}"
+      - name: run habitat packaging windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
+        run: |
+          $env:Path += ";C:\ProgramData\Habitat"
+          hab license accept
+          hab origin key download ${{ env.HAB_ORIGIN }}
+          hab origin key download --auth ${{ secrets.HAB_AUTH_TOKEN }} --secret ${{ env.HAB_ORIGIN }}
+          write-output "--- running windows hab build"
+          hab pkg build .
+          $hartfile=(ls ./results -Name | findstr "chef-vault")
+          hab pkg install ./results/$hartfile
+          . ./results/last_build.ps1
+          habitat/tests/test.ps1 $pkg_ident
