@@ -20,7 +20,7 @@ RSpec.describe ChefVault::Mixin::Helper do
     it "not to raise error if data consist of tab/new line OR space" do
       %w{abc\tabc abc\nabc}.each do |pass|
         json_data_with_slash = json.merge("password": pass)
-        expect { validate_json(json_data_with_slash.to_s) }.to_not raise_error
+        expect { validate_json(json_data_with_slash.to_json) }.to_not raise_error
       end
     end
   end
