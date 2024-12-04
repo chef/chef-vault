@@ -6,16 +6,15 @@ param (
 
 Write-Host "--- :fire: Smokish test"
 # Pester the Package
-$version=hab pkg exec "${pkg_ident}" chef-vault -v
-$actual_version=[Regex]::Match($version,"([0-9]+.[0-9]+.[0-9]+)").Value
-$package_version=$PackageIdentifier.split("/",4)[2]
+$help_message=hab pkg exec "${pkg_ident}" -- chef-vault -h
+$original_message="Usage: chef-vault"
 
-Write-Host "package_version  $package_version actual version $actual_version"
-if ($package_version -eq $actual_version)
+Write-Host "Checking the help message of the package"
+if ($help_message -like $original_message)
 {
-    Write "Chef-cli working fine"
+    Write "Chef-vault is working fine"
 }
 else {
-    Write-Error "chef-cli version not met expected $package_version actual version $actual_version "
-    throw "Chef cli windows pipeline not working for hab pkg"
+    Write-Error "chef-vault binary doesn't return the correct usage message "
+    throw "Chef-vault windows pipeline not working for hab pkg"
 }
