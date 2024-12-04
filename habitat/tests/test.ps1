@@ -12,7 +12,7 @@ $original_message="Usage: chef-vault"
 Write-Host "Checking the help message of the package"
 Write-Host "Expected: $original_message"
 Write-Host "Actual: $help_message"
-if ($help_message -like $original_message)
+if ($help_message.Contains($original_message))
 {
     Write "Chef-vault is working fine"
 }
