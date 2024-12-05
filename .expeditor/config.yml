@@ -29,17 +29,17 @@ subscriptions:
   - workload: pull_request_merged:{{github_repo}}:{{release_branch}}:*
     actions:
       - built_in:bump_version:
-        ignore_labels:
-          - "Expeditor: Skip Version Bump"
-          - "Expeditor: Skip All"
+          ignore_labels:
+            - "Expeditor: Skip Version Bump"
+            - "Expeditor: Skip All"
       - bash:.expeditor/update_version.sh:
-        only_if: built_in:bump_version
+          only_if: built_in:bump_version
       - built_in:update_changelog:
-        ignore_labels:
-          - "Expeditor: Skip Changelog"
-          - "Expeditor: Skip All"
+          ignore_labels:
+            - "Expeditor: Skip Changelog"
+            - "Expeditor: Skip All"
       - built_in:build_gem:
-        only_if: built_in:bump_version
+          only_if: built_in:bump_version
 #      - trigger_pipeline:habitat/build:
 #        only_if: built_in:bump_version
 #        ignore_labels:
