@@ -59,8 +59,8 @@ subscriptions:
 
 pipelines:
   - verify:
-    description: Pull Request validation tests
-    public: true
+      description: Pull Request validation tests
+      public: true
 #  - habitat/build:
 #    env:
 #      - HAB_NONINTERACTIVE: "true"
