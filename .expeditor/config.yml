@@ -29,17 +29,29 @@ subscriptions:
   - workload: pull_request_merged:{{github_repo}}:{{release_branch}}:*
     actions:
       - built_in:bump_version:
-          ignore_labels:
-            - "Expeditor: Skip Version Bump"
-            - "Expeditor: Skip All"
+        ignore_labels:
+          - "Expeditor: Skip Version Bump"
+          - "Expeditor: Skip All"
       - bash:.expeditor/update_version.sh:
-          only_if: built_in:bump_version
+        only_if: built_in:bump_version
       - built_in:update_changelog:
-          ignore_labels:
-            - "Expeditor: Skip Changelog"
-            - "Expeditor: Skip All"
+        ignore_labels:
+          - "Expeditor: Skip Changelog"
+          - "Expeditor: Skip All"
       - built_in:build_gem:
-          only_if: built_in:bump_version
+        only_if: built_in:bump_version
+      - trigger_pipeline:habitat/build:
+        only_if: built_in:bump_version
+        ignore_labels:
+          - "Expeditor: Skip Habitat"
+          - "Expeditor: Skip All"
+
+  # the habitat chain
+  - workload: buildkite_hab_build_group_published:{{agent_id}}:*
+    actions:
+      # when all of the hab package publish to the unstable channel, test and promote them
+      - trigger_pipeline:habitat/test
+
   - workload: project_promoted:{{agent_id}}:*
     actions:
       - built_in:rollover_changelog
@@ -47,5 +59,18 @@ subscriptions:
 
 pipelines:
   - verify:
-      description: Pull Request validation tests
-      public: true
+    description: Pull Request validation tests
+    public: true
+  - habitat/build:
+    env:
+      - HAB_NONINTERACTIVE: "true"
+      - HAB_NOCOLORING: "true"
+      - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
+  - habitat/test:
+    description: Execute tests against the habitat artifact
+    definition: .expeditor/habitat-test.pipeline.yml
+    env:
+      - HAB_NONINTERACTIVE: "true"
+      - HAB_NOCOLORING: "true"
+      - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
+    trigger: pull_request
