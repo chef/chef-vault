@@ -61,16 +61,16 @@ pipelines:
   - verify:
       description: Pull Request validation tests
       public: true
-#  - habitat/build:
-#    env:
-#      - HAB_NONINTERACTIVE: "true"
-#      - HAB_NOCOLORING: "true"
-#      - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
-#  - habitat/test:
-#    description: Execute tests against the habitat artifact
-#    definition: .expeditor/habitat-test.pipeline.yml
-#    env:
-#      - HAB_NONINTERACTIVE: "true"
-#      - HAB_NOCOLORING: "true"
-#      - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
-#    trigger: pull_request
+  - habitat/build:
+      env:
+        - HAB_NONINTERACTIVE: "true"
+        - HAB_NOCOLORING: "true"
+        - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
+  - habitat/test:
+      description: Execute tests against the habitat artifact
+      definition: .expeditor/habitat-test.pipeline.yml
+      env:
+        - HAB_NONINTERACTIVE: "true"
+        - HAB_NOCOLORING: "true"
+        - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
+      trigger: pull_request
