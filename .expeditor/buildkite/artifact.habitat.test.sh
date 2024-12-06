@@ -43,7 +43,6 @@ curl https://raw.githubusercontent.com/habitat-sh/habitat/main/components/hab/in
 echo "--- :key: Generating fake origin key"
 hab origin key generate "$HAB_ORIGIN"
 
-
 echo "--- Building $PLAN"
 cd "$project_root"
 DO_CHECK=true hab pkg build .
