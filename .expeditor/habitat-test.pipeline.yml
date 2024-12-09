@@ -9,7 +9,7 @@ expeditor:
 
 steps:
 
-  - label: ":linux: Validate Habitat Builds of Chef-cli"
+  - label: ":linux: Validate Habitat Builds of Chef-vault"
     commands:
       - chmod +x .expeditor/buildkite/artifact.habitat.test.sh
       - .expeditor/buildkite/artifact.habitat.test.sh
@@ -19,7 +19,7 @@ steps:
           image: ruby:3.1
           privileged: true
 
-  - label: ":windows: Validate Habitat Builds of Chef-cli"
+  - label: ":windows: Validate Habitat Builds of Chef-vault"
     commands:
       - .expeditor/buildkite/artifact.habitat.test.ps1
     expeditor:
