@@ -11,6 +11,7 @@ steps:
 
   - label: ":linux: Validate Habitat Builds of Chef-cli"
     commands:
+      - chmod +x .expeditor/buildkite/artifact.habitat.test.sh
       - .expeditor/buildkite/artifact.habitat.test.sh
     expeditor:
       executor:
