@@ -12,6 +12,7 @@ error () {
 
   exit 1
 }
+echo "--- :mag_right: Starting the testing"
 
 [[ -n "$pkg_ident" ]] || error 'no hab package identity provided'
 

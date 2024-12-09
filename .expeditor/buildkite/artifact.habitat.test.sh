@@ -69,4 +69,4 @@ echo "PATH is $PATH"
 
 echo "--- :mag_right: Testing $PLAN"
 chmod +x "${project_root}/habitat/tests/test.sh"
-${project_root}/habitat/tests/test.sh "$pkg_ident" || error 'failures during test of executables'
+"${project_root}/habitat/tests/test.sh" "$pkg_ident"
