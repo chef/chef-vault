@@ -3,6 +3,7 @@
 set -euo pipefail
 
 project_root="$(git rev-parse --show-toplevel)"
+pkg_ident="$1"
 
 # print error message followed by usage and exit
 error () {
