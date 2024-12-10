@@ -3,17 +3,11 @@
 
 # Slack channel in Chef Software slack to send notifications about build failures, etc
 slack:
-  notify_channel: chef-infra-notify
+  notify_channel: chef-ws-notify
 
 # This publish is triggered by the `built_in:publish_rubygems` artifact_action.
 rubygems:
   - chef-vault
-
-release_branches:
-  - workstation-LTS:
-      version_constraint: 4.*
-  - main:
-      version_constraint: 4.*
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
@@ -26,6 +20,12 @@ github:
   # allow bumping the major release via label
   major_bump_labels:
     - "Expeditor: Bump Version Major"
+
+release_branches:
+  - workstation-LTS:
+      version_constraint: 4.*
+  - main:
+      version_constraint: 4.*
 
 changelog:
   rollup_header: Changes not yet released to rubygems.org
@@ -46,6 +46,11 @@ subscriptions:
             - "Expeditor: Skip All"
       - built_in:build_gem:
           only_if: built_in:bump_version
+      - trigger_pipeline:habitat/test:
+          only_if: built_in:bump_version
+          ignore_labels:
+            - "Expeditor: Skip Habitat"
+            - "Expeditor: Skip All"
       - trigger_pipeline:habitat/build:
           only_if: built_in:bump_version
           ignore_labels:

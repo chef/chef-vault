@@ -68,4 +68,4 @@ export PATH
 echo "PATH is $PATH"
 
 echo "--- :mag_right: Testing $PLAN"
-${project_root}/habitat/tests/test.sh "$pkg_ident" || error 'failures during test of executables'
+"${project_root}/habitat/tests/test.sh" "$pkg_ident"
