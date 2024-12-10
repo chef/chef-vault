@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.13 -->
-## [v4.1.13](https://github.com/chef/chef-vault/tree/v4.1.13) (2024-09-25)
+<!-- latest_release 4.1.14 -->
+## [v4.1.14](https://github.com/chef/chef-vault/tree/v4.1.14) (2024-12-10)
 
 #### Merged Pull Requests
-- CHEF-3710-chef-vault warning message includes sensitive info [#414](https://github.com/chef/chef-vault/pull/414) ([nikhil2611](https://github.com/nikhil2611))
+- Test commit for pipeline testing [#424](https://github.com/chef/chef-vault/pull/424) ([ashiqueps](https://github.com/ashiqueps))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.11 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Test commit for pipeline testing [#424](https://github.com/chef/chef-vault/pull/424) ([ashiqueps](https://github.com/ashiqueps)) <!-- 4.1.14 -->
 - CHEF-3710-chef-vault warning message includes sensitive info [#414](https://github.com/chef/chef-vault/pull/414) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.13 -->
 - Integrating with sonarQube [#406](https://github.com/chef/chef-vault/pull/406) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.12 -->
 <!-- release_rollup -->
