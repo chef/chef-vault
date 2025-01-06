@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 0.1.1 -->
-## [v0.1.1](https://github.com/chef/chef-vault/tree/v0.1.1) (2025-01-06)
+<!-- latest_release 0.1.2 -->
+## [v0.1.2](https://github.com/chef/chef-vault/tree/v0.1.2) (2025-01-06)
 
 #### Merged Pull Requests
-- Adding pipelines to trigger pipeline automatically [#426](https://github.com/chef/chef-vault/pull/426) ([nikhil2611](https://github.com/nikhil2611))
+- Empty commit to test pipelines [#427](https://github.com/chef/chef-vault/pull/427) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.11 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Empty commit to test pipelines [#427](https://github.com/chef/chef-vault/pull/427) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.2 -->
 - Adding pipelines to trigger pipeline automatically [#426](https://github.com/chef/chef-vault/pull/426) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.1 -->
 - Removed the manually created pipelines and added the channels [#425](https://github.com/chef/chef-vault/pull/425) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.0 -->
 - Test commit for pipeline testing [#424](https://github.com/chef/chef-vault/pull/424) ([ashiqueps](https://github.com/ashiqueps)) <!-- 4.1.14 -->
