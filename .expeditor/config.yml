@@ -28,7 +28,7 @@ github:
 
 release_branches:
   - workstation-LTS:
-      version_constraint: 0.*
+      version_constraint: 5.*
   - main:
       version_constraint: 4.*
 
