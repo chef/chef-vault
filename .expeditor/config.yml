@@ -67,7 +67,6 @@ subscriptions:
     actions:
       - built_in:promote_habitat_packages
       - built_in:rollover_changelog
-      - built_in:publish_rubygems
 pipelines:
   - verify:
       description: Pull Request validation tests
