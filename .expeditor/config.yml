@@ -53,8 +53,6 @@ subscriptions:
           ignore_labels:
             - "Expeditor: Skip Habitat"
             - "Expeditor: Skip All"
-      - built_in:build_gem:
-        only_if: built_in:bump_version      
 
   # the habitat chain
   - workload: buildkite_hab_build_group_published:{{agent_id}}:*
@@ -65,6 +63,7 @@ subscriptions:
   # Subscribe to the promotion of the dev channel to acceptance
   - workload: project_promoted:{{agent_id}}:unstable:*
     actions:
+      - built_in:promote_habitat_packages
       - built_in:rollover_changelog
       - built_in:publish_rubygems
 pipelines:
