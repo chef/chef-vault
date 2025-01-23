@@ -1,4 +1,3 @@
-export HAB_REFRESH_CHANNEL="LTS-2024"
 ruby_pkg="core/ruby3_1"
 pkg_name="chef-vault"
 pkg_origin="chef"
