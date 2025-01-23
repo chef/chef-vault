@@ -10,7 +10,6 @@ rubygems:
   - chef-vault
 
 artifact_channels:
-  - unstable
   - chef-dke-lts2024
 
 github:
