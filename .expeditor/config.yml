@@ -46,11 +46,17 @@ subscriptions:
           ignore_labels:
             - "Expeditor: Skip Changelog"
             - "Expeditor: Skip All"
+      - built_in:build_gem:
+          only_if: built_in:bump_version
       - trigger_pipeline:habitat/build:
           only_if: built_in:bump_version
           ignore_labels:
             - "Expeditor: Skip Habitat"
             - "Expeditor: Skip All"
+
+  - workload: project_promoted:{{agent_id}}:*
+    actions:
+      - built_in:rollover_changelog
 
   # the habitat chain
   - workload: buildkite_hab_build_group_published:{{agent_id}}:*
@@ -58,10 +64,11 @@ subscriptions:
       # when all of the hab package publish to the unstable channel, test and promote them
       - built_in:promote_habitat_packages
 
-  # Subscribe to the promotion of the dev channel to acceptance
+  # Subscribe to the promotion of the unstable channel to stable(chef-dke-lts2024)
   - workload: project_promoted:{{agent_id}}:unstable:*
     actions:
       - built_in:promote_habitat_packages
+      - built_in:publish_rubygems
 
 pipelines:
   - verify:
