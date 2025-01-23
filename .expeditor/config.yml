@@ -42,8 +42,6 @@ subscriptions:
           ignore_labels:
             - "Expeditor: Skip Version Bump"
             - "Expeditor: Skip All"
-      - bash:.expeditor/update_version.sh:
-          only_if: built_in:bump_version
       - built_in:update_changelog:
           ignore_labels:
             - "Expeditor: Skip Changelog"
@@ -52,7 +50,10 @@ subscriptions:
           only_if: built_in:bump_version
           ignore_labels:
             - "Expeditor: Skip Habitat"
-            - "Expeditor: Skip All"    
+            - "Expeditor: Skip All"
+      - built_in:build_gem:
+        only_if:
+         - built_in:bump_version      
 
   # the habitat chain
   - workload: buildkite_hab_build_group_published:{{agent_id}}:*
