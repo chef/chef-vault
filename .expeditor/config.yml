@@ -10,7 +10,7 @@ rubygems:
   - chef-vault
 
 artifact_channels:
-  - dev
+  - unstable
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
@@ -60,7 +60,7 @@ subscriptions:
       - built_in:promote_habitat_packages
 
   # Subscribe to the promotion of the dev channel to acceptance
-  - workload: project_promoted:{{agent_id}}:dev:*
+  - workload: project_promoted:{{agent_id}}:unstable:*
     actions:
       - built_in:promote_habitat_packages
 
