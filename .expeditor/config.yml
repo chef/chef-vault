@@ -11,6 +11,7 @@ rubygems:
 
 artifact_channels:
   - unstable
+  - chef-dke-lts2024
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
