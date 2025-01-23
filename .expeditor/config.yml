@@ -10,9 +10,8 @@ rubygems:
   - chef-vault
 
 artifact_channels:
-  - dev
-  - workstation-build
-  - LTS-2024
+  - unstable
+  - chef-dke-lts2024
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
@@ -62,17 +61,13 @@ subscriptions:
       - built_in:promote_habitat_packages
 
   # Subscribe to the promotion of the dev channel to acceptance
-  - workload: project_promoted:{{agent_id}}:dev:*
-    actions:
-      - built_in:promote_habitat_packages
-  - workload: project_promoted:{{agent_id}}:workstation-build:*
+  - workload: project_promoted:{{agent_id}}:unstable:*
     actions:
       - built_in:promote_habitat_packages
 
 pipelines:
   - verify:
       description: Pull Request validation tests
-      public: true
   - habitat/build:
       env:
         - HAB_NONINTERACTIVE: "true"
@@ -86,4 +81,3 @@ pipelines:
         - HAB_NOCOLORING: "true"
         - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
       trigger: pull_request
-
