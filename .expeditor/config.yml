@@ -11,7 +11,6 @@ rubygems:
 
 artifact_channels:
   - unstable
-  - chef-dke-lts2024
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
@@ -64,12 +63,10 @@ subscriptions:
   - workload: project_promoted:{{agent_id}}:unstable:*
     actions:
       - built_in:promote_habitat_packages
-      - built_in:rollover_changelog
-      - built_in:publish_rubygems
+
 pipelines:
   - verify:
       description: Pull Request validation tests
-      public: true
   - habitat/build:
       env:
         - HAB_NONINTERACTIVE: "true"
@@ -83,4 +80,3 @@ pipelines:
         - HAB_NOCOLORING: "true"
         - HAB_STUDIO_SECRET_HAB_NONINTERACTIVE: "true"
       trigger: pull_request
-
