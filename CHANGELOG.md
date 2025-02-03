@@ -1,7 +1,7 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.14 -->
-## [v4.1.14](https://github.com/chef/chef-vault/tree/v4.1.14) (2025-02-03)
+<!-- latest_release 4.1.15 -->
+## [v4.1.15](https://github.com/chef/chef-vault/tree/v4.1.15) (2025-02-03)
 
 #### Merged Pull Requests
 - Updating configuration for a symantec version promote and publish [#434](https://github.com/chef/chef-vault/pull/434) ([nikhil2611](https://github.com/nikhil2611))
