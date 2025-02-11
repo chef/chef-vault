@@ -12,7 +12,7 @@ on:
 jobs:
   coverage-test:
     name: Coverage
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up ruby 3.1
