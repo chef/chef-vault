@@ -1,0 +1,24 @@
+# Use Windows Server Core LTSC 2022
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+# Set default Ruby version (overridable at runtime) 
+# this is a choco package list
+ARG rubyVersion=3.1.2.1
+ENV RUBY_VERSION=${rubyVersion}
+
+# Install Chocolatey (Windows package manager)
+RUN powershell -Command Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+# Install Ruby via Chocolatey using the environment variable
+RUN powershell -Command "choco install ruby --version=$env:RUBY_VERSION -y"
+
+# Add Ruby to PATH
+ENV PATH="C:\\tools\\ruby${RUBY_VERSION}\\bin;${PATH}"
+
+# # Verify Ruby installation
+# RUN ruby --version
+
+# Set working directory
+WORKDIR C:\\workspace
+
+# Default command to keep container running
+CMD ["powershell", "-Command", "Start-Sleep -Seconds 86400"]
