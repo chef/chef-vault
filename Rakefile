@@ -2,6 +2,13 @@ require "bundler/gem_tasks"
 
 WINDOWS_PLATFORM = /mswin|win32|mingw/.freeze unless defined? WINDOWS_PLATFORM
 
+# def elevated_permissions?
+#   return true if RUBY_PLATFORM !~ WINDOWS_PLATFORM
+#   require "win32ole"
+#   shell = WIN32OLE.new("Shell.Application")
+#   shell.IsUserAnAdmin
+# end
+
 # Style Tests
 begin
   require "chefstyle"
