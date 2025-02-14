@@ -25,7 +25,6 @@ steps:
   expeditor:
     executor:
       docker:
-        privileged: true
         host_os: windows
         shell: ["powershell", "-Command"]
         image: rubydistros/windows-2019:3.1
