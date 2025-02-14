@@ -15,6 +15,7 @@
 /_yardoc/
 /doc/
 /rdoc/
+/vendor/
 
 ## Environment normalisation:
 /.bundle/

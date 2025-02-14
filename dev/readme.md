@@ -55,7 +55,7 @@ docker run -it --rm -v $(pwd):/workspace ruby-linux bash
 
 ### **Running the Windows Container**
 ```powershell
-docker run -it --rm -v ${PWD}:/workspace ruby-windows powershell
+docker run -it --rm -v ${PWD}:C:\workspace ruby-windows powershell
 ```
 - Mounts the project directory as `C:\workspace`.  
 - Starts an interactive PowerShell session.  

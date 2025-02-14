@@ -3,22 +3,35 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 # Set default Ruby version (overridable at runtime) 
 # this is a choco package list
-ARG rubyVersion=3.1.2.1
-ENV RUBY_VERSION=${rubyVersion}
+ENV BUNDLE_SILENCE_ROOT_WARNING=true \
+    GIT_DISCOVERY_ACROSS_FILESYSTEM=true \
+    chocolateyVersion="1.4.0"
+
+# When launched by user, default to PowerShell if no other command specified.
+CMD ["powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]    
 
 # Install Chocolatey (Windows package manager)
-RUN powershell -Command Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-# Install Ruby via Chocolatey using the environment variable
-RUN powershell -Command "choco install ruby --version=$env:RUBY_VERSION -y"
+RUN powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) && \
+    C:\ProgramData\Chocolatey\bin\refreshenv && \
+    choco feature enable -n=allowGlobalConfirmation && \
+    choco config set cacheLocation C:\chococache && \
+    choco install git && \
+    choco install vcredist140 && \
+    rmdir /q /s C:\chococache && \
+    echo Chocolatey install complete -- closing out layer (this can take awhile)
 
-# Add Ruby to PATH
-ENV PATH="C:\\tools\\ruby${RUBY_VERSION}\\bin;${PATH}"
+# Install Ruby + Devkit
+RUN powershell -Command \
+  $ErrorActionPreference = 'Stop'; \
+  Write-Output 'Downloading Ruby + DevKit'; \
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
+  (New-Object System.Net.WebClient).DownloadFile('https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.1-1/rubyinstaller-devkit-3.1.1-1-x64.exe', 'c:\\rubyinstaller-devkit-3.1.1-1-x64.exe'); \
+  Write-Output 'Installing Ruby + DevKit'; \
+  Start-Process c:\rubyinstaller-devkit-3.1.1-1-x64.exe -ArgumentList '/verysilent /dir=C:\\ruby31' -Wait ; \
+  Write-Output 'Cleaning up installation'; \
+  Remove-Item c:\rubyinstaller-devkit-3.1.1-1-x64.exe -Force; \
+  Write-Output 'Closing out the layer (this can take awhile)';
 
-# # Verify Ruby installation
-# RUN ruby --version
-
-# Set working directory
-WORKDIR C:\\workspace
-
-# Default command to keep container running
-CMD ["powershell", "-Command", "Start-Sleep -Seconds 86400"]
+# permissions junk
+RUN powershell -Command "git config --global --add safe.directory "*""
+# RUN icacls "C:\workspace\" /grant "Everyone:(F)" /t
