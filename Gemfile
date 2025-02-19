@@ -19,8 +19,8 @@ group :development do
     gem "chef", "= 18.4.2"
     gem "rspec", "~> 3.0"
     gem "aruba", "~> 2.2"
-    gem "knife", "~> 18.0"
-    gem "chef-utils", ">= 18.5.0" # pin until we drop ruby >=3
+    gem "knife", "= 18.4.2"
+    gem "chef-utils", "= 18.4.2" # pin until we drop ruby >=3
   end
 end
 
