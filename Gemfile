@@ -16,7 +16,7 @@ group :development do
   else
     gem "contracts", "~> 0.17"
     gem "chef-zero", ">= 15.0.4"
-    gem "chef", ">= 18.5.0"
+    gem "chef", "= 18.4.2"
     gem "rspec", "~> 3.0"
     gem "aruba", "~> 2.2"
     gem "knife", "~> 18.0"
