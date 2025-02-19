@@ -16,11 +16,11 @@ group :development do
   else
     gem "contracts", "~> 0.17"
     gem "chef-zero", ">= 15.0.4"
-    gem "chef", "= 18.4.2"
+    gem "chef", "= 18.2.7"
     gem "rspec", "~> 3.0"
     gem "aruba", "~> 2.2"
-    gem "knife", "= 18.4.2"
-    gem "chef-utils", "= 18.4.2" # pin until we drop ruby >=3
+    gem "knife", "= 18.2.7"
+    gem "chef-utils", "= 18.2.7" # pin until we drop ruby >=3
   end
 end
 
