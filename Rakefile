@@ -58,7 +58,7 @@ end
 begin
   require "cucumber"
   require "cucumber/rake/task"
-  Cucumber::Rake::Task.new(:features => :ensure_file_access) do |t| # Add dependency on :ensure_file_access
+  Cucumber::Rake::Task.new(features: :ensure_file_access) do |t| # Add dependency on :ensure_file_access
     if RUBY_PLATFORM =~ WINDOWS_PLATFORM || RUBY_PLATFORM =~ /darwin/
       t.cucumber_opts = "--tags 'not @not-windows'"
     end
