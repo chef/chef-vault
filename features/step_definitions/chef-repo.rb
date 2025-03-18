@@ -92,7 +92,9 @@ def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
   begin
-    run_command_and_stop(command)
+    with_environment('ARUBA_TIMEOUT' => '60') do
+      run_command_and_stop(command)
+    end
     pem_content = last_command_started.stdout.strip
     unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
       raise "Generated .pem file for client '#{name}' is invalid or empty."
