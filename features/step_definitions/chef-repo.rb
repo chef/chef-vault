@@ -68,24 +68,50 @@ def create_admin(admin)
   create_client(admin)
 end
 
+# def create_client(name)
+#   pem_file = "#{name}.pem"
+#   command = "knife client create #{name} -z -d -c config.rb"
+
+#   run_command_and_stop(command)
+
+#   # Capture the stdout result
+#   pem_content = last_command_started.stdout.strip
+
+#   # Ensure PEM content is valid before writing
+#   unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
+#     raise "Generated .pem file for client '#{name}' is invalid or empty."
+#   end
+
+#   # Explicitly write the key file
+#   write_file(pem_file, pem_content)
+
+#   puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
+# end
+
 def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
+  timeout = 60  # Increase the timeout to 60 seconds
 
-  run_command_and_stop(command)
+  begin
+    # Execute the command with a custom timeout
+    run_command_and_stop(command, timeout: timeout)
 
-  # Capture the stdout result
-  pem_content = last_command_started.stdout.strip
+    # Capture the stdout result
+    pem_content = last_command_started.stdout.strip
 
-  # Ensure PEM content is valid before writing
-  unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
-    raise "Generated .pem file for client '#{name}' is invalid or empty."
+    # Ensure PEM content is valid before writing
+    unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
+      raise "Generated .pem file for client '#{name}' is invalid or empty."
+    end
+
+    # Explicitly write the key file
+    write_file(pem_file, pem_content)
+
+    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
+  rescue => e
+    raise "Failed to create client '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
   end
-
-  # Explicitly write the key file
-  write_file(pem_file, pem_content)
-
-  puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
 end
 
 
