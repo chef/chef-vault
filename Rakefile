@@ -38,20 +38,31 @@ end
 # Ensure no file access conflicts
 desc "Ensure no file access conflicts"
 task :ensure_file_access do
-  files_to_check = ["admin.pem", "client.pem", "config.rb"] # Add any other files that need to be checked
-  max_retries = 20 # Increased retry count
-  retry_delay = 2 # Increased delay between retries (2 seconds)
-  puts "Checking for file access conflicts..."
+  files_to_check = ["admin.pem", "client.pem", "config.rb"]
+  max_retries = 20
+  retry_delay = 2
+
   files_to_check.each do |file|
     retries = 0
-    while File.exist?(file) && !File.open(file) { |f| f.flock(File::LOCK_EX | File::LOCK_NB) }
-      puts "File access conflict detected: #{file} is currently locked by another process."
+    puts "Checking access for file: #{file}"
+    $stdout.flush
+
+    while File.exist?(file) && !File.open(file) { |f|
+        begin
+          f.flock(File::LOCK_EX | File::LOCK_NB)
+          puts "Successfully acquired lock on #{file}"
+          true
+        rescue IOError => e
+          # If the file is locked by another process, log and retry
+          puts "Cannot acquire lock on #{file}: #{e.message}"
+          false
+        end
+      }
+
       if retries >= max_retries
-        puts "File access timeout: #{file} could not be accessed after #{max_retries} retries"
         raise "File access timeout: #{file} could not be accessed after #{max_retries} retries"
       end
 
-      puts "Waiting for #{file} to be available... Retry ##{retries}..."
       retries += 1
       puts "Waiting for #{file} to be available... Retry ##{retries}..."
       $stdout.flush
