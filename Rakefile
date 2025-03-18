@@ -45,7 +45,7 @@ end
 # Ensure no file access conflicts
 desc "Ensure no file access conflicts"
 task :ensure_file_access do
-  files_to_check = ["admin.pem", "config.rb"] # Add any other files that need to be checked
+  files_to_check = ["admin.pem", "client.pem", "config.rb"] # Add any other files that need to be checked
   files_to_check.each do |file|
     while File.exist?(file) && File.open(file) { |f| f.flock(File::LOCK_EX | File::LOCK_NB) } == false
       puts "Waiting for #{file} to be available..."
