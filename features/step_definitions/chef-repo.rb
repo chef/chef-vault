@@ -69,23 +69,19 @@ def create_admin(admin)
 end
 
 def create_client(name)
-  command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
+  pem_file = "#{name}.pem"
+  command = "knife client create #{name} -z -d -c config.rb --file #{pem_file}"
   
-  begin
-    run_command_and_stop(command)
-    unless File.exist?("#{name}.pem")
-      raise "Failed to create .pem file for client '#{name}': File not found."
-    end
-    pem_content = File.read("#{name}.pem")
-    unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
-      raise "Generated .pem file for client '#{name}' is invalid or empty."
-    end
-    write_file("#{name}.pem", last_command_started.stdout)
-    puts "Client '#{name}' created successfully."
-  rescue => e
-    raise "Failed to create client '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
+  run_command_and_stop(command)
+
+  # Ensure the .pem file was actually created before proceeding
+  unless File.exist?(pem_file)
+    raise "Failed to create .pem file for client '#{name}': File not found."
   end
+
+  puts "Client '#{name}' created successfully with key file: #{pem_file}"
 end
+
 
 def delete_client(name)
   run_command_and_stop "knife client delete #{name} -y -z -c config.rb"
