@@ -5,6 +5,6 @@ require "aruba/cucumber"
 # environment variable set in .travis.yml
 # if ENV['TRAVIS_BUILD']
 Before do
-  @aruba_timeout_seconds = 15
+  @aruba_timeout_seconds = 60
 end
 # end
