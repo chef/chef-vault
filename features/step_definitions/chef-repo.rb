@@ -92,7 +92,7 @@ def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
   begin
-    with_environment('ARUBA_TIMEOUT' => '60') do
+    with_environment('ARUBA_TIMEOUT' => '30') do
       run_command_and_stop(command)
     end
     pem_content = last_command_started.stdout.strip
