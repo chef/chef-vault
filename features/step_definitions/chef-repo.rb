@@ -70,9 +70,16 @@ end
 
 def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
-
+  
   begin
     run_command_and_stop(command)
+    unless File.exist?("#{name}.pem")
+      raise "Failed to create .pem file for client '#{name}': File not found."
+    end
+    pem_content = File.read("#{name}.pem")
+    unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
+      raise "Generated .pem file for client '#{name}' is invalid or empty."
+    end
     write_file("#{name}.pem", last_command_started.stdout)
     puts "Client '#{name}' created successfully."
   rescue => e
