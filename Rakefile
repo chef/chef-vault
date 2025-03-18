@@ -50,14 +50,15 @@ task :ensure_file_access do
         puts "File access timeout: #{file} could not be accessed after #{max_retries} retries"
         raise "File access timeout: #{file} could not be accessed after #{max_retries} retries"
       end
+
       puts "Waiting for #{file} to be available... Retry ##{retries}..."
       retries += 1
       puts "Waiting for #{file} to be available... Retry ##{retries}..."
-      $stdout.flush  # Force flush of the output
+      $stdout.flush
       sleep retry_delay
     end
     puts "#{file} is now available for access."
-    $stdout.flush  # Force flush of the output
+    $stdout.flush
   end
 end
 
