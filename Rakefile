@@ -84,7 +84,6 @@ end
 begin
   require "cucumber"
   require "cucumber/rake/task"
-  
   # Define Cucumber Rake task without OS-specific filtering
   Cucumber::Rake::Task.new(features: :ensure_file_access)
 
@@ -92,7 +91,6 @@ rescue LoadError
   puts "Cucumber/Aruba not available; disabling feature tasks"
   task :features # Define an empty task to prevent errors
 end
-
 
 # Test or the default task runs spec, features, style
 desc "run all tests"
