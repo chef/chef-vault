@@ -54,7 +54,14 @@ Given(/^I delete nodes? '(.+)' from the Chef server$/) do |nodelist|
 end
 
 def create_node(name)
-  run_command_and_stop "knife node create #{name} -z -d -c config.rb"
+  command = "knife node create #{name} -z -d -c config.rb"
+
+  begin
+    run_command_and_stop(command)
+    puts "Node '#{name}' created successfully."
+  rescue => e
+    raise "Failed to create node '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
+  end
 end
 
 def create_admin(admin)
@@ -63,8 +70,14 @@ end
 
 def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
-  run_command_and_stop command
-  write_file("#{name}.pem", last_command_started.stdout)
+
+  begin
+    run_command_and_stop(command)
+    write_file("#{name}.pem", last_command_started.stdout)
+    puts "Client '#{name}' created successfully."
+  rescue => e
+    raise "Failed to create client '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
+  end
 end
 
 def delete_client(name)
