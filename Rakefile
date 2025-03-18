@@ -10,6 +10,26 @@ WINDOWS_PLATFORM = /mswin|win32|mingw/.freeze unless defined? WINDOWS_PLATFORM
 #   shell.IsUserAnAdmin
 # end
 
+# Ensure no file access conflicts
+desc "Ensure no file access conflicts"
+task :ensure_file_access do
+  files_to_check = ["admin.pem", "client.pem", "config.rb"] # Add any other files that need to be checked
+  max_retries = 10 # Set a retry limit
+  retry_delay = 1 # Delay between retries in seconds
+
+  files_to_check.each do |file|
+    retries = 0
+    while File.exist?(file) && !File.open(file) { |f| f.flock(File::LOCK_EX | File::LOCK_NB) }
+      if retries >= max_retries
+        raise "File access timeout: #{file} could not be accessed after #{max_retries} retries"
+      end
+      retries += 1
+      puts "Waiting for #{file} to be available... Retry ##{retries}"
+      sleep retry_delay
+    end
+  end
+end
+
 # Style Tests
 begin
   require "chefstyle"
@@ -42,34 +62,25 @@ rescue LoadError
   task :spec
 end
 
-# Ensure no file access conflicts
-desc "Ensure no file access conflicts"
-task :ensure_file_access do
-  files_to_check = ["admin.pem", "client.pem", "config.rb"] # Add any other files that need to be checked
-  files_to_check.each do |file|
-    while File.exist?(file) && File.open(file) { |f| f.flock(File::LOCK_EX | File::LOCK_NB) } == false
-      puts "Waiting for #{file} to be available..."
-      sleep 1
-    end
-  end
-end
-
 # Feature Tests
 begin
   require "cucumber"
   require "cucumber/rake/task"
-  Cucumber::Rake::Task.new(features: :ensure_file_access) do |t| # Add dependency on :ensure_file_access
+  Cucumber::Rake::Task.new(features: :ensure_file_access) do |t| 
+    # Add dependency on :ensure_file_access to ensure file availability before running features
     if RUBY_PLATFORM =~ WINDOWS_PLATFORM || RUBY_PLATFORM =~ /darwin/
       t.cucumber_opts = "--tags 'not @not-windows'"
     end
   end
 rescue LoadError
   puts "Cucumber/Aruba not available; disabling feature tasks"
-  # create a no-op spec task for :default
+  # create a no-op feature task for :default
   task :features
 end
 
-# test or the default task runs spec, features, style
+# Test or the default task runs spec, features, style
 desc "run all tests"
 task default: %i{coverage features style}
+
+# Test task as an alias for default task
 task test: :default
