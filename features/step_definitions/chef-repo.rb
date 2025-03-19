@@ -91,29 +91,28 @@ end
 def create_client(name)
   pem_file = "#{name}.pem"
 
-  # If the .pem file exists, assume the client is already created
   if File.exist?(pem_file)
     puts "✅ Client '#{name}' already exists, using cached key file: #{pem_file}"
     return
   end
 
-  command = "knife client create #{name} -z -d -c config.rb > #{pem_file}"
+  command = "knife client create #{name} -z -d -c config.rb"
+  timeout_seconds = 25
 
   begin
-    with_environment("ARUBA_TIMEOUT" => "25") do
-      run_command_and_stop(command)
+    with_environment("ARUBA_TIMEOUT" => timeout_seconds.to_s) do
+      run_command_and_stop(command, timeout: timeout_seconds)
     end
-
-    # Verify the created .pem file
-    pem_content = File.read(pem_file).strip
+    pem_content = last_command_started.stdout.strip
     unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
       raise "Generated .pem file for client '#{name}' is invalid or empty."
     end
 
+    write_file(pem_file, pem_content)
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
+
   rescue => e
-    File.delete(pem_file) if File.exist?(pem_file) # Clean up if creation failed
-    raise "❌ Failed to create client '#{name}': #{e.message}"
+    raise "❌ Failed to create client '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
   end
 end
 
