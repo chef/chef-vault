@@ -90,39 +90,30 @@ end
 
 def create_client(name)
   pem_file = "#{name}.pem"
-  command = "knife client create #{name} -z -d -c config.rb"
-  max_retries = 3
-  retries = 0
-  timeout = 30
+
+  # If the .pem file exists, assume the client is already created
+  if File.exist?(pem_file)
+    puts "✅ Client '#{name}' already exists, using cached key file: #{pem_file}"
+    return
+  end
+
+  command = "knife client create #{name} -z -d -c config.rb > #{pem_file}"
 
   begin
-    puts "⏳ Executing command with timeout #{timeout}s: #{command}"
-    with_environment("ARUBA_TIMEOUT" => timeout.to_s) do
+    with_environment("ARUBA_TIMEOUT" => "25") do
       run_command_and_stop(command)
     end
 
-    # Capture the stdout result
-    pem_content = last_command_started.stdout.strip
-    puts "Command output: #{pem_content}"
-
-    # Ensure PEM content is valid before writing
+    # Verify the created .pem file
+    pem_content = File.read(pem_file).strip
     unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
       raise "Generated .pem file for client '#{name}' is invalid or empty."
     end
 
-    # Explicitly write the key file
-    write_file(pem_file, pem_content)
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   rescue => e
-    retries += 1
-    if retries <= max_retries
-      timeout += 15 # Increase timeout with each retry
-      puts "⏳ Retrying command (#{retries}/#{max_retries}) with increased timeout (#{timeout}s): #{command}"
-      sleep 2  # Wait before retrying to avoid immediate failures
-      retry
-    else
-      raise "❌ Failed to create client '#{name}' after #{max_retries} retries: #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
-    end
+    File.delete(pem_file) if File.exist?(pem_file) # Clean up if creation failed
+    raise "❌ Failed to create client '#{name}': #{e.message}"
   end
 end
 
