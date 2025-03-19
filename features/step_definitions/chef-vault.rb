@@ -10,22 +10,27 @@ end
 
 Given(%r{^I update the vault item '(.+)/(.+)' to be encrypted for '(.+)'( with the clean option)?$}) do |vault, item, nodelist, cleanopt|
   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")
-  command = "knife vault update #{vault} #{item} -z -c config.rb -S '#{query}' #{cleanopt ? '--clean' : ''}"
-  
-  begin
-    # Log the command being executed
-    puts "Executing command: #{command}"
-    
-    # Execute the command
-    run_command_and_stop(command)
-    
-    # Log success
-    puts "Vault item '#{vault}/#{item}' updated successfully."
-  rescue => e
-    # Provide a specific error message if the command fails
-    raise "Failed to update vault item '#{vault}/#{item}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
-  end
+  run_command_and_stop "knife vault update #{vault} #{item} -z -c config.rb -S '#{query}' #{cleanopt ? "--clean" : ""}"
 end
+
+# Given(%r{^I update the vault item '(.+)/(.+)' to be encrypted for '(.+)'( with the clean option)?$}) do |vault, item, nodelist, cleanopt|
+#   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")
+#   command = "knife vault update #{vault} #{item} -z -c config.rb -S '#{query}' #{cleanopt ? '--clean' : ''}"
+
+#   begin
+#     # Log the command being executed
+#     puts "Executing command: #{command}"
+
+#     # Execute the command
+#     run_command_and_stop(command)
+
+#     # Log success
+#     puts "Vault item '#{vault}/#{item}' updated successfully."
+#   rescue => e
+#     # Provide a specific error message if the command fails
+#     raise "Failed to update vault item '#{vault}/#{item}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
+#   end
+# end
 
 Given(%r{^I remove clients? '(.+)' from vault item '(.+)/(.+)' with the '(.+)' options?$}) do |nodelist, vault, item, optionlist|
   query = nodelist.split(/,/).map { |e| "name:#{e}" }.join(" OR ")

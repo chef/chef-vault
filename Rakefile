@@ -1,7 +1,14 @@
 require "bundler/gem_tasks"
-require "fileutils"
+require "fileutils" # Add this line
 
 # WINDOWS_PLATFORM = /mswin|win32|mingw/.freeze unless defined? WINDOWS_PLATFORM
+
+# def elevated_permissions?
+#   return true if RUBY_PLATFORM !~ WINDOWS_PLATFORM
+#   require "win32ole"
+#   shell = WIN32OLE.new("Shell.Application")
+#   shell.IsUserAnAdmin
+# end
 
 # Style Tests
 begin
@@ -35,48 +42,15 @@ rescue LoadError
   task :spec
 end
 
+# Ensure no file access conflicts
 desc "Ensure no file access conflicts"
 task :ensure_file_access do
-  files_to_check = ["admin.pem", "client.pem", "config.rb"]
-  max_retries = 20
-  retry_delay = 2
-
+  files_to_check = ["admin.pem", "config.rb"] # Add any other files that need to be checked
   files_to_check.each do |file|
-    retries = 0
-    puts "Checking access for file: #{file}"
-    $stdout.flush
-
-    while File.exist?(file)
-      puts "File #{file} exists."
-      begin
-        File.open(file, "r+") do |f|
-          unless f.flock(File::LOCK_EX | File::LOCK_NB)
-            puts "File #{file} is locked by another process."
-          else
-            puts "Successfully acquired lock on #{file}"
-            f.flock(File::LOCK_UN)
-            break
-          end
-        end
-      rescue Errno::ENOENT
-        puts "File #{file} disappeared. Skipping..."
-        break
-      rescue IOError => e
-        puts "Cannot acquire lock on #{file}: #{e.message}"
-      end
-
-      if retries >= max_retries
-        raise "File access timeout: #{file} could not be accessed after #{max_retries} retries"
-      end
-
-      retries += 1
-      puts "Waiting for #{file} to be available... Retry ##{retries}..."
-      $stdout.flush
-      sleep retry_delay
+    while File.exist?(file) && File.open(file) { |f| f.flock(File::LOCK_EX | File::LOCK_NB) } == false
+      puts "Waiting for #{file} to be available..."
+      sleep 1
     end
-
-    puts "#{file} is now available for access."
-    $stdout.flush
   end
 end
 
@@ -92,7 +66,7 @@ rescue LoadError
   task :features # Define an empty task to prevent errors
 end
 
-# Test or the default task runs spec, features, style
+# test or the default task runs spec, features, style
 desc "run all tests"
 task default: %i{coverage features style}
 task test: :default
