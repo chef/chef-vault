@@ -91,28 +91,32 @@ end
 def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
-  max_retries = 3  # Maximum number of retries
-  retries = 0      # Current retry count
 
-  begin
-    # Temporarily increase the timeout to 30 seconds
+  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+    with_environment("ARUBA_TIMEOUT" => "35") do
+      run_command_and_stop(command)
+    end
+  else
     run_command_and_stop(command)
-    pem_content = last_command_started.stdout.strip
-    unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
-      raise "Generated .pem file for client '#{name}' is invalid or empty."
-    end
-
-    write_file(pem_file, pem_content)
-    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
-  rescue => e
-    retries += 1
-    if retries <= max_retries
-      puts "⏳ Retrying command (#{retries}/#{max_retries}): #{command}"
-      retry
-    else
-      raise "Failed to create client '#{name}' after #{max_retries} retries: #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
-    end
   end
+
+  pem_content = last_command_started.stdout.strip
+
+  # Additional check for Windows to ensure PEM content is available
+  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/ && pem_content.empty?
+    puts "⚠️ Waiting for PEM content on Windows..."
+    sleep 1
+    pem_content = last_command_started.stdout.strip
+  end
+
+  if pem_content.empty?
+    raise "❌ Failed to retrieve .pem content for client '#{name}'."
+  end
+
+  File.write(pem_file, pem_content)
+  puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
+rescue => e
+  raise "❌ Failed to create client '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
 end
 
 def delete_client(name)
