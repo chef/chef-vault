@@ -1,10 +1,11 @@
 require "aruba/cucumber"
 
-# Travis runs tests in a limited environment which takes a long time to invoke
-# the knife command.  Up the timeout when we're in a travis build based on the
-# environment variable set in .travis.yml
-# if ENV['TRAVIS_BUILD']
 Before do
-  @aruba_timeout_seconds = 15
+  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+    @aruba_timeout_seconds = 30
+    puts "⏳ Timeout set to 30 seconds for Windows platform."
+  else
+    @aruba_timeout_seconds = 15
+    puts "⏳ Timeout set to 15 seconds for non-Windows platform."
+  end
 end
-# end

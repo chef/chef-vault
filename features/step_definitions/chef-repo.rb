@@ -91,11 +91,11 @@ end
 def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
-  timeout_seconds = 30
+  # timeout_seconds = 30
   begin
-    with_environment("ARUBA_TIMEOUT" => timeout_seconds.to_s) do
-      run_command_and_stop(command, timeout: timeout_seconds)
-    end
+    # with_environment("ARUBA_TIMEOUT" => timeout_seconds.to_s) do
+    run_command_and_stop(command)
+    # end
     pem_content = last_command_started.stdout.strip
 
     if RUBY_PLATFORM =~ /mswin|mingw|cygwin/ && pem_content.empty?
