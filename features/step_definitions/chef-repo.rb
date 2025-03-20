@@ -104,7 +104,7 @@ end
 
 def create_client(name)
   pem_file = "#{name}.pem"
-  command = "knife client create #{name} -z -d -VV -c config.rb"
+  command = "knife client create #{name} -z -d -c config.rb"
 
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
     run_command_and_stop(command)
