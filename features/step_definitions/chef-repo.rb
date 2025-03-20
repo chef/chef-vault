@@ -104,12 +104,7 @@ end
 
 def create_client(name)
   pem_file = "#{name}.pem"
-  list_command = "knife client list -z -c config.rb"
   command = "knife client create #{name} -z -d -VV -c config.rb"
-
-  puts "📋 Listing existing clients before creating '#{name}'..."
-  run_command_and_stop(list_command)
-  puts last_command_started.output
 
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
     run_command_and_stop(command)
