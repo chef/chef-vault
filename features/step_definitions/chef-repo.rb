@@ -98,7 +98,7 @@ def create_client(name)
     end
     pem_content = last_command_started.stdout.strip
 
-    if platform?("windows") && pem_content.empty?
+    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/ && pem_content.empty?
       sleep 1
       pem_content = last_command_started.stdout.strip
     end
