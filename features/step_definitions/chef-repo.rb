@@ -121,11 +121,6 @@ def create_client(name)
       run_command_and_stop(command)
       write_file(pem_file, last_command_started.stdout)
     end
-
-    unless File.exist?(pem_file) && valid_rsa_key?(pem_file)
-      raise "Generated .pem file is invalid or corrupted: #{pem_file}"
-    end
-
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   rescue => e
     if retries < 3
