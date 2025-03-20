@@ -108,7 +108,6 @@ def create_client(name)
 
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
     run_command_and_stop(command)
-    puts last_command_started.output
 
     pem_content = last_command_started.stdout.strip
 
