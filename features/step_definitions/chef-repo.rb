@@ -110,8 +110,8 @@ def create_client(name)
   begin
     if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
       run_command_and_stop(command)
-      if last_command_started.exit_status != 0
-        raise "Command failed with exit code #{last_command_started.exit_status}: #{last_command_started.stderr}"
+      if last_command_stopped.exit_status != 0
+        raise "Command failed with exit code #{last_command_stopped.exit_status}: #{last_command_stopped.stderr}"
       end
 
       pem_content = last_command_started.stdout.strip
@@ -122,11 +122,15 @@ def create_client(name)
       write_file(pem_file, last_command_started.stdout)
     end
 
+    unless File.exist?(pem_file) && valid_rsa_key?(pem_file)
+      raise "Generated .pem file is invalid or corrupted: #{pem_file}"
+    end
+
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   rescue => e
-    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/ && retries < 2
+    if retries < 3
       retries += 1
-      puts "⚠️ Attempt #{retries}/2 failed on Windows: #{e.message}. Retrying in 5 seconds..."
+      puts "⚠️ Attempt #{retries}/3 failed: #{e.message}. Retrying in 5 seconds..."
       sleep(5)
       retry
     else
