@@ -90,7 +90,7 @@ end
 
 def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
-  
+
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
     with_environment("ARUBA_TIMEOUT" => "35") do
       run_command_and_stop(command)
@@ -98,27 +98,29 @@ def create_client(name)
   else
     run_command_and_stop(command)
   end
-  
+
   write_file("#{name}.pem", last_command_started.stdout)
 end
 
 def create_client(name)
   pem_file = "#{name}.pem"
-  command = "knife client create #{name} -z -d -c config.rb"
+  command = "knife client create #{name} -z -d -VV -c config.rb"
 
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
     max_retries = 3
     retries = 0
 
     begin
-      with_environment('ARUBA_TIMEOUT' => '30') do
+      with_environment("ARUBA_TIMEOUT" => "40") do
         run_command_and_stop(command)
+        puts "-----------logs----------------"
+        puts last_command_started.output
       end
-
       pem_content = last_command_started.stdout.strip
       unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
         raise "Generated .pem file for client '#{name}' is invalid or empty."
       end
+
       write_file(pem_file, pem_content)
       puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
     rescue => e
@@ -137,7 +139,7 @@ def create_client(name)
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   end
 end
- 
+
 def delete_client(name)
   run_command_and_stop "knife client delete #{name} -y -z -c config.rb"
 end
