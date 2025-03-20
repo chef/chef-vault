@@ -88,19 +88,19 @@ end
 #   puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
 # end
 
-def create_client(name)
-  command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
+# def create_client(name)
+#   command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
 
-  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-    with_environment("ARUBA_TIMEOUT" => "35") do
-      run_command_and_stop(command)
-    end
-  else
-    run_command_and_stop(command)
-  end
+#   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+#     with_environment("ARUBA_TIMEOUT" => "35") do
+#       run_command_and_stop(command)
+#     end
+#   else
+#     run_command_and_stop(command)
+#   end
 
-  write_file("#{name}.pem", last_command_started.stdout)
-end
+#   write_file("#{name}.pem", last_command_started.stdout)
+# end
 
 def create_client(name)
   pem_file = "#{name}.pem"
