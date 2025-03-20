@@ -104,34 +104,20 @@ end
 
 def create_client(name)
   pem_file = "#{name}.pem"
+  list_command = "knife client list -z -c config.rb"
   command = "knife client create #{name} -z -d -VV -c config.rb"
 
+  puts "📋 Listing existing clients before creating '#{name}'..."
+  run_command_and_stop(list_command)
+  puts last_command_started.output
+
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-    max_retries = 3
-    retries = 0
+    run_command_and_stop(command)
 
-    begin
-      with_environment("ARUBA_TIMEOUT" => "40") do
-        run_command_and_stop(command)
-        puts "-----------logs----------------"
-        puts last_command_started.output
-      end
-      pem_content = last_command_started.stdout.strip
-      unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
-        raise "Generated .pem file for client '#{name}' is invalid or empty."
-      end
+    pem_content = last_command_started.stdout.strip
 
-      write_file(pem_file, pem_content)
-      puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
-    rescue => e
-      retries += 1
-      if retries <= max_retries
-        puts "⏳ Retrying command (#{retries}/#{max_retries}): #{command}"
-        retry
-      else
-        raise "Failed to create client '#{name}' after #{max_retries} retries: #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
-      end
-    end
+    write_file(pem_file, pem_content)
+    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   else
     command = "knife client create #{name} -z -d -c config.rb > #{pem_file}"
     run_command_and_stop(command)
