@@ -91,22 +91,27 @@ end
 def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
-  # timeout_seconds = 30
-  begin
-    # with_environment("ARUBA_TIMEOUT" => timeout_seconds.to_s) do
-    run_command_and_stop(command)
-    # end
-    pem_content = last_command_started.stdout.strip
+  max_retries = 3  # Maximum number of retries
+  retries = 0      # Current retry count
 
-    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/ && pem_content.empty?
-      sleep 1
-      pem_content = last_command_started.stdout.strip
+  begin
+    # Temporarily increase the timeout to 30 seconds
+    run_command_and_stop(command)
+    pem_content = last_command_started.stdout.strip
+    unless pem_content.match?(/-----BEGIN RSA PRIVATE KEY-----/)
+      raise "Generated .pem file for client '#{name}' is invalid or empty."
     end
 
-    File.write(pem_file, pem_content)
+    write_file(pem_file, pem_content)
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   rescue => e
-    raise "❌ Failed to create client '#{name}': #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
+    retries += 1
+    if retries <= max_retries
+      puts "⏳ Retrying command (#{retries}/#{max_retries}): #{command}"
+      retry
+    else
+      raise "Failed to create client '#{name}' after #{max_retries} retries: #{e.message}\nCommand: #{command}\nOutput: #{last_command_started.output}"
+    end
   end
 end
 
