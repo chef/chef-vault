@@ -105,19 +105,34 @@ end
 def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
+  retries = 0
 
-  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-    run_command_and_stop(command)
+  begin
+    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+      run_command_and_stop(command)
+      if last_command_started.exit_status != 0
+        raise "Command failed with exit code #{last_command_started.exit_status}: #{last_command_started.stderr}"
+      end
 
-    pem_content = last_command_started.stdout.strip
+      pem_content = last_command_started.stdout.strip
+      write_file(pem_file, pem_content)
+    else
+      command += " > #{pem_file}"
+      run_command_and_stop(command)
+      write_file(pem_file, last_command_started.stdout)
+    end
 
-    write_file(pem_file, pem_content)
     puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
-  else
-    command = "knife client create #{name} -z -d -c config.rb > #{pem_file}"
-    run_command_and_stop(command)
-    write_file(pem_file, last_command_started.stdout)
-    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
+  rescue => e
+    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/ && retries < 2
+      retries += 1
+      puts "⚠️ Attempt #{retries}/2 failed on Windows: #{e.message}. Retrying in 5 seconds..."
+      sleep(5)
+      retry
+    else
+      puts "❗ Failed to create client '#{name}' after #{retries} attempts: #{e.message}"
+      raise
+    end
   end
 end
 
