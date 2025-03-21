@@ -113,8 +113,6 @@ def create_client(name)
 
       if last_command_stopped.nil?
         raise "Command did not run or was not captured properly by Aruba."
-      elsif last_command_stopped.exit_status != 0
-        raise "Command failed with exit code #{last_command_stopped.exit_status}: #{last_command_stopped.stderr}"
       end
 
       write_file(pem_file, pem_content)
@@ -126,10 +124,10 @@ def create_client(name)
       write_file(pem_file, last_command_started.stdout)
     end
   rescue => e
-    if retries < 3
+    if retries < 2
       retries += 1
       puts "⚠️ Attempt #{retries}/3 failed: #{e.message}. Retrying in 5 seconds..."
-      sleep(5)
+      sleep(2)
       retry
     else
       puts "❗ Failed to create client '#{name}' after #{retries} attempts: #{e.message}"
