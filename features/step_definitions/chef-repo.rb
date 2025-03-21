@@ -110,18 +110,26 @@ def create_client(name)
   begin
     if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
       run_command_and_stop(command)
-      if last_command_stopped.exit_status != 0
+
+      if last_command_stopped.nil?
+        raise "Command did not run or was not captured properly by Aruba."
+      elsif last_command_stopped.exit_status != 0
         raise "Command failed with exit code #{last_command_stopped.exit_status}: #{last_command_stopped.stderr}"
       end
 
-      pem_content = last_command_started.stdout.strip
+      # Capture key from the generated .pem file
+      unless File.exist?(pem_file)
+        raise "Key file '#{pem_file}' not created. Command output: #{last_command_stopped.stderr}"
+      end
+
       write_file(pem_file, pem_content)
+      puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
     else
+      # The existing non-Windows logic remains unchanged
       command += " > #{pem_file}"
       run_command_and_stop(command)
       write_file(pem_file, last_command_started.stdout)
     end
-    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   rescue => e
     if retries < 3
       retries += 1
