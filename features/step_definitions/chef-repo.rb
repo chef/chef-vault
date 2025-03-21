@@ -105,37 +105,22 @@ end
 def create_client(name)
   pem_file = "#{name}.pem"
   command = "knife client create #{name} -z -d -c config.rb"
-  retries = 0
 
-  begin
-    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-      run_command_and_stop(command)
+  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+    run_command_and_stop(command, timeout: 20)
 
-      if last_command_stopped.nil?
-        raise "Command did not run or was not captured properly by Aruba."
-      elsif last_command_stopped.exit_status != 0
-        raise "Command failed with exit code #{last_command_stopped.exit_status}: #{last_command_stopped.stderr}"
-      end
-
-      pem_content = last_command_stopped.stdout.strip
-
-      write_file(pem_file, pem_content)
-      puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
-    else
-      command += " > #{pem_file}"
-      run_command_and_stop(command)
-      write_file(pem_file, last_command_started.stdout)
+    pem_content = last_command_stopped&.stdout&.strip
+    if pem_content.nil? || pem_content.empty?
+      puts "❗ Failed to retrieve the PEM content from the output for client '#{name}'."
+      return
     end
-  rescue => e
-    if retries < 2
-      retries += 1
-      puts "⚠️ Attempt #{retries}/2 failed: #{e.message}. Retrying in 2 seconds..."
-      sleep(2)
-      retry
-    else
-      puts "❗ Failed to create client '#{name}' after #{retries} attempts: #{e.message}"
-      raise
-    end
+
+    write_file(pem_file, pem_content)
+    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
+  else
+    command += " > #{pem_file}"
+    run_command_and_stop(command)
+    write_file(pem_file, last_command_started.stdout)
   end
 end
 
