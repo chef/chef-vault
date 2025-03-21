@@ -107,7 +107,9 @@ def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb"
 
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-    run_command_and_stop(command, timeout: 50)
+    with_environment("ARUBA_TIMEOUT" => "50") do
+      run_command_and_stop(command)
+    end
 
     pem_content = last_command_stopped&.stdout&.strip
     if pem_content.nil? || pem_content.empty?
