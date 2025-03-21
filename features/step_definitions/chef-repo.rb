@@ -113,12 +113,15 @@ def create_client(name)
 
       if last_command_stopped.nil?
         raise "Command did not run or was not captured properly by Aruba."
+      elsif last_command_stopped.exit_status != 0
+        raise "Command failed with exit code #{last_command_stopped.exit_status}: #{last_command_stopped.stderr}"
       end
+
+      pem_content = last_command_stopped.stdout.strip
 
       write_file(pem_file, pem_content)
       puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
     else
-      # The existing non-Windows logic remains unchanged
       command += " > #{pem_file}"
       run_command_and_stop(command)
       write_file(pem_file, last_command_started.stdout)
@@ -126,7 +129,7 @@ def create_client(name)
   rescue => e
     if retries < 2
       retries += 1
-      puts "⚠️ Attempt #{retries}/3 failed: #{e.message}. Retrying in 5 seconds..."
+      puts "⚠️ Attempt #{retries}/2 failed: #{e.message}. Retrying in 2 seconds..."
       sleep(2)
       retry
     else
