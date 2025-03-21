@@ -107,23 +107,17 @@ def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb"
 
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-    with_environment("ARUBA_TIMEOUT" => "50") do
-      run_command_and_stop(command)
-    end
+    run_command_and_stop(command)
 
-    pem_content = last_command_stopped&.stdout&.strip
-    if pem_content.nil? || pem_content.empty?
-      puts "❗ Failed to retrieve the PEM content from the output for client '#{name}'."
-      return
-    end
-
+    pem_content = last_command_stopped.stdout.strip
     write_file(pem_file, pem_content)
-    puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
   else
     command += " > #{pem_file}"
     run_command_and_stop(command)
     write_file(pem_file, last_command_started.stdout)
   end
+
+  puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
 end
 
 def delete_client(name)
