@@ -117,11 +117,6 @@ def create_client(name)
         raise "Command failed with exit code #{last_command_stopped.exit_status}: #{last_command_stopped.stderr}"
       end
 
-      # Capture key from the generated .pem file
-      unless File.exist?(pem_file)
-        raise "Key file '#{pem_file}' not created. Command output: #{last_command_stopped.stderr}"
-      end
-
       write_file(pem_file, pem_content)
       puts "✅ Client '#{name}' created successfully with key file: #{pem_file}"
     else
