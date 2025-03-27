@@ -1,0 +1,9 @@
+# Use official Ruby image from Docker Hub 
+# Update if you need to use a different version of ruby. source: https://hub.docker.com/_/ruby/tags
+FROM ruby:3.1.2
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command to keep container running
+CMD ["sleep", "infinity"]
