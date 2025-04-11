@@ -6,5 +6,6 @@ require "aruba/cucumber"
 # if ENV['TRAVIS_BUILD']
 Before do
   @aruba_timeout_seconds = 20
+  @aruba_io_wait_seconds = 2
 end
 # end
