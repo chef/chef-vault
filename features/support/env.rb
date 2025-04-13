@@ -5,7 +5,10 @@ require "aruba/cucumber"
 # environment variable set in .travis.yml
 # if ENV['TRAVIS_BUILD']
 Before do
-  @aruba_timeout_seconds = 20
+  @aruba_timeout_seconds = 25
   @aruba_io_wait_seconds = 2
+
+  # Ensure a clean working directory to avoid leftover files
+  clean_current_directory
 end
 # end

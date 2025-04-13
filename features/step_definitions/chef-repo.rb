@@ -61,11 +61,21 @@ def create_admin(admin)
   create_client(admin)
 end
 
+# def create_client(name)
+#   command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
+#   run_command_and_stop command
+#   write_file("#{name}.pem", last_command_started.stdout)
+# end
+
 def create_client(name)
-  command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
-  run_command_and_stop command
-  write_file("#{name}.pem", last_command_started.stdout)
+  command = "knife client create #{name} -z -d -c config.rb"
+  run_command_and_stop(command)
+
+  pem_file = "#{name}.pem"
+  # Write the captured stdout (the PEM contents) to the .pem file manually
+  write_file(pem_file, last_command_started.stdout)
 end
+
 
 def delete_client(name)
   run_command_and_stop "knife client delete #{name} -y -z -c config.rb"
