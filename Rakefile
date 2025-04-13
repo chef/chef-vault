@@ -57,6 +57,9 @@ task :ensure_file_access do
 end
 
 def file_locked?(file)
+  # Skip locking if the file doesn't exist
+  return true unless File.exist?(file)
+
   begin
     # Try to acquire an exclusive lock without blocking
     File.open(file, "r") { |f| f.flock(File::LOCK_EX | File::LOCK_NB) }
