@@ -7,8 +7,12 @@ require "aruba/cucumber"
 Before do
   @aruba_timeout_seconds = 25
   @aruba_io_wait_seconds = 2
-
-  # Ensure a clean working directory to avoid leftover files
-  clean_current_directory
 end
+
+After do
+  all_commands.each do |process|
+    process.stop if process.respond_to?(:stop)
+  end
+end
+
 # end
