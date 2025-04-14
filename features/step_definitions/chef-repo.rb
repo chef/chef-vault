@@ -76,7 +76,6 @@ def create_client(name)
   write_file(pem_file, last_command_started.stdout)
 end
 
-
 def delete_client(name)
   run_command_and_stop "knife client delete #{name} -y -z -c config.rb"
 end

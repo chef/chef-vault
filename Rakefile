@@ -61,17 +61,14 @@ task :ensure_file_access do
 end
 
 def file_locked?(file)
-  begin
-    # Try to acquire an exclusive lock without blocking
-    File.open(file, "r") { |f| f.flock(File::LOCK_EX | File::LOCK_NB) }
-    false
-  rescue Errno::EACCES, Errno::EBUSY, Errno::EWOULDBLOCK
-    true
-  rescue Errno::ENOENT
-    false
-  end
+  # Try to acquire an exclusive lock without blocking
+  File.open(file, "r") { |f| f.flock(File::LOCK_EX | File::LOCK_NB) }
+  false
+rescue Errno::EACCES, Errno::EBUSY, Errno::EWOULDBLOCK
+  true
+rescue Errno::ENOENT
+  false
 end
-
 
 # Feature Tests
 begin
