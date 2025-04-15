@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.16 -->
-## [v4.1.16](https://github.com/chef/chef-vault/tree/v4.1.16) (2025-03-27)
+<!-- latest_release 4.1.17 -->
+## [v4.1.17](https://github.com/chef/chef-vault/tree/v4.1.17) (2025-04-15)
 
 #### Merged Pull Requests
-- Rubocop correction [#436](https://github.com/chef/chef-vault/pull/436) ([tpowell-progress](https://github.com/tpowell-progress))
+- make pipelines public: habitat/test [#437](https://github.com/chef/chef-vault/pull/437) ([jaymzh](https://github.com/jaymzh))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.11 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- make pipelines public: habitat/test [#437](https://github.com/chef/chef-vault/pull/437) ([jaymzh](https://github.com/jaymzh)) <!-- 4.1.17 -->
 - Rubocop correction [#436](https://github.com/chef/chef-vault/pull/436) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 4.1.16 -->
 - Updating configuration for a symantec version promote and publish [#434](https://github.com/chef/chef-vault/pull/434) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.14 -->
 - Empty commit to test pipelines [#427](https://github.com/chef/chef-vault/pull/427) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.2 -->
