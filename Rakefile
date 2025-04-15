@@ -45,29 +45,14 @@ end
 # Ensure no file access conflicts
 desc "Ensure no file access conflicts"
 task :ensure_file_access do
-  # Track all potential PEM files using a wildcard pattern
-  files_to_check = Dir.glob("*.pem") + ["config.rb"]
+  files_to_check = Dir.glob("*.pem") + ["config.rb"] # Add more specific files if needed
 
   files_to_check.each do |file|
-    if File.exist?(file)
-      while file_locked?(file)
-        puts "Waiting for #{file} to be available..."
-        sleep 1
-      end
-    else
-      puts "#{file} does not exist, skipping lock check."
+    while File.exist?(file) && File.open(file) { |f| f.flock(File::LOCK_EX | File::LOCK_NB) } == false
+      puts "Waiting for #{file} to be available..."
+      sleep 1
     end
   end
-end
-
-def file_locked?(file)
-  # Try to acquire an exclusive lock without blocking
-  File.open(file, "r") { |f| f.flock(File::LOCK_EX | File::LOCK_NB) }
-  false
-rescue Errno::EACCES, Errno::EBUSY, Errno::EWOULDBLOCK
-  true
-rescue Errno::ENOENT
-  false
 end
 
 # Feature Tests

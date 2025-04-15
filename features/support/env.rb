@@ -5,13 +5,19 @@ require "aruba/cucumber"
 # environment variable set in .travis.yml
 # if ENV['TRAVIS_BUILD']
 Before do
-  @aruba_timeout_seconds = 25
-  @aruba_io_wait_seconds = 2
+  if RUBY_PLATFORM =~ /mswin|win32|mingw/
+    @aruba_timeout_seconds = 30
+    @aruba_io_wait_seconds = 10
+  else
+    @aruba_timeout_seconds = 25
+  end
 end
 
 After do
-  all_commands.each do |process|
-    process.stop if process.respond_to?(:stop)
+  if RUBY_PLATFORM =~ /mswin|win32|mingw/
+    all_commands.each do |process|
+      process.stop if process.respond_to?(:stop)
+    end
   end
 end
 

@@ -67,13 +67,40 @@ end
 #   write_file("#{name}.pem", last_command_started.stdout)
 # end
 
+# def create_client(name)
+#   command = "knife client create #{name} -z -d -c config.rb"
+#   run_command_and_stop(command)
+
+#   pem_file = "#{name}.pem"
+#   # Write the captured stdout (the PEM contents) to the .pem file manually
+#   write_file(pem_file, last_command_started.stdout)
+# end
+
 def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb"
   run_command_and_stop(command)
 
   pem_file = "#{name}.pem"
-  # Write the captured stdout (the PEM contents) to the .pem file manually
-  write_file(pem_file, last_command_started.stdout)
+
+  if RUBY_PLATFORM =~ /mswin|win32|mingw/
+    retries = 3
+    begin
+      wait_for { File.exist?(pem_file) }
+      write_file(pem_file, last_command_started.stdout)
+    rescue Errno::EACCES
+      retries -= 1
+      if retries > 0
+        puts "File #{pem_file} is locked, retrying..."
+        sleep 2
+        retry
+      else
+        raise "File #{pem_file} is locked after 3 retries"
+      end
+    end
+  else
+    sleep 0.5
+    write_file(pem_file, last_command_started.stdout)
+  end
 end
 
 def delete_client(name)
