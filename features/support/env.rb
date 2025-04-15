@@ -5,11 +5,13 @@ require "aruba/cucumber"
 # environment variable set in .travis.yml
 # if ENV['TRAVIS_BUILD']
 Before do
+  Dir.glob("*.pem") { |f| File.delete(f) rescue nil }
+  File.delete("config.rb") rescue nil
   if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    @aruba_timeout_seconds = 40
-    @aruba_io_wait_seconds = 10
-  else
     @aruba_timeout_seconds = 25
+    @aruba_io_wait_seconds = 2
+  else
+    @aruba_timeout_seconds = 15
   end
 end
 
