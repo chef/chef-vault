@@ -82,25 +82,10 @@ def create_client(name)
 
   pem_file = "#{name}.pem"
 
-  if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    retries = 3
-    begin
-      wait_for { File.exist?(pem_file) }
-      write_file(pem_file, last_command_started.stdout)
-    rescue Errno::EACCES
-      retries -= 1
-      if retries > 0
-        puts "File #{pem_file} is locked, retrying..."
-        sleep 2
-        retry
-      else
-        raise "File #{pem_file} is locked after 3 retries"
-      end
-    end
-  else
-    sleep 0.5
-    write_file(pem_file, last_command_started.stdout)
-  end
+  # On Windows, give a small delay to avoid file lock issues
+  sleep 0.5 if RUBY_PLATFORM =~ /mswin|win32|mingw/
+
+  write_file(pem_file, last_command_started.stdout)
 end
 
 def delete_client(name)

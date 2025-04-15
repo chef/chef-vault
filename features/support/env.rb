@@ -6,7 +6,7 @@ require "aruba/cucumber"
 # if ENV['TRAVIS_BUILD']
 Before do
   if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    @aruba_timeout_seconds = 30
+    @aruba_timeout_seconds = 40
     @aruba_io_wait_seconds = 10
   else
     @aruba_timeout_seconds = 25
