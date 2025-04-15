@@ -102,6 +102,7 @@ def create_client(name)
       if attempts >= max_attempts
         raise "Timed out waiting for #{pem_file} to be created on Windows"
       end
+
       sleep 0.5
     end
   end
