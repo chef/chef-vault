@@ -73,12 +73,12 @@ def create_client(name)
     begin
       puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds)"
       run_command_and_stop(command)
-      puts "------Command Output------#{last_command_started.stdout}"
+      sleep 3
+
       if last_command_started.stdout.empty?
         raise "Command produced no output"
       end
 
-      sleep 1
       write_file(pem_file, last_command_started.stdout)
       raise "PEM file not created" unless File.exist?(pem_file)
 
