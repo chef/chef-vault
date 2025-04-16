@@ -8,8 +8,7 @@ Before do
   Dir.glob("*.pem") { |f| File.delete(f) rescue nil }
   File.delete("config.rb") rescue nil
   if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    @aruba_timeout_seconds = 25
-    @aruba_io_wait_seconds = 2
+    @aruba_timeout_seconds = 30
   else
     @aruba_timeout_seconds = 15
   end
