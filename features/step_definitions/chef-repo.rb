@@ -70,7 +70,6 @@ def create_client(name)
     puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds"
 
     run_command_and_stop(command)
-    sleep 3
 
     if last_command_started.stdout.empty?
       raise "Command produced no output"
