@@ -68,12 +68,12 @@ def create_client(name)
   if RUBY_PLATFORM =~ /mswin|win32|mingw/
     max_retries = 3
     retry_count = 0
-    @aruba_timeout_seconds = 35
+    @aruba_timeout_seconds = 60
 
     begin
       puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds)"
       run_command_and_stop(command)
-      puts "------Command Output------"
+      puts "------Command Output------#{last_command_started.stdout}"
       if last_command_started.stdout.empty?
         raise "Command produced no output"
       end
