@@ -61,53 +61,14 @@ def create_admin(admin)
   create_client(admin)
 end
 
-# def create_client(name)
-#   command = "knife client create #{name} -z -d -c config.rb >#{name}.pem"
-#   run_command_and_stop command
-#   write_file("#{name}.pem", last_command_started.stdout)
-# end
-
-# def create_client(name)
-#   command = "knife client create #{name} -z -d -c config.rb"
-#   run_command_and_stop(command)
-
-#   pem_file = "#{name}.pem"
-#   # Write the captured stdout (the PEM contents) to the .pem file manually
-#   write_file(pem_file, last_command_started.stdout)
-# end
-
-# def create_client(name)
-#   command = "knife client create #{name} -z -d -c config.rb"
-#   run_command_and_stop(command)
-
-#   pem_file = "#{name}.pem"
-
-#   # On Windows, give a small delay to avoid file lock issues
-#   sleep 0.5 if RUBY_PLATFORM =~ /mswin|win32|mingw/
-
-#   write_file(pem_file, last_command_started.stdout)
-# end
-
 def create_client(name)
-  run_command_and_stop("knife client create #{name} -z -d -c config.rb")
+  command = "knife client create #{name} -z -d -c config.rb"
+  run_command_and_stop(command)
 
   pem_file = "#{name}.pem"
-
-  if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    max_attempts = 5
-    attempts = 0
-
-    until File.exist?(pem_file) && !File.zero?(pem_file)
-      attempts += 1
-      if attempts >= max_attempts
-        raise "Timed out waiting for #{pem_file} to be created on Windows"
-      end
-
-      sleep 0.5
-    end
-  end
-
   write_file(pem_file, last_command_started.stdout)
+
+  sleep 0.5 if RUBY_PLATFORM =~ /mswin|win32|mingw/
 end
 
 def delete_client(name)
