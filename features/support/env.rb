@@ -8,5 +8,5 @@ Aruba.configure do |config|
     config.exit_timeout = 25
   end
 
-  config.activate_announcer_on_command_failure = %i[stderr stdout command]
+  config.activate_announcer_on_command_failure = %i{stderr stdout command}
 end
