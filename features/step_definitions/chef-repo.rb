@@ -61,26 +61,34 @@ def create_admin(admin)
   create_client(admin)
 end
 
+# def create_client(name)
+#   command = "knife client create #{name} -z -d -c config.rb"
+#   pem_file = "#{name}.pem"
+
+#   if RUBY_PLATFORM =~ /mswin|win32|mingw/
+#     @aruba_timeout_seconds = 60
+#     puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds"
+
+#     run_command_and_stop(command)
+
+#     if last_command_started.stdout.empty?
+#       raise "Command produced no output"
+#     end
+
+#     write_file(pem_file, last_command_started.stdout)
+#     raise "PEM file not created" unless File.exist?(pem_file)
+#   else
+#     run_command_and_stop(command)
+#     write_file(pem_file, last_command_started.stdout)
+#   end
+# end
+
 def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb"
   pem_file = "#{name}.pem"
 
-  if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    @aruba_timeout_seconds = 60
-    puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds"
-
-    run_command_and_stop(command)
-
-    if last_command_started.stdout.empty?
-      raise "Command produced no output"
-    end
-
-    write_file(pem_file, last_command_started.stdout)
-    raise "PEM file not created" unless File.exist?(pem_file)
-  else
-    run_command_and_stop(command)
-    write_file(pem_file, last_command_started.stdout)
-  end
+  run_command_and_stop(command)
+  write_file(pem_file, last_command_started.stdout)
 end
 
 def delete_client(name)
