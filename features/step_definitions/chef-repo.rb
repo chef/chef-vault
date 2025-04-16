@@ -74,13 +74,13 @@ def create_client(name)
     begin
       puts "Running command: #{command} with timeout #{@aruba_timeout_seconds} seconds"
 
-      result = run_command_and_stop(command)
+      run_command_and_stop(command)
 
-      if result.exit_status != 0
-        raise "Command failed with exit status #{result.exit_status}. Output: #{result.stdout}"
+      if last_command_started.exit_status != 0
+        raise "Command failed with exit status #{last_command_started.exit_status}. Output: #{last_command_started.stdout}"
       end
 
-      write_file(pem_file, result.stdout)
+      write_file(pem_file, last_command_started.stdout)
     rescue => e
       retry_count += 1
       puts "Attempt #{retry_count}/#{max_retries} failed: #{e.message}"
