@@ -3,7 +3,7 @@ require "aruba/cucumber"
 Aruba.configure do |config|
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
     config.exit_timeout = 30
-    config.io_wait_timeout = 2
+    # config.io_wait_timeout = 2
   else
     config.exit_timeout = 25
   end
