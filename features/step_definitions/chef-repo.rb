@@ -63,12 +63,33 @@ end
 
 def create_client(name)
   command = "knife client create #{name} -z -d -c config.rb"
-  run_command_and_stop(command)
-
   pem_file = "#{name}.pem"
-  write_file(pem_file, last_command_started.stdout)
 
-  sleep 0.5 if RUBY_PLATFORM =~ /mswin|win32|mingw/
+  if RUBY_PLATFORM =~ /mswin|win32|mingw/
+    max_retries = 3
+    retry_count = 0
+
+    @aruba_timeout_seconds = 30
+
+    begin
+      run_command_and_stop(command)
+    rescue => e
+      retry_count += 1
+      puts "Attempt #{retry_count}/#{max_retries} failed: #{e.message}"
+
+      if retry_count < max_retries
+        sleep 2  # Wait before retrying
+        retry
+      else
+        puts "Failed to execute after #{max_retries} attempts"
+        raise e
+      end
+    end
+    write_file(pem_file, last_command_started.stdout)
+  else
+    run_command_and_stop(command)
+    write_file(pem_file, last_command_started.stdout)
+  end
 end
 
 def delete_client(name)
