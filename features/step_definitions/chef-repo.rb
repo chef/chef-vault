@@ -66,31 +66,18 @@ def create_client(name)
   pem_file = "#{name}.pem"
 
   if RUBY_PLATFORM =~ /mswin|win32|mingw/
-    max_retries = 3
-    retry_count = 0
     @aruba_timeout_seconds = 60
+    puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds"
 
-    begin
-      puts "------Executing Command------ #{command} with timeout #{@aruba_timeout_seconds} seconds)"
-      run_command_and_stop(command)
-      sleep 3
+    run_command_and_stop(command)
+    sleep 3
 
-      if last_command_started.stdout.empty?
-        raise "Command produced no output"
-      end
-
-      write_file(pem_file, last_command_started.stdout)
-      raise "PEM file not created" unless File.exist?(pem_file)
-
-    rescue => e
-      retry_count += 1
-      if retry_count < max_retries
-        sleep 3
-        retry
-      else
-        raise "Windows command failed after #{max_retries} attempts: #{e.message}"
-      end
+    if last_command_started.stdout.empty?
+      raise "Command produced no output"
     end
+
+    write_file(pem_file, last_command_started.stdout)
+    raise "PEM file not created" unless File.exist?(pem_file)
   else
     run_command_and_stop(command)
     write_file(pem_file, last_command_started.stdout)
