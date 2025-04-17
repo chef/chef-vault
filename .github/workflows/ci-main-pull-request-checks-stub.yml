@@ -1,7 +1,7 @@
 # stub to call common GitHub Action (GA) as part of Continuous Integration (CI) Pull Request process checks for main branch
 # inputs are described in the <org>/common-github-actions/<GA.yml> with same name as this stub
 
-name: ci-main-pull-request-checks
+name: CI Pull Request on Main Branch
 
 on: 
   pull_request:
