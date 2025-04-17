@@ -1,0 +1,32 @@
+# stub to call common GitHub Action (GA) as part of Continuous Integration (CI) Pull Request process checks for main branch
+# inputs are described in the <org>/common-github-actions/<GA.yml> with same name as this stub
+
+name: ci-main-pull-request-checks
+
+on: 
+  pull_request:
+    branches: [ main, release/** ]
+  push:
+    branches: [ main, release/** ]
+
+  workflow_dispatch:
+
+jobs: 
+  call-ci-main-pr-check-pipeline:
+    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request-v2.yml@main
+    secrets: inherit
+    with:   # named inputs for the GA
+      language: 'Ruby'  # optional, defaults to Go; other values are Ruby, Rust
+      visibility: ${{ github.event.repository.visibility }} # optional, defaults to public; values are private, public, or internal
+      perform-complexity-checks: true
+      # scc-output-filename: 'scc-output.txt'
+      perform-trufflehog-scan: true
+      perform-srcclr-scan: true
+      perform-veracode-sca-scan: true
+      perform-blackduck-sca-scan: true
+      build: true
+      unit-tests: true
+      perform-sonarqube-sca-scan: true
+      perform-blackduck-coverity: true
+      perform-blackduck-polaris: true
+      generate-sbom: true
