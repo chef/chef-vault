@@ -21,12 +21,12 @@ jobs:
       perform-complexity-checks: true
       # scc-output-filename: 'scc-output.txt'
       perform-trufflehog-scan: true
-      perform-srcclr-scan: true
-      perform-veracode-sca-scan: true
+      perform-srcclr-scan: false
+      perform-veracode-sca-scan: false
       perform-blackduck-sca-scan: true
       build: true
       unit-tests: true
       perform-sonarqube-sca-scan: true
-      perform-blackduck-coverity: true
+      perform-blackduck-coverity: false
       perform-blackduck-polaris: true
       generate-sbom: true
