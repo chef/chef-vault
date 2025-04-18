@@ -4,7 +4,13 @@ require "aruba/cucumber"
 # the knife command.  Up the timeout when we're in a travis build based on the
 # environment variable set in .travis.yml
 # if ENV['TRAVIS_BUILD']
-Before do
-  @aruba_timeout_seconds = 15
+Aruba.configure do |config|
+  if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+    config.exit_timeout = 30
+  else
+    config.exit_timeout = 15
+  end
+
+  config.activate_announcer_on_command_failure = %i{stderr stdout command}
 end
 # end
