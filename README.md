@@ -1,5 +1,8 @@
 # Chef-Vault
 
+> ⚠️ **DEPRECATION NOTICE**: Chef Vault is no longer in active development and will eventually move to end-of-life status. Users are encouraged to explore alternative solutions for secrets management.
+
+
 [![Gem Version](https://badge.fury.io/rb/chef-vault.svg)](http://badge.fury.io/rb/chef-vault)
 
 [![Build status](https://badge.buildkite.com/12995d1511cba167621634791600aa4b1156a42ef557452d07.svg)](https://buildkite.com/chef-oss/chef-chef-vault-master-verify)
