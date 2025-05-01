@@ -61,7 +61,7 @@ begin
   require "cucumber/rake/task"
   Cucumber::Rake::Task.new(features: :ensure_file_access) do |t| # Add dependency on :ensure_file_access
     if RUBY_PLATFORM =~ WINDOWS_PLATFORM || RUBY_PLATFORM =~ /darwin/
-      t.cucumber_opts = "features/vault_list.feature features/vault_show.feature features/vault_show_vaultname.feature features/vault_update.feature features/verify_id_matches.feature features/wrong_private_key.feature"
+      t.cucumber_opts = "--tags 'not @not-windows'"
     end
   end
 rescue LoadError
