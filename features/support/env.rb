@@ -6,7 +6,7 @@ require "aruba/cucumber"
 # if ENV['TRAVIS_BUILD']
 Aruba.configure do |config|
   if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
-    config.exit_timeout = 40
+    config.exit_timeout = 60
   else
     config.exit_timeout = 15
   end
