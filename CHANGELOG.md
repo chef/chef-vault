@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.18 -->
-## [v4.1.18](https://github.com/chef/chef-vault/tree/v4.1.18) (2025-04-24)
+<!-- latest_release 4.1.19 -->
+## [v4.1.19](https://github.com/chef/chef-vault/tree/v4.1.19) (2025-05-05)
 
 #### Merged Pull Requests
-- Fixing windows verify pipeline [#440](https://github.com/chef/chef-vault/pull/440) ([nikhil2611](https://github.com/nikhil2611))
+- Updating the timeout for the verify pipeline to 120 min [#442](https://github.com/chef/chef-vault/pull/442) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.11 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Updating the timeout for the verify pipeline to 120 min [#442](https://github.com/chef/chef-vault/pull/442) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.19 -->
 - Fixing windows verify pipeline [#440](https://github.com/chef/chef-vault/pull/440) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.18 -->
 - make pipelines public: habitat/test [#437](https://github.com/chef/chef-vault/pull/437) ([jaymzh](https://github.com/jaymzh)) <!-- 4.1.17 -->
 - Rubocop correction [#436](https://github.com/chef/chef-vault/pull/436) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 4.1.16 -->
