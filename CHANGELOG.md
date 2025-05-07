@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.19 -->
-## [v4.1.19](https://github.com/chef/chef-vault/tree/v4.1.19) (2025-05-05)
+<!-- latest_release 4.1.20 -->
+## [v4.1.20](https://github.com/chef/chef-vault/tree/v4.1.20) (2025-05-07)
 
 #### Merged Pull Requests
-- Updating the timeout for the verify pipeline to 120 min [#442](https://github.com/chef/chef-vault/pull/442) ([nikhil2611](https://github.com/nikhil2611))
+- Fixing the security scanning warnings [#443](https://github.com/chef/chef-vault/pull/443) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.11 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Fixing the security scanning warnings [#443](https://github.com/chef/chef-vault/pull/443) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.20 -->
 - Updating the timeout for the verify pipeline to 120 min [#442](https://github.com/chef/chef-vault/pull/442) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.19 -->
 - Fixing windows verify pipeline [#440](https://github.com/chef/chef-vault/pull/440) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.18 -->
 - make pipelines public: habitat/test [#437](https://github.com/chef/chef-vault/pull/437) ([jaymzh](https://github.com/jaymzh)) <!-- 4.1.17 -->
