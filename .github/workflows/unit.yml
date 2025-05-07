@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: main
 
+permissions:
+  contents: read
+  pull-requests: write
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   coverage-test:
