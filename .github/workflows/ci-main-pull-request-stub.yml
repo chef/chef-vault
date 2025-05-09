@@ -1,0 +1,67 @@
+# stub to call common GitHub Action (GA) as part of Continuous Integration (CI) Pull Request process checks for main branch
+# inputs are described in the <org>/common-github-actions/<GA.yml> with same name as this stub
+#
+# secrets are inherited from the calling workflow, typically SONAR_TOKEN, SONAR_HOST_URL, GH_TOKEN, AKEYLESS_JWT_ID
+#
+# version 2
+
+name: CI Pull Request on Main Branch
+
+on: 
+  pull_request:
+    branches: [ main, release/** ]
+  push:
+    branches: [ main, release/** ]
+
+  workflow_dispatch:
+
+env:
+  STUB_VERSION: "1.0.0" # TODO: update this to the version of the stub
+
+jobs: 
+  echo_inputs:
+    name: 'Echo version of stub & pipeline'
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo version of stub and inputs
+        run: |
+          echo "[ci-main-pull-request-stub.yml] version $STUB_VERSION"
+
+  call-ci-main-pr-check-pipeline:
+    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
+    secrets: inherit
+    with:   
+      visibility: ${{ github.event.repository.visibility }} # optional, defaults to public; values are private, public, or internal
+      
+      perform-complexity-checks: true
+      # scc-output-filename: 'scc-output.txt'
+      perform-trufflehog-scan: true
+      perform-srcclr-scan: false
+      perform-veracode-sca-scan: false
+      perform-blackduck-sca-scan: false
+      
+      build: false
+      language: 'Ruby'  # optional, defaults to Go; other values are Ruby, Rust
+      unit-tests: false
+      
+      perform-sonarqube-sca-scan: true
+      perform-sonar-build: false
+      # build-profile: 'default' # TODO: implement this flag - chef360 container build flags, etc
+      report-unit-test-coverage: true
+
+      report-to-atlassian-dashboard: true
+      quality-product-name: 'Chef360'
+      # quality-sonar-app-name: 'YourSonarAppName'
+      # quality-testing-type: 'Integration'
+      # quality-service-name: 'YourServiceOrRepoName'
+      # quality-junit-report: 'path/to/junit/report'
+
+      perform-blackduck-coverity: false
+      perform-blackduck-polaris: false
+
+      generate-sbom: true
+
+      # go-private-modules: 'github.com/progress-platform-services/*'
+      # udf1: 'default' # user defined flag 1
+      # udf2: 'default' # user defined flag 2 
+      # udf3: 'default' # user defined flag 3
