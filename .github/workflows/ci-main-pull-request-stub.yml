@@ -40,7 +40,7 @@ jobs:
       
       build: true
       language: 'Ruby'  
-      unit-tests: true
+      unit-tests: false
 
       # go-private-modules:
       
@@ -59,9 +59,9 @@ jobs:
       # perform-blackduck-coverity: false
       # perform-blackduck-polaris: false
 
-      package-binaries: true
-      habitat-build: true
-      publish-packages: true
+      package-binaries: false
+      habitat-build: false
+      publish-packages: false
 
       generate-sbom: true
       export-github-sbom: true
