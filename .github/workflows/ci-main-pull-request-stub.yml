@@ -2,8 +2,6 @@
 # inputs are described in the <org>/common-github-actions/<GA.yml> with same name as this stub
 #
 # secrets are inherited from the calling workflow, typically SONAR_TOKEN, SONAR_HOST_URL, GH_TOKEN, AKEYLESS_JWT_ID
-#
-# version 2
 
 name: CI Pull Request on Main Branch
 
@@ -16,11 +14,11 @@ on:
   workflow_dispatch:
 
 env:
-  STUB_VERSION: "1.0.0" # TODO: update this to the version of the stub
-
+  STUB_VERSION: "1.0.0" 
+  
 jobs: 
   echo_inputs:
-    name: 'Echo version of stub & pipeline'
+    name: 'Echo stub version'
     runs-on: ubuntu-latest
     steps:
       - name: echo version of stub and inputs
@@ -31,7 +29,7 @@ jobs:
     uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
     secrets: inherit
     with:   
-      visibility: ${{ github.event.repository.visibility }} # optional, defaults to public; values are private, public, or internal
+      visibility: ${{ github.event.repository.visibility }} 
       
       perform-complexity-checks: true
       # scc-output-filename: 'scc-output.txt'
@@ -41,12 +39,14 @@ jobs:
       perform-blackduck-sca-scan: false
       
       build: false
-      language: 'Ruby'  # optional, defaults to Go; other values are Ruby, Rust
+      language: 'Ruby'  
       unit-tests: false
+
+      # go-private-modules:
       
       perform-sonarqube-sca-scan: true
       perform-sonar-build: false
-      # build-profile: 'default' # TODO: implement this flag - chef360 container build flags, etc
+      # build-profile: 'default' 
       report-unit-test-coverage: true
 
       report-to-atlassian-dashboard: true
@@ -54,14 +54,17 @@ jobs:
       # quality-sonar-app-name: 'YourSonarAppName'
       # quality-testing-type: 'Integration'
       # quality-service-name: 'YourServiceOrRepoName'
-      # quality-junit-report: 'path/to/junit/report'
+      # quality-junit-report: 
 
       perform-blackduck-coverity: false
       perform-blackduck-polaris: false
 
-      generate-sbom: true
+      package-binaries: true
+      habitat-build: true
+      publish-packages: true
 
-      # go-private-modules: 'github.com/progress-platform-services/*'
-      # udf1: 'default' # user defined flag 1
-      # udf2: 'default' # user defined flag 2 
-      # udf3: 'default' # user defined flag 3
+      generate-sbom: true
+      export-github-sbom: true
+      generate-blackduck-polaris-sbom: true
+      generate-msft-sbom: true
+      license_scout: true
