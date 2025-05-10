@@ -57,7 +57,7 @@ jobs:
       # quality-junit-report: 
 
       # perform-blackduck-coverity: false
-      perform-blackduck-polaris: false
+      # perform-blackduck-polaris: false
 
       package-binaries: true
       habitat-build: true
