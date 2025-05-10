@@ -34,18 +34,18 @@ jobs:
       perform-complexity-checks: true
       # scc-output-filename: 'scc-output.txt'
       perform-trufflehog-scan: true
-      perform-srcclr-scan: false
-      perform-veracode-sca-scan: false
+      # perform-srcclr-scan: false
+      # perform-veracode-sca-scan: false
       perform-blackduck-sca-scan: false
       
-      build: false
+      build: true
       language: 'Ruby'  
-      unit-tests: false
+      unit-tests: true
 
       # go-private-modules:
       
       perform-sonarqube-sca-scan: true
-      perform-sonar-build: false
+      perform-sonar-build: true
       # build-profile: 'default' 
       report-unit-test-coverage: true
 
@@ -56,7 +56,7 @@ jobs:
       # quality-service-name: 'YourServiceOrRepoName'
       # quality-junit-report: 
 
-      perform-blackduck-coverity: false
+      # perform-blackduck-coverity: false
       perform-blackduck-polaris: false
 
       package-binaries: true
