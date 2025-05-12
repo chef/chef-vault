@@ -28,6 +28,10 @@ jobs:
   call-ci-main-pr-check-pipeline:
     uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
     secrets: inherit
+    permissions: # Must change the job token permissions to use JWT auth
+      id-token: write
+      contents: read
+    
     with:   
       visibility: ${{ github.event.repository.visibility }} 
       
