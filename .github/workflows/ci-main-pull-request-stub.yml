@@ -13,6 +13,9 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   STUB_VERSION: "1.0.0" 
   
