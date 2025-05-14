@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.22 -->
-## [v4.1.22](https://github.com/chef/chef-vault/tree/v4.1.22) (2025-05-14)
+<!-- latest_release 4.1.23 -->
+## [v4.1.23](https://github.com/chef/chef-vault/tree/v4.1.23) (2025-05-14)
 
 #### Merged Pull Requests
-- Commenting out Habitat package promotion to publish chef-vault gem first  [#445](https://github.com/chef/chef-vault/pull/445) ([nikhil2611](https://github.com/nikhil2611))
+- Fixed: Vault warns when valid JSON contains special character sequences [#416](https://github.com/chef/chef-vault/pull/416) ([decoyjoe](https://github.com/decoyjoe))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.11 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Fixed: Vault warns when valid JSON contains special character sequences [#416](https://github.com/chef/chef-vault/pull/416) ([decoyjoe](https://github.com/decoyjoe)) <!-- 4.1.23 -->
 - Commenting out Habitat package promotion to publish chef-vault gem first  [#445](https://github.com/chef/chef-vault/pull/445) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.22 -->
 - Fixing Workflow does not contain permissions warnings [#444](https://github.com/chef/chef-vault/pull/444) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.21 -->
 - Fixing the security scanning warnings [#443](https://github.com/chef/chef-vault/pull/443) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.20 -->
