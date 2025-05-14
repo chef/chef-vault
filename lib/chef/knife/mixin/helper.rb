@@ -39,47 +39,9 @@ class ChefVault
       end
 
       def values_from_json(json)
-        validate_json(json)
         JSON.parse(json)
       rescue JSON::ParserError
         raise JSON::ParserError, "#{json} is not valid JSON!"
-      end
-
-      # I/P: json string
-      # Raises `InvalidValue` if any of the json's values contain non-printable characters.
-      def validate_json(json)
-        begin
-          parsed_json = JSON.parse(json)
-        rescue JSON::ParserError
-          raise ChefVault::Exceptions::InvalidValue, "#{json} is not valid JSON!"
-        end
-
-        check_value(parsed_json) # Start checking from the root of the parsed JSON
-      end
-
-      def check_value(value, parent_key = nil)
-        if value.is_a?(Array)
-          value.each { |item| check_value(item, parent_key) }
-        elsif value.is_a?(Hash)
-          value.each do |key, nested_value|
-            next if key == "password" # Skip the password key
-
-            check_value(nested_value, key)
-          end
-        else
-          unless printable?(value.to_s)
-            msg = "Value '#{value}' of key '#{parent_key}' contains non-printable characters."
-            ChefVault::Log.warn(msg)
-          end
-        end
-      end
-
-      # I/P: String
-      # O/P: true/false
-      # returns true if string is free of non-printable characters (escape sequences)
-      # this returns false for whitespace escape sequences as well, e.g. \n\t
-      def printable?(string)
-        !/[[:^print:]]/.match?(string) # Returns true if the string is printable
       end
     end
   end
