@@ -26,11 +26,15 @@ jobs:
     steps:
       - name: echo version of stub and inputs
         run: |
-          echo "[ci-main-pull-request-stub.yml] version $STUB_VERSION"
+          echo "[ci-main-pull-request-stub-trufflehog-only.yml] version $STUB_VERSION"
 
   call-ci-main-pr-check-pipeline:
     uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
     secrets: inherit
+    permissions: 
+      id-token: write
+      contents: read
+    
     with:   
       visibility: ${{ github.event.repository.visibility }} 
       
@@ -41,18 +45,18 @@ jobs:
       # perform-veracode-sca-scan: false
       perform-blackduck-sca-scan: false
       
-      build: true
+      build: false
       language: 'Ruby'  
       unit-tests: false
 
       # go-private-modules:
       
-      perform-sonarqube-sca-scan: true
-      perform-sonar-build: true
+      perform-sonarqube-sca-scan: false
+      perform-sonar-build: false
       # build-profile: 'default' 
-      report-unit-test-coverage: true
+      report-unit-test-coverage: false
 
-      report-to-atlassian-dashboard: true
+      report-to-atlassian-dashboard: false
       quality-product-name: 'Chef360'
       # quality-sonar-app-name: 'YourSonarAppName'
       # quality-testing-type: 'Integration'
@@ -68,6 +72,10 @@ jobs:
 
       generate-sbom: true
       export-github-sbom: true
-      generate-blackduck-polaris-sbom: true
-      generate-msft-sbom: true
-      license_scout: true
+      generate-blackduck-polaris-sbom: false
+      generate-msft-sbom: false
+      license_scout: false
+      
+      # udf1: 'default' # user defined flag 1
+      # udf2: 'default' # user defined flag 2 
+      # udf3: 'default' # user defined flag 3
