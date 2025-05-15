@@ -1,39 +1,36 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.1.23 -->
-## [v4.1.23](https://github.com/chef/chef-vault/tree/v4.1.23) (2025-05-14)
-
-#### Merged Pull Requests
-- Fixed: Vault warns when valid JSON contains special character sequences [#416](https://github.com/chef/chef-vault/pull/416) ([decoyjoe](https://github.com/decoyjoe))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.1.11 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fixed: Vault warns when valid JSON contains special character sequences [#416](https://github.com/chef/chef-vault/pull/416) ([decoyjoe](https://github.com/decoyjoe)) <!-- 4.1.23 -->
-- Commenting out Habitat package promotion to publish chef-vault gem first  [#445](https://github.com/chef/chef-vault/pull/445) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.22 -->
-- Fixing Workflow does not contain permissions warnings [#444](https://github.com/chef/chef-vault/pull/444) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.21 -->
-- Fixing the security scanning warnings [#443](https://github.com/chef/chef-vault/pull/443) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.20 -->
-- Updating the timeout for the verify pipeline to 120 min [#442](https://github.com/chef/chef-vault/pull/442) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.19 -->
-- Fixing windows verify pipeline [#440](https://github.com/chef/chef-vault/pull/440) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.18 -->
-- make pipelines public: habitat/test [#437](https://github.com/chef/chef-vault/pull/437) ([jaymzh](https://github.com/jaymzh)) <!-- 4.1.17 -->
-- Rubocop correction [#436](https://github.com/chef/chef-vault/pull/436) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 4.1.16 -->
-- Updating configuration for a symantec version promote and publish [#434](https://github.com/chef/chef-vault/pull/434) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.14 -->
-- Empty commit to test pipelines [#427](https://github.com/chef/chef-vault/pull/427) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.2 -->
-- Adding pipelines to trigger pipeline automatically [#426](https://github.com/chef/chef-vault/pull/426) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.1 -->
-- Removed the manually created pipelines and added the channels [#425](https://github.com/chef/chef-vault/pull/425) ([nikhil2611](https://github.com/nikhil2611)) <!-- 0.1.0 -->
-- Test commit for pipeline testing [#424](https://github.com/chef/chef-vault/pull/424) ([ashiqueps](https://github.com/ashiqueps)) <!-- 4.1.14 -->
-- CHEF-3710-chef-vault warning message includes sensitive info [#414](https://github.com/chef/chef-vault/pull/414) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.13 -->
-- Integrating with sonarQube [#406](https://github.com/chef/chef-vault/pull/406) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.1.12 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.1.23](https://github.com/chef/chef-vault/tree/v4.1.23) (2025-05-15)
+
+#### Merged Pull Requests
+- Integrating with sonarQube [#406](https://github.com/chef/chef-vault/pull/406) ([nikhil2611](https://github.com/nikhil2611))
+- CHEF-3710-chef-vault warning message includes sensitive info [#414](https://github.com/chef/chef-vault/pull/414) ([nikhil2611](https://github.com/nikhil2611))
+- Test commit for pipeline testing [#424](https://github.com/chef/chef-vault/pull/424) ([ashiqueps](https://github.com/ashiqueps))
+- Removed the manually created pipelines and added the channels [#425](https://github.com/chef/chef-vault/pull/425) ([nikhil2611](https://github.com/nikhil2611))
+- Adding pipelines to trigger pipeline automatically [#426](https://github.com/chef/chef-vault/pull/426) ([nikhil2611](https://github.com/nikhil2611))
+- Empty commit to test pipelines [#427](https://github.com/chef/chef-vault/pull/427) ([nikhil2611](https://github.com/nikhil2611))
+- Updating configuration for a symantec version promote and publish [#434](https://github.com/chef/chef-vault/pull/434) ([nikhil2611](https://github.com/nikhil2611))
+- Rubocop correction [#436](https://github.com/chef/chef-vault/pull/436) ([tpowell-progress](https://github.com/tpowell-progress))
+- make pipelines public: habitat/test [#437](https://github.com/chef/chef-vault/pull/437) ([jaymzh](https://github.com/jaymzh))
+- Fixing windows verify pipeline [#440](https://github.com/chef/chef-vault/pull/440) ([nikhil2611](https://github.com/nikhil2611))
+- Updating the timeout for the verify pipeline to 120 min [#442](https://github.com/chef/chef-vault/pull/442) ([nikhil2611](https://github.com/nikhil2611))
+- Fixing the security scanning warnings [#443](https://github.com/chef/chef-vault/pull/443) ([nikhil2611](https://github.com/nikhil2611))
+- Fixing Workflow does not contain permissions warnings [#444](https://github.com/chef/chef-vault/pull/444) ([nikhil2611](https://github.com/nikhil2611))
+- Commenting out Habitat package promotion to publish chef-vault gem first  [#445](https://github.com/chef/chef-vault/pull/445) ([nikhil2611](https://github.com/nikhil2611))
+- Fixed: Vault warns when valid JSON contains special character sequences [#416](https://github.com/chef/chef-vault/pull/416) ([decoyjoe](https://github.com/decoyjoe))
+<!-- latest_stable_release -->
+
 ## [v4.1.11](https://github.com/chef/chef-vault/tree/v4.1.11) (2023-02-17)
 
 #### Merged Pull Requests
 - add support for client_key_contents [#402](https://github.com/chef/chef-vault/pull/402) ([Tyrael](https://github.com/Tyrael))
-<!-- latest_stable_release -->
 
 ## [v4.1.10](https://github.com/chef/chef-vault/tree/v4.1.10) (2022-04-18)
 
