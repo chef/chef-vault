@@ -10,4 +10,4 @@ Feature: Wrong private key during decrypt
     And I create a vault item 'test/item' containing the JSON '{"foo": "bar"}' encrypted for 'one,two'
     And I regenerate the client key for the node 'one'
     And I try to decrypt the vault item 'test/item' as 'one'
-    Then the output should match /is encrypted for you, but your private key failed to decrypt the contents/
+    Then the combined output should match /is encrypted for you, but your private key failed to decrypt the contents/
