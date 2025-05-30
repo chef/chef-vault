@@ -1,0 +1,81 @@
+# stub to call common GitHub Action (GA) as part of Continuous Integration (CI) Pull Request process checks for main branch
+# inputs are described in the <org>/common-github-actions/<GA.yml> with same name as this stub
+#
+# secrets are inherited from the calling workflow, typically SONAR_TOKEN, SONAR_HOST_URL, GH_TOKEN, AKEYLESS_JWT_ID
+
+name: CI Pull Request on Main Branch
+
+on: 
+  pull_request:
+    branches: [ main, release/** ]
+  push:
+    branches: [ main, release/** ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  STUB_VERSION: "1.0.0" 
+  
+jobs: 
+  echo_inputs:
+    name: 'Echo stub version'
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo version of stub and inputs
+        run: |
+          echo "[ci-main-pull-request-stub-trufflehog-only.yml] version $STUB_VERSION"
+
+  call-ci-main-pr-check-pipeline:
+    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
+    secrets: inherit
+    permissions: 
+      id-token: write
+      contents: read
+    
+    with:   
+      visibility: ${{ github.event.repository.visibility }} 
+      
+      perform-complexity-checks: true
+      # scc-output-filename: 'scc-output.txt'
+      perform-trufflehog-scan: true
+      # perform-srcclr-scan: false
+      # perform-veracode-sca-scan: false
+      perform-blackduck-sca-scan: false
+      
+      build: false
+      language: 'Ruby'  
+      unit-tests: false
+
+      # go-private-modules:
+      
+      perform-sonarqube-sca-scan: false
+      perform-sonar-build: false
+      # build-profile: 'default' 
+      report-unit-test-coverage: false
+
+      report-to-atlassian-dashboard: false
+      quality-product-name: 'Chef360'
+      # quality-sonar-app-name: 'YourSonarAppName'
+      # quality-testing-type: 'Integration'
+      # quality-service-name: 'YourServiceOrRepoName'
+      # quality-junit-report: 
+
+      # perform-blackduck-coverity: false
+      # perform-blackduck-polaris: false
+
+      package-binaries: false
+      habitat-build: false
+      publish-packages: false
+
+      generate-sbom: true
+      export-github-sbom: true
+      generate-blackduck-polaris-sbom: false
+      generate-msft-sbom: false
+      license_scout: false
+      
+      # udf1: 'default' # user defined flag 1
+      # udf2: 'default' # user defined flag 2 
+      # udf3: 'default' # user defined flag 3

@@ -9,9 +9,9 @@ slack:
 rubygems:
   - chef-vault
 
-artifact_channels:
-  - unstable
-  - chef-dke-lts2024
+# artifact_channels:
+#   - unstable
+#   - chef-dke-lts2024
 
 github:
   # This deletes the GitHub PR branch after successfully merged into the release branch
@@ -58,7 +58,7 @@ subscriptions:
   - workload: project_promoted:{{agent_id}}:*
     actions:
       - built_in:rollover_changelog
-      - built_in:promote_habitat_packages
+      # - built_in:promote_habitat_packages
       - built_in:publish_rubygems
 
 pipelines:
