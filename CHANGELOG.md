@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.2.0 -->
+## [v4.2.0](https://github.com/chef/chef-vault/tree/v4.2.0) (2025-06-03)
+
+#### Merged Pull Requests
+- [CHEF-19103] Added support for Ruby 3.4 [#439](https://github.com/chef/chef-vault/pull/439) ([ashiqueps](https://github.com/ashiqueps))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.1.23 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- [CHEF-19103] Added support for Ruby 3.4 [#439](https://github.com/chef/chef-vault/pull/439) ([ashiqueps](https://github.com/ashiqueps)) <!-- 4.2.0 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
