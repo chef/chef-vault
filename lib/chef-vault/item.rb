@@ -318,6 +318,9 @@ class ChefVault
       rescue Chef::Exceptions::ValidationFailed
         raise ChefVault::Exceptions::ItemNotFound,
           "#{vault}/#{name} could not be found"
+      rescue Chef::EncryptedDataBagItem::DecryptionFailure
+        raise ChefVault::Exceptions::SecretDecryption,
+          "#{vault}/#{name} is encrypted for you, but your private key failed to decrypt the contents."
       end
       format_output(opts[:values], item) if opts[:values]
       item

@@ -153,3 +153,8 @@ Given(%r{^the data bag of the vault item '(.+)/(.+)' has not been re-encrypted$}
 
   expect(encrypted_vault_item).to eq(@saved_encrypted_vault_item)
 end
+
+Then(%r{^the combined output should match /(.+)/}) do |expected|
+  output = last_command_started.stdout.to_s + "\n" + last_command_started.stderr.to_s
+  expect(output).to match(/#{expected}/)
+end
