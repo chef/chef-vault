@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.0 -->
-## [v4.2.0](https://github.com/chef/chef-vault/tree/v4.2.0) (2025-06-03)
+<!-- latest_release 4.2.1 -->
+## [v4.2.1](https://github.com/chef/chef-vault/tree/v4.2.1) (2025-07-14)
 
 #### Merged Pull Requests
-- [CHEF-19103] Added support for Ruby 3.4 [#439](https://github.com/chef/chef-vault/pull/439) ([ashiqueps](https://github.com/ashiqueps))
+- Fixing habitat test builds by declaring HAB_ORIGIN after habitat install [#447](https://github.com/chef/chef-vault/pull/447) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.23 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Fixing habitat test builds by declaring HAB_ORIGIN after habitat install [#447](https://github.com/chef/chef-vault/pull/447) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.1 -->
 - [CHEF-19103] Added support for Ruby 3.4 [#439](https://github.com/chef/chef-vault/pull/439) ([ashiqueps](https://github.com/ashiqueps)) <!-- 4.2.0 -->
 <!-- release_rollup -->
 
