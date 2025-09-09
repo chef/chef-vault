@@ -33,5 +33,9 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 3.1"
 
-  s.add_dependency "syslog", "~> 0.3"
+  # This gem was removed from the Ruby standard library starting with version 3.4
+  # See: https://stdgems.org/new-in/3.4
+  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4")
+    s.add_dependency "syslog", "~> 0.3"
+  end
 end
