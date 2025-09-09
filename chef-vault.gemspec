@@ -32,4 +32,6 @@ Gem::Specification.new do |s|
   s.executables      = %w{ chef-vault }
 
   s.required_ruby_version = ">= 3.1"
+
+  s.add_dependency "syslog", "~> 0.3"
 end
