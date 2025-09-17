@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.4 -->
-## [v4.2.4](https://github.com/chef/chef-vault/tree/v4.2.4) (2025-09-10)
+<!-- latest_release 4.2.5 -->
+## [v4.2.5](https://github.com/chef/chef-vault/tree/v4.2.5) (2025-09-17)
 
 #### Merged Pull Requests
-- Move syslog dependency from Gemfile to gemspec [#451](https://github.com/chef/chef-vault/pull/451) ([nikhil2611](https://github.com/nikhil2611))
+- Remove Ruby version conditional logic for syslog from gemspec [#454](https://github.com/chef/chef-vault/pull/454) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.1.23 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Remove Ruby version conditional logic for syslog from gemspec [#454](https://github.com/chef/chef-vault/pull/454) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.5 -->
 - Move syslog dependency from Gemfile to gemspec [#451](https://github.com/chef/chef-vault/pull/451) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.4 -->
 - Ruby 3.4 update in chef-vault hab package for windows [#449](https://github.com/chef/chef-vault/pull/449) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.3 -->
 - CHEF-21190 - Ruby 3.4 update in chef-vault Hab package [#448](https://github.com/chef/chef-vault/pull/448) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.2 -->
