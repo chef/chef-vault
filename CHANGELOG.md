@@ -1,25 +1,23 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.5 -->
-## [v4.2.5](https://github.com/chef/chef-vault/tree/v4.2.5) (2025-09-17)
-
-#### Merged Pull Requests
-- Remove Ruby version conditional logic for syslog from gemspec [#454](https://github.com/chef/chef-vault/pull/454) ([nikhil2611](https://github.com/nikhil2611))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.1.23 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Remove Ruby version conditional logic for syslog from gemspec [#454](https://github.com/chef/chef-vault/pull/454) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.5 -->
-- Move syslog dependency from Gemfile to gemspec [#451](https://github.com/chef/chef-vault/pull/451) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.4 -->
-- Ruby 3.4 update in chef-vault hab package for windows [#449](https://github.com/chef/chef-vault/pull/449) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.3 -->
-- CHEF-21190 - Ruby 3.4 update in chef-vault Hab package [#448](https://github.com/chef/chef-vault/pull/448) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.2 -->
-- Fixing habitat test builds by declaring HAB_ORIGIN after habitat install [#447](https://github.com/chef/chef-vault/pull/447) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.1 -->
-- [CHEF-19103] Added support for Ruby 3.4 [#439](https://github.com/chef/chef-vault/pull/439) ([ashiqueps](https://github.com/ashiqueps)) <!-- 4.2.0 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.2.5](https://github.com/chef/chef-vault/tree/v4.2.5) (2025-09-19)
+
+#### Merged Pull Requests
+- [CHEF-19103] Added support for Ruby 3.4 [#439](https://github.com/chef/chef-vault/pull/439) ([ashiqueps](https://github.com/ashiqueps))
+- Fixing habitat test builds by declaring HAB_ORIGIN after habitat install [#447](https://github.com/chef/chef-vault/pull/447) ([nikhil2611](https://github.com/nikhil2611))
+- CHEF-21190 - Ruby 3.4 update in chef-vault Hab package [#448](https://github.com/chef/chef-vault/pull/448) ([nikhil2611](https://github.com/nikhil2611))
+- Ruby 3.4 update in chef-vault hab package for windows [#449](https://github.com/chef/chef-vault/pull/449) ([nikhil2611](https://github.com/nikhil2611))
+- Move syslog dependency from Gemfile to gemspec [#451](https://github.com/chef/chef-vault/pull/451) ([nikhil2611](https://github.com/nikhil2611))
+- Remove Ruby version conditional logic for syslog from gemspec [#454](https://github.com/chef/chef-vault/pull/454) ([nikhil2611](https://github.com/nikhil2611))
+<!-- latest_stable_release -->
+
 ## [v4.1.23](https://github.com/chef/chef-vault/tree/v4.1.23) (2025-05-15)
 
 #### Merged Pull Requests
@@ -38,7 +36,6 @@
 - Fixing Workflow does not contain permissions warnings [#444](https://github.com/chef/chef-vault/pull/444) ([nikhil2611](https://github.com/nikhil2611))
 - Commenting out Habitat package promotion to publish chef-vault gem first  [#445](https://github.com/chef/chef-vault/pull/445) ([nikhil2611](https://github.com/nikhil2611))
 - Fixed: Vault warns when valid JSON contains special character sequences [#416](https://github.com/chef/chef-vault/pull/416) ([decoyjoe](https://github.com/decoyjoe))
-<!-- latest_stable_release -->
 
 ## [v4.1.11](https://github.com/chef/chef-vault/tree/v4.1.11) (2023-02-17)
 
