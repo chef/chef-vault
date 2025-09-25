@@ -32,4 +32,7 @@ Gem::Specification.new do |s|
   s.executables      = %w{ chef-vault }
 
   s.required_ruby_version = ">= 3.1"
+
+  # syslog was removed from Ruby's standard library in 3.4; see https://stdgems.org/new-in/3.4
+  s.add_dependency "syslog", "~> 0.3"
 end

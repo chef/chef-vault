@@ -2,8 +2,6 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "syslog"
-
 group :development do
   gem "chefstyle"
   gem "rake"
