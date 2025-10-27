@@ -296,8 +296,7 @@ Contributor:: Reto Hermann<br>
 ## License
 
 Copyright:: Copyright (c) 2013-15 Nordstrom, Inc.<br>
-Copyright:: Copyright (c) 2016 Chef Software, Inc.<br>
-License:: Apache License, Version 2.0
+Copyright:: Copyright (c) 2013-2025 Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.License:: Apache License, Version 2.0
 
 ```text
 Licensed under the Apache License, Version 2.0 (the "License");
