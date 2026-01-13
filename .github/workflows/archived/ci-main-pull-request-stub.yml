@@ -58,7 +58,8 @@ jobs:
       
       # BlackDuck SAST (Polaris) and SCA scans (requires a build or download to do SAST)
       # requires these secrets: POLARIS_SERVER_URL, POLARIS_ACCESS_TOKEN
-      perform-blackduck-polaris: true
+      # Note: Polaris is disabled for Ruby projects as they use buildless scanning
+      perform-blackduck-polaris: false
       polaris-application-name: "Chef-Agents"  # one of these: Chef-Agents, Chef-Automate, Chef-Chef360, Chef-Habitat, Chef-Infrastructure-Server, Chef-Shared-Services, Chef-Other
       polaris-project-name: ${{ github.event.repository.name }}
       polaris-blackduck-executable: 'path/to/blackduck/binary'
