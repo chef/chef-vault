@@ -1,6 +1,6 @@
 # Chef-Vault Gemspec file
 # Copyright 2013-2015, Nordstrom, Inc.
-# Copyright 2017-2019, Chef Software, Inc.
+# Copyright (c) 2013-2025 Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
