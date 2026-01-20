@@ -91,9 +91,11 @@ class ChefVault
       @cache[chef_key.name] = false
       raw_data[chef_key.type].delete(chef_key.name)
       raw_data.delete(chef_key.name)
-      if raw_data["mode"] == "sparse"
-        skey = Chef::DataBagItem.load(data_bag, sparse_id(chef_key.name))
-        skey.destroy(data_bag, sparse_id(chef_key.name))
+      unless Chef::Config[:solo_legacy_mode]
+        if raw_data["mode"] == "sparse"
+          skey = Chef::DataBagItem.load(data_bag, sparse_id(chef_key.name))
+          skey.destroy(data_bag, sparse_id(chef_key.name))
+        end
       end
     end
 
