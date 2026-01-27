@@ -90,7 +90,7 @@ jobs:
       perform-trivy-scan: true
              
       # perform application build and unit testing, will use custom repository properties when implemented for chef-primary-application, chef-build-profile, and chef-build-language
-      build: false
+      build: true
       build-profile: ${{ needs.detect-custom-metadata.outputs.appBuildProfile }}
       unit-tests: false
       unit-test-output-path: "path/to/file.out"
