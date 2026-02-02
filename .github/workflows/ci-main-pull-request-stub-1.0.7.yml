@@ -64,7 +64,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     
   call-ci-main-pr-check-pipeline:
-    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
+    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@nikhil/create-lock-file-runtime
     needs: detect-custom-metadata
     secrets: inherit
     permissions: 
@@ -124,8 +124,7 @@ jobs:
 
       # report to central developer dashboard
       report-to-atlassian-dashboard: false
-      quality-product-name: 'Chef-Agents'   # product name for quality reporting, like Chef360, Courier, Inspec
-      # quality-product-name: ${{ github.event.repository.name }}   # like 'Chef-360' - the product name for quality reporting, like Chef360, Courier, Inspec
+      quality-product-name: ${{ github.event.repository.name }}   # product name for quality reporting, like Chef360, Courier, Inspec
       # quality-sonar-app-name: 'YourSonarAppName'
       # quality-testing-type: 'Integration' like Unit, Integration, e2e, api, Performance, Security
       # quality-service-name: 'YourServiceOrRepoName'
@@ -154,6 +153,8 @@ jobs:
       perform-blackduck-sca-scan: true # combined with generate sbom & generate github-sbom, also needs version above
       blackduck-project-group-name: 'Chef-Agents' # typically one of (Chef), Chef-Agents, Chef-Automate, Chef-Chef360, Chef-Habitat, Chef-Infrastructure-Server, Chef-Shared-Services, Chef-Non-Product'
       blackduck-project-name: ${{ github.event.repository.name }} # BlackDuck project name, typically the repository name
+
+      run-bundle-install: true
   
       # udf1: 'default' # user defined flag 1
       # udf2: 'default' # user defined flag 2 
