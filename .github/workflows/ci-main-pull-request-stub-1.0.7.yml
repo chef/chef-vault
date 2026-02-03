@@ -64,7 +64,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     
   call-ci-main-pr-check-pipeline:
-    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@nikhil/create-lock-file-runtime
+    uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
     needs: detect-custom-metadata
     secrets: inherit
     permissions: 
@@ -77,7 +77,7 @@ jobs:
       # go-private-modules: GOPRIVATE for Go private modules, default is 'github.com/progress-platform-services/*
 
       # if version specified, it takes precedence; can be a semver like 1.0.2-xyz or a tag like "latest"
-      version: '4.2.3' # ${{ github.event.repository.version }}
+      version: '4.2.5' # ${{ github.event.repository.version }}
       detect-version-source-type: 'none' # options include "none" (do not detect), "file", "github-tag" or "github-release"
       detect-version-source-parameter: '' # use for file name
       language: ${{ needs.detect-custom-metadata.outputs.appBuildLanguage }} # Go, Ruby, Rust, JavaScript, TypeScript, Python, Java, C#, PHP, other - used for build and SonarQube language setting
