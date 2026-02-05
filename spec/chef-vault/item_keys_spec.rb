@@ -130,6 +130,7 @@ RSpec.describe ChefVault::ItemKeys do
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
           expect(keys[client_name]).not_to be_empty
           keys.delete(chef_key)
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"] }.to raise_error(Net::HTTPClientException)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
           keys.mode("default")
@@ -145,6 +146,7 @@ RSpec.describe ChefVault::ItemKeys do
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"]).not_to be_empty
           keys.delete(chef_key)
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"] }.to raise_error(Net::HTTPClientException)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
           keys.mode("default")
