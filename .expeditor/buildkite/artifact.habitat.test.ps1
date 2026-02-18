@@ -64,7 +64,7 @@ Write-Host "--- Generating fake origin key"
 hab origin key generate $env:HAB_ORIGIN
 
 Write-Host "--- Building $Plan"
-$project_root = "$(git rev-parse --show-toplevel)"
+$project_root = Get-Location
 Set-Location $project_root
 
 $env:DO_CHECK=$true; hab pkg build .
