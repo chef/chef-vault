@@ -67,7 +67,7 @@ function Invoke-Install {
                      "*/JSON-Schema-Test-Suite", "JSON-Schema-Test-Suite")
 
     try {
-        Push-Location $project_root
+        Push-Location $pkg_prefix
         bundle config --local gemfile $project_root/Gemfile
          Write-BuildLine "** generating binstubs for chef-vault with precise version pins"
 	 Write-BuildLine "** generating binstubs for chef-vault with precise version pins $project_root $pkg_prefix/bin " 
