@@ -26,10 +26,10 @@ Gem::Specification.new do |s|
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
   s.license          = "Apache-2.0"
-  s.files            = %w{LICENSE Gemfile Rakefile} +
-                       Dir.glob("Gemfile*") +
-                       Dir.glob("*.gemspec") +
-                       Dir.glob("{bin,lib}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
+  s.files            = %w{LICENSE Gemfile} +
+    Dir.glob("Gemfile*") +
+    Dir.glob("*.gemspec") +
+    Dir.glob("{bin,lib}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
