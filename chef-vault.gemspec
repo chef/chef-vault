@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.files            = %w{LICENSE Gemfile} +
     Dir.glob("Gemfile*") +
     Dir.glob("*.gemspec") +
-    Dir.glob("{bin,lib}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
+    Dir.glob("{lib,spec}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
