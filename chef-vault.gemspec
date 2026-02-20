@@ -26,7 +26,10 @@ Gem::Specification.new do |s|
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
   s.license          = "Apache-2.0"
-  s.files            = %w{LICENSE Gemfile} + Dir.glob("*.gemspec") + `git ls-files`.split("\n").select { |f| f =~ %r{^(?:bin/|lib/)}i }
+  s.files            = %w{LICENSE Gemfile} +
+    Dir.glob("Gemfile*") +
+    Dir.glob("*.gemspec") +
+    Dir.glob("{lib,spec}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
