@@ -41,6 +41,18 @@ function Invoke-Build {
         $env:Path += ";c:\\Program Files\\Git\\bin"
         Push-Location $project_root
         $env:GEM_HOME = "$HAB_CACHE_SRC_PATH/$pkg_dirname/vendor"
+	$rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
+    $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
+    & $ridkPath enable
+        $msys2Root = Join-Path $rubyPkgPath "msys64"
+        $tmpDir = Join-Path $msys2Root "tmp"
+        if (-not (Test-Path $tmpDir)) {
+            New-Item -ItemType Directory -Path $tmpDir -Force | Out-Null
+        }
+
+        # Install libffi and autotools so ffi gem can compile from source on Ruby 3.4
+        Write-BuildLine " ** Installing MSYS2 packages for native gem compilation"
+        ridk exec pacman -S mingw-w64-ucrt-x86_64-libffi autoconf automake libtool --noconfirm --needed
 
         Write-BuildLine " ** Configuring bundler for this build environment"
         bundle config --local without integration deploy maintenance
@@ -48,8 +60,9 @@ function Invoke-Build {
         bundle config --local retry 5
         bundle config --local silence_root_warning 1
         Write-BuildLine " ** Using bundler to retrieve the Ruby dependencies"
-        bundle install
 
+        bundle install
+	
         gem build chef-vault.gemspec
 	    Write-BuildLine " ** Using gem to  install"
 	    gem install chef-vault*.gem --no-document
@@ -61,6 +74,10 @@ function Invoke-Build {
 }
 
 function Invoke-Install {
+    $rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
+    $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
+    & $ridkPath enable
+    $env:GEM_HOME = "$HAB_CACHE_SRC_PATH/$pkg_dirname/vendor"
     Write-BuildLine "** Copy built & cached gems to install directory"
     Copy-Item -Path "$HAB_CACHE_SRC_PATH/$pkg_dirname/*" -Destination $pkg_prefix -Recurse -Force -Exclude @("gem_make.out", "mkmf.log", "Makefile",
                      "*/latest", "latest",
