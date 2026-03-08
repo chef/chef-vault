@@ -77,7 +77,6 @@ function Invoke-Install {
     $rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
     $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
     & $ridkPath enable
-    $env:GEM_HOME = "$HAB_CACHE_SRC_PATH/$pkg_dirname/vendor"
     Write-BuildLine "** Copy built & cached gems to install directory"
     Copy-Item -Path "$HAB_CACHE_SRC_PATH/$pkg_dirname/*" -Destination $pkg_prefix -Recurse -Force -Exclude @("gem_make.out", "mkmf.log", "Makefile",
                      "*/latest", "latest",
