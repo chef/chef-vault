@@ -41,9 +41,10 @@ function Invoke-Build {
         $env:Path += ";c:\\Program Files\\Git\\bin"
         Push-Location $project_root
         $env:GEM_HOME = "$HAB_CACHE_SRC_PATH/$pkg_dirname/vendor"
-	$rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
-    $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
-    & $ridkPath enable
+        # enable ridk for native gem build 
+	    $rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
+        $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
+        & $ridkPath enable
         $msys2Root = Join-Path $rubyPkgPath "msys64"
         $tmpDir = Join-Path $msys2Root "tmp"
         if (-not (Test-Path $tmpDir)) {
@@ -74,6 +75,7 @@ function Invoke-Build {
 }
 
 function Invoke-Install {
+    # enable ridk for native gem build 
     $rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
     $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
     & $ridkPath enable
@@ -85,11 +87,11 @@ function Invoke-Install {
     try {
         Push-Location $pkg_prefix
         bundle config --local gemfile $project_root/Gemfile
-         Write-BuildLine "** generating binstubs for chef-vault with precise version pins"
-	 Write-BuildLine "** generating binstubs for chef-vault with precise version pins $project_root $pkg_prefix/bin " 
+        Write-BuildLine "** generating binstubs for chef-vault with precise version pins"
+	    Write-BuildLine "** generating binstubs for chef-vault with precise version pins $project_root $pkg_prefix/bin " 
             Invoke-Expression -Command "appbundler.bat $project_root $pkg_prefix/bin chef-vault"
             If ($lastexitcode -ne 0) { Exit $lastexitcode }
-	Write-BuildLine " ** Running the chef-vault project's 'rake install' to install the path-based gems so they look like any other installed gem."
+	    Write-BuildLine " ** Running the chef-vault project's 'rake install' to install the path-based gems so they look like any other installed gem."
 
         If ($lastexitcode -ne 0) { Exit $lastexitcode }
     } finally {
@@ -99,8 +101,12 @@ function Invoke-Install {
 
 function Invoke-After {
     # We don't need the cache of downloaded .gem files ...
+    Write-BuildLine " chef vault cache removing"
+
     Remove-Item $pkg_prefix/vendor/cache -Recurse -Force
     # We don't need the gem docs.
+    Write-BuildLine " chef vault docs removing"
+
     Remove-Item $pkg_prefix/vendor/doc -Recurse -Force
     # We don't need to ship the test suites for every gem dependency,
     # only inspec's for package verification.
