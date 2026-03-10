@@ -52,7 +52,7 @@ function Invoke-Build {
 
         # Install libffi and autotools so ffi gem can compile from source on Ruby 3.4
         Write-BuildLine " ** Installing MSYS2 packages for native gem compilation"
-        ridk exec pacman -S mingw-w64-ucrt-x86_64-libffi autoconf automake libtool --noconfirm --needed
+        ridk exec pacman -S mingw-w64-ucrt-x86_64-libffi  libtool --noconfirm --needed
 
         Write-BuildLine " ** Configuring bundler for this build environment"
         bundle config --local without integration deploy maintenance
