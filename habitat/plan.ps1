@@ -1,5 +1,4 @@
 $ErrorActionPreference = "Stop"
-$PSDefaultParameterValues['*:ErrorAction']='Stop'
 
 $env:HAB_BLDR_CHANNEL = "base-2025"
 $env:HAB_REFRESH_CHANNEL = "base-2025"
@@ -116,10 +115,11 @@ function Invoke-After {
     # Remove the byproducts of compiling gems with extensions
     Get-ChildItem $pkg_prefix/vendor/gems -Include @("gem_make.out", "mkmf.log", "Makefile") -File -Recurse `
         | Remove-Item -Force -ErrorAction SilentlyContinue
+    Write-BuildLine " chef vault done removing all cache"
 
-    # Reset ErrorActionPreference so Habitat's own temp cleanup
-    # (Remove-Item $tempRoot in hab-plan-build.ps1) does not treat the
-    # Windows "directory is not empty" race condition as a terminating error.
-    $global:ErrorActionPreference = "Continue"
-    $global:PSDefaultParameterValues.Remove('*:ErrorAction')
+    # Reset ErrorActionPreference in the script scope so Habitat's own
+    # temp cleanup (Remove-Item $tempRoot in hab-plan-build.ps1) does not
+    # treat the Windows "directory is not empty" race as a terminating error.
+    # plan.ps1 is dot-sourced, so script scope = hab-plan-build.ps1's scope.
+    $script:ErrorActionPreference = "Continue"
 }
