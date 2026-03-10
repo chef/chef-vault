@@ -103,17 +103,23 @@ function Invoke-After {
     # We don't need the cache of downloaded .gem files ...
     Write-BuildLine " chef vault cache removing"
 
-    Remove-Item $pkg_prefix/vendor/cache -Recurse -Force
+    Remove-Item $pkg_prefix/vendor/cache -Recurse -Force -ErrorAction SilentlyContinue
     # We don't need the gem docs.
     Write-BuildLine " chef vault docs removing"
 
-    Remove-Item $pkg_prefix/vendor/doc -Recurse -Force
+    Remove-Item $pkg_prefix/vendor/doc -Recurse -Force -ErrorAction SilentlyContinue
     # We don't need to ship the test suites for every gem dependency,
     # only inspec's for package verification.
     Get-ChildItem $pkg_prefix/vendor/gems -Filter "spec" -Directory -Recurse -Depth 1 `
         | Where-Object -FilterScript { $_.FullName -notlike "*chef-vault*" }             `
-        | Remove-Item -Recurse -Force
+        | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
     # Remove the byproducts of compiling gems with extensions
     Get-ChildItem $pkg_prefix/vendor/gems -Include @("gem_make.out", "mkmf.log", "Makefile") -File -Recurse `
-        | Remove-Item -Force
+        | Remove-Item -Force -ErrorAction SilentlyContinue
+
+    # Reset ErrorActionPreference so Habitat's own temp cleanup
+    # (Remove-Item $tempRoot in hab-plan-build.ps1) does not treat the
+    # Windows "directory is not empty" race condition as a terminating error.
+    $global:ErrorActionPreference = "Continue"
+    $global:PSDefaultParameterValues.Remove('*:ErrorAction')
 }
