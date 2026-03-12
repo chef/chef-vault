@@ -16,11 +16,15 @@ group :development do
   else
     gem "contracts", "~> 0.17"
     gem "chef-zero", "~> 15.0"
-    gem "chef", ">= 18.5.0"
+    if RUBY_PLATFORM.include?("mingw")
+      gem "chef", ">= 18.10"
+    else
+      gem "chef", ">= 18.10", platforms: [:ruby]
+    end
     gem "rspec", "~> 3.0"
     gem "aruba", "~> 2.3"
-    gem "knife", "~> 18.0"
-    gem "chef-utils", ">= 18.5.0" # pin until we drop ruby >=3
+    gem "knife", "~> 18.10"
+    gem "chef-utils", ">= 18.10", platforms: [:ruby] # pin until we drop ruby >=3
   end
 end
 
