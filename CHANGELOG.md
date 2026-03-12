@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.7 -->
-## [v4.2.7](https://github.com/chef/chef-vault/tree/v4.2.7) (2026-03-11)
+<!-- latest_release 4.2.8 -->
+## [v4.2.8](https://github.com/chef/chef-vault/tree/v4.2.8) (2026-03-12)
 
 #### Merged Pull Requests
-- Update Expeditor config to promote Habitat packages to current and base-2025 channels and fix hab test pipeline [#467](https://github.com/chef/chef-vault/pull/467) ([nikhil2611](https://github.com/nikhil2611))
+- Update chef version in gemfile [#466](https://github.com/chef/chef-vault/pull/466) ([sanghinitin](https://github.com/sanghinitin))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.2.5 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Update chef version in gemfile [#466](https://github.com/chef/chef-vault/pull/466) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.8 -->
 - Update Expeditor config to promote Habitat packages to current and base-2025 channels and fix hab test pipeline [#467](https://github.com/chef/chef-vault/pull/467) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.7 -->
 - Change hab build deps [#464](https://github.com/chef/chef-vault/pull/464) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.6 -->
 <!-- release_rollup -->
