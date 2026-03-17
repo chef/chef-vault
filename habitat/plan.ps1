@@ -1,5 +1,4 @@
 $ErrorActionPreference = "Stop"
-$PSDefaultParameterValues['*:ErrorAction']='Stop'
 
 $env:HAB_BLDR_CHANNEL = "base-2025"
 $env:HAB_REFRESH_CHANNEL = "base-2025"
@@ -10,8 +9,12 @@ $pkg_maintainer="The Chef Maintainers <humans@chef.io>"
 
 $pkg_deps=@(
   "core/ruby3_4-plus-devkit"
+)
+
+$pkg_build_deps=@(
   "core/git"
 )
+
 $pkg_bin_dirs=@("bin"
                 "vendor/bin")
 $project_root= (Resolve-Path "$PLAN_CONTEXT/../").Path
@@ -37,6 +40,19 @@ function Invoke-Build {
         $env:Path += ";c:\\Program Files\\Git\\bin"
         Push-Location $project_root
         $env:GEM_HOME = "$HAB_CACHE_SRC_PATH/$pkg_dirname/vendor"
+        # enable ridk for native gem build 
+	    $rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
+        $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
+        & $ridkPath enable
+        $msys2Root = Join-Path $rubyPkgPath "msys64"
+        $tmpDir = Join-Path $msys2Root "tmp"
+        if (-not (Test-Path $tmpDir)) {
+            New-Item -ItemType Directory -Path $tmpDir -Force | Out-Null
+        }
+
+        # Install libffi and autotools so ffi gem can compile from source on Ruby 3.4
+        Write-BuildLine " ** Installing MSYS2 packages for native gem compilation"
+        ridk exec pacman -S mingw-w64-ucrt-x86_64-libffi  libtool --noconfirm --needed
 
         Write-BuildLine " ** Configuring bundler for this build environment"
         bundle config --local without integration deploy maintenance
@@ -44,8 +60,9 @@ function Invoke-Build {
         bundle config --local retry 5
         bundle config --local silence_root_warning 1
         Write-BuildLine " ** Using bundler to retrieve the Ruby dependencies"
-        bundle install
 
+        bundle install
+	
         gem build chef-vault.gemspec
 	    Write-BuildLine " ** Using gem to  install"
 	    gem install chef-vault*.gem --no-document
@@ -57,6 +74,10 @@ function Invoke-Build {
 }
 
 function Invoke-Install {
+    # enable ridk for native gem build 
+    $rubyPkgPath = & hab pkg path core/ruby3_4-plus-devkit
+    $ridkPath = Join-Path $rubyPkgPath "bin\ridk.ps1"
+    & $ridkPath enable
     Write-BuildLine "** Copy built & cached gems to install directory"
     Copy-Item -Path "$HAB_CACHE_SRC_PATH/$pkg_dirname/*" -Destination $pkg_prefix -Recurse -Force -Exclude @("gem_make.out", "mkmf.log", "Makefile",
                      "*/latest", "latest",
@@ -65,11 +86,11 @@ function Invoke-Install {
     try {
         Push-Location $pkg_prefix
         bundle config --local gemfile $project_root/Gemfile
-         Write-BuildLine "** generating binstubs for chef-vault with precise version pins"
-	 Write-BuildLine "** generating binstubs for chef-vault with precise version pins $project_root $pkg_prefix/bin " 
+        Write-BuildLine "** generating binstubs for chef-vault with precise version pins"
+	    Write-BuildLine "** generating binstubs for chef-vault with precise version pins $project_root $pkg_prefix/bin " 
             Invoke-Expression -Command "appbundler.bat $project_root $pkg_prefix/bin chef-vault"
             If ($lastexitcode -ne 0) { Exit $lastexitcode }
-	Write-BuildLine " ** Running the chef-vault project's 'rake install' to install the path-based gems so they look like any other installed gem."
+	    Write-BuildLine " ** Running the chef-vault project's 'rake install' to install the path-based gems so they look like any other installed gem."
 
         If ($lastexitcode -ne 0) { Exit $lastexitcode }
     } finally {
@@ -79,15 +100,26 @@ function Invoke-Install {
 
 function Invoke-After {
     # We don't need the cache of downloaded .gem files ...
-    Remove-Item $pkg_prefix/vendor/cache -Recurse -Force
+    Write-BuildLine " chef vault cache removing"
+
+    Remove-Item $pkg_prefix/vendor/cache -Recurse -Force -ErrorAction SilentlyContinue
     # We don't need the gem docs.
-    Remove-Item $pkg_prefix/vendor/doc -Recurse -Force
+    Write-BuildLine " chef vault docs removing"
+
+    Remove-Item $pkg_prefix/vendor/doc -Recurse -Force -ErrorAction SilentlyContinue
     # We don't need to ship the test suites for every gem dependency,
     # only inspec's for package verification.
     Get-ChildItem $pkg_prefix/vendor/gems -Filter "spec" -Directory -Recurse -Depth 1 `
         | Where-Object -FilterScript { $_.FullName -notlike "*chef-vault*" }             `
-        | Remove-Item -Recurse -Force
+        | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
     # Remove the byproducts of compiling gems with extensions
     Get-ChildItem $pkg_prefix/vendor/gems -Include @("gem_make.out", "mkmf.log", "Makefile") -File -Recurse `
-        | Remove-Item -Force
+        | Remove-Item -Force -ErrorAction SilentlyContinue
+    Write-BuildLine " chef vault done removing all cache"
+
+    # Reset ErrorActionPreference in the script scope so Habitat's own
+    # temp cleanup (Remove-Item $tempRoot in hab-plan-build.ps1) does not
+    # treat the Windows "directory is not empty" race as a terminating error.
+    # plan.ps1 is dot-sourced, so script scope = hab-plan-build.ps1's scope.
+    $script:ErrorActionPreference = "Continue"
 }

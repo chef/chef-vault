@@ -12,10 +12,11 @@ pkg_bin_dirs=(
 pkg_build_deps=(
   core/make
   core/bash
+  core/git
   core/gcc
   core/libarchive
 )
-pkg_deps=(${ruby_pkg} core/coreutils core/git)
+pkg_deps=(${ruby_pkg} core/coreutils)
 
 pkg_svc_user=root
 
