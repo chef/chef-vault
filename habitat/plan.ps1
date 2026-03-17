@@ -80,7 +80,7 @@ function Invoke-Install {
     & $ridkPath enable
 
     write-output "*** invoke-install"
-    $NoticeFile = "$PLAN_CONTEXT\..\..\NOTICE"
+    $NoticeFile = "$PLAN_CONTEXT\..\NOTICE"
 
     if (Test-Path $NoticeFile) {
         Write-BuildLine "** Copying NOTICE to package directory"
