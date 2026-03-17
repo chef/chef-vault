@@ -1,6 +1,6 @@
 # Chef-Vault Gemspec file
 # Copyright 2013-2015, Nordstrom, Inc.
-# Copyright 2017-2019, Chef Software, Inc.
+# Copyright (c) 2013-2025 Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,10 +26,16 @@ Gem::Specification.new do |s|
   s.description      = s.summary
   s.homepage         = "https://github.com/chef/chef-vault"
   s.license          = "Apache-2.0"
-  s.files            = %w{LICENSE Gemfile} + Dir.glob("*.gemspec") + `git ls-files`.split("\n").select { |f| f =~ %r{^(?:bin/|lib/)}i }
+  s.files            = %w{LICENSE Gemfile} +
+    Dir.glob("Gemfile*") +
+    Dir.glob("*.gemspec") +
+    Dir.glob("{lib,spec}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths    = ["lib"]
   s.bindir           = "bin"
   s.executables      = %w{ chef-vault }
 
   s.required_ruby_version = ">= 3.1"
+
+  # syslog was removed from Ruby's standard library in 3.4; see https://stdgems.org/new-in/3.4
+  s.add_dependency "syslog", "~> 0.3"
 end
