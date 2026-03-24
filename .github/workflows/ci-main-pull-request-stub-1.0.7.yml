@@ -98,15 +98,15 @@ jobs:
  
       # BlackDuck SAST (Polaris) require a build or binary present in repo to do SAST testing
       # requires these secrets: POLARIS_SERVER_URL, POLARIS_ACCESS_TOKEN
-      perform-blackduck-polaris: false
+      perform-blackduck-polaris: true
       polaris-application-name: "Chef-Agents"  # one of these: Chef-Agents, Chef-Automate, Chef-Chef360, Chef-Habitat, Chef-Infrastructure-Server, Chef-Shared-Services, Chef-Other, Chef-Non-Product
       polaris-project-name: ${{ github.event.repository.name }}   # arch-sample-cli
-      polaris-working-directory: '.' # Working directory for the scan, defaults to . but usually lang-dependent like ./src
-      polaris-coverity-build-command: 'go build -o bin/chef-cli.exe' # Coverity build command, typically done in build stage by language or here as param 1-liner like "mvn clean install"
-      polaris-coverity-clean-command: 'go clean' # Coverity clean command, typically done before build stage by language or here as param 1-liner like "mvn clean"
-      polaris-detect-search-depth: '5' # Detect search depth, blank but can be set to "3" to search up to 3 levels of subdirectories for code to scan'
-      polaris-assessment-mode: 'SAST' # Assessment mode (SAST, CI or SOURCE_UPLOAD)
-      wait-for-scan: true
+      # polaris-working-directory: '.' # Working directory for the scan, defaults to . but usually lang-dependent like ./src
+      # polaris-coverity-build-command: 'go build -o bin/chef-cli.exe' # Coverity build command, typically done in build stage by language or here as param 1-liner like "mvn clean install"
+      # polaris-coverity-clean-command: 'go clean' # Coverity clean command, typically done before build stage by language or here as param 1-liner like "mvn clean"
+      # polaris-detect-search-depth: '5' # Detect search depth, blank but can be set to "3" to search up to 3 levels of subdirectories for code to scan'
+      # polaris-assessment-mode: 'SAST' # Assessment mode (SAST, CI or SOURCE_UPLOAD)
+      # wait-for-scan: true
       # polaris-detect-args: ''  # Additional Detect arguments, can supply extra arguments like "--detect.diagnostic=true"
       # coverity_build_command: "go build"
       # coverity_clean_command: "go clean"
