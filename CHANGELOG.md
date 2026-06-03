@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.10 -->
-## [v4.2.10](https://github.com/chef/chef-vault/tree/v4.2.10) (2026-05-26)
+<!-- latest_release 4.2.11 -->
+## [v4.2.11](https://github.com/chef/chef-vault/tree/v4.2.11) (2026-06-03)
 
 #### Merged Pull Requests
-- Remove extra gems during hab pkg build [#471](https://github.com/chef/chef-vault/pull/471) ([sanghinitin](https://github.com/sanghinitin))
+- CHEF-35092 - Use appbundler for habitat packaging [#472](https://github.com/chef/chef-vault/pull/472) ([sanjain-progress](https://github.com/sanjain-progress))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.2.9 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- CHEF-35092 - Use appbundler for habitat packaging [#472](https://github.com/chef/chef-vault/pull/472) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.2.11 -->
 - Remove extra gems during hab pkg build [#471](https://github.com/chef/chef-vault/pull/471) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.10 -->
 <!-- release_rollup -->
 
