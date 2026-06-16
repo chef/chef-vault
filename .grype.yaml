@@ -1,0 +1,15 @@
+# Grype vulnerability scan configuration
+# https://github.com/anchore/grype#configuration
+
+ignore:
+  # Ignore CVEs found inside .github/workflows files that are bundled with
+  # vendored gem sources. These are the gem authors' own CI files and are
+  # not part of the runtime artifact — they cannot be exploited at runtime.
+  - vulnerability: GHSA-46g3-37rh-v698
+    reason: "step-security/harden-runner CVE in vendored gem source CI workflows, not runtime code"
+  - vulnerability: GHSA-g699-3x6g-wm3g
+    reason: "step-security/harden-runner CVE in vendored gem source CI workflows, not runtime code"
+  - vulnerability: GHSA-mxr3-8whj-j74r
+    reason: "step-security/harden-runner CVE in vendored gem source CI workflows, not runtime code"
+  - vulnerability: GHSA-cpmj-h4f6-r6pq
+    reason: "step-security/harden-runner CVE in vendored gem source CI workflows, not runtime code"
