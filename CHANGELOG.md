@@ -1,22 +1,20 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.12 -->
-## [v4.2.12](https://github.com/chef/chef-vault/tree/v4.2.12) (2026-06-17)
-
-#### Merged Pull Requests
-- CHEF-34832 - Update NOTICE [#473](https://github.com/chef/chef-vault/pull/473) ([nikhil2611](https://github.com/nikhil2611))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.2.9 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- CHEF-34832 - Update NOTICE [#473](https://github.com/chef/chef-vault/pull/473) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.12 -->
-- CHEF-35092 - Use appbundler for habitat packaging [#472](https://github.com/chef/chef-vault/pull/472) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.2.11 -->
-- Remove extra gems during hab pkg build [#471](https://github.com/chef/chef-vault/pull/471) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.10 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.2.12](https://github.com/chef/chef-vault/tree/v4.2.12) (2026-06-18)
+
+#### Merged Pull Requests
+- Remove extra gems during hab pkg build [#471](https://github.com/chef/chef-vault/pull/471) ([sanghinitin](https://github.com/sanghinitin))
+- CHEF-35092 - Use appbundler for habitat packaging [#472](https://github.com/chef/chef-vault/pull/472) ([sanjain-progress](https://github.com/sanjain-progress))
+- CHEF-34832 - Update NOTICE [#473](https://github.com/chef/chef-vault/pull/473) ([nikhil2611](https://github.com/nikhil2611))
+<!-- latest_stable_release -->
+
 ## [v4.2.9](https://github.com/chef/chef-vault/tree/v4.2.9) (2026-03-23)
 
 #### Merged Pull Requests
@@ -24,7 +22,6 @@
 - Update Expeditor config to promote Habitat packages to current and base-2025 channels and fix hab test pipeline [#467](https://github.com/chef/chef-vault/pull/467) ([nikhil2611](https://github.com/nikhil2611))
 - Update chef version in gemfile [#466](https://github.com/chef/chef-vault/pull/466) ([sanghinitin](https://github.com/sanghinitin))
 - Adding NOTICE file to the hab pkg [#465](https://github.com/chef/chef-vault/pull/465) ([nikhil2611](https://github.com/nikhil2611))
-<!-- latest_stable_release -->
 
 ## [v4.2.5](https://github.com/chef/chef-vault/tree/v4.2.5) (2025-09-19)
 
