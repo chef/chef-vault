@@ -135,6 +135,23 @@ RSpec.describe ChefVault::ItemKeys do
           keys.mode("default")
         end
 
+        it "should save the key data in default mode from sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
+          expect(keys[client_name]).not_to be_empty
+          keys.mode("default")
+          keys.save("bar")
+          expect(Chef::DataBagItem.load("foo", "bar").to_hash).to include("id" => "bar")
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name") }.to raise_error(Net::HTTPClientException)
+          expect(keys[client_name]).not_to be_empty
+          keys.delete(chef_key)
+          keys.save("bar")
+          expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
+
         it "should remove key data in sparse mode" do
           keys.add(chef_key, shared_secret)
           keys.save("bar")

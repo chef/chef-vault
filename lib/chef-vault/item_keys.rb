@@ -185,6 +185,16 @@ class ChefVault
             skey.save
           end
         end
+      else
+        # Look for sparse keys that need to be moved to default format
+        skeys = {}
+        sparse_keys.each do |id|
+          item = Chef::DataBagItem.load(data_bag, id)
+          actor, key = item.raw_data.find { |k, _| k != "id" }
+          skeys[actor] = key
+          item.destroy(data_bag, id)
+        end
+        @raw_data.merge!(skeys)
       end
 
       # save raw data
@@ -209,9 +219,7 @@ class ChefVault
         nil
       else
         # destroy all sparse keys
-        rgx = Regexp.new("^#{sparse_id(".*")}")
-        items = Chef::DataBag.load(data_bag).keys.select { |item| item =~ rgx }
-        items.each do |id|
+        sparse_keys.each do |id|
           Chef::DataBagItem.from_hash("data_bag" => data_bag, "id" => id)
             .destroy(data_bag, id)
         end
@@ -253,6 +261,11 @@ class ChefVault
 
     def sparse?
       @raw_data["mode"] == "sparse"
+    end
+
+    def sparse_keys
+      rgx = Regexp.new("^#{sparse_id(".*")}")
+      Chef::DataBag.load(data_bag).keys.select { |item| item =~ rgx }
     end
 
     def sparse_id(key, item_id = @raw_data["id"])
