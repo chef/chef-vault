@@ -18,7 +18,7 @@ pkg_deps=(${ruby_pkg} core/coreutils core/libarchive)
 pkg_svc_user=root
 
 pkg_version() {
-  cat "$SRC_PATH/VERSION"
+  cat "$PLAN_CONTEXT/../../VERSION"
 }
 
 do_before() {
