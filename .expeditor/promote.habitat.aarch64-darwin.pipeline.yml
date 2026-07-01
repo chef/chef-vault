@@ -1,0 +1,27 @@
+---
+# Pipeline to promote the aarch64-darwin (macOS Apple Silicon) chef-vault
+# habitat package between channels. Expeditor's built-in
+# promote_habitat_packages does not support aarch64-darwin targets, so this
+# pipeline handles it manually.
+#
+# The promote_hab_aarch64_darwin.sh script auto-detects source/target channels
+# from EXPEDITOR_ environment variables set by the triggering workload.
+
+expeditor:
+  defaults:
+    buildkite:
+      timeout_in_minutes: 10
+      retry:
+        automatic:
+          limit: 1
+
+steps:
+
+  - label: ":mac: Promote aarch64-darwin habitat package"
+    command:
+      - ./.expeditor/buildkite/promote_hab_aarch64_darwin.sh
+    expeditor:
+      secrets:
+        HAB_AUTH_TOKEN:
+          path: account/static/habitat/chef-ci
+          field: auth_token
