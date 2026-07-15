@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Action
+# This is a basic workflow to help you get started with Action 
 name: CI
 
 # Controls when the workflow will run
@@ -12,7 +12,7 @@ permissions:
   contents: read
   pull-requests: write
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made  up of one or more jobs that can run sequentially or in parallel
 jobs:
   coverage-test:
     name: Coverage
