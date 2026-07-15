@@ -35,39 +35,19 @@ jobs:
 
           threshold = ENV.fetch("COVERAGE_THRESHOLD", "80").to_f
           last_run_path = "coverage/.last_run.json"
-          resultset_path = "coverage/.resultset.json"
 
-          coverage = nil
-
-          if File.exist?(last_run_path)
-            data = JSON.parse(File.read(last_run_path))
-            coverage = data.dig("result", "line")
-          elsif File.exist?(resultset_path)
-            data = JSON.parse(File.read(resultset_path))
-            covered = 0
-            relevant = 0
-
-            data.values.each do |entry|
-              next unless entry.is_a?(Hash)
-
-              (entry["coverage"] || {}).each_value do |line_hits|
-                next unless line_hits.is_a?(Array)
-
-                line_hits.each do |hits|
-                  next if hits.nil?
-
-                  relevant += 1
-                  covered += 1 if hits.to_i.positive?
-                end
-              end
-            end
-
-            coverage = relevant.zero? ? nil : ((covered.to_f / relevant) * 100.0)
+          unless File.exist?(last_run_path)
+            abort "Coverage results missing: expected #{last_run_path}. Ensure specs completed and SimpleCov wrote results."
           end
 
-          unless coverage
-            abort "Coverage results not found. Expected coverage/.last_run.json or coverage/.resultset.json"
+          data = JSON.parse(File.read(last_run_path))
+          coverage = data.dig("result", "line")
+
+          unless coverage.is_a?(Numeric) || coverage.to_s.match?(/\A\d+(\.\d+)?\z/)
+            abort "Invalid coverage value in #{last_run_path}: #{coverage.inspect}"
           end
+
+          coverage = coverage.to_f
 
           puts format("Line coverage: %.2f%% (threshold: %.2f%%)", coverage, threshold)
 
