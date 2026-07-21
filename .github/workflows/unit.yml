@@ -1,24 +1,24 @@
-# This is a basic workflow to help you get started with Action
+# This is a basic workflow to help you get started with Action 
 name: CI
 
 # Controls when the workflow will run
 on:
   push:
-    branches: main
+    branches: [main]
   pull_request:
-    branches: main
+    branches: [main]
 
 permissions:
   contents: read
   pull-requests: write
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made  up of one or more jobs that can run sequentially or in parallel
 jobs:
   coverage-test:
     name: Coverage
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Ruby 3.4
         uses: ruby/setup-ruby@v1
         with:
@@ -26,9 +26,32 @@ jobs:
           bundler-cache: true
       - name: run specs
         run: bundle exec rake spec --trace
-      - name: Simplecov Report
-        uses: aki77/simplecov-report-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          failedThreshold: 90
-          resultPath: coverage/.last_run.json
+      - name: Verify SimpleCov threshold
+        env:
+          COVERAGE_THRESHOLD: "80"
+        run: |
+          ruby <<'RUBY'
+          require "json"
+
+          threshold = ENV.fetch("COVERAGE_THRESHOLD", "80").to_f
+          last_run_path = "coverage/.last_run.json"
+
+          unless File.exist?(last_run_path)
+            abort "Coverage results missing: expected #{last_run_path}. Ensure specs completed and SimpleCov wrote results."
+          end
+
+          data = JSON.parse(File.read(last_run_path))
+          coverage = data.dig("result", "line")
+
+          unless coverage.is_a?(Numeric) || coverage.to_s.match?(/\A\d+(\.\d+)?\z/)
+            abort "Invalid coverage value in #{last_run_path}: #{coverage.inspect}"
+          end
+
+          coverage = coverage.to_f
+
+          puts format("Line coverage: %.2f%% (threshold: %.2f%%)", coverage, threshold)
+
+          if coverage < threshold
+            abort format("Coverage is less than %.2f%% (%.2f%%)", threshold, coverage)
+          end
+          RUBY
