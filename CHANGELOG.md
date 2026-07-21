@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.2.13 -->
+## [v4.2.13](https://github.com/chef/chef-vault/tree/v4.2.13) (2026-07-21)
+
+#### Merged Pull Requests
+- CHEF-34743: Add Habitat plan for aarch64-darwin (macOS Apple Silicon) [#474](https://github.com/chef/chef-vault/pull/474) ([sanghinitin](https://github.com/sanghinitin))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.2.12 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- CHEF-34743: Add Habitat plan for aarch64-darwin (macOS Apple Silicon) [#474](https://github.com/chef/chef-vault/pull/474) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.13 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
