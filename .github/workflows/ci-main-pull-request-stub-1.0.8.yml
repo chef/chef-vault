@@ -146,7 +146,7 @@ jobs:
       grype-hab-channel: 'unstable'
       grype-hab-scan-linux: true
       grype-hab-scan-windows: true
-      grype-hab-scan-macos: false
+      grype-hab-scan-macos: true
       
       # perform SonarQube scan, with or without unit test coverage data
       # requires secrets SONAR_TOKEN and SONAR_HOST_URL (progress.sonar.com)
