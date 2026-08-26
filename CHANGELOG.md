@@ -1,16 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.14 -->
-## [v4.2.14](https://github.com/chef/chef-vault/tree/v4.2.14) (2026-08-25)
+<!-- latest_release 4.2.15 -->
+## [v4.2.15](https://github.com/chef/chef-vault/tree/v4.2.15) (2026-08-26)
 
 #### Merged Pull Requests
-- CHEF-37330: add Linux ARM Habitat validation in Expeditor pipeline [#477](https://github.com/chef/chef-vault/pull/477) ([sanjain-progress](https://github.com/sanjain-progress))
+- Fix binstub_patch.rb/NOTICE path resolution on aarch64-linux builds [#478](https://github.com/chef/chef-vault/pull/478) ([sanjain-progress](https://github.com/sanjain-progress))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.2.12 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Fix binstub_patch.rb/NOTICE path resolution on aarch64-linux builds [#478](https://github.com/chef/chef-vault/pull/478) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.2.15 -->
 - CHEF-37330: add Linux ARM Habitat validation in Expeditor pipeline [#477](https://github.com/chef/chef-vault/pull/477) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.2.14 -->
 - CHEF-34743: Add Habitat plan for aarch64-darwin (macOS Apple Silicon) [#474](https://github.com/chef/chef-vault/pull/474) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.13 -->
 <!-- release_rollup -->
