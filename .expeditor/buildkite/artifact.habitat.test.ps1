@@ -51,6 +51,9 @@ catch {
   }
 
   Install-Habitat
+  Write-Host "******************************************************************"
+  Write-Host "** What is My Hab Version after installation? $(hab --version)"
+  Write-Host "******************************************************************"
 }
 finally {
   Write-Host ":habicat: I think I have the version I need to build."

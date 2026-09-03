@@ -15,9 +15,9 @@ on:
 
 permissions:
   contents: read
-  
+
 env:
-  STUB_VERSION: "1.0.4" 
+  STUB_VERSION: "1.0.4"
 
 jobs: 
   echo_version:
@@ -31,11 +31,11 @@ jobs:
   call-ci-main-pr-check-pipeline:
     uses: chef/common-github-actions/.github/workflows/ci-main-pull-request.yml@main
     secrets: inherit
-    permissions: 
+    permissions:
       id-token: write
       contents: read
 
-    with:   
+    with:
       visibility: ${{ github.event.repository.visibility }}   #  private, public, or internal
       # go-private-modules: GOPRIVATE for Go private modules, default is 'github.com/progress-platform-services/*
 
@@ -51,10 +51,10 @@ jobs:
 
       # trufflehog secret scanning
       perform-trufflehog-scan: true
-      
+
       # ADDED TRIVY SCAN
       perform-trivy-scan: true
-      
+
       # BlackDuck SAST (Polaris) and SCA scans (requires a build or download to do SAST)
       # requires these secrets: POLARIS_SERVER_URL, POLARIS_ACCESS_TOKEN
       perform-blackduck-polaris: true
@@ -62,18 +62,18 @@ jobs:
       polaris-project-name: 'chef-vault'
       polaris-blackduck-executable: 'path/to/blackduck/binary'
       polaris-executable-detect-path: 'path/to/detect'
- 
+
       # perform application build and unit testing, will use custom repository properties when implemented for chef-primary-application, chef-build-profile, and chef-build-language
       build: false
-      # ga-build-profile: $chef-ga-build-profile   
+      # ga-build-profile: $chef-ga-build-profile
       # language: $chef-ga-build-language   # this will be removed from stub as autodetected in central GA
       unit-tests: false
- 
+
       # perform SonarQube scan, with or wihout unit test coverage data
       # requires secrets SONAR_TOKEN and SONAR_HOST_URL (progress.sonar.com)
       perform-sonarqube-scan: true
       # perform-sonar-build: true
-      # build-profile: 'default' 
+      # build-profile: 'default'
       # report-unit-test-coverage: true
 
       # report to central developer dashboard
@@ -92,15 +92,15 @@ jobs:
 
       # generate and export Software Bill of Materials (SBOM) in various formats
       generate-sbom: true
-      export-github-sbom: true      # SPDX JSON artifact on job instance  
+      export-github-sbom: true      # SPDX JSON artifact on job instance
       perform-blackduck-sca-scan: false # combined with generate sbom & generate github-sbom, also needs version above
       blackduck-project-group-name: 'Chef-Agents' # typically one of (Chef), Chef-Agents, Chef-Automate, Chef-Chef360, Chef-Habitat, Chef-Infrastructure-Server, Chef-Shared-Services'
       blackduck-project-name: ${{ github.event.repository.name }} # BlackDuck project name, typically the repository name
       generate-blackduck-sbom: false # obsolete, use perform-blackduck-sca-scan instead
-        
+
       generate-msft-sbom: false
       license_scout: false      # Run license scout for license compliance (uses .license_scout.yml)
 
       # udf1: 'default' # user defined flag 1
-      # udf2: 'default' # user defined flag 2 
-      # udf3: 'default' # user defined flag 3  
+      # udf2: 'default' # user defined flag 2
+      # udf3: 'default' # user defined flag 3
