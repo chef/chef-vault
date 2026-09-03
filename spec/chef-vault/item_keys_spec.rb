@@ -151,6 +151,20 @@ RSpec.describe ChefVault::ItemKeys do
           expect(keys[client_name]).to be_nil
           keys.mode("default")
         end
+
+        it "should save metadata when a sparse key is already missing" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          Chef::DataBagItem.load("foo", "bar_key_client_name")
+            .destroy("foo", "bar_key_client_name")
+
+          expect { keys.delete(chef_key) }.not_to raise_error
+          keys.save("bar")
+
+          expect(Chef::DataBagItem.load("foo", "bar").to_hash[client_name]).to be_nil
+          keys.mode("default")
+        end
       end
 
       describe "#destroy" do

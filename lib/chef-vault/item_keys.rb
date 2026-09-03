@@ -93,8 +93,14 @@ class ChefVault
       raw_data.delete(chef_key.name)
       unless Chef::Config[:solo_legacy_mode]
         if raw_data["mode"] == "sparse"
-          skey = Chef::DataBagItem.load(data_bag, sparse_id(chef_key.name))
-          skey.destroy(data_bag, sparse_id(chef_key.name))
+          begin
+            Chef::DataBagItem.from_hash(
+              "data_bag" => data_bag,
+              "id" => sparse_id(chef_key.name)
+            ).destroy(data_bag, sparse_id(chef_key.name))
+          rescue Net::HTTPClientException => http_error
+            raise http_error unless http_error.response.code == "404"
+          end
         end
       end
     end
