@@ -130,6 +130,7 @@ RSpec.describe ChefVault::ItemKeys do
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
           expect(keys[client_name]).not_to be_empty
           keys.delete(chef_key)
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"] }.to raise_error(Net::HTTPClientException)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
           keys.mode("default")
@@ -145,8 +146,23 @@ RSpec.describe ChefVault::ItemKeys do
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"]).not_to be_empty
           keys.delete(chef_key)
+          expect { Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash["client_name"] }.to raise_error(Net::HTTPClientException)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
+
+        it "should save metadata when a sparse key is already missing" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          Chef::DataBagItem.load("foo", "bar_key_client_name")
+            .destroy("foo", "bar_key_client_name")
+
+          expect { keys.delete(chef_key) }.not_to raise_error
+          keys.save("bar")
+
+          expect(Chef::DataBagItem.load("foo", "bar").to_hash[client_name]).to be_nil
           keys.mode("default")
         end
       end
