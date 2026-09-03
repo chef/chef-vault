@@ -136,20 +136,23 @@ RSpec.describe ChefVault::ItemKeys do
         end
 
         it "should save the key data in default mode from sparse mode" do
-          keys.add(chef_key, shared_secret)
-          keys.mode("sparse")
-          keys.save("bar")
+          keys_item = ChefVault::ItemKeys.new("foo", "bar_keys")
+          keys_item.add(chef_key, shared_secret)
+          keys_item.mode("sparse")
+          keys_item.save
           expect(Chef::DataBagItem.load("foo", "bar_key_client_name").to_hash).to include("id" => "bar_key_client_name")
-          expect(keys[client_name]).not_to be_empty
-          keys.mode("default")
-          keys.save("bar")
-          expect(Chef::DataBagItem.load("foo", "bar").to_hash).to include("id" => "bar")
+          expect(keys_item[client_name]).not_to be_empty
+          keys_item.mode("default")
+          keys_item.save
+          loaded = Chef::DataBagItem.load("foo", "bar_keys").to_hash
+          expect(loaded).to include("id" => "bar_keys")
+          expect(loaded[client_name]).not_to be_nil
           expect { Chef::DataBagItem.load("foo", "bar_key_client_name") }.to raise_error(Net::HTTPClientException)
-          expect(keys[client_name]).not_to be_empty
-          keys.delete(chef_key)
-          keys.save("bar")
-          expect(keys[client_name]).to be_nil
-          keys.mode("default")
+          expect(keys_item[client_name]).not_to be_empty
+          keys_item.delete(chef_key)
+          keys_item.save
+          expect(keys_item[client_name]).to be_nil
+          keys_item.mode("default")
         end
 
         it "should remove key data in sparse mode" do
@@ -259,6 +262,18 @@ RSpec.describe ChefVault::ItemKeys do
           keys.delete(chef_key)
           keys.save("bar")
           expect(keys[client_name]).to be_nil
+          keys.mode("default")
+        end
+
+        it "should save the key data in default mode from sparse mode" do
+          keys.add(chef_key, shared_secret)
+          keys.mode("sparse")
+          keys.save("bar")
+          keys.mode("default")
+          keys.save("bar")
+
+          expect(File.read(File.join(data_bag_path, "foo", "bar.json"))).to match(/"client_name": ".*"/)
+          expect(File.exist?(File.join(data_bag_path, "foo", "bar_key_client_name.json"))).to be(false)
           keys.mode("default")
         end
 

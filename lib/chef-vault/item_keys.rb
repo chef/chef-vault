@@ -186,15 +186,19 @@ class ChefVault
           end
         end
       else
-        # Look for sparse keys that need to be moved to default format
-        skeys = {}
-        sparse_keys.each do |id|
-          item = Chef::DataBagItem.load(data_bag, id)
-          actor, key = item.raw_data.find { |k, _| k != "id" }
-          skeys[actor] = key
-          item.destroy(data_bag, id)
+        # Move only keys for actors tracked by this vault to default format.
+        (admins + clients).uniq.each do |actor|
+          id = sparse_id(actor)
+          skey = sparse_key(id)
+          next unless skey
+
+          @raw_data[actor] = skey[actor]
+          if Chef::Config[:solo_legacy_mode]
+            delete_solo(id)
+          else
+            skey.destroy(data_bag, id)
+          end
         end
-        @raw_data.merge!(skeys)
       end
 
       # save raw data
