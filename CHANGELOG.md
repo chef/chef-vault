@@ -1,27 +1,24 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.16 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v4.2.16](https://github.com/chef/chef-vault/tree/v4.2.16) (2026-11-16)
 
 #### Merged Pull Requests
 - Fix failing Darwin Habitat workflow [#485](https://github.com/chef/chef-vault/pull/485) ([nikhil2611](https://github.com/nikhil2611))
-<!-- latest_release -->
-
-<!-- release_rollup since=4.2.15 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fix failing Darwin Habitat workflow [#485](https://github.com/chef/chef-vault/pull/485) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.16 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v4.2.15](https://github.com/chef/chef-vault/tree/v4.2.15) (2026-11-16)
 
 #### Merged Pull Requests
 - CHEF-34743: Add Habitat plan for aarch64-darwin (macOS Apple Silicon) [#474](https://github.com/chef/chef-vault/pull/474) ([sanghinitin](https://github.com/sanghinitin))
 - CHEF-37330: add Linux ARM Habitat validation in Expeditor pipeline [#477](https://github.com/chef/chef-vault/pull/477) ([sanjain-progress](https://github.com/sanjain-progress))
 - Fix binstub_patch.rb/NOTICE path resolution on aarch64-linux builds [#478](https://github.com/chef/chef-vault/pull/478) ([sanjain-progress](https://github.com/sanjain-progress))
-<!-- latest_stable_release -->
 
 ## [v4.2.12](https://github.com/chef/chef-vault/tree/v4.2.12) (2026-06-18)
 
