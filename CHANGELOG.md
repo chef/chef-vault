@@ -1,9 +1,17 @@
 # chef-vault Change Log
 
-<!-- latest_release -->
+<!-- latest_release 4.2.16 -->
+## [v4.2.16](https://github.com/chef/chef-vault/tree/v4.2.16) (2026-11-16)
+
+#### Merged Pull Requests
+- Fix failing Darwin Habitat workflow [#485](https://github.com/chef/chef-vault/pull/485) ([nikhil2611](https://github.com/nikhil2611))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=4.2.15 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Fix failing Darwin Habitat workflow [#485](https://github.com/chef/chef-vault/pull/485) ([nikhil2611](https://github.com/nikhil2611)) <!-- 4.2.16 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
