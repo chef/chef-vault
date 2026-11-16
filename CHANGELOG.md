@@ -1,29 +1,26 @@
 # chef-vault Change Log
 
-<!-- latest_release 4.2.15 -->
-## [v4.2.15](https://github.com/chef/chef-vault/tree/v4.2.15) (2026-08-26)
-
-#### Merged Pull Requests
-- Fix binstub_patch.rb/NOTICE path resolution on aarch64-linux builds [#478](https://github.com/chef/chef-vault/pull/478) ([sanjain-progress](https://github.com/sanjain-progress))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.2.12 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fix binstub_patch.rb/NOTICE path resolution on aarch64-linux builds [#478](https://github.com/chef/chef-vault/pull/478) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.2.15 -->
-- CHEF-37330: add Linux ARM Habitat validation in Expeditor pipeline [#477](https://github.com/chef/chef-vault/pull/477) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.2.14 -->
-- CHEF-34743: Add Habitat plan for aarch64-darwin (macOS Apple Silicon) [#474](https://github.com/chef/chef-vault/pull/474) ([sanghinitin](https://github.com/sanghinitin)) <!-- 4.2.13 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.2.15](https://github.com/chef/chef-vault/tree/v4.2.15) (2026-11-16)
+
+#### Merged Pull Requests
+- CHEF-34743: Add Habitat plan for aarch64-darwin (macOS Apple Silicon) [#474](https://github.com/chef/chef-vault/pull/474) ([sanghinitin](https://github.com/sanghinitin))
+- CHEF-37330: add Linux ARM Habitat validation in Expeditor pipeline [#477](https://github.com/chef/chef-vault/pull/477) ([sanjain-progress](https://github.com/sanjain-progress))
+- Fix binstub_patch.rb/NOTICE path resolution on aarch64-linux builds [#478](https://github.com/chef/chef-vault/pull/478) ([sanjain-progress](https://github.com/sanjain-progress))
+<!-- latest_stable_release -->
+
 ## [v4.2.12](https://github.com/chef/chef-vault/tree/v4.2.12) (2026-06-18)
 
 #### Merged Pull Requests
 - Remove extra gems during hab pkg build [#471](https://github.com/chef/chef-vault/pull/471) ([sanghinitin](https://github.com/sanghinitin))
 - CHEF-35092 - Use appbundler for habitat packaging [#472](https://github.com/chef/chef-vault/pull/472) ([sanjain-progress](https://github.com/sanjain-progress))
 - CHEF-34832 - Update NOTICE [#473](https://github.com/chef/chef-vault/pull/473) ([nikhil2611](https://github.com/nikhil2611))
-<!-- latest_stable_release -->
 
 ## [v4.2.9](https://github.com/chef/chef-vault/tree/v4.2.9) (2026-03-23)
 
