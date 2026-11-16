@@ -244,7 +244,7 @@ It does still require that the data bag has been encrypted for the user's or
 client's pem and pushed to the Chef server. It mixes Chef into the gem and
 uses it to go grab the data bag.
 
-Use `chef-vault --help` to see all all available options
+Use `chef-vault --help` to see all available options
 
 ### Example usage (password)
 

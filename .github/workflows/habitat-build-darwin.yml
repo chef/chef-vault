@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-15-intel]
+        os: [macos-15]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 120
     env:
