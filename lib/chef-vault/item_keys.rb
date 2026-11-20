@@ -185,6 +185,20 @@ class ChefVault
             skey.save
           end
         end
+      else
+        # Move only keys for actors tracked by this vault to default format.
+        (admins + clients).uniq.each do |actor|
+          id = sparse_id(actor)
+          skey = sparse_key(id)
+          next unless skey
+
+          @raw_data[actor] = skey[actor]
+          if Chef::Config[:solo_legacy_mode]
+            delete_solo(id)
+          else
+            skey.destroy(data_bag, id)
+          end
+        end
       end
 
       # save raw data
@@ -209,9 +223,7 @@ class ChefVault
         nil
       else
         # destroy all sparse keys
-        rgx = Regexp.new("^#{sparse_id(".*")}")
-        items = Chef::DataBag.load(data_bag).keys.select { |item| item =~ rgx }
-        items.each do |id|
+        sparse_keys.each do |id|
           Chef::DataBagItem.from_hash("data_bag" => data_bag, "id" => id)
             .destroy(data_bag, id)
         end
@@ -253,6 +265,11 @@ class ChefVault
 
     def sparse?
       @raw_data["mode"] == "sparse"
+    end
+
+    def sparse_keys
+      rgx = Regexp.new("^#{sparse_id(".*")}")
+      Chef::DataBag.load(data_bag).keys.select { |item| item =~ rgx }
     end
 
     def sparse_id(key, item_id = @raw_data["id"])
