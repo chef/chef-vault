@@ -23,7 +23,7 @@ group :development do
     end
     gem "rspec", "~> 3.0"
     gem "aruba", "~> 2.3"
-    gem "knife", "~> 18.10"
+    gem "knife", "~> 19.0"
     gem "chef-utils", ">= 18.10", platforms: [:ruby] # pin until we drop ruby >=3
   end
 end
